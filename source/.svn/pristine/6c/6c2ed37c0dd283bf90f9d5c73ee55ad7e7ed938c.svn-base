@@ -1,0 +1,147 @@
+#!/usr/bin/env python
+"""
+    Usage: updateLastLogin -f --username=name --uid=n --email=email_address
+
+    You must specify at least one of username, uid or email address.  You may
+    specify more, to ensure that the correct record is updated.
+
+    -f is optional.  It means just find the matching user and show the record to me, but
+    don't update anything.
+
+"""
+import sys
+import os
+import re
+import string
+import subprocess
+import tempfile
+import getopt
+import pymysql
+from pymysql.err import IntegrityError, Error
+import csv
+import mailer
+import traceback
+
+
+def update(username, uid, email):
+
+    rows = findUser(username, uid, email)
+    if rows == 0:
+        print "Didn't find a matching user."
+        return - 1
+    elif rows > 1:
+        print "Found multiple matching users, not updating."
+        return -1
+
+
+    whereclause = ""
+    if username:
+        whereclause += " username = '%s' " % username
+    if uid:
+        if len(whereclause) > 0:
+            whereclause += " AND "
+        whereclause += " user_id = %d " % uid
+    if email:
+        if len(whereclause) > 0:
+            whereclause += " AND "
+        whereclause += " email = '%s' " % email
+
+    when = "now()"
+
+    query = """
+        update users set last_login = %s
+        where %s
+    """ % (when, whereclause)
+
+    # print "query is '%s'" % query
+
+    cur = conn.cursor()
+    try:
+        cur.execute(query)
+        conn.commit()
+    except Error, e:
+        conn.rollback()
+        print str(e)
+        print "update statement %s failed." % query
+    cur.close()    
+
+def findUser(username, uid, email):
+    whereclause = ""
+    if username:
+        whereclause += " username = '%s' " % username
+    if uid:
+        if len(whereclause) > 0:
+            whereclause += " AND "
+        whereclause += " user_id = %d " % uid
+    if email:
+        if len(whereclause) > 0:
+            whereclause += " AND "
+        whereclause += " email = '%s' " % email
+
+    query = """
+        select user_id, username, email, last_login from users
+        where %s
+    """ % (whereclause)
+
+    # print "query is '%s'" % query
+
+    cur = conn.cursor()
+    cur.execute(query)
+    count = 0
+    for row in cur:
+        count += 1
+        print "user_id=%d, username=%s, email=%s, last_login=%s" % (int(row[0]), row[1], row[2], str(row[3]))
+    cur.close()    
+    return count 
+
+def main(argv=None):
+    global conn
+
+    if argv is None:
+        argv = sys.argv
+
+    passwordFile = os.path.expandvars("${SDK_VERSIONS}/db_password.txt")
+
+    # Get the database name and password
+    properties = {} 
+    pf = open(passwordFile, "r");
+    for line in iter(pf):
+        s = line.split('=')
+        properties[s[0].strip()] = s[1].strip()
+    pf.close()
+    
+    conn = pymysql.connect(host=properties["host"], port=int(properties["port"]), user=properties["username"], 
+        passwd=properties["password"], db=properties["db"])
+    # print conn
+
+    username = uid = email = None 
+    justFind = False
+
+    options, remainder = getopt.getopt(argv[1:], "hf", ["username=", "uid=", "email="])
+    for opt, arg in options:
+        if opt in ("-h"):
+            print __doc__
+            return 0
+        if opt in ("-f"):
+            justFind = True
+        elif opt in ("--username"):
+            username = arg
+        elif opt in ("--uid"):
+            uid = int(arg)
+        elif opt in ("--email"):
+            email = arg
+
+    if not username and not uid and not email:
+        print __doc__
+        return -1 
+
+    if justFind:
+        findUser(username, uid, email)
+    else:
+        update(username, uid, email)
+        
+        
+
+
+if __name__ == "__main__":
+    sys.exit(main())

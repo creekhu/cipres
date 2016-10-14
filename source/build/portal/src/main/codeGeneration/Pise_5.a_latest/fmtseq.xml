@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>fmtseq</title>
+    <version>1.2.2</version>
+    <description>sequence conversion</description>
+    <authors>J. R. Knight</authors>
+    <category>format</category>
+  </head>
+
+  <command>fmtseq</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>fmtseq</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "fmtseq -p -all " </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>seq</name>
+      <attributes>
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" &lt; $value"</code>
+	</format>
+	<group>10</group>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<vdef><value>"fmtseq.out"</value></vdef>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>$outformat !~ /2./ </code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>outformat</name>
+      <attributes>
+	<prompt>Output Sequence Format</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -f$value"</code>
+	</format>
+	<vdef><value>9</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>1</value>
+	  <label>1. Raw</label>
+	  <value>2</value>
+	  <label>2. Plain</label>
+	  <value>3</value>
+	  <label>3. EMBL</label>
+	  <value>4</value>
+	  <label>4. Swiss-Prot</label>
+	  <value>5</value>
+	  <label>5. GenBank</label>
+	  <value>6</value>
+	  <label>6. PIR (codata)</label>
+	  <value>7</value>
+	  <label>7. ASN.1</label>
+	  <value>8</value>
+	  <label>8. FASTA (Pearson)</label>
+	  <value>9</value>
+	  <label>9. FASTA</label>
+	  <value>12</value>
+	  <label>12. NBRF</label>
+	  <value>13</value>
+	  <label>13. NBRF-old</label>
+	  <value>14</value>
+	  <label>14. IG/Stanford</label>
+	  <value>15</value>
+	  <label>15. IG-old</label>
+	  <value>16</value>
+	  <label>16. GCG</label>
+	  <value>17</value>
+	  <label>17. MSF</label>
+	  <value>18</value>
+	  <label>18. PHYLIP</label>
+	  <value>19</value>
+	  <label>19. PHYLIP-Interleaved</label>
+	  <value>20</value>
+	  <label>20. PHYLIP-Sequential</label>
+	  <value>21</value>
+	  <label>21. Clustalw</label>
+	  <value>22</value>
+	  <label>22. Pretty</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input</name>
+	<prompt>Input parameters</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>gapin</name>
+	    <attributes>
+	      <prompt>Set the gap symbol for the input (-gapin)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -gapin=$value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <vlist>
+		<value>.</value>
+		<label>'.'</label>
+		<value>-</value>
+		<label>'-'</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>informat</name>
+	    <attributes>
+	      <prompt>Input sequence format (-inf[ormat])</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -informat=$value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <vlist>
+		<value>1</value>
+		<label>1. Raw</label>
+		<value>2</value>
+		<label>2. Plain</label>
+		<value>3</value>
+		<label>3. EMBL</label>
+		<value>4</value>
+		<label>4. Swiss-Prot</label>
+		<value>5</value>
+		<label>5. GenBank</label>
+		<value>6</value>
+		<label>6. PIR (codata)</label>
+		<value>7</value>
+		<label>7. ASN.1</label>
+		<value>9</value>
+		<label>9. FASTA</label>
+		<value>10</value>
+		<label>10. FASTA-output</label>
+		<value>11</value>
+		<label>11. BLAST-output</label>
+		<value>12</value>
+		<label>12. NBRF</label>
+		<value>13</value>
+		<label>13. NBRF-old</label>
+		<value>14</value>
+		<label>14. IG/Stanford</label>
+		<value>15</value>
+		<label>15. IG-old</label>
+		<value>16</value>
+		<label>16. GCG</label>
+		<value>17</value>
+		<label>17. MSF</label>
+		<value>18</value>
+		<label>18. PHYLIP</label>
+		<value>19</value>
+		<label>19. PHYLIP-Interleaved</label>
+		<value>20</value>
+		<label>20. PHYLIP-Sequential</label>
+		<value>21</value>
+		<label>21. Clustalw</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>caselower</name>
+	    <attributes>
+	      <prompt>convert to lowercase (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -c":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>CASEUPPER</name>
+	    <attributes>
+	      <prompt>convert to upper case (-C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -C":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>degap</name>
+	    <attributes>
+	      <prompt>Remove gaps from sequences (-degap)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -degap":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>gapout</name>
+	    <attributes>
+	      <prompt>Set the gap symbol for the output (-gapout)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -gapout=$value":""</code>
+	      </format>
+	      <group>1</group>
+	      <vlist>
+		<value>.</value>
+		<label>'.'</label>
+		<value>-</value>
+		<label>'-'</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>list</name>
+	    <attributes>
+	      <prompt>Only list sequence information (-li)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -li":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>long</name>
+	    <attributes>
+	      <prompt>Long form conversion (input header included as comment) (-long)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -long":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>raw</name>
+	    <attributes>
+	      <prompt>Gaps in sequences (-raw)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -$value":""</code>
+	      </format>
+	      <group>1</group>
+	      <vlist>
+		<value>raw</value>
+		<label>leave gaps</label>
+		<value>noraw</value>
+		<label>do not leave gaps</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>reverse</name>
+	    <attributes>
+	      <prompt>Reverse-complement each sequence (-re)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -re":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>prettyoptions</name>
+	      <prompt>Pretty-print options</prompt>
+	      <group>2</group>
+	      <parameters>
+
+		<parameter type="Excl">
+		  <name>interleave</name>
+		  <attributes>
+		    <prompt>Output interleaved sequences (-interleave)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -$value":""</code>
+		    </format>
+		    <group>2</group>
+		    <vlist>
+		      <value>interleave</value>
+		      <label>interleave</label>
+		      <value>nointerleave</value>
+		      <label>nointerleave</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>width</name>
+		  <attributes>
+		    <prompt>Sequence line width (-width)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> (defined $value)?" -width=$value":""</code>
+		    </format>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>tab</name>
+		  <attributes>
+		    <prompt>Indent sequence (-tab)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> (defined $value)?" -tab=$value":""</code>
+		    </format>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>colspace</name>
+		  <attributes>
+		    <prompt>Add space columms in sequence lines (-colspace)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> (defined $value)?" -colspace=$value":""</code>
+		    </format>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>gapcount</name>
+		  <attributes>
+		    <prompt>Count gap chars in sequence numbers (-gapcount)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> (defined $value)? " -$value" : "" </code>
+		    </format>
+		    <group>2</group>
+		    <vlist>
+		      <value>gapcount</value>
+		      <label>gap count</label>
+		      <value>nogapcount</value>
+		      <label>no gap count</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>nameleft</name>
+		  <attributes>
+		    <prompt>Name on left side (-nameleft)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value) ? " -nameleft=$value" : "" </code>
+		    </format>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>nameright</name>
+		  <attributes>
+		    <prompt>Name on left side (-nameright)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value) ? " -nameright=$value" : "" </code>
+		    </format>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>nametop</name>
+		  <attributes>
+		    <prompt>Name at top (-nametop)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -nametop" : "" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>3</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>numleft</name>
+		  <attributes>
+		    <prompt>Sequence index on left/right side</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -num$value" : "" </code>
+		    </format>
+		    <group>2</group>
+		    <vlist>
+		      <value>left</value>
+		      <label>left</label>
+		      <value>right</value>
+		      <label>right</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>numtop</name>
+		  <attributes>
+		    <prompt>Index on top/bottom</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -num$value" : "" </code>
+		    </format>
+		    <group>2</group>
+		    <vlist>
+		      <value>top</value>
+		      <label>top</label>
+		      <value>bot</value>
+		      <label>bottom</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>match</name>
+		  <attributes>
+		    <prompt>Replace matches to first sequence with . (-match)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -match=." : "" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Integer">
+		  <name>interline</name>
+		  <attributes>
+		    <prompt>How many blank line(s) between sequence blocks (-interline)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> (defined $value)?" -interline=$value":""</code>
+		    </format>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>skipempty</name>
+		  <attributes>
+		    <prompt>Do not output lines with only gap characters (-skipempty)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -skipempty" : "" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>2</group>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>bigalign</name>
+	    <attributes>
+	      <prompt>Convert FASTA program output to big alignment (-bigalign)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -bigalign" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

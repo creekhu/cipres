@@ -1,0 +1,2088 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>LASSAP</title>
+    <version>1.2.1b</version>
+    <description>lspcalc seq/db (LArge Scale Sequence compArison Package)</description>
+    <authors>Glemet, Codani</authors>
+  </head>
+
+
+<command>lspcalc_seqdb</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>lspcalc_seqdb</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"lspcalc"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Excl">
+<name>type_of_run</name>
+<attributes>
+
+	<prompt>Type of run</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>-M</value></vdef>
+	<vlist>
+		<value>-M</value>
+		<label>-M: Compute</label>
+		<value>-I</value>
+		<label>-I: Info, do not compute</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>method</name>
+<attributes>
+
+	<prompt>Comparison method</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $type_of_run $value" </code>
+	</format>
+	<group>10</group>
+	<vlist>
+		<value>BLAST</value>
+		<label>BLAST</label>
+		<value>BLSW</value>
+		<label>BLSW: Blast+Smith/Waterman. A mix of Blast and SW.</label>
+		<value>KERR</value>
+		<label>KERR: Approximate string matching. Find inclusions with errors allowed.</label>
+		<value>PATT</value>
+		<label>PATT: Pattern Matching. Find motif, e.g. PROSITE searching.</label>
+		<value>BM</value>
+		<label>BM: Boyer Moore. Find exact inclusions.</label>
+		<value>SW</value>
+		<label>SW: Smith/Waterman. Best local gapped alignment.</label>
+		<value>NW</value>
+		<label>NW: Needleman/Wunsch. Best global gapped alignment.</label>
+		<value>SWR</value>
+		<label>SWR: Z-value computation (gives a significance estimate by the use of a schuffling).</label>
+		<value>ZVAL</value>
+		<label>ZVAL: Z-value computation optimized. Variant of SWR with parameters for clustering.</label>
+		<value>SWT</value>
+		<label>SWT: Fast Smith/Waterman. Optimized version of SW.</label>
+		<value>KBEST</value>
+		<label>KBEST: K-best. k-best gapped local alignments.</label>
+		<value>BLKERR</value>
+		<label>BLKERR: Blast+Approximate string matching. A mix of Blast and KERR</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>type_of_scan</name>
+<attributes>
+
+	<prompt>Type of scan</prompt>
+	<vdef><value>PP</value></vdef>
+	<group>20</group>
+	<vlist>
+		<value>PP</value>
+		<label>protein db/protein query</label>
+		<value>NN</value>
+		<label>nucleic db/nucleic query</label>
+		<value>PTN</value>
+		<label>proteic db/trans. nucleic query</label>
+		<value>TNP</value>
+		<label>trans. nucleic db/proteic query</label>
+		<value>TNTN</value>
+		<label>trans. nucleic db/trans. nucleic query</label>
+	</vlist>
+	<flist>
+		<value>PP</value>
+		<code>" -mp "</code>
+		<value>PTN</value>
+		<code>" -mp "</code>
+		<value>TNP</value>
+		<code>" -mp "</code>
+		<value>NN</value>
+		<code>" -mn "</code>
+		<value>TNTN</value>
+		<code>" -mp "</code>
+	</flist>
+<precond>
+	<language>perl</language>
+	<code>! $blast_matrix &amp;&amp; ($method eq "BLAST" || $method eq "SW" || $method eq "SWT" || $method eq "KBEST" ||  $method eq "NW" || $method eq "SWR" || $method eq "ZVAL" || $method eq "BLSW" || $method eq "BLKERR")</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>matrix</name>
+<attributes>
+
+	<prompt>Choose a scoring matrix</prompt>
+	<vdef><value>BLOSUM62</value></vdef>
+	<group>21</group>
+	<vlist>
+		<value>swgapdna</value>
+		<label>swgapdna (Nucleic)</label>
+		<value>NUC.4.4</value>
+		<label>NUC.4.4 (Nucleic)</label>
+		<value>BLOSUM62</value>
+		<label>BLOSUM62 (Proteic)</label>
+		<value>PAM250</value>
+		<label>PAM250 (Proteic)</label>
+		<value>DAYHOFF</value>
+		<label>DAYHOFF (Proteic)</label>
+		<value>ID</value>
+		<label>ID (Proteic)</label>
+		<value>ID1</value>
+		<label>ID1 (Proteic)</label>
+		<value>nwsgappep</value>
+		<label>nwsgappep (Proteic)</label>
+	</vlist>
+	<flist>
+		<value>DAYHOFF</value>
+		<code>" dayhoff"</code>
+		<value>swgapdna</value>
+		<code>" swgapdna"</code>
+		<value>PAM250</value>
+		<code>" pam250"</code>
+		<value>nwsgappep</value>
+		<code>" nwsgappep"</code>
+		<value>BLOSUM62</value>
+		<code>" BLOSUM62"</code>
+		<value>NUC.4.4</value>
+		<code>" NUC.4.4"</code>
+		<value>ID</value>
+		<code>" id"</code>
+		<value>ID1</value>
+		<code>" id1"</code>
+	</flist>
+	<comment>
+		<value>For BLAST,SW*, KBEST, NW, ZVAL, BLSW and BLKERR.</value>
+	</comment>
+	<ctrls>
+		<ctrl>
+		<message>The matrix is not coherent with the type of scan</message>
+			<language>perl</language>
+			<code>($type_of_scan eq "NN" &amp;&amp; $matrix !~ /sw|NUC/) || ($type_of_scan ne "NN" &amp;&amp; $matrix =~ /sw|NUC/)</code>
+		</ctrl>
+	</ctrls>
+<precond>
+	<language>perl</language>
+	<code>! $blast_matrix &amp;&amp; ($method eq "BLAST" || $method eq "SW" || $method eq "SWT" || $method eq "KBEST" ||  $method eq "NW" || $method eq "SWR" || $method eq "ZVAL" || $method eq "BLSW" || $method eq "BLKERR")</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>query_opt</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> " -dr " </code>
+	</format>
+	<group>400</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>query</name>
+<attributes>
+
+	<prompt>Query sequence</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $query" </code>
+	</format>
+	<group>450</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>db_opt</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> " -db " </code>
+	</format>
+	<group>300</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>db</name>
+<attributes>
+
+	<prompt>Choose a Database ...</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "  $value" : "" </code>
+	</format>
+	<vdef><value>sprot</value></vdef>
+	<group>350</group>
+	<vlist>
+		<value>gbbct</value>
+		<label>gbbct: genbank bacteries</label>
+		<value>gbpri</value>
+		<label>gbpri: primates</label>
+		<value>gbmam</value>
+		<label>gbmam: other mammals</label>
+		<value>gbrod</value>
+		<label>gbrod: rodents</label>
+		<value>gbvrt</value>
+		<label>gbvrt: other vertebrates</label>
+		<value>gbinv</value>
+		<label>gbinv: invertebrates</label>
+		<value>gbpln</value>
+		<label>gbpln: plants (including yeast)</label>
+		<value>gbvrl</value>
+		<label>gbvrl: virus</label>
+		<value>gbphg</value>
+		<label>gbphg: phages</label>
+		<value>gbest</value>
+		<label>gbest: EST (Expressed Sequence Tags)</label>
+		<value>gbsts</value>
+		<label>gbsts: STS (Sequence Tagged sites)</label>
+		<value>gbsyn</value>
+		<label>gbsyn: synthetic</label>
+		<value>gbpat</value>
+		<label>gbpat: patented</label>
+		<value>gbuna</value>
+		<label>gbuna: unatotated</label>
+		<value>gbgss</value>
+		<label>gbgss: Genome Survey Sequences</label>
+		<value>gbhtg</value>
+		<label>gbhtg: GS (high throughput Genomic Sequencing)</label>
+		<value>imgt</value>
+		<label>imgt: ImMunoGeneTics</label>
+		<value>borrelia</value>
+		<label>borrelia: Borrelia burgdorferi complete genome</label>
+		<value>ecoli</value>
+		<label>ecoli: Escherichia Coli complete genome</label>
+		<value>genitalium</value>
+		<label>genitalium: Mycoplasma Genitalium complete genome</label>
+		<value>pneumoniae</value>
+		<label>pneumoniae: Mycoplasma Pneumoniae complete genome</label>
+		<value>pylori</value>
+		<label>pylori: Helicobacter Pylori complete genome</label>
+		<value>subtilis</value>
+		<label>subtilis: Bacillus Subtilis complete genome</label>
+		<value>tuberculosis</value>
+		<label>tuberculosis: Mycobacterium tuberculosis complete genome</label>
+		<value>yeast</value>
+		<label>yeast: Yeast complete genome</label>
+		<value>uniprot</value>
+		<label>uniprot: Universal Protein Resource</label>
+		<value>sprot</value>
+		<label>swissprot (last release + updates)</label>
+		<value>swissprot_new</value>
+		<label>swissprot_new: updates</label>
+		<value>nrprot</value>
+		<label>nrprot: NCBI non-redundant Genbank CDS translations+PDB+Swissprot+PIR</label>
+		<value>nrl3d</value>
+		<label>nrl3d: sequences from PDB</label>
+		<value>prosite</value>
+		<label>prosite: Prosite patterns db</label>
+	</vlist>
+	<ctrls>
+		<ctrl>
+		<message>This choice is not compatible with the type of scan</message>
+			<language>perl</language>
+			<code>$db &amp;&amp; (($db =~ /sprot|swiss|uniprot|genpept|prosite|nrprot|nrl3d/ &amp;&amp; $type_of_scan !~ /^P/) || ($db !~ /sprot|swiss|uniprot|genpept|prosite|nrprot|nrl3d/ &amp;&amp; $type_of_scan =~ /^P/))</code>
+		</ctrl>
+	</ctrls>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>lspread</name>
+<attributes>
+
+	<prompt>Save results for further analysis (lspread)</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>998</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>results_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" -o results"</code>
+	</format>
+	<vdef><value>results</value></vdef>
+	<group>700</group>
+<precond>
+	<language>perl</language>
+	<code>(! $view_alignment) &amp;&amp; $lspread</code>
+</precond>
+	<pipe>
+		<pipetype>lspcalc_result</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<withpipe>
+		<pipetype>lspcalc_result</pipetype>
+			<parametername>cmdfile</parametername>
+			<parametername>query</parametername>
+			<parametername>sequences_file</parametername>
+	</withpipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>cmdfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"$results_file.cmd"</value></vdef>
+	<group>701</group>
+<precond>
+	<language>perl</language>
+	<code>$lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>method_parameters</name>
+<prompt>Methods parameters</prompt>
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>gap_options</name>
+	<prompt>Gap options (SW, SWT, SWR, KBEST, NW, BLSW and ZVAL)</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$method eq "SW" || $method eq "SWT" || $method eq "SWR" || $method eq "KBEST" || $method eq "NW" || $method eq "ZVAL"|| $method eq "BLSW" </code>
+	</precond>
+	<group>15</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>gapo</name>
+		<attributes>
+
+			<prompt>Gap open penalty (-gapo)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -gapo $value" : "" </code>
+			</format>
+			<vdef><value>10</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "SW" || $method eq "SWT" || $method eq "SWR" || $method eq "KBEST" || $method eq "NW" || $method eq "ZVAL"|| $method eq "BLSW" </code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>gape</name>
+		<attributes>
+
+			<prompt>Gap extension penalty  (-gape)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -gape $value" : "" </code>
+			</format>
+			<vdef><value>1</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "SW" || $method eq "SWT" || $method eq "SWR" || $method eq "KBEST" || $method eq "NW" || $method eq "ZVAL"|| $method eq "BLSW" </code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>blast_options</name>
+	<prompt>Blast options (BLSW and BLKERR as well)</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+	</precond>
+	<group>15</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>E</name>
+		<attributes>
+
+			<prompt>Expect: Expected value cutoff (-E)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef )? " -E $value":""</code>
+			</format>
+			<vdef><value>10</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value != $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>S</name>
+		<attributes>
+
+			<prompt>Primary cutoff score [prot:1, nuc:20] (-S)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -S $value":""</code>
+			</format>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>S2</name>
+		<attributes>
+
+			<prompt>Secondary cutoff score [prot:0, nuc:20] (-S2)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -S2 $value":""</code>
+			</format>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>W</name>
+		<attributes>
+
+			<prompt>Word length used by the automata [prot:3, nuc:11] (-W)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -W $value":""</code>
+			</format>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>T</name>
+		<attributes>
+
+			<prompt>Neighborhood cutoff score. Not used in nucleic mode (-T) </prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -T $value":""</code>
+			</format>
+			<vdef><value>13</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value != $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>X</name>
+		<attributes>
+
+			<prompt>Extension cutoff score (-X)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -X $value":""</code>
+			</format>
+			<vdef><value>20</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value != $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BLAST" || $method eq "BLSW" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>SWR_options</name>
+	<prompt>Schuffling SW (SWR &amp; ZVAL)</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$method eq "SWR" || $method eq "ZVAL"</code>
+	</precond>
+	<group>15</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>ran</name>
+		<attributes>
+
+			<prompt>Number of times the sequences are schuffled (-ran)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -ran $value":""</code>
+			</format>
+			<vdef><value>10</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "SWR" || $method eq "ZVAL"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>noswap</name>
+		<attributes>
+
+			<prompt>Only the sequence from the database is schuffled (-noswap)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -noswap":""</code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>($value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "SWR" || $method eq "ZVAL"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>swr_cutoff</name>
+		<attributes>
+
+			<prompt>Cutoff value of Smith/Waterman score (-cutoff)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -cutoff $value" : "" </code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>15</group>
+			<comment>
+				<value>Only alignments whose scores are above this cutoff value are computed by the schuffling method. Setting this value reduces greatly computation time.</value>
+			</comment>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "SWR" || $method eq "ZVAL"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>BM_options</name>
+	<prompt>BM (Boyer-Moore) options</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$method eq "BM"</code>
+	</precond>
+	<group>15</group>
+	<parameters>
+
+		<parameter type="Switch">
+		<name>swap</name>
+		<attributes>
+
+			<prompt>Look for inclusion in both senses (-swap)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(! $value)? " -swap":""</code>
+			</format>
+			<vdef><value>1</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>((! $value) &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "BM"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>KBEST_options</name>
+	<prompt>KBEST options</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$method eq "KBEST"</code>
+	</precond>
+	<group>15</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>k</name>
+		<attributes>
+
+			<prompt>Maximum number of local alignments retained (-K)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -K $value":""</code>
+			</format>
+			<vdef><value>10</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>($value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "KBEST"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>kbest_cutoff</name>
+		<attributes>
+
+			<prompt>Cutoff score (-cutoff)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -cutoff $value" : "" </code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ne $vdef&amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "KBEST"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>KERR_options</name>
+	<prompt>Approximate string matching options (KERR, BLKERR)</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$method eq "KERR" || $method eq "BLKERR"</code>
+	</precond>
+	<group>15</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>errs</name>
+		<attributes>
+
+			<prompt>Maximun number of errors admitted (-errs)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -errs $value":""</code>
+			</format>
+			<vdef><value>2</value></vdef>
+			<group>15</group>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "KERR" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>perc</name>
+		<attributes>
+
+			<prompt>Errors &lt; % of the length of the smallest sequence (-perc)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value ne $vdef)? " -perc $value":""</code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>15</group>
+			<comment>
+				<value>Number of errors is a function of the length of the smallest sequence. The maximum numbers of errors admitted must not exceed x % of the length of the smallest sequence.</value>
+			</comment>
+			<ctrls>
+				<ctrl>
+				<message>no message</message>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+				</ctrl>
+			</ctrls>
+		<precond>
+			<language>perl</language>
+			<code>$method eq "KERR" || $method eq "BLKERR"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>flag_algo_opt</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($algo_opt)? " -O [ " : ""</code>
+	</format>
+	<group>14</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>flag_algo_opt2</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($algo_opt)? " ] " : ""</code>
+	</format>
+	<group>19</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_options</name>
+<prompt>Output options</prompt>
+<parameters>
+
+	<parameter issimple="1" type="Switch">
+	<name>view_alignment</name>
+	<attributes>
+
+		<prompt>View alignment (-a)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -a" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1000</group>
+		<comment>
+			<value>Not available for all methods.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>scut</name>
+	<attributes>
+
+		<prompt>Score cutoff (report results of scores greater than cutoff) (-scut)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -scut $value" : "" </code>
+		</format>
+		<group>800</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ecut</name>
+	<attributes>
+
+		<prompt>Expect cutoff (Report results of expect values lower than cutoff) (-ecut)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -ecut $value" : "" </code>
+		</format>
+		<group>800</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>max</name>
+	<attributes>
+
+		<prompt>Maximum number of results reported (-max)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -max $value" : "" </code>
+		</format>
+		<group>800</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>strand_options</name>
+<prompt>Strand options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$type_of_scan eq "NN"</code>
+</precond>
+<parameters>
+
+	<parameter type="Excl">
+	<name>db_strand</name>
+	<attributes>
+
+		<prompt>Database strand (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " $value" : ""</code>
+		</format>
+		<group>320</group>
+		<vlist>
+			<value>r</value>
+			<label>reverse strand</label>
+			<value>fr</value>
+			<label>forward and reverse strands</label>
+		</vlist>
+		<flist>
+			<value>fr</value>
+			<code>" -s [for, rev]" </code>
+			<value>r</value>
+			<code>" -s [rev]" </code>
+		</flist>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan eq "NN"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>query_strand</name>
+	<attributes>
+
+		<prompt>Query strand (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " $value" : ""</code>
+		</format>
+		<group>420</group>
+		<vlist>
+			<value>r</value>
+			<label>reverse strand</label>
+			<value>fr</value>
+			<label>forward and reverse strands</label>
+		</vlist>
+		<flist>
+			<value>fr</value>
+			<code>" -s [for, rev]" </code>
+			<value>r</value>
+			<code>" -s [rev]" </code>
+		</flist>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan eq "NN"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>frame_options</name>
+<prompt>Frame options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$type_of_scan =~ /TN/</code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" issimple="1" type="Excl">
+	<name>db_frame</name>
+	<attributes>
+
+		<prompt>Database frames (-f) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " $value" : ""</code>
+		</format>
+		<vdef><value>a</value></vdef>
+		<group>320</group>
+		<vlist>
+			<value>a</value>
+			<label>all (6 frames)</label>
+			<value>t</value>
+			<label>top frames +1, +2, +3</label>
+			<value>b</value>
+			<label>bottom frames -1 -2 -3</label>
+		</vlist>
+		<flist>
+			<value>a</value>
+			<code>"-f a"</code>
+			<value>b</value>
+			<code>"-f b"</code>
+			<value>t</value>
+			<code>"-f t"</code>
+		</flist>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan =~ /TN/ &amp;&amp; (! $db_frame_nb) &amp;&amp; $type_of_scan =~ /^TN/</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>db_frame_nb</name>
+	<attributes>
+
+		<prompt>... or you can give a list of frame numbers, separated by commas</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -f [ $value ]" : ""</code>
+		</format>
+		<group>320</group>
+		<comment>
+			<value>Example: 1, -2</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan =~ /TN/ &amp;&amp; $type_of_scan =~ /^TN/</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>db_gc</name>
+	<attributes>
+
+		<prompt>Genetic Code for database</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value ne $vdef)? " -gc $value" : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>340</group>
+		<vlist>
+			<value>1</value>
+			<label>Standard</label>
+			<value>2</value>
+			<label>Vertebrate Mitochondrial</label>
+			<value>3</value>
+			<label>Yeast Mitochondrial</label>
+			<value>4</value>
+			<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+			<value>5</value>
+			<label>Invertebrate Mitochondrial</label>
+			<value>6</value>
+			<label>Ciliate Macronuclear and Dasycladacean</label>
+			<value>9</value>
+			<label>Echinoderm Mitochondrial</label>
+			<value>10</value>
+			<label>Euplotid Nuclear</label>
+			<value>11</value>
+			<label>Bacterial</label>
+			<value>12</value>
+			<label>Alternative Yeast Nuclear</label>
+			<value>13</value>
+			<label>Ascidian Mitochondrial</label>
+			<value>14</value>
+			<label>Flatworm Mitochondrial</label>
+			<value>15</value>
+			<label>Blepharisma Macronuclear</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan =~ /TN/ &amp;&amp; ($type_of_scan =~ /^TN/ )</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Excl">
+	<name>query_frame</name>
+	<attributes>
+
+		<prompt>Query frames (-f)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " $value" : ""</code>
+		</format>
+		<vdef><value>a</value></vdef>
+		<group>420</group>
+		<vlist>
+			<value>a</value>
+			<label>all (6 frames)</label>
+			<value>t</value>
+			<label>top frames +1, +2, +3</label>
+			<value>b</value>
+			<label>bottom frames -1 -2 -3</label>
+		</vlist>
+		<flist>
+			<value>a</value>
+			<code>"-f a"</code>
+			<value>b</value>
+			<code>"-f b"</code>
+			<value>t</value>
+			<code>"-f t"</code>
+		</flist>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan =~ /TN/ &amp;&amp; $type_of_scan =~ /TN$/ &amp;&amp; (! $query_frame_nb)</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>query_frame_nb</name>
+	<attributes>
+
+		<prompt>... or you can give a list of frame numbers, separated by commas</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -f [ $value ]" : ""</code>
+		</format>
+		<group>420</group>
+		<comment>
+			<value>Example: 1, -2</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan =~ /TN/ &amp;&amp; $type_of_scan =~ /TN$/</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>query_gc</name>
+	<attributes>
+
+		<prompt>Genetic Code for query</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value ne $vdef)? " -gc $value" : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>440</group>
+		<vlist>
+			<value>1</value>
+			<label>Standard</label>
+			<value>2</value>
+			<label>Vertebrate Mitochondrial</label>
+			<value>3</value>
+			<label>Yeast Mitochondrial</label>
+			<value>4</value>
+			<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+			<value>5</value>
+			<label>Invertebrate Mitochondrial</label>
+			<value>6</value>
+			<label>Ciliate Macronuclear and Dasycladacean</label>
+			<value>9</value>
+			<label>Echinoderm Mitochondrial</label>
+			<value>10</value>
+			<label>Euplotid Nuclear</label>
+			<value>11</value>
+			<label>Bacterial</label>
+			<value>12</value>
+			<label>Alternative Yeast Nuclear</label>
+			<value>13</value>
+			<label>Ascidian Mitochondrial</label>
+			<value>14</value>
+			<label>Flatworm Mitochondrial</label>
+			<value>15</value>
+			<label>Blepharisma Macronuclear</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$type_of_scan =~ /TN/ &amp;&amp; $type_of_scan =~ /TN$/ </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>selection_options</name>
+<prompt>Database selection options</prompt>
+<group>380</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>db_bc</name>
+	<attributes>
+
+		<prompt>Boolean connector for selection</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<vdef><value>&amp;</value></vdef>
+		<group>360</group>
+		<vlist>
+			<value>|</value>
+			<label>|: OR</label>
+			<value>&amp;</value>
+			<label>&amp;: AND</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>all_fields</name>
+	<attributes>
+
+		<prompt>All fields</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>381</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$all_fields &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc H $all_fields)" : "H $all_fields") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>ID</name>
+	<attributes>
+
+		<prompt>ID</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>381</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$ID &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc H \\#ID $ID)" : "H \\#ID $ID") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>AC</name>
+	<attributes>
+
+		<prompt>AC (not available for nrprot and yeast)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$AC &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc H \\#AC $AC)" : "H \\#AC $AC") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	<precond>
+		<language>perl</language>
+		<code>! ($db eq "nrprot" || $db eq "yeast") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_OS</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_OS &amp;&amp; ($not_OS_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>OS</name>
+	<attributes>
+
+		<prompt>OS: organism</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OS &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc ($not_OS_s H \\#OS $OS))" : "($not_OS_s H \\#OS $OS)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_OC</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_OC &amp;&amp; ($not_OC_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>OC</name>
+	<attributes>
+
+		<prompt>OC: organism class (not available for: nrprot and yeast)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OC &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc ($not_OC_s H \\#OC $OC))" : "($not_OC_s H \\#OC $OC)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>! ($db eq "pir" || $db eq "nrprot" || $db eq "yeast") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_DE</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_DE &amp;&amp; ($not_DE_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>DE</name>
+	<attributes>
+
+		<prompt>DE: description</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$DE &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc ($not_DE_s H \\#DE $DE))" : "($not_DE_s H \\#DE $DE)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_KW</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_KW &amp;&amp; ($not_KW_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>KW</name>
+	<attributes>
+
+		<prompt>KW: keyword (not available for nrprot and yeast)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$KW &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc ($not_KW_s H \\#KW $KW))" : "($not_KW_s H \\#KW $KW)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	<precond>
+		<language>perl</language>
+		<code>! ($db eq "nrprot" || $db eq "yeast") </code>
+	</precond>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_CL</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_CL &amp;&amp; ($not_CL_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>CL</name>
+	<attributes>
+
+		<prompt>CL  (Pir only)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$CL &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc ($not_CL_s H \\#CL $CL))" : "($not_CL_s H \\#CL $CL)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$db eq "pir"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_AL</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_AL &amp;&amp; ($not_AL_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>AL</name>
+	<attributes>
+
+		<prompt>AL  (Pir only)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$AL &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc ($not_AL_s H \\#AL $AL))" : "($not_AL_s H \\#AL $AL)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$db eq "pir"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_CC</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_CC &amp;&amp; ($not_CC_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>CC</name>
+	<attributes>
+
+		<prompt>CC  (Pir only)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$CC &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc ($not_CC_s H \\#CC $CC))" : "($not_CC_s H \\#CC $CC)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$db eq "pir"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_GN</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_GN &amp;&amp; ($not_GN_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>GN</name>
+	<attributes>
+
+		<prompt>GN: GENETICS  (Pir only)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$GN &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc ($not_GN_s H \\#GN $GN))" : "($not_GN_s H \\#GN $GN)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$db eq "pir"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_sequences</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_sequences &amp;&amp; ($not_sequences_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>sequences</name>
+	<attributes>
+
+		<prompt>sequences content (S)</prompt>
+		<format>
+			<language>perl</language>
+			<code>"" </code>
+		</format>
+		<group>380</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$sequences &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc ($not_sequences_s S $sequences))" : "($not_sequences_s S $sequences)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>lengths_op</name>
+	<attributes>
+
+		<prompt>sequences length operator</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>389</group>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$lengths &amp;&amp; ($sel_options=($sel_options)? "($sel_options $db_bc L $lengths_op $lengths)" : "L $lengths_op $lengths") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$lengths</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>lengths</name>
+	<attributes>
+
+		<prompt>sequences length (L)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<group>388</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>db_flag_selection</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($sel_options)? " \\"{  " : ""</code>
+	</format>
+	<group>360</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>db_flag_selection2</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($sel_options)? " $sel_options }\\"  " : ""</code>
+	</format>
+	<group>390</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control_flow_options</name>
+<prompt>Control Flow selections options</prompt>
+<group>2100</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>cf_bc</name>
+	<attributes>
+
+		<prompt>Boolean connector for control flow</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<vdef><value>&amp;</value></vdef>
+		<group>2001</group>
+		<vlist>
+			<value>|</value>
+			<label>|: OR</label>
+			<value>&amp;</value>
+			<label>&amp;: AND</label>
+			<value>!</value>
+			<label>!: NOT</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>RL_op</name>
+	<attributes>
+
+		<prompt>Ratio length operator</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&gt;</value></vdef>
+		<group>2500</group>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RL &amp;&amp; ($cf_sel_options=($cf_sel_options)? "($cf_sel_options $cf_bc RL $RL_op $RL)" : "RL $RL_op $RL") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RL</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>RL</name>
+	<attributes>
+
+		<prompt>Ratio length</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<group>2499</group>
+		<comment>
+			<value>Exemple: comparisons on sequences whose lengths do not differ by more than 10%:</value>
+			<value>RL &gt; 0.9</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>SSP</name>
+	<attributes>
+
+		<prompt>SSP: The same frame</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>2100</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$SSP &amp;&amp; ($cf_sel_options=($cf_sel_options)? "($cf_sel_options $cf_bc SSP)" : "SSP") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>NSP</name>
+	<attributes>
+
+		<prompt>NSP: Not the same frame</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>2100</group>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$NSP &amp;&amp; ($cf_sel_options=($cf_sel_options)? "($cf_sel_options $cf_bc NSP)" : "NSP") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>flag_cf_selection</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($cf_sel_options)? " -bp \\"{ " : ""</code>
+	</format>
+	<group>2000</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>flag_cf_selection2</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($cf_sel_options)? " $cf_sel_options }\\"  " : ""</code>
+	</format>
+	<group>3000</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>other_options</name>
+<prompt>Other options</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>dd</name>
+	<attributes>
+
+		<prompt>Do not compute all against all (-dd)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -dd" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1000</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>blast_matrix</name>
+	<attributes>
+
+		<prompt>You can enter a Blast matrix (PAM or BLOSUM, see help)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)?" -mp $value":""</code>
+		</format>
+		<group>200</group>
+		<comment>
+			<value>You can give the name of:</value>
+			<value>. a PAM matrix : PAMxxx, where xxx ranges from 10 to 500, with a step of 10</value>
+			<value>. a BLOSUM matrix : BLOSUMxxx, where xxx ranges from 30 to 100, with a step of 5 - with the exception of BLOSUM62 which is the default scoring matrix</value>
+			<value>Several PAM (point accepted mutations per 100 residues) amino acid scoring matrices are provided in the BLAST software distribution, including the PAM40, PAM120, and PAM250. While the BLOSUM62 matrix is a good general purpose scoring matrix and is the default matrix used by the BLAST programs, if one is restricted to using only PAM scoring matrices, then the PAM120 is recommended for general protein similarity searches (Altschul, 1991). The pam(1) program can be used to produce PAM matrices of any desired iteration from 2 to 511. Each matrix is most sensitive at finding similarities at its particular PAM distance. For more thorough searches, particularly when the mutational distance between potential homologs is unknown and the significance of their similarity may be only marginal, Altschul (1991, 1992) recommends performing at least three searches, one each with the PAM40, PAM120 and PAM250 matrices.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

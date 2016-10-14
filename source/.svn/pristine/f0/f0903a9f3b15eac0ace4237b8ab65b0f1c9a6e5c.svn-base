@@ -1,0 +1,8 @@
+This example is a copy of beast2_xsede, except that here
+we specify the properties exactly as documented in the User Guide
+and on the Tool Specific Parameter pages.  
+
+In other words, tool is specified with a property named "tool" instead 
+of "toolId", properties in testParam.properties are prefixed with "vparam."
+and those in testInput.properties are prefixed with "input.".
+

@@ -1,0 +1,12 @@
+NCLCONVERTER
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+format_type_ - Excl - Choose the Input Format
+data_type_ - Excl - Specify the Data Type (Mixed data types are not supported)
+relaxed_type_ - Switch - My data is in a relaxed Phylip format
+interleaved_type_ - Switch - My data is interleaved
+nexus_strictness_ - Integer - Set the NEXUS strictness level (-s)
+output_type_ - Excl - Choose the Output format (* values could produce multiple output files)
+outfile_nexus_ - String - Please enter a prefix for your output file (default is "out")
+all_output_ - Results -
+

@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.ngbw</groupId>
+		<artifactId>cipresrestservice</artifactId>
+		<version>2.0</version>
+	</parent>
+	<groupId>org.ngbw</groupId>
+	<artifactId>cipresrest</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${jersey.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- This one is required for servlet 3.0 deployment modes AND you can't include the one with -core -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<!-- In some cases the Cipres REST API functions as a client of a REST API -->
+		<!-- E.g. "PUT /cipresrest/v1/file source=/cipresrest/v1/tmpfile/xxx" does
+		"GET /cipresrest/v1/tmpfile/xxx" and so we have the cipres rest app acting 
+		as a client of itself -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<!-- uncomment this to get JSON support
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+		</dependency>
+		-->
+
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<!-- for RolesAllowed annotation -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ngbw</groupId>
+			<artifactId>sdk</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ngbw</groupId>
+			<artifactId>restdatatypes</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<!-- The tus_servlet.-->
+        <dependency>
+            <groupId>org.tus</groupId>
+            <artifactId>tus_servlet</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ngbw</groupId>
+            <artifactId>tus_cipres</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ngbw</groupId>
+            <artifactId>cipres_java_client</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+	</dependencies>
+
+	<build>
+		<filters>
+			<filter>${filter.file.path}</filter>
+		</filters>
+		<sourceDirectory>${build.dir}/rest/cipresrest/src/main/java</sourceDirectory>
+		<testSourceDirectory>${build.dir}/rest/cipresrest/src/test/java</testSourceDirectory>
+		<directory>${build.dir}/rest/cipresrest/target</directory>
+		<finalName>${build.rest.appName}</finalName>
+		<plugins>
+
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <warSourceDirectory>${build.dir}/rest/cipresrest/src/main/webapp</warSourceDirectory>
+                    <webResources>
+                        <resource>
+                            <directory>${build.dir}/rest/cipresrest/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>WEB-INF/web.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+
+		</plugins>
+		<resources>
+			<resource>
+				<directory>${build.dir}/rest/cipresrest/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
+</project>

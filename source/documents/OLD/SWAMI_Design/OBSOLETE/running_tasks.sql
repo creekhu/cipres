@@ -1,0 +1,43 @@
+/*
+  RUNNING TASKS TABLE
+*/
+DROP TABLE running_tasks;
+DROP TABLE running_tasks_parameters;
+
+CREATE TABLE running_tasks(
+	RUNNING_TASK_ID	bigint(20)				AUTO_INCREMENT NOT NULL,
+	RESOURCE		varchar(100)			NOT NULL,
+	TASK_ID			bigint(20)				NOT NULL,
+	SUBMITTER		varchar(1023)			NOT NULL,
+	REMOTE_JOB_ID	varchar(1023)			NULL,
+	DATE_SUBMITTED	datetime				NOT NULL,
+	LOCKED			datetime				NULL,
+	STATUS			varchar(100)			NULL,	
+	SUB_STATUS		varchar(255)			NULL,
+	JOBHANDLE		varchar(255)			NOT NULL,
+	WORKSPACE		varchar(1023)			NOT NULL,
+	OUTPUT_DESC		varchar(5000)			NOT NULL,
+	PROCESS_WORKER	varchar(1023)			NOT NULL,
+	FILE_HANDLER	varchar(1023)			NOT NULL,
+	COMMANDLINE		varchar(5000)			NOT NULL,
+	CALLBACK_URL	varchar(1023)			NOT NULL,
+	SPROPS			varchar(500)			NULL,
+
+	PRIMARY KEY (RUNNING_TASK_ID),
+	FOREIGN KEY (TASK_ID) REFERENCES tasks (TASK_ID)
+ );
+
+ CREATE TABLE running_tasks_parameters(
+ 	RUNNING_TASK_ID	bigint(20)			NOT NULL,
+ 	NAME			varchar(100)		NOT NULL,
+	VALUE			varchar(1023)		NULL,
+
+	PRIMARY KEY (RUNNING_TASK_ID, NAME),
+	FOREIGN KEY (RUNNING_TASK_ID) REFERENCES running_tasks (RUNNING_TASK_ID)
+ );
+
+
+
+
+
+

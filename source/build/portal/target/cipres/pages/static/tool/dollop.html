@@ -1,0 +1,95 @@
+<h2>DOLLOP</h2>
+<p>
+	<strong>DOLLOP</strong> carries out the Dollo and polymorphism
+	parsimony methods. The Dollo  parsimony method was first
+	suggested in print in verbal form by Le Quesne (1974) and was first well-specified
+	by Farris (1977). The  method is named after
+	Louis Dollo since he was one of the first
+	to assert that in evolution it  is harder to gain a  complex
+	feature than  to lose it. The algorithm
+	explains the  presence of the state 1 by allowing up to one forward
+	change 0--&gt;1 and as many reversions 1--&gt;0  as are necessary
+	to explain the pattern  of states seen. The program attempts
+	to minimize the number  of 1--&gt;0 reversions necessary. Part of Phylip.<br />
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/dollop.html">
+		http://evolution.genetics.washington.edu/phylip/doc/dollop.html
+	</a>
+</h3>
+	   <h3>TEST DATA SET</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp; 6</pre>
+               <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; 110110</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 110000</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; 100110</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; 001001</pre>
+             <pre>Epsilon&nbsp;&nbsp; 001110</pre></td>
+         </tr>
+       </table>
+	   <p>&nbsp;</p>
+	   <h3>TEST SET OUTPUT (with all numerical options on)</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>Dollo and polymorphism parsimony algorithm, version 3.6</pre>
+             <pre>&nbsp;</pre>
+             <pre>Dollo parsimony method</pre>
+             <pre>&nbsp;</pre>
+             <pre> 5 species,&nbsp;&nbsp; 6&nbsp; characters</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Characters</pre>
+             <pre>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ----------</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11011 0</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11000 0</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10011 0</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00100 1</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00111 0</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>One most parsimonious tree found:</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; +-----------Delta&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>--3&nbsp; </pre>
+             <pre>&nbsp;&nbsp;!&nbsp; +--------Epsilon&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+--4&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!&nbsp; +-----Gamma&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+--2&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!&nbsp; +--Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+--1&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+--Alpha&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>requires a total of&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.000</pre>
+             <pre>&nbsp;</pre>
+             <pre> reversions in each character:</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3&nbsp;&nbsp; 4&nbsp;&nbsp; 5&nbsp;&nbsp; 6&nbsp;&nbsp; 7&nbsp;&nbsp; 8&nbsp;&nbsp; 9</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; *-----------------------------------------</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 0!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 0&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;</pre>
+             <pre>From&nbsp;&nbsp;&nbsp; To&nbsp;&nbsp;&nbsp;&nbsp; Any Steps?&nbsp;&nbsp;&nbsp; State at upper node</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( . means same as in the node below it on tree)</pre>
+             <pre>&nbsp;</pre>
+             <pre>root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ..1.. .</pre>
+             <pre>&nbsp; 3&nbsp;&nbsp;&nbsp; Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ..... 1</pre>
+             <pre>&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ...11 .</pre>
+             <pre>&nbsp; 4&nbsp;&nbsp;&nbsp; Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; ..... .</pre>
+             <pre>&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; 1.0.. .</pre>
+             <pre>&nbsp; 2&nbsp;&nbsp;&nbsp; Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; ..... .</pre>
+             <pre>&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yes&nbsp;&nbsp;&nbsp; .1... .</pre>
+             <pre>&nbsp; 1&nbsp;&nbsp;&nbsp; Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ...00 .</pre>
+             <pre>&nbsp; 1&nbsp;&nbsp;&nbsp; Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; ..... .</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre></td>
+         </tr>
+       </table>
+	   <p>&nbsp;</p>
+	   <p><br />
+        </p>

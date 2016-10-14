@@ -1,0 +1,22 @@
+
+Here's how you pick up changes and redeploy new things on the test ngbw system/  The process is the same as for cipres.
+
+Test runs under account ngbwtest@8ball.sdsc.edu, 
+Production runs under ngbwprod@snooker.sdsc.edu.
+
+Passwords are the same as for cipres.
+* We deploy from branch_ngbw-1.6
+
+Just a reminder, the process in general is to log into the test account, 
+commit your changes to the branch and trunk and deploy *from the branch,
+on the test machine* before deploying to production.  Once that works, log
+into the production account, edit my "doit.sh" script (just change the "tag="
+line so that tag reads "ngbw-1.6.5") and run doit.sh.  Doit.sh creates the new
+tag from the head of the branch and deploys it.
+
+The way we've sometimes handled this in the past is that you take care of
+committing to the branch and trunk and deploying the branch on the test machine
+and then when you tell me it's ready I just log into production, edit and run doit.sh.
+
+The url for the test version of ngbw is http://8ball.sdsc.edu:9070/web, according to my notes.
+

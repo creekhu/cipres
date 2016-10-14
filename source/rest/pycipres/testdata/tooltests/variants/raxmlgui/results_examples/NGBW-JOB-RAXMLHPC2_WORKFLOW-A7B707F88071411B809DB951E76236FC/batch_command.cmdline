@@ -1,0 +1,2 @@
+#!/bin/sh
+raxmlHPC-HYBRID -s infile.txt -N 100 -m GTRGAMMA -p 12345 -O -n boot.tre -x 12345 && raxmlHPC-PTHREADS -m GTRGAMMA -n con.tre.tre -J MR -z RAxML_bootstrap.boot.tre 

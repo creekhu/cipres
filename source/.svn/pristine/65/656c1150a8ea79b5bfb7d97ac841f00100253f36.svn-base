@@ -1,0 +1,16 @@
+#!/bin/bash
+
+HOST=`hostname`
+COMMAND=org.ngbw.utils.DeleteUnactivatedAccounts
+
+STDOUT=stdout=${logs}/deleteUnactivatedAccountsD.log
+LOG=log4j.configuration=deleteUnactivatedAccounts_log4j.xml
+HOURS=${deleteUnactivatedUsers.hours}
+
+# Delete accounts created by rest users, specified number of hours after the user registered and activation email was sent.
+# If you set debug=true, just tells you what it would delete, but doesn't actually delete.
+PROPERTIES="-D$LOG -D$STDOUT -Dhours=$HOURS -Ddebug=true -DrestOnly=true"
+
+RUN="python $SDK_VERSIONS/daemonize $PROPERTIES $COMMAND"
+
+$RUN

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>WOBBLE</title>
+<description>Wobble base plot (EMBOSS)</description>
+<category>nucleic:gene finding</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/wobble.html</doclink>
+</head>
+
+<command>wobble</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>bases</name>
+	<attributes>
+		<prompt>Bases used (-bases)</prompt>
+		<vdef>
+			<value>GC</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -bases=$value" : ""</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>window</name>
+	<attributes>
+		<prompt>Window size in codons (-window)</prompt>
+		<vdef>
+			<value>30</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -window=$value" : ""</code>
+		</format>
+		<group>3</group>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>graph</name>
+	<attributes>
+		<prompt>graph (-graph)</prompt>
+			<vlist>
+				<value>x11</value>
+				<label>x11</label>
+				<value>hp7470</value>
+				<label>hp7470</label>
+				<value>postscript</value>
+				<label>postscript</label>
+				<value>cps</value>
+				<label>cps</label>
+				<value>hp7580</value>
+				<label>hp7580</label>
+				<value>null</value>
+				<label>null</label>
+				<value>data</value>
+				<label>data</label>
+				<value>colourps</value>
+				<label>colourps</label>
+				<value>text</value>
+				<label>text</label>
+				<value>none</value>
+				<label>none</label>
+				<value>tek4107t</value>
+				<label>tek4107t</label>
+				<value>tekt</value>
+				<label>tekt</label>
+				<value>xwindows</value>
+				<label>xwindows</label>
+				<value>hpgl</value>
+				<label>hpgl</label>
+				<value>xterm</value>
+				<label>xterm</label>
+				<value>meta</value>
+				<label>meta</label>
+				<value>ps</value>
+				<label>ps</label>
+				<value>tek</value>
+				<label>tek</label>
+				<value>png</value>
+				<label>png</label>
+				<value>tektronics</value>
+				<label>tektronics</label>
+			</vlist>
+		<vdef><value>postscript</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -graph=$value" : ""</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -outfile=$value" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>6</group>
+</attributes>
+</parameter>
+<parameter type="String" ishidden="1">
+<name>psouput</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps"  || $graph eq "cps" || $graph eq "png"</code>
+	</precond>
+	<format>
+		<language>perl</language>
+		<code>" -goutfile=wobble"</code>
+	</format>
+	<group>100</group>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>psresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps" || $graph eq "cps"</code>
+	</precond>
+	<filenames>*.ps</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>metaresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "meta"</code>
+	</precond>
+	<filenames>*.meta</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>dataresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "data"</code>
+	</precond>
+	<filenames>*.dat</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>pngresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "png"</code>
+	</precond>
+	<filenames>*.png *.2 *.3</filenames>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

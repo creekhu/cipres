@@ -1,0 +1,99 @@
+<h2>SEQBOOT</h2>
+<p>
+	<strong>SEQBOOT</strong> reads in  a data set, and produces multiple data sets
+	from it by bootstrap resampling.  Since most programs in the current version of
+	the package allow processing of  multiple data sets, this can be used together
+	with the consensus tree program  CONSENSE to do bootstrap (or delete-half-jackknife)
+	analyses with most of the  methods in this package. This program also allows the
+	Archie/Faith technique of  permutation of species within characters. It can also
+	rewrite a data set to  convert it from between the PHYLIP Interleaved and Sequential
+	forms, and into a  preliminary version of a new XML sequence alignment format which
+	is under  development and which is described in the SEQBOOT documentation web page.
+	Part of Phylip.
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/seqboot.html">
+		http://evolution.genetics.washington.edu/phylip/doc/seqboot.html
+	</a>
+</h3>
+       <h3>TEST DATA SET</h3>
+       <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp; 6</pre>
+               <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AACAAC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; ACCAAC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCACCA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CCAAAC</pre></td>
+         </tr>
+       </table>
+       <div align="center">
+         <hr size="2" width="100%" align="center" />
+       </div>
+       <h3>CONTENTS OF OUTPUT FILE</h3>
+       <p>(If Replicates are set to 10 and seed to 4333) </p>
+       <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+               <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; ACAAAC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;ACCCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; ACAAAC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CACCCA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CAAAAC</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AAAACC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; CCAACC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCCCAA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CCAACC</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; ACAAAC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ACCCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; CCAAAC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CACCCA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CAAAAC</pre>
+             <pre>&nbsp;&nbsp; &nbsp;5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; ACCAAA</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ACCCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; ACCAAA</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CAACCC</pre>
+             <pre>Epsilon&nbsp;&nbsp; CAAAAA</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; ACAAAC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ACCCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; ACAAAC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CACCCA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CAAAAC</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AAAACA</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AAAACC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; AAACCA</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCCCAC</pre>
+             <pre>Epsilon&nbsp;&nbsp; CCCCAA</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AAACCC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CCCCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; AAACCC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCCAAA</pre>
+             <pre>Epsilon&nbsp;&nbsp; AAACCC</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AAAACC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; AAAACC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCCCAA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CCAACC</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AAAAAC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; CCAAAC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCCCCA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CCAAAC</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp; 6</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AACCAC</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACCCC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; AACCAC</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CCAACA</pre>
+             <pre>Epsilon&nbsp;&nbsp; CCAAAC</pre></td>
+         </tr>
+       </table>
+       <p><br />

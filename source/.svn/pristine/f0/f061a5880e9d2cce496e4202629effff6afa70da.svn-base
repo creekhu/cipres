@@ -1,0 +1,5 @@
+# Minimal settings 
+curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER/validate \
+-F metadata.statusEmail=true \
+-F tool=RAXMLHPC2_TGB \
+-F input.infile_=@library.txt 

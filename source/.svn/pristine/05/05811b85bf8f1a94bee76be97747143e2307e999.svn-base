@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# If you launch the tests this way, runtooltests won't be the process
+# group leader and the notes in results.txt about how to kill the whole
+# group won't apply.
+
+rm -f nohup.out
+nohup ./runtooltests.sh validate &

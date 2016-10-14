@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "/local/gensoft/lib/Pise/current/Parser/pise.dtd" [ 
+<!ENTITY blast_init SYSTEM "/local/gensoft/lib/Pise/current/Xml/blast_init.xml">
+]>
+
+<pise>
+	<head>
+		<title>SEQCLEAN</title>
+		<description>Trimming and validation of DNA sequences (TIGR)</description>
+		<category>edit</category>
+		<doclink>http://www.tigr.org/tdb/tgi/software/</doclink>
+	</head>
+	<command>seqclean</command>
+	<parameters>
+		&blast_init;
+		<parameter type="Excl" ismandatory="1" iscommand="1" issimple="1" ishidden="1">
+			<name>seqclean</name>
+			<attributes>
+				<format>
+					<language>perl</language>
+					<code>($vecdbs) ? "formatdb -i $vecdbs -n $vecdbs -oT -pF &amp;&amp; seqclean" : "seqclean"</code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+		<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+			<name>sequence</name>
+			<attributes>
+				<prompt>DNA sequence(s) to be cleaned</prompt>
+				<format>
+					<language>perl</language>
+					<code>" $value"</code>
+				</format>
+				<seqtype><value>dna</value></seqtype>
+				<group>3</group>
+				<seqfmt>
+					<value>8</value>
+				</seqfmt>
+			</attributes>
+		</parameter>
+		<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+			<name>report</name>
+			<attributes>
+				<prompt>report file (-r)</prompt>
+				<vdef><value>report.txt</value></vdef>
+				<format>
+					<language>perl</language>
+					<code>" -r $value"</code>
+				</format>
+				<group>3</group>
+			</attributes>
+		</parameter>
+		<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+			<name>cleaned_seq</name>
+			<attributes>
+				<prompt>output the \"cleaned\" sequences to file (-o)</prompt>
+				<vdef><value>cleaned.txt</value></vdef>
+				<format>
+					<language>perl</language>
+					<code>" -o $value"</code>
+				</format>
+				<group>4</group>
+			</attributes>
+		</parameter>
+		<parameter type="Excl">
+			<name>univec</name>
+			<attributes>
+				<prompt>Contaminant database</prompt>
+				<vdef>
+					<value>UniVec</value>
+				</vdef>
+				<vlist>
+					<value>UniVec</value>
+					<label>UniVec vector database</label>
+					<value></value>
+					<label>None</label>
+				</vlist>
+				<format>
+					<language>perl</language>
+					<code>(defined $value)? " -v $ENV{BLASTDB}/$value":""</code>
+				</format>
+				<group>5</group>
+				<comment>
+					<value>Available contaminant databases</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="Sequence" ismandatory="0" issimple="0" ishidden="0">
+			<name>vecdbs</name>
+			<attributes>
+				<prompt>Custom contaminant sequences</prompt>
+				<format>
+					<language>perl</language>
+					<code>(defined $value &amp;&amp; $value ) ? ((defined $univec &amp;&amp; $univec) ?  ",$value" : " -v $value") : ""</code>
+				</format>
+				<seqtype><value>dna</value></seqtype>
+				<group>6</group>
+				<seqfmt>
+					<value>8</value>
+				</seqfmt>
+				<comment>
+					<value>Custom contaminant sequence(s). When it appears that after cleaning your sequences is still contaminated, provide your contaminating (vector) sequence(s) here.</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="Integer">
+			<name>length</name>
+			<attributes>
+				<prompt>Minimal length</prompt>
+				<vdef><value>100</value></vdef>
+				<format>
+					<language>perl</language>
+					<code>  (defined $value  &amp;&amp; $value != $vdef)? " -l $value":"" </code>
+				</format>
+				<comment>
+					<value>During cleaning, consider invalid the sequences shorter than the entered length (default 100)</value>
+					<value>A sequence that gets shorter than this value by end trimming (undetermined bases, polyA or vector clipping) gets trashed</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="Switch">
+			<name>no_end_trimming</name>
+			<attributes>
+				<prompt>Disable trimming of ends rich in Ns (undetermined bases)</prompt>
+				<vdef>
+					<value>0</value>
+				</vdef>
+				<format>
+					<language>perl</language>
+					<code> $value ? " -N" : ""</code>
+				</format>
+				<group>6</group>
+				<comment>
+					<value>Ns at the end are trimmed by default. You can disable this behaviour by setting this option.</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="Switch">
+			<name>no_polyA_trimming</name>
+			<attributes>
+				<prompt>Disable trimming of polyA/T tails</prompt>
+				<vdef>
+					<value>0</value>
+				</vdef>
+				<format>
+					<language>perl</language>
+					<code> $value ? " -A" : ""</code>
+				</format>
+				<group>7</group>
+				<comment>
+					<value>PolyA stretches at the end are trimmed by default. You can disable this behaviour by setting this option.</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="Switch">
+			<name>no_dust</name>
+			<attributes>
+				<prompt>Disable low-complexity screening (dust)</prompt>
+				<vdef>
+					<value>0</value>
+				</vdef>
+				<format>
+					<language>perl</language>
+					<code> $value ? " -L" : ""</code>
+				</format>
+				<group>8</group>
+				<comment>
+					<value>The sequence is screened for low-complexity regions by default. You can disable this behaviour by setting this option.</value>
+				</comment>
+			</attributes>
+		</parameter>
+	</parameters>
+</pise>

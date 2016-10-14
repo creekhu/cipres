@@ -1,0 +1,76 @@
+In addition to our adhoc testing there is one test, "TestTools", that should be run before each release
+and any time you make a major change to the sdk.  TestTools tests the sdk's ability to run all of the released 
+tools.  
+
+Source for the test is in: 
+	sdk/src/main/java/org/ngbw/examples/TestTools.java.
+
+Properties and data for the test is in: 
+	sdk/src/main/resources/examples/tooltest
+
+	In this directory, the files test.properties and testInputFiles.properties have a block for each
+	tool that is to be tested.  The block in test.properties gives the values of the non-file parameters for 
+	the tool, while testInputFiles.properties gives the values for the parameters that are input files
+	for the tool.  For each tool there is also a subdirectory that contains the input files referenced
+	by testInputFiles.properties.   The name of the subdirectory is the uppercase name of the tool.
+
+How to Add a Tool:
+	You can generate the test.properties and testInputFiles.properties entries for a tool by using
+	the code generation in the web project.
+
+		1. Go to web/src/main/codeGeneration
+
+		2. Run "ant clean generate Test"
+
+		3. cd AUTO-GENERATED.
+
+		4. Copy and paste the block for the new tool from test.properties in the AUTO-GENERATED directory
+		to test.properties in sdk/src/main/resources/examples/tooltest.  
+
+		5. Repeat for testInputFiles.properties.  You can of course edit the generated parameter blocks to test with different options 
+		and/or files. 
+
+		6. Create a subdirectory for the tool in sdk/src/main/resources/examples/tooltest and put a data
+		file for the test there. The name of the file must match the name given in testInputFiles.properties.
+		Make sure the directory name is all uppercase and that the case of the filename exactly matches what's
+		in testInputFiles.properties.
+
+		7. Rebuild the sdk (cd sdk; mvn clean install)
+
+		8. All tools that have (uncommented) entries in test.properties should run successfully.  
+		If a developer makes substantial changes to the sdk he'll run the test on all the tools 
+		in test.properties and if a tool fails he should assume that he broke something.  So, please 
+		don't commit your changes to the properties files unless the test succeeds.  Or comment out 
+		your changes before committing.
+
+How to Run the Test:
+	From the command line:
+		sdk/scripts/sdkrun org.ngbw.examples.TestTools  (tests all tools listed in test.properties)
+		sdk/scripts/sdkrun org.ngbw.examples.TestTools PROBALIGN RAXML (tests only probalign and raxml)
+
+	From eclipse: 
+		just run the TestTools class in the debugger.  It will test all the tools unless you specify
+		specific tools as "Arguments".
+
+	Expected output:
+		For each tool that is being tested you should see "TESTING: toolname" followed by many lines of debugging
+		output.  Finally you should see a line that includes "COMPLETED : SUCCESS  ... Output files successfully
+		retrieved. Task Completed", followed by a list of output files that were retrieved.  This repeats for 
+		each tool being tested.
+
+		In general, if a test fails, TestTools exits.  So it's safe to assume that if the last message printed
+		looks like the expected output described above the whole group of tools you tested passed.  
+
+	Where to run the test:
+		The tools will run wherever they're configured to run in tool-registry.xml in your sdk.  You can 
+		test tools that are configured to run on 8ball from your desktop, but tools that are configured to run 
+		on the cluster must either be reconfigured to run on 8ball or you'll need to build the sdk on 8ball 
+		(or any other machine that's configured as an sge submission host for the cluster) and run the test 
+		from the command line on 8ball.
+
+	Note that even if you are only testing one or two tools (by naming them on the command line) all tools
+	that have entries in test.properties and testInputFiles.properties will be processed to some extent. 
+	They won't be run, but their input files will be loaded so the data files must exist.
+
+
+

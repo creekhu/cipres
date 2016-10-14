@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>INTCONV</title>
+<description>Convert ints to ajints and longs to ajlongs (EMBOSS)</description>
+<category>test</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/intconv.html</doclink>
+</head>
+
+<command>intconv</command>
+
+<parameters>
+
+&emboss_init;
+
+<parameter type="InFile" ismandatory="1" issimple="1" ishidden="0">
+<name>infile</name>
+<attributes>
+	<prompt>infile (-infile)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -infile=$value"</code>
+	</format>
+	<group>1</group>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+<name>outfile</name>
+<attributes>
+	<prompt>outfile (-outfile)</prompt>
+	<vdef><value>outfile.out</value></vdef>
+	<format>
+		<language>perl</language>
+		<code>" -outfile=$value"</code>
+	</format>
+	<group>2</group>
+</attributes>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>3</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

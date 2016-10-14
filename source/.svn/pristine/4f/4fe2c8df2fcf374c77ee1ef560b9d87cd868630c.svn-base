@@ -1,0 +1,4 @@
+specify outsuffix and outgroup string parameters.  
+
+In ../../should_fail there is a variant of this that uses invalid charaters
+in those parameters and gives validation exceptions.

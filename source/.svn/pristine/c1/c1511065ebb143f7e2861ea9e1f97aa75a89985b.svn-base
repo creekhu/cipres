@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<!--
+  Definitions for Tiles
+  This file contains definitions common to all Struts modules.
+  In particular, it contains the main layout and the common menus.
+-->
+
+<tiles-definitions>
+
+  <!-- =======================================================  -->
+  <!-- Page Layouts                                             -->
+  <!-- =======================================================  -->
+
+  <!-- Main page layout -->
+  <definition name="mainLayout" template="/pages/layouts/mainLayout.jsp">
+	  <put-attribute name="title" value="Next Generation Biology Workbench"/>
+	  <put-attribute name="header" value="/pages/common/header.jsp"/>
+	  <put-attribute name="banner" value="/pages/common/banner.jsp"/>
+	  <put-attribute name="loginBox" value="/pages/common/loginBox.jsp"/>
+	  <put-attribute name="mainMenu" value="/pages/common/menu.jsp"/>
+	  <put-attribute name="tab" value="home"/>
+	  <put-attribute name="messages" value="/pages/common/messages.jsp"/>
+	  <put-attribute name="body" value="/pages/user/home.jsp"/>
+	  <put-attribute name="navMenu" value="/pages/default/navigation.jsp"/>
+	  <put-attribute name="footer" value="/pages/common/footer.jsp"/>
+  </definition>
+
+  <!-- Body content only (for informative popup windows) -->
+  <definition name="popupLayout" template="/pages/layouts/popupLayout.jsp">
+	  <put-attribute name="title" value="Next Generation Biology Workbench"/>
+	  <put-attribute name="header" value="/pages/common/header.jsp"/>
+	  <put-attribute name="body" value="/pages/default/content.jsp"/>
+  </definition>
+
+  <definition name="popupLayoutEx" template="/pages/layouts/popupLayoutEx.jsp">
+	  <put-attribute name="title" value="Next Generation Biology Workbench"/>
+	  <put-attribute name="header" value="/pages/common/header.jsp"/>
+	  <put-attribute name="messages" value="/pages/common/messages.jsp"/>
+	  <put-attribute name="body" value="/pages/default/content.jsp"/>
+  </definition>
+
+  <!-- Generic forward page -->
+  <definition name="forward" template="/pages/layouts/forward.jsp">
+	  <description>Generic forward to other pages</description>
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- Non-Menu Pages                                           -->
+  <!-- =======================================================  -->
+
+  <!-- Welcome page left panel links -->
+  <definition name="links" extends="mainLayout">
+	  <description>NGBW related links page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/links.jsp"/>
+  </definition>
+  <definition name="publications" extends="mainLayout">
+	  <description>NGBW publications page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/publications.jsp"/>
+  </definition>
+  <definition name="news" extends="mainLayout">
+	  <description>NGBW news page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/news.jsp"/>
+  </definition>
+  <definition name="funding" extends="mainLayout">
+	  <description>NGBW funding page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/funding.jsp"/>
+  </definition>
+  <definition name="compatibility" extends="mainLayout">
+	  <description>NGBW browser compatibility page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/compatibility.jsp"/>
+  </definition>
+  <definition name="faq" extends="mainLayout">
+	  <description>NGBW FAQ page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/faq.jsp"/>
+  </definition>
+
+  <!-- Generic response pages -->
+  <definition name="error" extends="mainLayout">
+	  <description>Generic error page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/error.html"/>
+  </definition>
+  <definition name="unavailable" extends="mainLayout">
+	  <description>Generic missing page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/static/unavailable.html"/>
+  </definition>
+
+  <!-- Account access pages -->
+  <definition name="login" extends="mainLayout">
+	  <description>Login to the NGBW web application</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/user/login.jsp"/>
+  </definition>
+  <definition name="forgotPassword" extends="mainLayout">
+	  <description>Lost login information retrieval page</description>
+	  <put-attribute name="tab" value=""/>
+	  <put-attribute name="body" value="/pages/user/forgotPassword.jsp"/>
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- "Toolkit" Tab Pages                                      -->
+  <!-- =======================================================  -->
+
+  <definition name="tools" extends="mainLayout">
+	  <description>NGBW tools page</description>
+	  <put-attribute name="tab" value="tools"/>
+	  <put-attribute name="body" value="/pages/user/tools.jsp"/>
+  </definition>
+  <definition name="tool" extends="mainLayout">
+	  <description>NGBW tool display page</description>
+	  <put-attribute name="tab" value="tools"/>
+	  <put-attribute name="body" value="/pages/user/displayTool.jsp"/>
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- "Contact Us" Tab Pages                                   -->
+  <!-- =======================================================  -->
+
+  <definition name="contact" extends="mainLayout">
+	  <description>NGBW contact page</description>
+	  <put-attribute name="tab" value="contact"/>
+	  <put-attribute name="body" value="/pages/static/contact.jsp"/>
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- "Help" Tab Pages                                         -->
+  <!-- =======================================================  -->
+
+  <definition name="help" extends="mainLayout">
+	  <description>NGBW help page</description>
+	  <put-attribute name="tab" value="help"/>
+	  <put-attribute name="body" value="/pages/static/help.jsp"/>
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- "My Profile" Tab Pages                                   -->
+  <!-- =======================================================  -->
+
+  <!-- NGBW profile management pages -->
+  <definition name="profile" extends="mainLayout">
+	  <description>NGBW user profile page</description>
+	  <put-attribute name="tab" value="profile"/>
+	  <put-attribute name="body" value="/pages/user/profile.jsp"/>
+  </definition>
+  <definition name="updatePassword" extends="mainLayout">
+	  <description>NGBW password edit form</description>
+	  <put-attribute name="tab" value="profile"/>
+	  <put-attribute name="body" value="/pages/user/updatePassword.jsp"/>
+  </definition>
+  <definition name="updateProfile" extends="mainLayout">
+	  <description>NGBW personal information edit form</description>
+	  <put-attribute name="tab" value="profile"/>
+	  <put-attribute name="body" value="/pages/user/updateProfile.jsp"/>
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- "My Workbench" Tab Pages                                 -->
+  <!-- =======================================================  -->
+
+  <!-- NGBW user home page -->
+  <definition name="home" extends="mainLayout">
+	  <description>NGBW user home page</description>
+  </definition>
+
+  <!-- NGBW folder management pages -->
+  <definition name="folderForm" extends="mainLayout">
+	  <description>Folder create/edit input form</description>
+	  <put-attribute name="body" value="/pages/user/folder/folderForm.jsp"/>
+  </definition>
+  <definition name="importBwbData" extends="mainLayout">
+	  <description>Old BWB account login to import data form</description>
+	  <put-attribute name="body" value="/pages/user/folder/importBwbData.jsp"/>
+  </definition>
+
+  <!-- NGBW data management pages -->
+  <definition name="dataList" extends="mainLayout">
+	  <description>Folder-specific user data list</description>
+	  <put-attribute name="body" value="/pages/user/data/dataList.jsp"/>
+  </definition>
+  <definition name="displayData" extends="mainLayout">
+	  <description>Display the details of the selected data item</description>
+	  <put-attribute name="body" value="/pages/user/data/displayData.jsp"/>
+  </definition>
+  <definition name="uploadForm" extends="mainLayout">
+	  <description>File upload form</description>
+	  <put-attribute name="body" value="/pages/user/data/uploadForm.jsp"/>
+  </definition>
+  <definition name="pasteForm" extends="mainLayout">
+	  <description>File content paste form</description>
+	  <put-attribute name="body" value="/pages/user/data/pasteForm.jsp"/>
+  </definition>
+  <definition name="searchForm" extends="mainLayout">
+	  <description>Data search form</description>
+	  <put-attribute name="body" value="/pages/user/data/searchForm.jsp"/>
+  </definition>
+  <definition name="displaySearchResult" extends="mainLayout">
+	  <description>Display the details of the selected search result item</description>
+	  <put-attribute name="body" value="/pages/user/data/displaySearchResult.jsp"/>
+  </definition>
+
+  <!-- NGBW task management pages -->
+  <definition name="taskList" extends="mainLayout">
+	  <description>Folder-specific user task list</description>
+	  <put-attribute name="body" value="/pages/user/task/taskList.jsp"/>
+  </definition>
+  <definition name="displayTask" extends="mainLayout">
+	  <description>Display the details of the selected task</description>
+	  <put-attribute name="body" value="/pages/user/task/displayTask.jsp"/>
+  </definition>
+  <definition name="displayInput" extends="popupLayout">
+	  <description>Display the input data items for the selected task</description>
+	  <put-attribute name="body" value="/pages/user/task/displayInput.jsp"/>
+  </definition>
+  <definition name="displayParameters" extends="popupLayout">
+	  <description>Display the selected parameters for this task</description>
+	  <put-attribute name="body" value="/pages/user/task/displayParameters.jsp"/>
+  </definition>
+  <definition name="displayOutputList" extends="mainLayout">
+	  <description>Display the output data items for the selected task</description>
+	  <put-attribute name="body" value="/pages/user/task/displayOutputList.jsp"/>
+  </definition>
+  <definition name="displayOutput" extends="mainLayout">
+	  <description>Display the selected task output</description>
+	  <put-attribute name="body" value="/pages/user/task/displayOutput.jsp"/>
+  </definition>
+  <definition name="displayTransformedOutput" extends="mainLayout">
+	  <description>Display the selected record from within the selected task output</description>
+	  <put-attribute name="body" value="/pages/user/task/displayTransformedOutput.jsp"/>
+  </definition>
+  <definition name="displayTransformedRecord" extends="mainLayout">
+	  <description>Display the selected record from within the transformed task output record</description>
+	  <put-attribute name="body" value="/pages/user/task/displayTransformedRecord.jsp"/>
+  </definition>
+  <definition name="outputForm" extends="mainLayout">
+	  <description>Review the selected output data item for saving</description>
+	  <put-attribute name="body" value="/pages/user/task/outputForm.jsp"/>
+  </definition>
+  <definition name="taskForm" extends="mainLayout">
+	  <description>Task creation form</description>
+	  <put-attribute name="body" value="/pages/user/task/taskForm.jsp"/>
+  </definition>
+
+</tiles-definitions>

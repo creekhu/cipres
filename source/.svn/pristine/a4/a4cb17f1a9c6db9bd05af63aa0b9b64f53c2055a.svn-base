@@ -1,0 +1,132 @@
+GARLI2_TGB
+
+this test runs. it will time out unless the walltime is increased
+
+infile_ - Primary Input File
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+user_conffile_ - Switch - I would like to provide my own GARLI configuration file (for help, see the GARLI.conf Creator tool)
+userconffilehere_ - Switch - The garli.conf file was created using GARLI.conf Creator or the GARLI2_TG interface
+userconffilethere_ - Switch - The garli.conf file was created outside of CIPRES
+upload_conffile_ - InFile - Select the GARLI configuration file
+userconffileconfirm_ - Switch - I have set the values of searchreps and bootstrapreps correctly
+a_matrix_file_ - Results - Input
+b_command_line_ - Results - commandline
+c_garli_configuration_ - Results - Input parameters
+d_starting_tree_ - Results - Input starting tree/model
+e_constraint_file_ - Results - Input topology constraints
+f_scheduler_configuration_ - Results - Scheduling parameters
+ff_scheduler_configuration_ - Results - Scheduling stderr
+g_jobinfo_txt_ - Results - jobinfo_parameters
+h_start_txt_ - Results - start_txt
+hh_done_txt_ - Results - done_txt
+i_garli_log00_results_ - Results -
+j_garli_screenlog_results_ - Results -
+k_garli_boottree_results_ - Results -
+l_garli_allboottree_results_ - Results -
+m_garli_besttree_results_ - Results -
+n_garli_besttree_results_ - Results -
+o_garli_bestalltree_results_ - Results -
+all_results_ - Results -
+Section: ****************************************************************************
+configure_partitions
+*************************************************************************************
+is_partitioned_ - Switch - The input is a Nexus file that specifies at least two partitions
+linkmodels_ - Switch - Apply selected model parameters to all partitions
+subsetspecificrates_ - Switch - Infer overall rate multipliers for each data partition
+Section: ****************************************************************************
+run_configuration
+*************************************************************************************
+streefname_choose_ - Excl - Specify where the starting tree topology comes from (streefname)
+streefname_userdata_ - InFile - Choose a Starting Tree (streefname file)
+attachments_val_ - Integer - Specify the number of attachment branches evaluated for each taxon (attachmentspertaxon)
+searchreps_value_ - Integer - Specify the number of independent search replicates to perform during a program execution.(searchreps)
+bootstrapreps_ - Integer - Bootstrap Repetitions (-bootstrapreps)
+outgroup_tax_ - String - Outgroup taxa numbers, separated by spaces (outgroup)
+collapsebranches_g_ - Switch - Collapse minimum length branches (effectively zero length) branch upon output of the final tree
+constraintfile_control_ - InFile - Choose a Constraint File in Newick Format (constraintfile)
+Section: ****************************************************************************
+model_initialization
+*************************************************************************************
+refinestart_ - Switch - Perform Initial Rough Optimization (refinestart)
+randseed_ - Integer - Random Seed ( -1 means it will be chosen for you)
+Section: ****************************************************************************
+model
+*************************************************************************************
+datatype_value_ - Excl - The type of data (datatype)
+geneticcode_value_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide
+*************************************************************************************
+d_ratematrix_ - Excl - Rate Matrix (ratematrix)
+ACsubrates_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein
+*************************************************************************************
+p_ratematrix_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon
+*************************************************************************************
+c_ratematrix_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+algorithm_population
+*************************************************************************************
+selectionintensity_ - Float - Selection Intensity (0.01 to 5.0) (selectionintensity)
+nindivs_ - Integer - Number of Individuals (nindivs 2 to 100)
+Section: ****************************************************************************
+algorithm_brlen
+*************************************************************************************
+startoptprec_ - Float - Starting Precision (startoptprec: 0.005 - 5.0)
+minoptprec_ - Float - Minimum Precision (minoptprec: 0.001 - 0.01)
+numberofprecreductions_ - Integer - Number of Precision Reductions (0 - 100)
+Section: ****************************************************************************
+algorithm_mutation_prior_weighting
+*************************************************************************************
+modweight_ - Float - Model Mutations (modweight)
+brlenweight_ - Float - Branch-length Mutations (brlenweight)
+topoweight_ - Float - All Topology Mutations (topoweight)
+randnniweight_ - Float - NNI Mutations (randnniweight)
+randsprweight_ - Float - SPR Mutations (randsprweight)
+limsprweight_ - Float - Limited SPR Mutations (limsprweight)
+Section: ****************************************************************************
+algorithm_mutation_details
+*************************************************************************************
+limsprrange_ - Integer - Max Limited SPR Branch Movement (limsprrange)
+uniqueswapbias_ - Float - Unique Swap Bias (uniqueswapbias)
+Section: ****************************************************************************
+general_logs
+*************************************************************************************
+saveevery_g_ - Integer - Save best tree with interval (saveevery)
+outputcurrentbesttopology_ - Switch - Output current best tree at "savevery" interval (outputcurrentbesttopology)
+logevery_g_ - Integer - Save best score with interval (logevery)
+outputeachbettertopology_g_ - Switch - Save each improved topology (outputeachbettertopology; can result in a very large file)
+inferinternalstateprobs_g_ - Switch - Output state probabilities of internal nodes (inferinternalstateprobs)
+outputphyliptree_g_ - Switch - Output PHYLIP-format tree (outputphyliptree)
+outputmostlyuselessfiles_g_ - Switch - Output fate, problog, and swaplog files
+Section: ****************************************************************************
+general_run
+*************************************************************************************
+enforcetermconditions_ - Switch - Automatically terminate run (enforcetermconditions; recommended)
+genthreshfortopoterm_ - Integer - Generations without improving topology (genthreshfortopoterm)
+significanttopochange_ - Float - lnL increase for significantly better topology (significanttopochange)
+scorethreshforterm_ - Float - Score improvement threshold (scorethreshforterm)
+stopgen_ - Integer - Limit generations to maximum of (stopgen); default =214783646
+stoptime_ - Integer - Limit run time to maximum of (stoptime, in seconds) default=214783646
+resampleproportion_ - Switch - Use Resampling where the pseudoreplicate datasets have a different number of alignment columns than the real data (resampleproportion)
+resampleproportion_val_ - Float - Enter the value for resampling proportion (resampleproportion)
+

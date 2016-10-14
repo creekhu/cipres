@@ -1,0 +1,11 @@
+#!/bin/sh
+TOP=AUTO-GENERATED/testdir
+for i in $TOP/*
+do
+	if [ -d $i ] ; then
+		echo "###########################################################################################"
+		basename  $i
+		tooltest $i validate
+		echo
+	fi
+done

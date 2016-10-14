@@ -1,0 +1,31 @@
+
+Project Description:
+====================
+
++ FreemarkerTemplate: includes ftl templates that were designed to generate Web Artifact (JSP,Java, etc.)
+
++old: includes ftl templates and old build file as created by Lucie Chan for generating a similar set of Web Artifact (Html, action, Form, etc.)
+      the content of this folder is for reference as it is not used at all in the new Code Generation procedure
+      
++ AUTO-GENERATED/src/.../.../... : are the generated directories and files, created by running: ant build.xml
+
++ PiseXML: includes pise xml files for tools defintions 
+  (these XML files are changed from distribution 5.a due to error correction see documentation)
+   PiseXML/lib : contains the orignal tar files downloaded from Pise repository (distribution 5.a)
+   PiseXML/PARSER : contains the DTD and XSD of the pise files
+   PiseXML/XMLDIR : contains an exception pise xml that don't define a tool 
+                    but a set of common properties used by multiple pise xml
+
++ build.xml
+	ant configuration file
+	
++ lib/struts.xml  represent the file of the web application that need to be merged with the content 
+  generated from the procedure
+
++lib/jar: includes the jar files called in the build.xml (XMLtask.jar and freemarker.jar)
+
++lib/dependency: it includes jar files as they are "import" by the generated classes,
+				 this helps to eliminate the dependencies errors in the generated classes
+				 it also includes 2 dependency files (ToolParameters.java and CreateTask.java)
+				 these 2 files are also needed to mask compilation errors from the generated
+				 classes 

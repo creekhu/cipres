@@ -1,0 +1,125 @@
+"""
+   Runs a class from the sdk jar as a daemon.  The class must have a main method and not take any
+   command line arguments, but can use system properties.  Start up errors are logged to /tmp/daemon.txt.
+   Looks for the jar in $SDK_VERSIONS
+
+   Usage: cipres_daemon <sysprops> <classname>
+   Where <sysprops> is a list of system properties to define, including the -D.  For example:
+      -Dname=terri -Dcolor=blue
+
+"""
+__author__ = "Based on code by Chad J. Schroeder, modified by Terri Liebowitz Schwartz"
+__copyright__ = "Copyright (C) 2005 Chad J. Schroeder"
+
+# Standard Python modules.
+import os               # Miscellaneous OS interfaces.
+import sys              # System-specific parameters and functions.
+
+UMASK = 0
+WORKDIR = "/"
+
+# Default maximum for the number of available file descriptors.
+MAXFD = 1024
+
+# The standard I/O file descriptors are redirected to /dev/null by default.
+# If you need to debug the launching of daemons, direct to a file instead.
+if (hasattr(os, "devnull")):
+   # REDIRECT_TO = os.devnull
+   REDIRECT_TO= "/tmp/daemon.txt"
+else:
+   # REDIRECT_TO = "/dev/null"
+   REDIRECT_TO= "/tmp/daemon.txt"
+
+def createDaemon():
+   """Detach a process from the controlling terminal and run it in the
+   background as a daemon.
+   """
+   try:
+      pid = os.fork()
+   except OSError, e:
+      raise Exception, "%s [%d]" % (e.strerror, e.errno)
+
+   if (pid == 0):   # The first child.
+      os.setsid()
+      try:
+         pid = os.fork()    # Fork a second child.
+      except OSError, e:
+         raise Exception, "%s [%d]" % (e.strerror, e.errno)
+
+      if (pid == 0):    # The second child.
+         os.chdir(WORKDIR)
+         os.umask(UMASK)
+      else:
+         # exit() or _exit()?  See comment in original version in svn.
+         os._exit(0)    
+   else:
+      os._exit(0)   # Exit parent of the first child.
+
+   import resource      # Resource usage information.
+   maxfd = resource.getrlimit(resource.RLIMIT_NOFILE)[1]
+   if (maxfd == resource.RLIM_INFINITY):
+      maxfd = MAXFD
+   # Iterate through and close all file descriptors.
+   for fd in range(0, maxfd):
+      try:
+         os.close(fd)
+      except OSError:   # ERROR, fd wasn't open to begin with (ignored)
+         pass
+
+   os.open(REDIRECT_TO, os.O_RDWR | os.O_CREAT) # standard input (0)
+   # Duplicate standard input to standard output and standard error.
+   os.dup2(0, 1)            # standard output (1)
+   os.dup2(0, 2)            # standard error (2)
+
+   return(0)
+
+if __name__ == "__main__":
+
+   if len(sys.argv) < 2 :
+      print __doc__
+      sys.exit('Expecting class to run  as argument')
+   classname = sys.argv[len(sys.argv) - 1]
+   if len(sys.argv) > 2 :
+      sysprops = sys.argv[1: len(sys.argv) - 1]
+   else:
+      sysprops = []
+   for i in list(sysprops):
+      pair = i.split("=", 2)
+      if pair[0] == "-Dstdout":
+         sysprops.remove(i)
+         if pair[1]:
+            REDIRECT_TO = pair[1] 
+         break
+
+   sdkversions  = os.environ.get('SDK_VERSIONS')
+   if not sdkversions:
+       sys.exit('SDK_VERSIONS env var must be set')
+
+   try:
+      retCode = createDaemon()
+   except:
+      sys.exit(1)
+
+   # The code, as is, will create a new file in the root directory, when
+   # executed with superuser privileges.  The file will contain the following
+   # daemon related process parameters: return code, process ID, parent
+   # process group ID, session ID, user ID, effective user ID, real group ID,
+   # and the effective group ID.  Notice the relationship between the daemon's 
+   # process ID, process group ID, and its parent's process ID.
+
+   # try:
+      # open("/tmp/daemon_info.txt", "w+").write(procParams + "\n")
+   # except:
+      # sys.exit(2)
+   
+   import subprocess
+   jarfile = os.path.join(sdkversions, 'sdk-2.0-jar-with-dependencies.jar')
+
+   commandline = ["java"]
+   commandline.extend(sysprops)
+   commandline.extend(["-classpath", jarfile, classname])
+   print 'commandline is ', commandline
+   pid = subprocess.Popen(commandline).pid
+
+   print 'launched ', commandline, ' on ', pid
+   sys.exit(retCode)

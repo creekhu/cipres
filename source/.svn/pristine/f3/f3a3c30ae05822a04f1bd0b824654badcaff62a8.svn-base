@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataResourceConfiguration>
+	<DataResource id="LUCENE_INDEX" host="localhost"
+		indexRoot="/projects/ngbw_db1/data/databases/lucene/"/>
+	<RecordFieldMappings>
+		<RecordType id="PROTEIN_SEQUENCE">
+			<RecordField name="PRIMARY_ID" indexFieldType="ID"/>
+			<RecordField name="ALTERNATIVE_ID" indexFieldType="KEYWORD"/>
+			<RecordField name="NAME" indexFieldType="TEXT"/>
+			<RecordField name="ORGANISM" indexFieldType="TEXT"/>
+			<RecordField name="VERSION" indexFieldType="KEYWORD"/>
+		</RecordType>
+		<RecordType id="NUCLEIC_ACID_SEQUENCE">
+			<RecordField name="PRIMARY_ID" indexFieldType="ID"/>
+			<RecordField name="ALTERNATIVE_ID" indexFieldType="KEYWORD"/>
+			<RecordField name="NAME" indexFieldType="TEXT"/>
+			<RecordField name="ORGANISM" indexFieldType="TEXT"/>
+			<RecordField name="VERSION" indexFieldType="KEYWORD"/>
+		</RecordType>
+		<RecordType id="PROTEIN_STRUCTURE">
+			<RecordField name="PRIMARY_ID" indexFieldType="ID"/>
+			<RecordField name="TYPE" indexFieldType="KEYWORD"/>
+			<RecordField name="RESOLUTION" indexFieldType="KEYWORD"/>
+			<RecordField name="NAME" indexFieldType="TEXT"/>
+			<RecordField name="AUTHOR" indexFieldType="TEXT"/>
+			<RecordField name="MOLECULE" indexFieldType="TEXT"/>
+			<RecordField name="ORGANISM" indexFieldType="TEXT"/>
+			<RecordField name="DEPOSITION_DATE" indexFieldType="DATE"/>
+			<RecordField name="MODIFICATION_DATE" indexFieldType="TEXT"/>
+		</RecordType>
+		<RecordType id="NUCLEIC_ACID_STRUCTURE">
+			<RecordField name="PRIMARY_ID" indexFieldType="ID"/>
+			<RecordField name="TYPE" indexFieldType="KEYWORD"/>
+			<RecordField name="RESOLUTION" indexFieldType="KEYWORD"/>
+			<RecordField name="NAME" indexFieldType="TEXT"/>
+			<RecordField name="AUTHOR" indexFieldType="TEXT"/>
+			<RecordField name="MOLECULE" indexFieldType="TEXT"/>
+			<RecordField name="ORGANISM" indexFieldType="TEXT"/>
+			<RecordField name="DEPOSITION_DATE" indexFieldType="DATE"/>
+			<RecordField name="MODIFICATION_DATE" indexFieldType="TEXT"/>
+		</RecordType>
+	</RecordFieldMappings>
+	<RecordSourceFilterPatterns>
+		<Pattern dataFormat="GENBANK" startPattern="^LOCUS\s+" endPattern="^\s+/translation=|^ORIGIN"/>
+		<Pattern dataFormat="GENPEPT" startPattern="^LOCUS\s+" endPattern="^\s+/translation=|^ORIGIN"/>
+		<Pattern dataFormat="PDB"     startPattern="^HEADER\s+" endPattern="^(SEQRES)|(SEQADV)|(ATOM)" />
+		<Pattern dataFormat="UNIPROT" startPattern="^ID\s+"    endPattern="^CC\s+-+$" />
+	</RecordSourceFilterPatterns>
+	<DatasetConfigurations>
+		<Dataset id="PDB" multipleFiles="true" file="*.ent.gz"
+			sourceURL="ftp://ftp.wwpdb.org/pub/pdb/data/structures/all/pdb/"
+			indexDirectory="PDB" recordType="PROTEIN_STRUCTURE"/>
+		<Dataset id="PDBSEQ" multipleFiles="false" file="" sourceURL=""
+			indexDirectory="PDBSEQ" recordType="PROTEIN_SEQUENCE"/>
+		<!-- incorrect source url, data in 2 directories need to copy to local location first-->
+		<Dataset id="NDB" multipleFiles="true" file="*pdb*"
+			sourceURL="/isilon/ngbw/NDB/" 
+			indexDirectory="NDB" recordType="NUCLEIC_ACID_STRUCTURE"/>
+		<!-- UNIPROT -->
+		<Dataset id="SWISSPROT" multipleFiles="false" file="uniprot_sprot.dat.gz"
+			sourceURL="ftp://ftp.ebi.ac.uk/pub/databases/swissprot/release/"
+			indexDirectory="SWISSPROT" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="TREMBL" multipleFiles="false" file="uniprot_trembl.dat.gz"
+			sourceURL="ftp://ftp.ebi.ac.uk/pub/databases/swissprot/release/"
+			indexDirectory="TREMBL" recordType="PROTEIN_SEQUENCE"/>
+		<!-- GENBANK -->
+		<Dataset id="GBBCT" multipleFiles="true" file="gbbct*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBBCT" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBENV" multipleFiles="true" file="gbenv*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBENV" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBEST" multipleFiles="true" file="gbest*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBEST" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBGSS" multipleFiles="true" file="gbgss*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBGSS" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBHTC" multipleFiles="true" file="gbhtc*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBHTC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBHTG" multipleFiles="true" file="gbhtg*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBHTG" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBINV" multipleFiles="true" file="gbinv*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBINV" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBMAM" multipleFiles="true" file="gbmam*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBMAM" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBPAT" multipleFiles="true" file="gbpat*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBPAT" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBPHG" multipleFiles="true" file="gbphg*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBPHG" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBPLN" multipleFiles="true" file="gbpln*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBPLN" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBPRI" multipleFiles="true" file="gbpri*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBPRI" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBROD" multipleFiles="true" file="gbrod*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBROD" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBSTS" multipleFiles="true" file="gbsts*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBSTS" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBSYN" multipleFiles="true" file="gbsyn*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBSYN" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBUNA" multipleFiles="true" file="gbuna*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBUNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBVRL" multipleFiles="true" file="gbvrl*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBVRL" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="GBVRT" multipleFiles="true" file="gbvrt*.seq.gz"
+			sourceURL="ftp://bio-mirror.net/biomirror/genbank/"
+			indexDirectory="GBVRT" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<!-- EMBL -->
+		<!-- ftp://ftp.ebi.ac.uk/pub/databases/embl/release/ -->
+		<!-- RefSeq -->
+		<Dataset id="REFSEQ_FUNGI_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_FUNGI_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_FUNGI_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_FUNGI_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_FUNGI_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_FUNGI_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_INV_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_INV_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_INV_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_INV_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_INV_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_INV_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_MICRO_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_MICRO_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_MICRO_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_MICRO_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_MITO_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_MITO_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_MITO_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_MITO_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLANT_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLANT_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLANT_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLANT_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLANT_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLANT_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLASM_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLASM_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLASM_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLASM_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLASM_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLASM_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLAST_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLAST_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLAST_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLAST_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PLAST_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PLAST_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_PROT_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PROT_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PROT_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PROT_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_PROT_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_PROT_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_VERTM_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VERTM_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_VERTM_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VERTM_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_VERTM_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VERTM_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_VERTO_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VERTO_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_VERTO_RNA" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VERTO_RNA" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_VERTO_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VERTO_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="REFSEQ_VIRAL_GENOMIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VIRAL_GENOMIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="REFSEQ_VIRAL_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="REFSEQ_VIRAL_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="TPA_NUCLEIC" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="TPA_NUCLEIC" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="TPA_PROTEIN" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="TPA_PROTEIN" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="UNIMES" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="UNIMES" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="UNIREF100" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="UNIREF100" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="ENSEMBL" multipleFiles="true" file="" sourceURL=""
+			indexDirectory="ENSEMBL" recordType="NUCLEIC_ACID_SEQUENCE"/>
+		<Dataset id="NCBI_NR" multipleFiles="false" file="" sourceURL=""
+			indexDirectory="NCBI_NR" recordType="PROTEIN_SEQUENCE"/>
+		<Dataset id="NCBI_NT" multipleFiles="false" file="" sourceURL=""
+			indexDirectory="NCBI_NT" recordType="NUCLEIC_ACID_SEQUENCE"/>
+	</DatasetConfigurations>
+</DataResourceConfiguration>

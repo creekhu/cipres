@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>GENSCAN</title>
+    <version>1.0</version>
+    <description>Gene Identification</description>
+    <authors>C. Burge</authors>
+    <reference>Burge, C., Karlin, S. (1997) Prediction of complete gene structures in human genomic DNA. J. Mol. Biol. 268, 78-94.</reference>
+    <reference>Burge, C., Karlin, S. (1997) Gene structure, exon prediction, and alternative splicing.  (in preparation).</reference>
+    <reference>Burge, C. (1997) Identification of genes in human genomic DNA. PhD thesis, Stanford University, Stanford, CA.</reference>
+    <reference>Burset, M., Guigo, R. (1996) Evaluation of gene structure prediction programs.  Genomics 34, 353-367.</reference>
+    <category>nucleic:translation</category>
+    <category>gene finding</category>
+</head>
+
+
+<command>genscan</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>genscan</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>genscan</code>
+		<language>perl</language>
+		<code>"genscan"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>DNA Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>seqfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>parameter_file</name>
+<attributes>
+
+	<prompt>Parameter file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+	<vlist>
+		<value>Arabidopsis.smat</value>
+		<label>Arabidopsis</label>
+		<value>HumanIso.smat</value>
+		<label>HumanIso</label>
+		<value>Maize.smat</value>
+		<label>Maize</label>
+	</vlist>
+	<comment>
+		<value>Currently available parameter files are:</value>
+		<value>HumanIso.smat for human/vertebrate sequences (also Drosophila)</value>
+		<value>Arabidopsis.smat for Arabidopsis thaliana sequences</value>
+		<value>Maize.smat for Zea mays sequences</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output parameters</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>verbose</name>
+	<attributes>
+
+		<prompt>Verbose output (-v)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -v":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+		<comment>
+			<value>Add some extra explanatory information to the text output. This information may be helpful the first few times you run the program but will soon become tiresome (that's why its optional).</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>cds</name>
+	<attributes>
+
+		<prompt>Print predicted coding sequences (-cds)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -cds":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>subopt</name>
+	<attributes>
+
+		<prompt>Identify suboptimal exons (-subopt)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -subopt $cutoff":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+		<comment>
+			<value>The default output of the program is the optimal 'parse' of the sequence, i.e. the highest probability gene structure(s) which is present: the exons in this optimal parse are referred to as 'optimal exons' and are always printed out by GENSCAN. Suboptimal exons, on the other hand, are defined as potential exons which have probability above a certian threshold but which are not contained in the optimal parse of the sequence. Suboptimal exons have a variety of potential uses. First, suboptimal exons sometimes correspond to real exons which were missed for whatever reason by the optimal parse of the sequence. Second, regions of a prediction which contain multiple overlapping and/or incompatible optimal and suboptimal exons may in some cases indicate alternatively spliced regions of a gene (Burge &amp; Karlin, in preparation).</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>cutoff</name>
+	<attributes>
+
+		<prompt>Cutoff for suboptimal exons</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>The cutoff is the probability cutoff used to determine which potential exons qualify as suboptimal exons. This argument should be a number between 0.01 and 0.99. For most applications, a cutoff value of about 0.10 is recommended. Setting the value much lower than 0.10 will often lead to an explosion in the number of suboptimal exons, most of which will probably not be useful. On the other hand, if the value is set much higher than 0.10, then potentially interesting suboptimal exons may be missed.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$subopt</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>ps</name>
+	<attributes>
+
+		<prompt>Create Postscript output (-ps)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -ps $psfname $scale" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>scale</name>
+	<attributes>
+
+		<prompt>Scale for PostScript output (bp per line)</prompt>
+		<format>
+			<language>perl</language>
+			<code>"" </code>
+		</format>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$ps</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="OutFile">
+	<name>psfname</name>
+	<attributes>
+
+		<prompt>Filename for PostScript output</prompt>
+		<format>
+			<language>perl</language>
+			<code>"" </code>
+		</format>
+		<vdef><value>genscan.ps</value></vdef>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$ps</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

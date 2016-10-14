@@ -1,0 +1,16 @@
+[AiravataServer]=
+host=
+port=
+server_ca_cert=<path to CA.pem>
+server_cert=<path to client.crt>
+client_key=<path to client.key>
+[GatewayProperties]=
+gateway_id=default
+cred_token_id=
+[ApplicationProperties]=
+application_id=
+comet_host_id=
+stampede_host_id=
+[ExperimentProperties]=
+project_id=
+append_tuple=('/users/u4/nsgdevuser/kennethtest/scigap/PythonClients/lib','/users/u4/nsgdevuser/kennethtest/scigap/PythonClients')

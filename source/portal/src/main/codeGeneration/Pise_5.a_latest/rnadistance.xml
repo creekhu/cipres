@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>VIENNARNA</title>
+    <version>1.4</version>
+    <description>RNAdistance - calculate distances of RNA secondary structures</description>
+    <authors>Fontana, Hofacker, Stadler</authors>
+    <reference>Shapiro B A, (1988) An algorithm for comparing multiple RNA secondary structures, CABIOS 4, 381-393 Shapiro B A, Zhang K (1990) Comparing multiple RNA secondary structures using tree comparison, CABIOS 6, 309-318</reference>
+    <reference>Fontana W, Konings D A M, Stadler P F, Schuster P, (1993) Statistics of RNA secondary structures, Biopolymers 33, 1389-1404 I.L. Hofacker, W. Fontana, P.F. Stadler, S. Bonhoeffer, M. Tacker, P. Schuster (1994) Fast Folding and Comparison of RNA Secondary Structures. Monatshefte f. Chemie 125, 167-188</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#VIENNARNA</doclink>
+  </head>
+
+
+<command>rnadistance</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>rnadistance</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"RNAdistance"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>struct</name>
+<attributes>
+
+	<prompt>Structures File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" &lt; $value" </code>
+	</format>
+	<group>1000</group>
+	<comment>
+		<value>The program accepts structures in bracket format, where matching brackets symbolize base pairs and unpaired bases are represented by a dot '.', or coarse grained representations where hairpins, interior loops, bulges, multiloops, stacks and external bases are represented by (H), (I), (B), (M), (S), and (E), respectively. These can be optionally weighted. Full structures can be represented in the same fashion using the identifiers (U) and (P) for unpaired and paired bases, respectively. Examples:</value>
+		<value>.((..(((...)))..((..)))). full structure (usual format);</value>
+		<value>(U)((U2)((U3)P3)(U2)((U2)P2)P2) HIT structure;</value>
+		<value>((H)(H)M) or ((((H)S)((H)S)M)S) coarse grained structure;</value>
+		<value>(((((H3)S3)((H2)S2)M4)S2)E2) weighted coarse grained.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>others_options</name>
+<prompt>Other options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>distance</name>
+	<attributes>
+
+		<prompt>Representation for distance calculation (-D)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -D$value" : ""</code>
+		</format>
+		<vdef><value>f</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>f</value>
+			<label>f: full (tree editing)</label>
+			<value>F</value>
+			<label>F: full (string alignment)</label>
+			<value>h</value>
+			<label>h: HIT (tree editing)</label>
+			<value>H</value>
+			<label>H: HIT (string alignment)</label>
+			<value>w</value>
+			<label>w: weighted coarse (tree editing)</label>
+			<value>W</value>
+			<label>W: weighted coarse (string alignment)</label>
+			<value>c</value>
+			<label>c: coarse (tree editing)</label>
+			<value>C</value>
+			<label>C: coarse (string alignment)</label>
+			<value>P</value>
+			<label>P: selects the base pair distance</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>compare</name>
+	<attributes>
+
+		<prompt>Which comparisons (-X)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -X$value" : ""</code>
+		</format>
+		<vdef><value>p</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>p</value>
+			<label>p: pairwise (1st/2nd, 3rd/4th etc)</label>
+			<value>m</value>
+			<label>m: distance matrix between all structures</label>
+			<value>f</value>
+			<label>f: each structure to the first one</label>
+			<value>c</value>
+			<label>c: continuously, that is i-th with (i+1)th structure</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>matrix_options</name>
+	<prompt>Analyse the distance matrix</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$compare eq "m"</code>
+	</precond>
+	<group>2000</group>
+	<comment>
+		<value>Only when comparison between all structures is requested (-Xm)</value>
+		<value>This uses the beta test version of AnalyseDists distributed with the Vienna package.</value>
+	</comment>
+	<parameters>
+
+		<parameter type="Switch">
+		<name>do_analyse</name>
+		<attributes>
+
+			<prompt>Do this analysis (with AnalyseDists program) (-Xm only)?</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " | AnalyseDists" : ""</code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>2000</group>
+		<precond>
+			<language>perl</language>
+			<code>$compare eq "m"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		<name>method</name>
+		<attributes>
+
+			<prompt>Analysis methods to be used (-X)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -X$value" : "" </code>
+			</format>
+			<vdef><value>s</value></vdef>
+			<group>2001</group>
+			<vlist>
+				<value>s</value>
+				<label>s: split decomposition</label>
+				<value>w</value>
+				<label>w: cluster analysis using Ward's method</label>
+				<value>n</value>
+				<label>n: Cluster analysis using Saitou's neighbour joining method</label>
+			</vlist>
+		<precond>
+			<language>perl</language>
+			<code>$compare eq "m"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Results">
+		<name>psfiles</name>
+		<attributes>
+
+			<group>2000</group>
+		<precond>
+			<language>perl</language>
+			<code>$compare eq "m" &amp;&amp; $method eq "w" || $method eq "n"</code>
+		</precond>
+			<filenames>*.ps</filenames>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Switch">
+	<name>shapiro</name>
+	<attributes>
+
+		<prompt>Use the Bruce Shapiro's cost matrix for comparing coarse structures (-S)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -S" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile">
+	<name>alignment_file</name>
+	<attributes>
+
+		<prompt>Alignment file (-B)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -B $value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Print an 'alignment' with gaps of the structures, to show matching substructures. The aligned structures are written to file, if specified. Otherwise output is written to stdout, unless the -Xm option is set in which case 'backtrack.file' is used.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

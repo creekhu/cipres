@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>NOTSEQ</title>
+<description>Excludes a set of sequences and writes out the remaining ones (EMBOSS)</description>
+<category>edit</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/notseq.html</doclink>
+</head>
+
+<command>notseq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>exclude</name>
+	<attributes>
+		<prompt>Sequence names to exclude (-exclude)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -exclude=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Enter a list of sequence names or accession numbers to exclude from the sequences read in. The excluded sequences will be written to the file specified in the 'junkout' parameter. The remainder will be written out to the file specified in the 'outseq' parameter. &lt;BR&gt; The list of sequence names can be separated by either spaces or commas. &lt;BR&gt; The sequence names can be wildcarded. &lt;BR&gt; The sequence names are case independent. &lt;BR&gt; An example of a list of sequences to be excluded is: &lt;BR&gt; myseq, hs*, one two three &lt;BR&gt; a file containing a list of sequence names can be specified by giving the file name preceeded by a '\@', eg: '\@names.dat'</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>3</group>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>junkoutseq</name>
+	<attributes>
+		<prompt>File of excluded sequences (-junkoutseq)</prompt>
+		<vdef>
+			<value>/dev/null</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -junkoutseq=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This file collects the sequences which you have excluded from the main output file of sequences.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="0">
+	<name>junkoutseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: File of excluded sequences</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>7</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

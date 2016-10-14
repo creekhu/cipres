@@ -1,0 +1,21 @@
+
+
+<h2>
+<a href="mview.php" class="toolkit">MVIEW</a>
+</h2>
+<p>
+	MVIEW: Is a "pretty-printing" tool. In the MVIEW_BLAST mode, the tool converts the results of a sequence database search into the form of a coloured multiple alignment of hits stacked against the query. In the MVIEW_ALIGN mode, an existing multiple alignment is processed. In either case, the output is simply HTML, so the result is platform independent and does not require a separate application or applet to be loaded. MView is NOT a multiple alignment program, nor is it a general purpose alignment editor.
+</p>
+<p>
+	<strong>If you use MView in your work, please cite: Brown, N.P., Leroy C., Sander C. (1998). MView: A Web compatible database search or multiple alignment viewer. Bioinformatics. 14(4):380-381.</strong> <strong><br />
+	<br /></strong> <strong>Manual: <a href="http://bioweb.pasteur.fr/docs/mview/index.html">http://bioweb.pasteur.fr/docs/mview/index.html</a></strong>
+</p>
+<p>
+	<strong>INPUT = Results of a BLAST search or sequence alignment.</strong></p>
+<h3>TEST INPUT FILES </h3>
+<p><strong>Input file (alignment): <a href="/tool_tests/mviewalign_in1.txt">mviewalign_in1.txt</a></strong></p>
+<p><strong>Input file (blast search): <a href="/tool_tests/mviewblast_in1.txt">mviewblast_in1.txt</a></strong></p>
+<h3>TEST OUTPUT FILES </h3>
+<p><strong>Output file (alignment): <a href="/tool_tests/mviewalign_out1.html">mviewalign_out1.html</a></strong></p>
+<p><strong>Output file (blast search): <a href="/tool_tests/mviewblast_out1.html">mviewblast_out1.html</a></strong></p>
+<p>&nbsp;</p>

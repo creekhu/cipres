@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Puzzle</title>
+    <version>5.0</version>
+    <description>Tree reconstruction for sequences by quartet puzzling and maximum likelihood</description>
+    <authors>Strimmer, von Haeseler</authors>
+    <reference>Strimmer, K., and A. von Haeseler. 1996. Quartet puzzling:A quartet maximum likelihood method for reconstructing tree topologies. Mol. Biol. Evol. 13: 964-969.</reference>
+    <category>phylogeny</category>
+  </head>
+
+  <command>Puzzle</command>
+
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>Puzzle</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"Puzzle"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>stdinput</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &lt; params"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	<filenames>*.puzzle</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>outtree</name>
+      <attributes>
+	<filenames>*.tree</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outdist</name>
+      <attributes>
+	<filenames>*.dist</filenames>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>infile</name>
+      <attributes>
+	<prompt>Alignement File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $infile"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>12</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>seqtype</name>
+      <attributes>
+	<prompt>Is it a DNA or protein sequence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<group>-10</group>
+	<vlist>
+	  <value>DNA</value>
+	  <label>DNA</label>
+	  <value>protein</value>
+	  <label>protein</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>approximate</name>
+	    <attributes>
+	      <prompt>Approximate quartet likelihood (v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "v\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>puzzling_step</name>
+	    <attributes>
+	      <prompt>Number of puzzling steps (n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? "n\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>1000</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>protein_options</name>
+	      <prompt>Protein options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$seqtype ne "DNA" </code>
+	      </precond>
+	      <parameters>
+
+		<parameter type="Excl">
+		  <name>protein_model</name>
+		  <attributes>
+		    <prompt>Model of substitution for protein (if no automatic guess) (m)</prompt>
+		    <vdef><value>1</value></vdef>
+		    <group>1</group>
+		    <vlist>
+		      <value>0</value>
+		      <label></label>
+		      <value>1</value>
+		      <label>Dayhoff (Dayhoff et al. 1978)</label>
+		      <value>2</value>
+		      <label>JTT (Jones et al. 1992)</label>
+		      <value>3</value>
+		      <label>mtREV24 (Adachi-Hasegawa 1996)</label>
+		      <value>4</value>
+		      <label>BLOSUM 62 (Henikoff-Henikoff 1992)</label>
+		      <value>5</value>
+		      <label>VT (Mueller-Vingron 2000)</label>
+		      <value>6</value>
+		      <label>WAG (Whelan-Goldman 2000)</label>
+		    </vlist>
+		    <flist>
+		      <value>0</value>
+		      <code>""</code>
+		      <value>1</value>
+		      <code>"m\\n"</code>
+		      <value>2</value>
+		      <code>"m\\nm\\n"</code>
+		      <value>3</value>
+		      <code>"m\\nm\\nm\\n"</code>
+		      <value>4</value>
+		      <code>"m\\nm\\nm\\nm\\n"</code>
+		      <value>5</value>
+		      <code>"m\\nm\\nm\\nm\\nm\\n"</code>
+		      <value>6</value>
+		      <code>"m\\nm\\nm\\nm\\nm\\nm\\n"</code>
+		    </flist>
+		    <comment>
+		      <value>The Dayhoff and JTT matrices are for use with proteins encoded on nuclear DNA, and the mtREV24 matrix is for use with proteins encoded on mtDNA. The BLOSUM 62 model is for more distantly related amino acid sequences (Henikoff and Henikoff 1992).</value>
+		    </comment>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype ne "DNA" and ! $guessmodel</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	    
+	  </parameter>
+	  
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>dna_options</name>
+	      <prompt>DNA options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+	      </precond>
+	      <parameters>
+		
+		<parameter type="Float">
+		  <name>ratio</name>
+		  <attributes>
+		    <prompt>Transition/transversion ratio (t)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? "t\\n$value\\n" : ""</code>
+		    </format>
+		    <group>1</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" </code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Paragraph">
+		  <paragraph>
+		    <name>GTR_options</name>
+		    <prompt>GTR model rates</prompt>
+		    <parameters>
+
+		      <parameter type="Float">
+			<name>GTR_acrate</name>
+			<attributes>
+			  <prompt>A-C rate (1)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>(defined $value and $value != $vdef) ? "1\\n$value\\n" : ""</code>
+			  </format>
+			  <group>11</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+			  </precond>
+			  <vdef>
+			    <value>1.00</value>
+			  </vdef>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+
+		      <parameter type="Float">
+			<name>GTR_agrate</name>
+			<attributes>
+			  <prompt>A-G rate (2)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>(defined $value and $value != $vdef) ? "2\\n$value\\n" : ""</code>
+			  </format>
+			  <group>11</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+			  </precond>
+			  <vdef>
+			    <value>1.00</value>
+			  </vdef>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+
+		      <parameter type="Float">
+			<name>GTR_atrate</name>
+			<attributes>
+			  <prompt>A-T rate (3)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>(defined $value and $value != $vdef) ? "3\\n$value\\n" : ""</code>
+			  </format>
+			  <group>11</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+			  </precond>
+			  <vdef>
+			    <value>1.00</value>
+			  </vdef>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+
+		      <parameter type="Float">
+			<name>GTR_cgrate</name>
+			<attributes>
+			  <prompt>C-G rate (4)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>(defined $value and $value != $vdef) ? "4\\n$value\\n" : ""</code>
+			  </format>
+			  <group>11</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+			  </precond>
+			  <vdef>
+			    <value>1.00</value>
+			  </vdef>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+
+		      <parameter type="Float">
+			<name>GTR_ctrate</name>
+			<attributes>
+			  <prompt>C-T rate (5)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>(defined $value and $value != $vdef) ? "5\\n$value\\n" : ""</code>
+			  </format>
+			  <group>11</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+			  </precond>
+			  <vdef>
+			    <value>1.00</value>
+			  </vdef>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+
+		      <parameter type="Float">
+			<name>GTR_gtrate</name>
+			<attributes>
+			  <prompt>G-T rate (6)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>(defined $value and $value != $vdef) ? "6\\n$value\\n" : ""</code>
+			  </format>
+			  <group>11</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+			  </precond>
+			  <vdef>
+			    <value>1.00</value>
+			  </vdef>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+
+		    </parameters>
+		  </paragraph>
+		</parameter>
+		
+		<parameter type="Paragraph">
+		  <paragraph>
+		    <name>nuc_freq</name>
+		    <prompt>Nucleotids frequencies (in %) (f)</prompt>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" </code>
+		    </precond>
+		    <parameters>
+		      
+		      <parameter type="Switch">
+			<name>use_specified</name>
+			<attributes>
+			  <prompt>Use specified values</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>($value)? "f\\n" : "" </code>
+			  </format>
+			  <vdef><value>0</value></vdef>
+			  <group>50</group>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+		      
+		      <parameter ismandatory="1" type="Float">
+			<name>a_freq</name>
+			<attributes>
+			  <prompt>pi(A)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>"$value\\n"</code>
+			  </format>
+			  <group>51</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$use_specified</code>
+			  </precond>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+		      
+		      <parameter ismandatory="1" type="Float">
+			<name>c_freq</name>
+			<attributes>
+			  <prompt>pi(C)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>"$value\\n"</code>
+			  </format>
+			  <group>52</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$use_specified</code>
+			  </precond>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+		      
+		      <parameter ismandatory="1" type="Float">
+			<name>g_freq</name>
+			<attributes>
+			  <prompt>pi(G)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>"$value\\n"</code>
+			  </format>
+			  <group>53</group>
+			  <precond>
+			    <language>perl</language>
+			    <code>$use_specified</code>
+			  </precond>
+			  <paramfile>params</paramfile>
+			</attributes>
+		      </parameter>
+		      
+		    </parameters>
+		  </paragraph>
+		  
+		</parameter>
+		
+		<parameter type="Excl">
+		  <name>dna_model</name>
+		  <attributes>
+		    
+		    <prompt>Model of substitution for DNA (m)</prompt>
+		    <vdef><value>1</value></vdef>
+		    <group>10</group>
+		    <vlist>
+		      <value>1</value>
+		      <label>HKY (Hasegawa et al. 1985)</label>
+		      <value>2</value>
+		      <label>TN (Tamura-Nei 1993)</label>
+		      <value>3</value>
+		      <label>GTR (e.g. Lanave et al. 1980)</label>
+		    </vlist>
+		    <flist>
+		      <value></value>
+		      <code>""</code>
+		      <value>1</value>
+		      <code>""</code>
+		      <value>2</value>
+		      <code>"m\\n"</code>
+		      <value>3</value>
+		      <code>"m\\nm\\n"</code>
+		    </flist>
+		    <comment>
+		      <value>The following models are implemented for nucleotides: the Tamura-Nei (TN) model, the Hasegawa et al. (HKY) model, and the Schöniger and von Haeseler (SH) model. The SH model describes the evolution of pairs of dependent nucleotides (pairs are the first and the second nucleotide, the third and the fourth nucleotide and so on). It allows for specification of the transition-transversion ratio. The originally proposed model (Schöniger and von Haeseler 1994) is obtained by setting the transition-transversion parameter to 0.5. The Jukes-Cantor (1969), the Felsenstein (1981), and the Kimura (1980) model are all special cases of the HKY model.</value>
+		    </comment>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" </code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		    
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>constrain_TN</name>
+		  <attributes>
+		    
+		    <prompt>Constrain TN model to F84 model (p)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "p\\n" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>11</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" and $dna_model eq "2"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		    
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Float">
+		  <name>f84_ratio</name>
+		  <attributes>
+		    
+		    <prompt>Expected F84 Transition/transversion ratio</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? "$value\\n" : ""</code>
+		    </format>
+		    <group>12</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" and $dna_model eq "2"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		    
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Float">
+		  <name>y_r</name>
+		  <attributes>
+		    
+		    <prompt>Y/R transition parameter (r)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? "r\\n$value\\n" : ""</code>
+		    </format>
+		    <group>13</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" and $dna_model eq "2"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		    
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>symmetrize_frequencies</name>
+		  <attributes>
+		    
+		    <prompt>Symmetrize doublet frequencies (s)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "s\\n" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>11</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$seqtype eq "DNA" and $dna_model eq "3"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		    
+		  </attributes>
+		</parameter>
+		
+	      </parameters>
+	    </paragraph>
+	    
+	  </parameter>
+	  
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>rate_options</name>
+	      <prompt>Rate heterogeneity options</prompt>
+	      <parameters>
+		
+		<parameter type="Excl">
+		  <name>rate_heterogeneity</name>
+		  <attributes>
+
+		    <prompt>Model of rate heterogeneity (w)</prompt>
+		    <vdef><value>1</value></vdef>
+		    <group>20</group>
+		    <vlist>
+		      <value>1</value>
+		      <label>Uniform rate</label>
+		      <value>2</value>
+		      <label>Gamma distributed rates</label>
+		      <value>3</value>
+		      <label>Two rates (1 invariable + 1 variable)</label>
+		      <value>4</value>
+		      <label>Mixed (1 invariable + n Gamma rates)</label>
+		    </vlist>
+		    <flist>
+		      <value>1</value>
+		      <code>""</code>
+		      <value>2</value>
+		      <code>"w\\n"</code>
+		      <value>3</value>
+		      <code>"w\\nw\\n"</code>
+		      <value>4</value>
+		      <code>"w\\nw\\nw\\n"</code>
+		    </flist>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>alpha</name>
+		  <attributes>
+
+		    <prompt>Gamma distribution parameter alpha (a)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? "a\\n$value\\n" : ""</code>
+		    </format>
+		    <group>21</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$rate_heterogeneity eq "2" or $rate_heterogeneity eq "4" </code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>gamma_number</name>
+		  <attributes>
+
+		    <prompt>Number of Gamma rate categories (c)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value and $value != $vdef)? "c\\n$value\\n" : ""</code>
+		    </format>
+		    <vdef><value>8</value></vdef>
+		    <group>21</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$rate_heterogeneity eq "2" or $rate_heterogeneity eq "4" </code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>invariable</name>
+		  <attributes>
+
+		    <prompt>Fraction of invariable sites (i)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? "i\\n$value\\n" : ""</code>
+		    </format>
+		    <group>21</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$rate_heterogeneity eq "3" or $rate_heterogeneity eq "4" </code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>user_tree_options</name>
+	      <prompt>User Tree options</prompt>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>user_tree</name>
+		  <attributes>
+
+		    <prompt>Tree search procedure: User tree (k)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "k\\n" : "" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>1</group>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="InFile">
+		  <name>tree_file</name>
+		  <attributes>
+
+		    <prompt>User Tree file</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "$tree_file\\n" : ""</code>
+		    </format>
+		    <group>2000</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$user_tree</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>no_tree</name>
+		  <attributes>
+
+		    <prompt>Pairwise distances only (no tree) (k)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "k\\nk\\n" : "" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>1</group>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+
+	      <prompt>Display as outgroup (o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? "o\\n$value\\n" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>branch_length</name>
+	    <attributes>
+
+	      <prompt>Compute clocklike branch lengths (z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "z\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>estimates</name>
+	    <attributes>
+
+	      <prompt>Parameter estimates (e)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>1</value>
+		<label>Approximate (faster)</label>
+		<value>2</value>
+		<label>Exact (slow)</label>
+	      </vlist>
+	      <flist>
+		<value></value>
+		<code>""</code>
+		<value>1</value>
+		<code>""</code>
+		<value>2</value>
+		<code>"e\\n"</code>
+	      </flist>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>estimation_by</name>
+	    <attributes>
+
+	      <prompt>Parameter estimation by (x)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>1</value>
+		<label>Neighbor-joining tree</label>
+		<value>2</value>
+		<label>Quartet sampling + NJ tree</label>
+	      </vlist>
+	      <flist>
+		<value></value>
+		<code>""</code>
+		<value>1</value>
+		<code>""</code>
+		<value>2</value>
+		<code>"x\\n"</code>
+	      </flist>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>list_unresolved</name>
+	    <attributes>
+
+	      <prompt>List unresolved quartets (u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "u\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>list_trees</name>
+	    <attributes>
+
+	      <prompt>List puzzling step trees (j)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "j\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+
+</pise>

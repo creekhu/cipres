@@ -1,0 +1,40 @@
+<parameter type="Float" issimple="1" ismandatory="1">
+	<name>runtime</name>
+	<attributes>
+		<group>1</group>
+		<paramfile>scheduler.conf</paramfile>
+		<prompt>Maximum Hours to Run (click here for help setting this correctly)</prompt>
+		<vdef><value>1.0</value></vdef>
+		<comment>
+			<value>
+				Estimate the maximum time your job will need to run (up to 72 hrs).  Your job will be killed if it doesn't finish within the time you specify, however jobs with shorter maximum run times are often scheduled sooner than longer jobs.
+			</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+				<message>Maximum Hours to Run must be between 0.1 - 72.0.</message>
+				<language>perl</language>
+				<code>$runtime &lt; 0.1 || $runtime &gt; 72.0</code>
+			</ctrl>
+		</ctrls>
+		<format>
+			<language>perl</language>
+			<code>"runhours=$value\\n"</code>
+		</format>
+	</attributes>
+</parameter>
+<parameter type="String" issimple="1" ismandatory="1" ishidden="1">
+	<name>runtime_backup</name>
+	<attributes>
+		<group>1</group>
+		<paramfile>scheduler.conf</paramfile>
+		<precond>
+			<language>perl</language>
+			<code>!defined $runtime</code>
+		</precond>
+		<format>
+			<language>perl</language>
+			<code>"runhours=1"</code>
+		</format>
+	</attributes>
+</parameter>

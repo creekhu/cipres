@@ -1,0 +1,28 @@
+MRBAYES_XSEDE
+
+This document is meant to simulate a data set that contains no mrbayes block, and is configured from the interface
+
+A file with a mb block submits this parameter map:
+
+Covarionopts_=0 
+Parsmodelopts_=0 
+flagdatatype_=dna 
+mrbayesblockquery_=1 
+nchains_specified_=4 
+nruns_specified_=2 
+reportancstateopts_=0 
+reportposselopts_=0 
+reportsiterateopts_=0 
+runtime_=0.1 
+scientific_=0 
+set_beagle_params_=1 
+set_outgroup=
+
+of these, the following are relevant and settable in the interface:
+runtime_=0.1 (default) 
+mrbayesblockquery_=1 (switch, 0 or 1) 
+nchains_specified_=4 (The value entered for nruns and nchains influences the number of cpu's that can be used in parallel,
+can be up to 16 each, and the product of the two must not exceed 16. Thes emust agree with the information in the MRBAYES block)
+nruns_specified_=2  
+set_autoclose_confirm_=1 (confirm there is no set autoclose=no in the nexus block
+set_beagle_params_=1 (turn beagle on, 1 and off, 0 default=1)

@@ -1,0 +1,288 @@
+
+#######################################################################################################
+I have decided to record every change, whether or not it impacts the REST API. This will help me remember.
+It will be obvious from the description if the change is consequential for REST API. -mark
+#######################################################################################################
+
+For each change you commit, this info is needed:
+===================================================================================================================================
+Pise Filename:
+Committer name:
+Branch/Rev #/Date Committed:
+Branch/Rev #/Date Committed:
+    ... one for each branch/trunk you commit to
+Purpose of Change:
+Fogbugz url: (if we're still using fogbugz)
+Parameters Changed/Description:
+====================================================================================================================================
+
+A totally fictional, nonsense example entry:
+
+raxmlhpc2bb.xml
+Committed by: TS
+Committed To:
+    - trunk: 8309: 6/21/2014 11:00 am
+    - portal-R30: 8349: 6/21/2014 11:10 am
+Purpose: Correct 2 invalid preconditions.  Users were unable to supply a constraint tree when running bootstraps.
+Fogbugz: <link to fogbugz entry, if we're still using fogbugz>
+Parameters Changed:
+    - bootstop - changed precond from: '!$use_bootstopping' to '$use_bootstopping'
+    - constraint - changed precond from: '!defined binary_backbone' to '!defined binary_backbone &amp;&amp $use_bootstopping'
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8343: 6/22/2014 9:39 am
+	- sdk-R30: 8349: 6/23/2014 7:15 am
+Purpose of Change: Correct incorrect ctrl. A ctrl was activated when it shouldn't have been, giving users a non-sensical error message, and
+preventing submission of a legitimate job.
+
+Fogbugz url: http://phylo-bugz.sdsc.edu/fogbugz/default.asp?353839#803682
+
+Parameters Changed/Description: 
+The element thorough_opt had a ctrl activated by !defined $treetop. This was incorrect because it made submission impossible for situations where
+when -x was de-selected. To correct the error, we activate the ctrl only when both $thorough_opt &amp;&amp; !defined $treetop are true.
+In other words, the requirement for the tree is only present when thorough optimization is requested. 
+===================================================================================================================================
+Pise Filename:beast_tg.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8343: 6/24/2014 2:37 pm
+	- sdk-R30: 8349: 6/24/2014 2:35 pm
+Purpose of Change: Made all jobs submitted with -threads 8. Also moved the location of the No BEAGLE option.
+
+Fogbugz url: None
+
+Parameters Changed/Description: 
+These are text changes and are inconsequential
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8343: 7/22/2014 9:39 am
+	- sdk-R31: 8349: 7/22/2014 11:10 am
+Purpose of Change: Add some new model options for protein data sets.
+
+Fogbugz url: This was a user request from Sonia Andrade via email.
+
+Parameters Changed/Description: 
+The element prot_matrix_spec was missing some model values now available. These were added. 
+								<value>DUMMY</value>
+								<label>DUMMY</label>
+								<value>DUMMY2</value>
+								<label>DUMMY2</label>
+								<value>AUTO</value>
+								<label>AUTO</label>
+								<value>LG4M</value>
+								<label>LG4M</label>
+								<value>LG4X</value>
+								<label>LG4X</label>
+								<value>PROT_FILE</value>
+								<label>PROT_FILE</label>
+								<value>GTR_UNLINKED</value>
+								<label>GTR_UNLINKED</label>
+												
+===================================================================================================================================
+Pise Filename:raxmlhpc2bb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8343: 7/3/2014 3:04 pm
+	- sdk-R31: 8498: 8.4.2014 3:57 PM
+Purpose of Change: Remove -T 6 from the command line.
+
+Fogbugz url: None.
+
+Parameters Changed/Description: 
+The element raxmlhpc_hybridlogic3 had the value -T 6 removed, because it is redundant with Bryan's wrapper.
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2bb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8343: 7/3/2014 3:04 pm
+	- sdk-R31: 8498: 8/4/2014 3:57 PM
+Purpose of Change: Remove -T 6 from the command line.
+
+Fogbugz url: None.
+
+Parameters Changed/Description: 
+The element raxmlhpc_hybridlogic3 had the value -T 6 removed, because it is redundant with Bryan's wrapper.
+
+===================================================================================================================================
+Pise Filename:pauprat.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed: (this is an aggregate of several commits over several days)
+	- trunk: 8520: 8/8/2014 7:51 am
+	- sdk-R31: 8521: 8/8/2014 8:36 am
+Purpose of Change: Several changes required in preparation for release in MorphoBank.
+
+Fogbugz url: None. Via correspondence with Seth Kaufmann and Terri and Mark.
+
+Parameters Changed/Description: 
+1. specify_nchar now has the ismandatory="1" flag
+2. the element setup_hidden1 was changed, The string nrep = 1 replaced a variable set by the user. This should always have 
+been nrep = 1.
+3. the element intiation_string was changed. the flag -n was added so PAUP would work non-interactively. This eliminates a problematic error message.
+4. for PAUPrat, the set_multrees option should always be "no", though it was exposed as an option. We eliminated this option and set it as a string 
+always "no". the parameter is now hard coded.
+
+===================================================================================================================================
+Pise Filename:mafft_tg.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed: (this is an aggregate of several commits over several days)
+	- trunk: 8421: 7/10/2014 12:08 PM
+	- sdk-R31: 8420: 7/10/2014 12:07 PM
+Purpose of Change: Several changes required in text strings, but these are not consequential preparation for release in MorphoBank.
+
+Fogbugz url: None. 
+
+Parameters Changed/Description: 
+MAFFT was running on 32 threads, and this was changed to make it run on 8. The changes are all textual and occur in several places.
+
+===================================================================================================================================
+Pise Filename:beast2_xsede.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed: Several changes over a few days.
+	- trunk: 8488: 8/1/2014 12:21 PM
+	- sdk-R31: 8500: 8/4/2014 4:27 PM
+Purpose of Change: A users file required us to implement the -overwrite flag
+
+Fogbugz url: None. 
+
+Parameters Changed/Description: 
+1. The element overwrite_logs was added to allow users to run certain files that will otherwise fail. It 
+is a switch, 0 is the default, 1 allows log overwriting.
+2. Re-write submission rules, eliminating elements that created a dependence on partition numbers.
+Comment out these elements: nu_partitions,is_partitioned,partitions_4, partitions_2; set "-threads 8" explicitly in partitions_1; correct text in runtime element.
+3. correct spelling error in element beast_nobeagle_trestles command line string
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8
+	- sdk-R31: 
+Purpose of Change: The RAXML interface had to be modified to add parameters required by raxmlGUI
+
+Fogbugz url: None: This was anticipation of the raxmlGUI requirements. No FB report.
+
+Parameters Changed/Description: Several elements were added:
+1. outsuffix: this is a string that specifies the extension name for all output files. by default it is set to result. The flag is -n $outsuffix
+2. disable_ratehet: this is a switch that adds the -V flag to the command line. It is 0 by default. It is only valid when CAT models are used. Other use causes a failure.
+3. number_cats: a precond was repaired on this, it should have no consequence in the interface for rest users
+4. MLsearch_CAT: this is a switch that adds the -F flag to the command line. by default it is set to 0.
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8/21/2014
+	- sdk-R31: 
+Purpose of Change: The RAXML interface had to be modified to add parameters requested by a user.
+
+Fogbugz url: http://phylo-bugz.sdsc.edu/fogbugz/default.asp?354465
+
+Parameters Changed/Description: Several elements were added:
+1. added the -f u option. element = morpho_weight_calibration 
+2. added the -f v option. element = classify_into_reftree
+3. added the -a option. element = set_weights
+4. to use the -f u option, we had to make it ok to provide a parsimony seed with the -f u option. Changed precond on provide_parsimony_seed
+5. to use the -f u option, we had to make it ok to use the -N (specify_runs) option with -f u: specify_runs 
+6. added a control so the parameter outsuffix is required.
+7. preconds were added to a number of elements to suppress their availability in the presence of the new options -f u and -f v 
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 8/22/2014
+	- sdk-R31: 9/9/2014 2:04 PM
+Purpose of Change: The RAXML interface had to be modified to correct the implementation of -J as requested by a user.
+
+Fogbugz url: http://phylo-bugz.sdsc.edu/fogbugz/default.asp?354616
+
+Parameters Changed/Description: 
+1. The -J option is unique for RaxML in requiring the -z flag instead of the -s flag for the input file.
+As a result, we had to modify the -s infile element. We split the infile element from the code that specifies -s infile on the command line, 
+then we put a precond on the element that specifies -s infile (whenever -J is not called), and added a second element that specifies -z infile when -J is called. 
+2. The -J option has some other flags, and these were implemented. These are new options on the -J flag: STRICT, MR_DROP, STRICT_DROP
+3. Repaired some precons involving gtrgamma
+4. Changed the precond on the -z option so it cant be run with -J. Because -z is the invocation line.
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 9/18/2014
+	- sdk-R31: 9/18/2014 9:11 AM
+Purpose of Change: The RAXML interface had to be modified to correct the default max bootstraps allowed.
+
+Fogbugz url: http://phylo-bugz.sdsc.edu/fogbugz/default.asp?354752
+
+Parameters Changed/Description: 
+1. The max value for bootstraps is 1,000, but the interface allowed 5,000. Fixed this
+2. Changed precond on element mrbootstopping_type to depend only on $mr_bootstopping
+
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 9/22/2014 7:08 AM
+	- sdk-R31: 9/22/2014 8:03 AM
+Purpose of Change: The RAXML interface had to be modified to incorporate the request for -j and -D options.
+
+Fogbugz url: http://phylo-bugz.sdsc.edu/fogbugz/default.asp?354779 and 354752
+
+Parameters Changed/Description: 
+1. The max value for bootstraps is 1,000, but the interface allowed 5,000. Fixed this
+2. Changed precond on element mrbootstopping_type to depend only on $mr_bootstopping
+
+
+===================================================================================================================================
+Pise Filename:clearcut.xml; clustalw.xml; consense.xml, contralign.xml; muscle.xml; nclconverter.xml; pauprat_exp.xml; pauprat.xml; poy.xml; 
+probalign.xml; probcons.xml; readseq.xml, seqboot.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 10/20/2014 4-4:12 PM
+	- sdk-R31:
+Purpose of Change: Get rid of the &runtime parameter.
+
+===================================================================================================================================
+Pise Filename:clearcut.xml; clustalw.xml; consense.xml, contralign.xml; muscle.xml; nclconverter.xml; pauprat_exp.xml; pauprat.xml; poy.xml; 
+probalign.xml; probcons.xml; readseq.xml, seqboot.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 10/22-23/2014 various PM
+	- sdk-R31:
+Purpose of Change: Get make sure the start.txt, term.txt, and done.txt files are returned.
+consense, muscle, poy, probcons, readseq, seqboot.
+"Result" Elements were added to return eahc of the noted files.
+
+===================================================================================================================================
+Pise Filename:dppdiv.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 12/2 
+	- sdk-R32:12/2
+	-REST3:12/2
+Purpose of Change:Fix the dphp element so it accepts a numerical value. This was missing before.
+ 
+ 
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 12/4
+	- sdk-R32:12/4
+	-REST3:12/4
+Purpose of Change:Fix a precond on the -f x option, so a -t tree is possible but not required. 
+===================================================================================================================================
+Pise Filename:raxmlhpc2_tgb.xml
+Committed by: MAM 
+Branch/Rev #/Date Committed:
+	- trunk: 12/11
+	- sdk-R32:12/11
+	-REST3:12/11
+Purpose of Change:Add the element ascertainment_corr, which allows the user (the user must choose) an ascertainment correction type if they choose ascertainment correction.

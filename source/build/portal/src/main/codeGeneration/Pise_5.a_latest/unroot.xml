@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>unroot: use of RETREE to unroot a tree</description>
+    &phylip_header;
+  </head>
+
+  <command>unroot</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>unroot</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "retree &lt; params" </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>treefile</name>
+      <attributes>
+	<prompt>Tree File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $treefile intree; "</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>The program hangs when provided a tree with [...] added to branch lengths.</value>
+	</comment>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>outtree</name>
+      <attributes>
+	<filenames>outtree</filenames>
+        <pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+        </pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>commands</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"Y\\nW\\nU\\nQ\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+
+  </parameters>
+
+</pise>

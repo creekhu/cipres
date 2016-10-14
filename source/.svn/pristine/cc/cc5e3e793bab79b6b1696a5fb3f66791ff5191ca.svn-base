@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>TRIMEST</title>
+<description>Trim poly-A tails off EST sequences (EMBOSS)</description>
+<category>edit</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/trimest.html</doclink>
+</head>
+
+<command>trimest</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>minlength</name>
+	<attributes>
+		<prompt>Minimum length of a poly-A tail (-minlength)</prompt>
+		<vdef>
+			<value>4</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -minlength=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>This is the minimum length that a poly-A (or poly-T) tail must have before it is removed. If there are mismatches in the tail than there must be at least this length of poly-A tail before the mismatch for the mismatch to be considered part of the tail.</value>
+		</comment>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>mismatches</name>
+	<attributes>
+		<prompt>Number of contiguous mismatches allowed in a tail (-mismatches)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -mismatches=$value" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>If there are this number or fewer contiguous non-A bases in a poly-A tail then, if there are '-minlength' 'A' bases before them, they will be considered part of the tail and removed . &lt;BR&gt; For example the terminal 4 A's of GCAGAAAA would be removed with the default values of -minlength=4 and -mismatches=1 (There are not at least 4 A's before the last 'G' and so only the A's after it are considered to be part of the tail). The terminal 9 bases of GCAAAAGAAAA would be removed; There are at least -minlength A's preceeding the last 'G', so it is part of the tail.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>reverse</name>
+	<attributes>
+		<prompt>Write the reverse complement when poly-T is removed (-reverse)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noreverse"</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>When a poly-T region at the 5' end of the sequence is found and removed, it is likely that the sequence is in the reverse sense. This option will change the sequence to the forward sense when it is written out. If this option is not set, then the sense will not be changed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>fiveprime</name>
+	<attributes>
+		<prompt>Remove poly-T tails at the 5' end of the sequence. (-fiveprime)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nofiveprime"</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>If this is set true, then the 5' end of teh sequence is inspected for poly-T tails. These will be removed if they are longer than any 3' poly-A tails. If this is false, then the 5' end is ignored.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>6</group>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>8</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

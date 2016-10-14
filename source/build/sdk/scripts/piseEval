@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+# Make stdout unbuffered
+$old_fh = select(STDOUT);
+$| = 1;
+select($old_fh);
+
+$statement = "";
+
+# This reads lines from stdin, doesn't strip the newline.
+while (<>)
+{
+	if ($_ =~ m/^piseEnd$/)
+	{
+		$_ = $nothing;
+		eval $statement;
+		print "\nPiseEvalError=" . $@ . "\n" if $@;
+		print "\nPiseEval:\n";
+		$statement = "";
+	} else
+	{
+		$statement = $statement . $_;
+	}
+}

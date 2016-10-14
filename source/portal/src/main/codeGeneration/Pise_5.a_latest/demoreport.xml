@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>DEMOREPORT</title>
+<description>Reads a sequence and feature table, writes a report (EMBOSS)</description>
+<category>test</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/demoreport.html</doclink>
+</head>
+
+<command>demoreport</command>
+
+<parameters>
+
+&emboss_init;
+
+<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+<name>sequence</name>
+<attributes>
+	<prompt>sequence [single sequence] (-sequence)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -sequence=$value -sformat=fasta"</code>
+	</format>
+	<group>1</group>
+	<seqtype><value></value></seqtype>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+<name>report</name>
+<attributes>
+	<prompt>report (-report)</prompt>
+	<vdef><value>report.out</value></vdef>
+	<format>
+		<language>perl</language>
+		<code>" -report=$value"</code>
+	</format>
+	<group>2</group>
+</attributes>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>3</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

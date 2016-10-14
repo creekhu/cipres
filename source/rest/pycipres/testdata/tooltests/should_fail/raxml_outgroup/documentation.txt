@@ -1,0 +1,3 @@
+SHOULD FAIL with "invalid character error"
+Use this to test whitelist handling of String parameters outsuffix_ and outgroup_
+

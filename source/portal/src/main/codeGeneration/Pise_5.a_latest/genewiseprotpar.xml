@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd"[
+<!ENTITY param SYSTEM "XMLDIR/genewisepar_param.xml">
+]> 
+
+<pise>
+  
+  <head>
+    <title>GeneWise</title>
+    <version>5.2.1-90/90</version>
+    <description>compares protein sequeces or Hidden Markov Models (HMMs)
+    directly against genomic DNA data, with gene structure prediction
+    implicit in subsequent matches</description>
+    <authors>Paracel</authors>
+    <reference>Moira Regelson, Alan Arehart, Tristan Gill, Joseph A.
+    Borkowski, Guy Slater and Ewan Birney. GeneWise Port to the Paracel GeneMatcher,.
+               
+HMM BTK 5.2.1-90/90 2003-06-12 (Fdf Client 1.500)
+               Copyright 2001 Paracel, Inc.</reference>
+    <doclink>http://bioweb.pasteur.fr/seqanal/search/index.html</doclink>
+    
+  </head>
+  
+  <command>genewiseprotpar</command>
+  
+  <parameters>
+    
+    <parameter ismandatory="1" iscommand="1" ishidden="1" type="String">
+      <name>genewiseprotpar</name>
+      <attributes>
+	<prompt>genwise programm</prompt>
+	<format>	
+	  <language>perl</language>
+	  <code>"echo btk genewise"</code>
+	</format>
+      </attributes>
+    </parameter>
+    
+   
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>database</name>
+      <attributes>
+	<prompt>One protein (file in fasta format) (d)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" d=$value"</code>
+	</format>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+
+
+    &param;
+    
+   
+     </parameters>
+  
+  </pise>
+ 

@@ -1,0 +1,11 @@
+Unloading compiler-dependent module mvapich2_ib/1.9
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.0: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.1: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.2: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.3: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.4: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.5: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.6: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.7: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.8: not found
+./batch_command.cmdline: line 2: type: RAxML_result.infile.tre.RUN.9: not found

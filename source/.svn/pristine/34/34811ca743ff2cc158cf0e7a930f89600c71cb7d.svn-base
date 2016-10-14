@@ -1,0 +1,88 @@
+MUSCLE
+
+the current test runs
+
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+data_type_ - Excl - Data type (-seqtype)
+stable_ - Switch - Preserve the order of the input sequences
+make_scorefile_ - Switch - Write a Matrix Score File
+Section: ****************************************************************************
+clusteronly_para
+*************************************************************************************
+clusteronly_ - Switch - Use clustering only (upgma)
+clusteronlymaxiters_ - Integer - Number of iterations for Clustering (-maxiters)
+Section: ****************************************************************************
+runparams
+*************************************************************************************
+maxiterations_ - Integer - Number of iterations (-maxiters)
+max_mem_ - Integer - Set the Maximum Memory to be allocated for this job
+protprofilefunction_ - Excl - Specify Protein Profile Scoring Function
+hydrowindow_ - Integer - Window size for determining whether a region is hydrophobic. Protein only. (-hydro)
+hydrofactormultiplier_ - Float - Multiplier for gap open/close penalties in hydrophobic regions, protein only (-hydrofactor)
+logfile_ - Switch - Produce a logfile containing the command line? (-log)
+verboselogfile_ - Switch - Produce a more verbose logfile? (-verbose)
+logfileout_ - Results -
+verboselogfileout_ - Results -
+Section: ****************************************************************************
+User_matrix
+*************************************************************************************
+add_matrix_ - Switch - User Supplied Matrix
+mymatrix_ - InFile - Matrix File (NCBI or WU-BLAST format)
+gpopen_ - Float - Gap Open Penalty (must be negative)
+gpextend_ - Float - Gap Extend Penalty (must be negative)
+ctr_ - Float - Center Value (must be zero or negative)
+Section: ****************************************************************************
+Diagonal_Options
+*************************************************************************************
+use_diags_ - Switch - Use Diagonals
+diagfunction_ - List - Diagonal Functions (-diags)
+maxdiagdist_ - Integer - Maximum distance between two diagonals that allows them to merge into one diagonal. (-diagbreak)
+mindiaglength_ - Integer - Minimum length of diagonal (-diaglength)
+diagmarginpos_ - Integer - Discard this many positions at ends of diagonal (-diagmargin)
+Section: ****************************************************************************
+tree_options
+*************************************************************************************
+use_guide_tree_ - Switch - Provide a Guide Tree
+guidetree_ - InFile - Guide Tree File; Newick/Phylip format (-usetree)
+make_tree1file_ - Switch - Save tree produced in first iteration in Newick (Phylip-compatible) format
+make_tree2file_ - Switch - Save tree produced in second iteration in Newick (Phylip-compatible) format
+Section: ****************************************************************************
+options1
+*************************************************************************************
+use_weights_1_ - Switch - Use Weights for Iterations 1 and 2
+weight1_ - Excl - Sequence weighting scheme for Iteration 1: (-weight1)
+distance1p_ - Excl - Distance measure for iteration 1; Protein only (-distance1)
+cluster1_ - Excl - Clustering for Iterations 1 and 2: (-cluster1)
+sueff1_ - Float - SUEFF(must be between 0 and 1)
+root1_ - Excl - Method used to root tree in iterations 1 and 2 (-root1)
+Section: ****************************************************************************
+options2
+*************************************************************************************
+maxtrees_ - Integer - Maximum trees in Iteration 2 (-maxtrees)
+use_weights_2_ - Switch - Use Weights for Iterations 3 and beyond
+weight2_ - Excl - Sequence weighting for tree-dependent refinement.
+distance2_ - Excl - Distance Measure for Iterations 2 and above (-distance2)
+cluster2_ - Excl - Clustering method for later iterations: (-cluster2)
+sueff2_ - Float - SUEFF(must be between 0 and 1)
+root2_ - Excl - Method used to root tree in iterations 3 and beyond (-root2)
+objectivescore_ - Excl - Objective score used by tree dependent refinement (-objscore)
+anchor_ - Switch - Use Anchor Optimization (-noanchors) This option has no effect if -maxiters 1 or -maxiters 2 is specified.
+minanchorcolumnspacing_ - Integer - Minimum spacing between anchor columns
+minanchorcolumnscore_ - Float - Minimum score a column must have to be an anchor
+minsmoothanchorscore_ - Float - Minimum smoothed score a column must have to be an anchor
+anchorsmoothingwindow_ - Integer - Window Used for Anchor Smoothing
+Section: ****************************************************************************
+output_options
+*************************************************************************************
+multi_output_ - specify output formats
+output_fasta_ - Switch - Fasta output
+output_clustal_ - Switch - Clustal output (.aln)
+output_clustals_ - Switch -
+Strict Clustal output (.aln; has the Clustal header)
+output_html_ - Switch - HTML output (.html)
+output_gcg_ - Switch - GCG output (.msf)
+output_phyi_ - Switch - Interleaved Phylip output
+output_phys_ - Switch -
+Sequential Phylip output (.phy)
+

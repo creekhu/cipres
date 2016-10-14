@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <description>makehist - create a histogram from a score file</description>
+    <authors>R. Hughey, A. Krogh</authors>
+  </head>
+
+
+<command>makehist</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>makehist</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>makehist</code>
+		<language>perl</language>
+		<code>"makehist"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="String">
+<name>run</name>
+<attributes>
+
+	<prompt>Run name</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>test</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>Nllfile</name>
+<attributes>
+
+	<prompt>Score file (-Nllfile)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -Nllfile $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>sam_score</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>outfiles</name>
+<attributes>
+
+	<filenames>*.ps *.data *.plt</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>histbins</name>
+	<attributes>
+
+		<prompt>Number of bins (-histbins)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value != $vdef)? " -histbins $value" : "" </code>
+		</format>
+		<vdef><value>10</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>plotps</name>
+	<attributes>
+
+		<prompt>Creates a postscript file (-plotps)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -plotps $value" : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>0</value>
+			<label>0: only a .plt file and one or two .data files are generated</label>
+			<value>1</value>
+			<label>1: PostScript, default rectangular shape</label>
+			<value>2</value>
+			<label>2: PostScript, square plot</label>
+			<value>3</value>
+			<label>3: PostScript + .plt and .data files</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>plot_options</name>
+<prompt>Plot options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Float">
+	<name>plotmax</name>
+	<attributes>
+
+		<prompt>Highest Y axis value (-plotmax)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -plotmax $value" : "" </code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>plotmin</name>
+	<attributes>
+
+		<prompt>Lowest Y axis value (-plotmin)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -plotmin $value" : "" </code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Y axis calculated internally if plotmax = plotmin</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>plotleft</name>
+	<attributes>
+
+		<prompt>Lowest X axis value (-plotleft)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -plotleft $value" : "" </code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>plotright</name>
+	<attributes>
+
+		<prompt>Highest X axis value (-plotright)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -plotright $value" : "" </code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>X axis calculated internally if plotleft = plotright</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>plotline</name>
+	<attributes>
+
+		<prompt>Vertical line at plotline if &lt;&gt; 0 (-plotline)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -plotline $value" : "" </code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>plotnegate</name>
+	<attributes>
+
+		<prompt>Negate scores (-plotnegate)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -plotnegate 1" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

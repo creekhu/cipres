@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SequenceParserConfig>
+	<EntityTypes>
+		<EntityType id="NUCLEIC_ACID" regex="^([ATGCURYKMSWBDHVNXatgcurykmswbdhvnx-]+)$"/>
+		<EntityType id="PROTEIN" regex="^([A-Za-z\-\*]+)$"/>
+	</EntityTypes>
+	<DataFormats>
+		<DataFormat id="GENBANK" regex="\nORIGIN[^\n]*(.*)//"/>
+		<DataFormat id="GENPEPT" regex="\nORIGIN[^\n]*(.*)//"/>
+		<DataFormat id="FASTA" regex=">[^\n]+(.*)"/>
+		<DataFormat id="UNIPROT" regex="\nSQ.*;\n(.*)\n//"/>
+		<DataFormat id="EMBL" regex="\nSQ.*;\n(.*)\n//"/>
+	</DataFormats>
+</SequenceParserConfig>

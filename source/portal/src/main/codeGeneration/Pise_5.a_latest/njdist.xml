@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+
+<pise>
+  <head>
+    <title>Njdist</title>
+    <version>1.2.5</version>
+    <description>NJDist Neighbor Joining Phylogeny from Distance Matrix </description>
+    <authors>J. Adachi &amp; M. Hasegawa</authors>
+    <category>phylogeny</category>
+  </head>
+
+  <command>njdist</command>
+
+  <parameters>
+    
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>distances</name>
+      <attributes>
+	<prompt>Distance Matrix File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>3</group>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>distopt</name>
+	<prompt>NJDist Parameters</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>UPGMA</name>
+	    <attributes>
+	      <prompt>UPGMA (-u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -u":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>branch</name>
+	    <attributes>
+	      <prompt>Branch Length (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -w":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>leastsq</name>
+	    <attributes>
+	      <prompt>Least squares (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -l":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	 
+	  <parameter type="Switch">
+	    <name>sequential</name>
+	    <attributes>
+	      <prompt>sequential input form (PHYLIP) (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -S":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+	      <prompt>Branch number of Out group (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -o $value":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>treefile</name>
+	    <attributes>
+	      <prompt>Output Tree (.tre) file? (-T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -T $distances":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>Topo_file</name>
+	    <attributes>
+	      <prompt>Output Topology (.tpl) file? (-t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -t $distances":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+          <parameter type="Results">
+            <name>tre_file</name>
+            <attributes>
+              <filenames>*.tre</filenames>
+              <precond>
+                <language>perl</language>
+                <code>$treefile</code>
+              </precond>
+            </attributes>
+          </parameter>
+	  
+          <parameter type="Results">
+            <name>tpl_file</name>
+            <attributes>
+              <filenames>*.tpl</filenames>
+              <precond>
+                <language>perl</language>
+                <code>$Topo_file</code>
+              </precond>
+            </attributes>
+          </parameter>
+
+          <parameter type="Results">
+            <name>eps_file</name>
+            <attributes>
+              <filenames>*.eps</filenames>
+              <precond>
+                <language>perl</language>
+                <code>$Topo_file || $treefile</code>
+              </precond>
+            </attributes>
+          </parameter>
+
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    
+  </parameters>
+</pise>

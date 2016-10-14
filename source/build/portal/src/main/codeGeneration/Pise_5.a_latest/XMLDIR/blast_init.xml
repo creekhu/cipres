@@ -1,0 +1,14 @@
+<parameter ishidden="1" type="String">
+<name>blast_init</name>
+<attributes>
+	<format>
+		<language>perl</language>
+                <!-- you can put here statements to initialize 
+                blast runs, such as BLASTDB or NCBI environment variables
+                intialization --> 
+                <code> " " </code>
+
+        </format>
+        <group>-10</group>
+</attributes>
+</parameter>

@@ -1,0 +1,2 @@
+BEAST running job
+This job should run successfully, provide a seed, and not call beagle.

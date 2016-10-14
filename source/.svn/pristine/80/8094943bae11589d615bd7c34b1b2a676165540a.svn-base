@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>GETORF</title>
+<description>Finds and extracts open reading frames (ORFs) (EMBOSS)</description>
+<category>nucleic:gene finding</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/getorf.html</doclink>
+</head>
+
+<command>getorf</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- DNA [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>table</name>
+	<attributes>
+		<prompt>Code to use -- Genetic codes (-table)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Standard</label>
+				<value>1</value>
+				<label>Standard (with alternative initiation codons)</label>
+				<value>2</value>
+				<label>Vertebrate Mitochondrial</label>
+				<value>3</value>
+				<label>Yeast Mitochondrial</label>
+				<value>4</value>
+				<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+				<value>5</value>
+				<label>Invertebrate Mitochondrial</label>
+				<value>6</value>
+				<label>Ciliate Macronuclear and Dasycladacean</label>
+				<value>9</value>
+				<label>Echinoderm Mitochondrial</label>
+				<value>10</value>
+				<label>Euplotid Nuclear</label>
+				<value>11</value>
+				<label>Bacterial</label>
+				<value>12</value>
+				<label>Alternative Yeast Nuclear</label>
+				<value>13</value>
+				<label>Ascidian Mitochondrial</label>
+				<value>14</value>
+				<label>Flatworm Mitochondrial</label>
+				<value>15</value>
+				<label>Blepharisma Macronuclear</label>
+				<value>16</value>
+				<label>Chlorophycean Mitochondrial</label>
+				<value>21</value>
+				<label>Trematode Mitochondrial</label>
+				<value>22</value>
+				<label>Scenedesmus obliquus</label>
+				<value>23</value>
+				<label>Thraustochytrium Mitochondrial</label>
+			</vlist>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -table=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>minsize</name>
+	<attributes>
+		<prompt>Minimum nucleotide size of ORF to report (-minsize)</prompt>
+		<vdef>
+			<value>30</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -minsize=$value" : ""</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>maxsize</name>
+	<attributes>
+		<prompt>Maximum nucleotide size of ORF to report (-maxsize)</prompt>
+		<vdef>
+			<value>1000000</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -maxsize=$value" : ""</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>find</name>
+	<attributes>
+		<prompt>Type of output -- Type of sequence to output (-find)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Translation of regions between STOP codons</label>
+				<value>1</value>
+				<label>Translation of regions between START and STOP codons</label>
+				<value>2</value>
+				<label>Nucleic sequences between STOP codons</label>
+				<value>3</value>
+				<label>Nucleic sequences between START and STOP codons</label>
+				<value>4</value>
+				<label>Nucleotides flanking START codons</label>
+				<value>5</value>
+				<label>Nucleotides flanking initial STOP codons</label>
+				<value>6</value>
+				<label>Nucleotides flanking ending STOP codons</label>
+			</vlist>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -find=$value"</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This is a small menu of possible output options. The first four options are to select either the protein translation or the original nucleic acid sequence of the open reading frame. There are two possible definitions of an open reading frame: it can either be a region that is free of STOP codons or a region that begins with a START codon and ends with a STOP codon. The last three options are probably only of interest to people who wish to investigate the statistical properties of the regions around potential START or STOP codons. The last option assumes that ORF lengths are calculated between two STOP codons.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>methionine</name>
+	<attributes>
+		<prompt>Change initial START codons to Methionine (-methionine)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nomethionine"</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>START codons at the beginning of protein products will usually code for Methionine, despite what the codon will code for when it is internal to a protein. This qualifier sets all such START codons to code for Methionine by default.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>circular</name>
+	<attributes>
+		<prompt>Is the sequence circular (-circular)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -circular" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>reverse</name>
+	<attributes>
+		<prompt>Find ORFs in the reverse sequence (-reverse)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noreverse"</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>Set this to be false if you do not wish to find ORFs in the reverse complement of the sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>flanking</name>
+	<attributes>
+		<prompt>Number of flanking nucleotides to report (-flanking)</prompt>
+		<vdef>
+			<value>100</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -flanking=$value" : ""</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>If you have chosen one of the options of the type of sequence to find that gives the flanking sequence around a STOP or START codon, this allows you to set the number of nucleotides either side of that codon to output. If the region of flanking nucleotides crosses the start or end of the sequence, no output is given for this codon.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq -- stopprotein (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>10</group>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq -- stopprotein</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>12</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

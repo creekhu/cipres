@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAPS</title>
+    <description>Statistical Analysis of Protein Sequences</description>
+    <category>protein:composition</category>
+    <authors>V. Brendel</authors>
+    <reference>Brendel, V., Bucher, P., Nourbakhsh, I., Blaisdell, B.E., Karlin, S. (1992) Methods and algorithms for statistical analysis of protein sequences. Proc. Natl. Acad. Sci. USA 89: 2002-2006. </reference>
+  </head>
+  
+  <command>saps</command>
+  
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>saps</name>
+      <attributes>
+	
+	<format>
+	  <language>seqlab</language>
+	  <code>saps</code>
+	  <language>perl</language>
+	  <code>"saps"</code>
+	</format>
+	<group>0</group>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+	
+	<prompt>Protein sequence(s) File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>4</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output options</prompt>
+	<group>1</group>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>documented</name>
+	    <attributes>
+	      
+	      <prompt>Generate documented output (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -d":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>The output will come with documentation that annotates each part of the program; this flag should be set when SAPS is used for the first time as it provides helpful explanations with respect to the statistics being used and the layout of the output.</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>terse</name>
+	    <attributes>
+	      
+	      <prompt>Generate terse output (-t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -t":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This flag specifies terse output that is limited to the analysis of the charge distribution and of high scoring segments.</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>verbose</name>
+	    <attributes>
+	      
+	      <prompt>Generate verbose output (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -v":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>table</name>
+	    <attributes>
+	      
+	      <prompt>Append computer-readable table summary output (-T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -T":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This flag is used in conjunction with the analysis of sets of proteins ; if specified, the file saps.table is appended with computer-readable lines describing the input files and their significant features.</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control options</prompt>
+	<group>1</group>
+	<parameters>
+	  
+	  <parameter type="Excl">
+	    <name>specie</name>
+	    <attributes>
+	      
+	      <prompt>Use this specie for quantile comparisons (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -s $value" : "" </code>
+	      </format>
+	      <vdef><value>swp23s</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>BACSU</value>
+		<label>BACSU: Bacillus subtilis</label>
+		<value>DROME</value>
+		<label>DROME: Drosophila melanogaster</label>
+		<value>HUMAN</value>
+		<label>HUMAN: human</label>
+		<value>RAT</value>
+		<label>RAT: rat</label>
+		<value>YEAST</value>
+		<label>YEAST: Saccharomyces cerevisiae</label>
+		<value>CHICK</value>
+		<label>CHICK: chicken</label>
+		<value>ECOLI</value>
+		<label>ECOLI: Escherichia coli</label>
+		<value>MOUSE</value>
+		<label>MOUSE: mouse</label>
+		<value>XENLA</value>
+		<label>XENLA: frog</label>
+		<value>swp23s</value>
+		<label>swp23s: random sample of proteins from SWISS-PROT 23.0</label>
+	      </vlist>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>H_positive</name>
+	    <attributes>
+	      
+	      <prompt>Count H as positive charge (-H)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -H":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>By default, SAPS treats only lysine (K) and arginine (R) as positively charged residues. If the command line flag -H is set, then histidine (H) is also treated as positively charged in all parts of the program involving the charge alphabet.</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="String">
+	    <name>analyze</name>
+	    <attributes>
+	      
+	      <prompt>Analyze spacings of amino acids X, Y, .... (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -a $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Clusters of particular amino acid types may be evaluated by means of the same tests that are used to detect clustering of charged residues (binomial model and scoring statistics). These tests are invoked by setting this flag; for example, to test (separately) for clusters of alanine (A) and serine (S), set thisparameter to AS. The binomial test is also programmed for certain combinations of amino acids: AG (flag -a a), PEST (flag -a p), QP (flag -a q), ST (flag -a s).</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <parameter type="Results">
+      <name>tablefile</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$table</code>
+	</precond>
+	<filenames>*.table</filenames>
+	
+      </attributes>
+    </parameter>
+    
+    
+  </parameters>
+</pise>

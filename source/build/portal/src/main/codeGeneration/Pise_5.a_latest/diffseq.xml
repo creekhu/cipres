@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>DIFFSEQ</title>
+<description>Find differences between nearly identical sequences (EMBOSS)</description>
+<category>alignment:differences</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/diffseq.html</doclink>
+</head>
+
+<command>diffseq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>asequence</name>
+	<attributes>
+		<prompt>asequence -- any [single sequence] (-asequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -asequence=$value"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>2</value>
+			<value>4</value>
+			<value>14</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>bsequence</name>
+	<attributes>
+		<prompt>bsequence [single sequence] (-bsequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -bsequence=$value"</code>
+		</format>
+		<group>2</group>
+		<seqtype>
+			<language>acd</language>
+			<code>@($(acdprotein) ? stopprotein : nucleotide)</code>
+		</seqtype>
+		<seqfmt>
+			<value>2</value>
+			<value>4</value>
+			<value>14</value>
+		</seqfmt>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>wordsize</name>
+	<attributes>
+		<prompt>Word size (-wordsize)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -wordsize=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>The similar regions between the two sequences are found by creating a hash table of 'wordsize'd subsequences. 10 is a reasonable default. Making this value larger (20?) may speed up the program slightly, but will mean that any two differences within 'wordsize' of each other will be grouped as a single region of difference. This value may be made smaller (4?) to improve the resolution of nearby differences, but the program will go much slower.</value>
+		</comment>
+		<scalemin><value>2</value></scalemin>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>afeatout</name>
+	<attributes>
+		<prompt>afeatout (-afeatout)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>$asequence.name.diffgff</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -afeatout=$value"</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>File for output of first sequence's features</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Excl">
+		<name>afeatout_offormat</name>
+		<attributes>
+			<prompt>Feature output format (-offormat)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -offormat=$value" : "" </code>
+			</format>
+			<vlist>
+				<value>embl</value>
+				<label>embl</label>
+				<value>gff</value>
+				<label>gff</label>
+				<value>swiss</value>
+				<label>swiss</label>
+				<value>pir</value>
+				<label>pir</label>
+				<value>nbrf</value>
+				<label>nbrf</label>
+			</vlist>
+			<vdef><value>gff</value></vdef>
+			<group>6</group>
+			</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>bfeatout</name>
+	<attributes>
+		<prompt>bfeatout (-bfeatout)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>$bsequence.name.diffgff</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -bfeatout=$value"</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>File for output of second sequence's features</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Excl">
+		<name>bfeatout_offormat</name>
+		<attributes>
+			<prompt>Feature output format (-offormat)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -offormat=$value" : "" </code>
+			</format>
+			<vlist>
+				<value>embl</value>
+				<label>embl</label>
+				<value>gff</value>
+				<label>gff</label>
+				<value>swiss</value>
+				<label>swiss</label>
+				<value>pir</value>
+				<label>pir</label>
+				<value>nbrf</value>
+				<label>nbrf</label>
+			</vlist>
+			<vdef><value>gff</value></vdef>
+			<group>7</group>
+			</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>columns</name>
+	<attributes>
+		<prompt>Output in columns format (-columns)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -columns" : ""</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>The default format for the output report file is to have several lines per difference giving the sequence positions, sequences and features. &lt;BR&gt; If this option is set true then the output report file's format is changed to a set of columns and no feature information is given.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>9</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

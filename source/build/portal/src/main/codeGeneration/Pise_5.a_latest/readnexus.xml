@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>readnexus</title>
+    <description>Convert NEXUS files into fasta/mega format</description>
+    <authors>W. Fischer</authors>
+  </head>
+
+
+<command>readnexus</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>readnexus</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>readnexus</code>
+		<language>perl</language>
+		<code>"readnexus"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Nexus File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>nexus_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>fastafile</name>
+<attributes>
+
+	<filenames>*.fasta</filenames>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>megfile</name>
+<attributes>
+
+	<filenames>*.meg</filenames>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Excl">
+<name>outformat</name>
+<attributes>
+
+	<prompt>Output format</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " $value" : ""</code>
+	</format>
+	<vdef><value>-f</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>-f</value>
+		<label>fasta (-f)</label>
+		<value>-m</value>
+		<label>mega (-m)</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

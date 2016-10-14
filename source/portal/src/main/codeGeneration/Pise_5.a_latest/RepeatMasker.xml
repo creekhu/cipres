@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>RepeatMasker</title>
+    <version>07262001</version>
+    <description>screens DNA sequences for low complexity DNA sequences and interspersed repeats</description>
+    <authors>Smit. A, Green. P</authors>
+    <reference>We still haven't published a paper on RepeatMasker yet but would appreciate it if you could refer to the web page (Smit,AFA and Green,P RepeatMasker at http://repeatmasker.genome.washington.edu/cgi-bin/RM2_req.pl) or otherwise to Smit, AFA and Green, P., unpublished results.</reference>
+    <category>nucleic:motifs</category>
+    <category>nucleic:repeats</category>
+    <category>motifs</category>
+  </head>
+
+  <command>RepeatMasker</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>RepeatMasker</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>RepeatMasker</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>resfiles</name>
+      <attributes>
+	<filenames>*.stderr *.tbl *.log *.cat *.out</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>maskedseq</name>
+      <attributes>
+	<filenames>"$seq.masked"</filenames>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>gff_file</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$gff</code>
+	</precond>
+	<filenames>*.gff</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>species</name>
+	<prompt>Species options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter issimple="1" type="Switch">
+	    <name>mus</name>
+	    <attributes>
+	      <prompt>Masks rodent specific and mammalian wide repeats (-mus)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -mus" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter issimple="1" type="Switch">
+	    <name>mam</name>
+	    <attributes>
+	      <prompt>Masks repeats found in non-primate, non-rodent mammals (-mammal)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -mammal" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter issimple="1" type="Switch">
+	    <name>ara</name>
+	    <attributes>
+	      <prompt>Masks repeats found in Arabidopsis thaliana (-arabidopsis)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -arabidopsis" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter issimple="1" type="Switch">
+	    <name>droso</name>
+	    <attributes>
+	      <prompt>Masks repeats found in Drosophilas (-drosophila)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -drosophila" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>elegans</name>
+	    <attributes>
+	      <prompt>masks repeats found in C. elegans (-elegans)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -elegans" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>lib</name>
+	    <attributes>
+	      <prompt>Custom library (e.g. from another species) (-lib)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -lib $value":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>is_only</name>
+	    <attributes>
+	      <prompt>only clips E coli insertion elements (-is_only)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -is_only" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>is_clip</name>
+	    <attributes>
+	      <prompt>clips IS elements before analysis (-is_clip)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -is_clip" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_is</name>
+	    <attributes>
+	      <prompt>skips bacterial insertion element check (-no_is)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -no_is" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>rodspec</name>
+	    <attributes>
+	      <prompt>only checks for rodent specific repeats (-rodspec)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -rodspec" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>primspec</name>
+	    <attributes>
+	      <prompt>only checks for primate specific repeats (-primspec)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -primspec" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>masking_options</name>
+	<prompt>Masking options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>nolow</name>
+	    <attributes>
+	      <prompt>Does not mask low_complexity DNA or simple repeats (-nolow)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -nolow":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>noint</name>
+	    <attributes>
+	      <prompt>Only masks low complex/simple repeats (no interspersed repeats) (-noint)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -noint":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>alu</name>
+	    <attributes>
+	      <prompt>Only masks Alus (and 7SLRNA, SVA and LTR5)(only for primate DNA) (-alu)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -alu":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>div</name>
+	    <attributes>
+	      <prompt>Masks only those repeats that are less than this percent diverged from the consensus sequence (-div)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)? " -div $value" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>cutoff</name>
+	    <attributes>
+	      <prompt>Sets cutoff score for masking repeats when using -lib (-cutoff)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -cutoff $value" : "" </code>
+	      </format>
+	      <vdef><value>225</value></vdef>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$lib</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>running_options</name>
+	<prompt>Running options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>speed</name>
+	    <attributes>
+	      <prompt>Program search speed</prompt>
+	      <vlist>
+		<value>-q</value>
+		<label>Quick search (-q)</label>
+		<value>-qq</value>
+		<label>Rush job (-qq)</label>
+		<value>-s</value>
+		<label>Slow search (-s)</label>
+	      </vlist>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " $value" : ""</code>
+	      </format>
+	      <comment>
+		<value>Quick search: 5-10% less sensitive, 3-4 times faster than default. Rush job: about 10% less sensitive. Slow search:  0-5% more sensitive, 2.5 times slower than default.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>wublast</name>
+	    <attributes>
+	      <prompt>use WU-blast, rather than cross_match as engine (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -w" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>gc</name>
+	    <attributes>
+	      <prompt>Use matrices calculated for this percentage background GC level (-gc)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)? " -gc $value" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gccalc</name>
+	    <attributes>
+	      <prompt>Program calculates the GC content even for batch files/small seqs (-gccalc)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -gccalc":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>frag</name>
+	    <attributes>
+
+	      <prompt>Maximum sequence length masked without fragmenting  (-frag)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -frag $value" : "" </code>
+	      </format>
+	      <vdef><value>51000</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>nocut</name>
+	    <attributes>
+	      <prompt>Skips the steps in which repeats are excised (-nocut)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -nocut":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>noisy</name>
+	    <attributes>
+
+	      <prompt>Prints cross_match progress report to screen (-noisy)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -noisy ": ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>align</name>
+	    <attributes>
+	      <prompt>Shows the alignments in a .align output file (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -a" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>inv</name>
+	    <attributes>
+	      <prompt>Alignments are presented in the orientation of the repeat (with option -a) (-inv)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -inv":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$a</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>cut</name>
+	    <attributes>
+
+	      <prompt>Saves a sequence (in file.cut) from which full-length repeats are excised (-cut)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -cut":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>small</name>
+	    <attributes>
+	      <prompt>Returns complete masked sequence in lower case (-small)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -small":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>xsmall</name>
+	    <attributes>
+	      <prompt>Returns repetitive regions in lowercase (rest capitals) rather than masked (-xsmall)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -xsmall":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>maskx</name>
+	    <attributes>
+	      <prompt>Returns repetitive regions masked with Xs rather than Ns (-x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -x":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>poly</name>
+	    <attributes>
+	      <prompt>Reports simple repeats that may be polymorphic (in file.poly) (-poly)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -poly":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>ace</name>
+	    <attributes>
+	      <prompt>Creates an additional output file in ACeDB format (-ace)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -ace":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gff</name>
+	    <attributes>
+	      <prompt>Creates a General Feature Finding format output (-gff)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -gff":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>u</name>
+	    <attributes>
+	      <prompt>Creates an untouched annotation file besides the manipulated file (-u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -u":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>xm</name>
+	    <attributes>
+	      <prompt>Creates an additional output file in cross_match format (for parsing) (-xm)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -xm":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>fixed</name>
+	    <attributes>
+	      <prompt>Creates an (old style) annotation file with fixed width column (-fixed)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -fixed":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_id</name>
+	    <attributes>
+	      <prompt>leaves out final column with unique ID for each element (-no_id)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -no_id" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Start comment ** 11/04/2003 : missing program rm2gb
+	  <parameter type="Switch">
+	    <name>gbannot</name>
+	    <attributes>
+	      <prompt>Extracts genbank formatted annotations</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " ; rm2gb $seq.out":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+          ** End comment ** -->
+
+	  <parameter type="Switch">
+	    <name>excln</name>
+	    <attributes>
+	      <prompt>calculates repeat densities excluding runs of >25 Ns in query (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -e" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Results">
+      <name>aligfile</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$align</code>
+	</precond>
+	<filenames>*.align</filenames>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>cutfile</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$cut</code>
+	</precond>
+	<filenames>*.cut</filenames>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>polyfile</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$poly</code>
+	</precond>
+	<filenames>*.poly*</filenames>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>acefile</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$ace</code>
+	</precond>
+	<filenames>*.ace</filenames>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>gbfile</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$gbannot</code>
+	</precond>
+	<filenames>*.gb</filenames>
+
+      </attributes>
+    </parameter>
+
+
+  </parameters>
+</pise>

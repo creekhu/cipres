@@ -1,0 +1,36 @@
+Job_stat record has 3 fields, su_predicted, su_computed, su_charged.
+
+- su_predicted will be set at time job is submitted, based on max run hours requested and CORES and
+CHARGEFACTOR from scheduler.conf.
+
+- su_computed is set in BaseProcessWorker.getResults().  Run hours is determined from dates in 
+start.txt and done.txt or term.txt.
+
+- su_charged comes from tgusage or xdusage database.  There can be a 2 - 3 day delay in getting
+this info, once the job has finished running.
+
+- su_override: need to add this column to handle credits (or any other overrides).
+
+When we figure out how many sus a user has used during the billing cycle, in general,
+we sum the info for all his job_stat records that fall in the cycle, and use the most
+accurate of the 4 fields above that has a value.  So we'll use su_predicted if it's the only
+one set, but once the job completes, we should be abel to use su_computed instead, and once
+we get the real charge from xdusage, that's what goes into the sum.  Finally, if we get sus
+creditted back to our account for a failed job, we'll enter the new value in su_creditted and use
+that to compute the users total.
+
+We set the job_stat.su* fields this way for XSEDE and TSCC jobs, but not SSHProcessWorker jobs.
+However, on task create page and elsewhere, we're only interested in XSEDE jobs, since we don't 
+charge or set quotas for TSCC jobs.  We only include jobs where job_stats.TG_CHARGE_NUMBER is not 
+null.
+
+More about su_computed:
+- we aren't able to reliably create done.txt or term.txt with timestamp contents when job 
+timesout or is killed.  Will switch to using a prolog.  Could also say that if we can't
+figure out the actual runtime we'll use the max specified in scheduler.conf (I need to make
+sure all tools have runtime_ as a required parameter).
+
+- another way to approach this: use job completion emails.  Can I run a script whenever a job
+completion email is received to update job_stat.su_charged?
+
+When we get sus refunded, is info in xdusage db corrected?

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>PALINDROME</title>
+<description>Looks for inverted repeats in a nucleotide sequence (EMBOSS)</description>
+<category>nucleic:repeats</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/palindrome.html</doclink>
+</head>
+
+<command>palindrome</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- nucleotide [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>nucleotide</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>minpallen</name>
+	<attributes>
+		<prompt>Enter minimum length of palindrome (-minpallen)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -minpallen=$value"</code>
+		</format>
+		<group>2</group>
+		<scalemin><value>1</value></scalemin>
+		<scalemax>
+			<language>acd</language>
+			<code>@($(sequence.length)/2)</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>maxpallen</name>
+	<attributes>
+		<prompt>Enter maximum length of palindrome (-maxpallen)</prompt>
+		<vdef>
+			<value>100</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -maxpallen=$value"</code>
+		</format>
+		<group>3</group>
+		<scalemin>
+			<language>acd</language>
+			<code>$minpalLen</code>
+		</scalemin>
+		<scalemax>
+			<language>acd</language>
+			<code>@($(sequence.length)/2)</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>gaplimit</name>
+	<attributes>
+		<prompt>Enter maximum gap between repeated regions (-gaplimit)</prompt>
+		<vdef>
+			<value>100</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -gaplimit=$value"</code>
+		</format>
+		<group>4</group>
+		<scalemax>
+			<language>acd</language>
+			<code>$sequence.length</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>nummismatches</name>
+	<attributes>
+		<prompt>Number of mismatches allowed (-nummismatches)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -nummismatches=$value"</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value> Allowed values: Positive integer</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>overlap</name>
+	<attributes>
+		<prompt>Report overlapping matches (-overlap)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nooverlap"</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>8</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

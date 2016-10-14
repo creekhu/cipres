@@ -1,0 +1,13 @@
+Using raxml generic_ parameter.
+
+User can enter anything in whitelist chars, except our validation
+for generic parameter makes sure each arg is entered separately
+with a hyphen or double hyphen and we don't allow -w and -T.
+
+This test succeeds with generic_ outgroup arguments appearing at end of commandline.
+
+Job is OK, command line is 
+'raxmlHPC-PTHREADS  -f d -n result -s infile.txt -c 25 -p 12345 -m GTRCAT -o Cirrospilus_nr_vittatus_AUS_D3866_ABCH_F,Zagrammosoma_americanum_NM_D3671_ABCGH_F'
+
+
+

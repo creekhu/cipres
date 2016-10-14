@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>BLIMPS</title>
+    <version>3.4</version>
+    <description>score a query sequence against Blocks database</description>
+    <authors>Wallace &amp; Henikoff</authors>
+    <reference>J.C. Wallace and S. Henikoff, PATMAT: a searching and extraction program for sequence, pattern and block queries and databases, CABIOS, 8:3, p. 249-254 (1992).</reference>
+    <reference>Steven Henikoff and Jorja G. Henikoff, Automated assembly of protein blocks for database searching, Nucleic Acids Research, 19:23, p. 6565-6572. (1991)</reference>
+    <category>protein:motifs</category>
+    <category>motifs</category>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-aa.html#BLIMPS</doclink>
+  </head>
+
+
+<command>blimps_block</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>blimps_block</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"blimps blimps.cs"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" ishidden="1" type="String">
+<name>action</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "SE	block\\n" </code>
+	</format>
+	<group>2</group>
+	<paramfile>blimps.cs</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>blocks_db</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"DB	/local/gensoft/lib/blimps/db/blocks.dat\\n" </code>
+	</format>
+	<paramfile>blimps.cs</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>sequence_file</name>
+<attributes>
+
+	<prompt>Sequence file (SQ)</prompt>
+	<format>
+		<language>perl</language>
+		<code> "SQ	$value\\n" </code>
+	</format>
+	<comment>
+		<value>To score a query sequence against a database of blocks, specify the query sequence file name and the blocks database name. The query can be either a protein or DNA sequence. BLIMPS converts each block in the database to a position-specific scoring matrix and scores every possible alignment between each block and the query. If the query is DNA, alignments can be scored in all six translation frames or just the reading frames of the given strand, depending on the ST field in the configuration file.</value>
+	</comment>
+	<seqfmt>
+		<value>8</value>
+		<value>2</value>
+		<value>14</value>
+		<value>4</value>
+		<value>5</value>
+	</seqfmt>
+	<paramfile>blimps.cs</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control_parameters</name>
+<prompt>Control parameters</prompt>
+<group>4</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>genetic_code</name>
+	<attributes>
+
+		<prompt>The Genetic code to use (if DNA sequence or database)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "GE	$value\\n" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+		<vlist>
+			<value>0</value>
+			<label>0 - Standard (default)</label>
+			<value>1</value>
+			<label>1 - Vertebrate Mitochondrial</label>
+			<value>2</value>
+			<label>2 - Yeast Mitochondrial</label>
+			<value>3</value>
+			<label>3 - Mold Mitochondrial and Mycoplasma</label>
+			<value>4</value>
+			<label>4 - Invertebrate Mitochondrial</label>
+			<value>5</value>
+			<label>5 - Ciliate Macronuclear</label>
+			<value>6</value>
+			<label>6 - Protozoan Mitochondrial</label>
+			<value>7</value>
+			<label>7 - Plant Mitochondrial</label>
+			<value>8</value>
+			<label>8 - Echinodermate Mitochondrial</label>
+		</vlist>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>strands</name>
+	<attributes>
+
+		<prompt>The number of strands to search (if DNA sequence or database)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value != $vdef)? "ST	$value\\n" : ""</code>
+		</format>
+		<vdef><value>2</value></vdef>
+		<group>4</group>
+		<comment>
+			<value>If the query is DNA, alignments can be scored in all six translation frames or just the reading frames of the given strand.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>values allowed: 1 or 2</message>
+				<language>perl</language>
+				<code>$value != 1 &amp;&amp; $value != 2</code>
+			</ctrl>
+		</ctrls>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_parameters</name>
+<prompt>Output parameters</prompt>
+<group>5</group>
+<parameters>
+
+	<parameter ismandatory="1" type="OutFile">
+	<name>outfile</name>
+	<attributes>
+
+		<prompt>Output file filename</prompt>
+		<format>
+			<language>perl</language>
+			<code>"OU	$value\\n" </code>
+		</format>
+		<vdef><value>blimps.results</value></vdef>
+		<group>5</group>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>error</name>
+	<attributes>
+
+		<prompt>Error level to report at</prompt>
+		<format>
+			<language>perl</language>
+			<code>"ER	$value\\n"</code>
+		</format>
+		<vdef><value>2</value></vdef>
+		<group>1</group>
+		<vlist>
+			<value>1</value>
+			<label>1 - info </label>
+			<value>2</value>
+			<label>2 - warning</label>
+			<value>3</value>
+			<label>3 - serious</label>
+			<value>4</value>
+			<label>4 - program error</label>
+			<value>5</value>
+			<label>5 - fatal error</label>
+		</vlist>
+		<comment>
+			<value>Errors of lesser value than the error level are not reported. The program will always handle a fatal error regardless of the error level setting.</value>
+		</comment>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>histogram</name>
+	<attributes>
+
+		<prompt>Print the histogram values in the output file</prompt>
+		<format>
+			<language>perl</language>
+			<code>(! $value)? "" : "HI	yes\\n" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>5</group>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>scores</name>
+	<attributes>
+
+		<prompt>The number of scores to report.</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? "NU	$value\\n" : "\\n" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>5</group>
+		<comment>
+			<value>A number less than zero means to report all the scores. A number of zero means to judge the number to report based on the query block or sequence. A number greater than zero is the number to actually report. The default value is zero.</value>
+		</comment>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>repeats</name>
+	<attributes>
+
+		<prompt>Repeats are allowed in the scoring list</prompt>
+		<format>
+			<language>perl</language>
+			<code>(! $value)? "RE	0\\n" : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>5</group>
+		<paramfile>blimps.cs</paramfile>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Results">
+<name>config_file</name>
+<attributes>
+
+	<filenames>blimps.cs</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

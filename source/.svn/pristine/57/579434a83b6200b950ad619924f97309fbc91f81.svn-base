@@ -1,0 +1,13 @@
+# <host>.host=
+# <host>.username=
+# <host>.password=
+# <host>.minconn=
+# <host>.maxconn=
+# <host>.end
+
+localhost.host=localhost
+localhost.username=
+localhost.password=
+localhost.minconn=0
+localhost.maxconn=${ssl.maxconn}
+localhost.end

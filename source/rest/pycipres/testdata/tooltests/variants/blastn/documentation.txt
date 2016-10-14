@@ -1,0 +1,9 @@
+TBAS BLAST N
+
+You can set:
+
+runtime_ =
+use_epa_ = 1 or 0, this restricts what databases cna be used, unaligned cant be used for EPA
+nucleotid_db_ = allowed values: 5_8S; nuclsu; nucssu; mitssu; rpb1; rpb2; unaligned_its; unaligned_lsu; unaligned_ssu; unaligned_mitssu;
+unaligned_rpb1; unaligned_rpb2
+ 

@@ -1,0 +1,58 @@
+hmmpfam - search one or more sequences against HMM database
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                 /isilon/ngbw/8ball/PFAM/Pfam_ls
+Sequence file:            seqfile.fasta
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query sequence: 2CYP:A|PDBID|CHAIN|SEQUENCE
+Accession:      [none]
+Description:    [none]
+
+Scores for sequence family classification (score includes all domains):
+Model           Description                             Score    E-value  N 
+--------        -----------                             -----    ------- ---
+peroxidase      Peroxidase                              186.2    8.1e-53   1
+
+Parsed for domains:
+Model           Domain  seq-f seq-t    hmm-f hmm-t      score  E-value
+--------        ------- ----- -----    ----- -----      -----  -------
+peroxidase        1/1      22   254 ..     1   361 []   186.2  8.1e-53
+
+Alignments of top-scoring domains:
+peroxidase: domain 1 of 1, from 22 to 254: score 186.2, E = 8.1e-53
+                   *->VrsvvRAwfKLTqsavgpardprmaasLlRLhFHDCFVqGCDaSvdD
+                      V +++    KL +++ +  +++++++ L+RL++H  ++ + +     
+  2CYP:A|PDB    22    VYNAI--ALKLREDDEY-DNYIGYGPVLVRLAWHTSGTWDKH----- 60   
+
+                   IaLKkILSGLvqLVTAWSASTFRLLdsgganGgriRftsEkdappNlpsn
+                                           +++gg+ Gg+ Rf+ E + p N+  +
+  2CYP:A|PDB    61 ------------------------DNTGGSYGGTYRFKKEFNDPSNA--G 84   
+
+                   slrGfeviddIKaalEafaaCPgvVSCADIlALAARDaVelakGGPsvwp
+                   +  Gf+++++I +      + P ++S  D+  L+++ aV  +  GP  +p
+  2CYP:A|PDB    85 LQNGFKFLEPIHK------EFP-WISSGDLFSLGGVTAVQEM-QGPK-IP 125  
+
+                   VplGRrDgrtssaseeangnLPpPaDGFRnytssldqLlskFaaakGLna
+                    + GR D + + +++  ng+LP+        + ++d  ++ F +++++n+
+  2CYP:A|PDB   126 WRCGRVD-TPEDTTP-DNGRLPDA-------DKDADYVRTFF-QRLNMND 165  
+
+                   kDlVALISGAHTiGrahCssFggsdRLYNFsgtgdpDPtldpayAaqLGE
+                   +++VAL  GAH +G++h  ++                             
+  2CYP:A|PDB   166 REVVAL-MGAHALGKTHLKNS----------------------------- 185  
+
+                   Pap.erqkCPqnggsgggkgndtnlvpLDpvwTgTPntFDNsYykNLldm
+                     + e                        ++w    n+F+N +y NLl+ 
+  2CYP:A|PDB   186 --GyE------------------------GPWGAANNVFTNEFYLNLLNE 209  
+
+                   .t.lew.pa.a.qwtsegDrtgpkwtatrgkGLLtSDqaLftAEVYAdda
+                   +++le++ a+++qw+s+            g ++L++D  L +        
+  2CYP:A|PDB   210 dWkLEKnDAnNeQWDSKS-----------GYMMLPTDYSLIQ-------- 240  
+
+                   dprTraiVAWKVMLdrfann<-*
+                   dp + +iV      +++an+   
+  2CYP:A|PDB   241 DPKYLSIV------KEYAND    254  
+
+//

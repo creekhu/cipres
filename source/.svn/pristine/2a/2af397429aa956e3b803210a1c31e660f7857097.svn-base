@@ -1,0 +1,3 @@
+threads_per_process=8
+nodes=1
+runhours=0.50

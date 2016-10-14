@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>SeqGen</title>
+    <version>1.10</version>
+    <description>Sequence-Generator</description>
+    <authors>A. Rambaut, N. C. Grassly</authors>
+    <reference>Rambaut, A. and Grassly, N. C. (1996) Seq-Gen: An application for the Monte Carlo simulation of DNA sequence evolution along phylogenetic trees. Comput. Appl. Biosci.</reference>
+    <category>phylogeny</category>
+</head>
+
+
+<command>seqgen</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>seqgen</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"seq-gen"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>tree</name>
+<attributes>
+
+	<prompt>Tree File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" &lt; $value"</code>
+	</format>
+	<group>20</group>
+	<comment>
+		<value>The tree file must contain one or more trees.</value>
+		<value>The tree format is the same as used by PHYLIP (also called the 'Newick' format). This is a nested set of bifurcations defined by brackets and commas. Here are two examples:</value>
+		<value> (((Taxon1:0.2,Taxon2:0.2):0.1,Taxon3:0.3):0.1,Taxon4:0.4);</value>
+		<value> ((Taxon1:0.1,Taxon2:0.2):0.05,Taxon3:0.3,Taxon4:0.4);</value>
+	</comment>
+	<pipe>
+		<pipetype>phylip_tree</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control</name>
+<prompt>Control parameters</prompt>
+<parameters>
+
+	<parameter type="Excl">
+	<name>model</name>
+	<attributes>
+
+		<prompt>model of nucleotide substitution</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value ne $vdef )? " -m $value" : "" </code>
+		</format>
+		<vdef><value>F84</value></vdef>
+		<group>1</group>
+		<vlist>
+			<value>F84</value>
+			<label>F84</label>
+			<value>HKY</value>
+			<label>HKY</label>
+			<value>REV</value>
+			<label>REV</label>
+		</vlist>
+		<comment>
+			<value>This option sets the model of nucleotide substitution with a choice of either F84, HKY (also known as HKY85) or REV (markov general reversable model). The first two models are quite similar but not identical. They both require a transition transversion ratio and relative base frequencies as parameters. Other models such as K2P, F81 and JC69 are special cases of HKY and can be obtained by setting the nucleotide frequencies equal (for K2P) or the transition transversion ratio to 1.0 (for F81) or both (for JC69). </value>
+			<value> If no model is specified, the default is F84 which is computationally simpler.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>length</name>
+	<attributes>
+
+		<prompt>sequence length (-l)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -l $value":""</code>
+		</format>
+		<vdef><value>1000</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>This option allows the user to set the length in nucleotides that each simulated sequence should be.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>datasets</name>
+	<attributes>
+
+		<prompt>number of simulated datasets per tree (-n)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -n $value":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>This option specifies how many separate datasets should be simulated for each tree in the tree file.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+
+	  <parameter type="Integer">
+	    <name>partition_numb</name>
+	    <attributes>
+	      <prompt>Number of partitions for each dataset (-p)</prompt>
+	      <comment>
+		<value>Number of partion specifies how many
+	      partitions of each data set should be simulated. each
+	      partition must have its own tree and number specifying how
+	      many sites are in partition. Multiple sets of trees are
+	      being inputed with varying numbers of partitions, then this
+	      should specify the maximum number of partitions that will be
+	      required</value>
+	      </comment>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -p $value":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+
+
+	  </parameter>
+
+	<parameter type="Float">
+	<name>scale_branch</name>
+	<attributes>
+
+		<prompt>Scale branch lengths  (a decimal number greater &gt; 0) (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -s $value":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>This option allows the user to set a value with which to scale the branch lengths in order to make them equal the expected number of substitutions per site for each branch. Basically Seq-Gen multiplies each branch length by this value.</value>
+			<value>For example if you give an value of 0.5 then each branch length would be halved before using it to simulate the sequences.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>scale_tree</name>
+	<attributes>
+
+		<prompt>total tree scale  (a decimal number greater &gt; 0) [default = use branch lengths] (-d)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -d $value":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>This option allows the user to set a value which is the desired length of each tree in units of subsitutions per site. The term 'tree length' here is the distance from the root to any one of the tips in units of mean number of subsitutions per site. This option can only be used when the input trees are rooted and ultrametric (no difference in rate amongst the lineages). This has the effect of making all the trees in the input file of the same length before simulating data.</value>
+			<value> The option multiplies each branch length by a value equal to SCALE divided by the actual length of the tree.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>rate1</name>
+	<attributes>
+
+		<prompt>rates for codon position heterogeneity, first position (enter a decimal number) (-c)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -c $rate1 $rate2 $rate3":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>Using this option the user may specify the relative rates for each codon position. This allows codon-specific rate heterogeneity to be simulated. The default is no site-specific rate heterogeneity.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>you must give the 3 rates</message>
+				<language>perl</language>
+				<code>((defined $rate2 || defined $rate3) &amp;&amp; ! (defined $rate1))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>rate2</name>
+	<attributes>
+
+		<prompt>rates for codon position heterogeneity, second position (enter a decimal number)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>1</group>
+		<ctrls>
+			<ctrl>
+			<message>you must give the 3 rates</message>
+				<language>perl</language>
+				<code>((defined $rate1 || defined $rate3) &amp;&amp; ! (defined $rate2))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>rate3</name>
+	<attributes>
+
+		<prompt>rates for codon position heterogeneity, third position (enter a decimal number)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>1</group>
+		<ctrls>
+			<ctrl>
+			<message>you must give the 3 rates</message>
+				<language>perl</language>
+				<code>((defined $rate1 || defined $rate2) &amp;&amp; ! (defined $rate3))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>shape</name>
+	<attributes>
+
+		<prompt>shape of the gamma distribution to use  with  gamma rate heterogeneity (a decimal  number) (-a)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -a $value":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>Using this option the user may specify a shape for the gamma rate heterogeneity. The default is no site-specific rate heterogeneity.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>categories</name>
+	<attributes>
+
+		<prompt>number of categories  for  the  discrete gamma  rate  heterogeneity model (&gt;2 and &lt; 32) (-g)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -g $value":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>Using this option the user may specify the number of categories for the discrete gamma rate heterogeneity model. The default is no site-specific rate heterogeneity (or the continuous model if only the -a option is specified.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>enter an integer number between 2 and 32</message>
+				<language>perl</language>
+				<code>defined $categories &amp;&amp; ($categories &lt; 2 || $$categories &gt; 32)</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+	  
+	  <parameter type="Float">
+	    <name>invar_site</name>
+	    <attributes>
+	      <prompt>proportion of sites that should be invariable (a real
+	      number &gt;= 0.0 and &lt; 1.0) (-i)</prompt>
+	      <comment>
+		<value>specify the proportion of sites that should
+	      be invariable. These sites will be chosen randomly with this
+	      expected frequency. The default is no invariable sites.
+	      Invariable sites are sites thar cannot change as opposed to
+	      sites wich don't exhibit any changes due to channce (and
+	      prhaps a low rate).</value>
+	      </comment>
+	      <vdef>
+		<value>0.0</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -i $value":""</code>
+	      </format>
+	      <ctrls>
+		<ctrl>
+		  <message>enter a real number &gt;= 0.0 and &lt; 1.0 </message>
+		  <language>perl</language>
+		  <code>defined $value &amp;&amp; ($value &lt; 0.0 || $value &gt;= 1.0)</code>
+		</ctrl>
+	      </ctrls>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+
+	<parameter type="Float">
+	<name>freqA</name>
+	<attributes>
+
+		<prompt>relative frequencies of the A nucleotide (a decimal number) (-f)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -f $freqA,$freqC,$freqG,$freqT":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>This option is used to specify the relative frequencies of the four nucleotides. By default, Seq-Gen will assume these to be equal. If the given values don't sum to 1.0 then they will be scaled so that they do.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>you must give the frequencies for the 4 nucleotides</message>
+				<language>perl</language>
+				<code>((defined $freqC || defined $freqG || defined $freqT) &amp;&amp; ! (defined $freqA))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>freqC</name>
+	<attributes>
+
+		<prompt>relative frequencies of the C nucleotide (a decimal number)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>1</group>
+		<ctrls>
+			<ctrl>
+			<message>you must give the frequencies for the 4 nucleotides</message>
+				<language>perl</language>
+				<code>((defined $freqA || defined $freqG || defined $freqT) &amp;&amp; ! (defined $freqC))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>freqG</name>
+	<attributes>
+
+		<prompt>relative frequencies of the G nucleotide (a decimal number)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>1</group>
+		<ctrls>
+			<ctrl>
+			<message>you must give the frequencies for the 4 nucleotides</message>
+				<language>perl</language>
+				<code>((defined $freqA || defined $freqC || defined $freqT) &amp;&amp; ! (defined $freqG))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>freqT</name>
+	<attributes>
+
+		<prompt>relative frequencies of the T nucleotide (a decimal number)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>1</group>
+		<ctrls>
+			<ctrl>
+			<message>you must give the frequencies for the 4 nucleotides</message>
+				<language>perl</language>
+				<code>((defined $freqA || defined $freqC || defined $freqG) &amp;&amp; ! (defined $freqT))</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>transratio</name>
+	<attributes>
+
+		<prompt>transition transversion ratio (TS/TV) (this is only valid when either the HKY or F84 model has been selected) (-t)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -t $value":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>This option allows the user to set a value for the transition transversion ratio (TS/TV). This is only valid when either the HKY or F84 model has been selected.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>matrix</name>
+	<attributes>
+
+		<prompt>6 values  for  the general reversable  model's rate matrix (ACTG x ACTG) (REV model), separated by commas (-r)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -r $value":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>This option allows the user to set 6 values for the general reversable model's rate matrix. This is only valid when either the REV model has been selected.</value>
+			<value>The values are six decimal numbers for the rates of transition from A to C, A to G, A to T, C to G, C to T and G to T respectively, separated by spaces or commas. The matrix is symmetrical so the reverse transitions equal the ones set (e.g. C to A equals A to C) and therefore only six values need be set. These values will be scaled such that the last value (G to T) is 1.0 and the others are set relative to this.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message></message>
+				<language>perl</language>
+				<code>($matrix =~ s/,/ /g ) &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>random_seed</name>
+	    <attributes>
+	      <prompt>random number seed (-z)</prompt>
+	      <comment>
+		<value>This option allows to specify a seed for the random number
+	  generator. Using the same seed (with the same input) will result
+	  in identical simulated datasets. This is useful because you can
+	  recreate a set of simulations, you must use exactly the same
+	  model options</value>
+	      </comment>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "-z $value":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+    
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+
+	<filenames>seqgen.out</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+    
+   
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+
+	<parameter type="Excl">
+	<name>phylip</name>
+	<attributes>
+	      <prompt>output file format [default : standard PHYLIP output]</prompt>
+	      <vlist>
+		<value>p</value>
+		<label>PHYLIP</label>
+		<value>r</value>
+		<label>relaxed PHYLIP</label>
+		<value>n</value>
+		<label>NEXUS</label>
+	      </vlist>
+	      <vdef>
+		<value>p</value>
+	      </vdef>
+
+		<format>
+			<language>perl</language>
+			<code>($value)? " -o$value":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>quiet</name>
+	<attributes>
+
+	<prompt>non verbose output (-q)</prompt>
+	 <format>
+		<language>perl</language>
+		<code>($value)? " -q":""</code>
+	  </format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+	  
+
+	<parameter type="Switch">
+	    <name>write_ancest</name>
+	    <attributes>
+	      <prompt>write the ancestral sequences (-wa)</prompt>
+	      <comment>
+		<value>This option allows to obtain the sequences for each
+	      of the internal nodes in the tree. 
+               The sequences are written out along with the sequencees for
+	      the tips of the tree in relaxed PHYLIP format.
+                 </value>
+		</comment>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -wa":""</code>
+	      </format>
+	      </attributes>
+	  </parameter>
+
+
+	<parameter type="Switch">
+	    <name>write_sites</name>
+	    <attributes>
+	      <prompt>write the sites rates (-wr)</prompt>
+	      <comment>
+		<value>This option allows to obtain the relative rate of
+	      substitution for each sites as used in each simulation. This
+	      will go to sderr and will be produced for each replicate simulation.
+                 </value>
+		</comment>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -wr":""</code>
+	      </format>
+	      </attributes>
+	  </parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input</name>
+	<prompt>Input parameters</prompt>
+	<group>1</group>
+	<parameters>
+	  <parameter type="Integer">
+	    <name>input_seq</name>
+	    <attributes>
+
+		<prompt>Ancestral Sequence number (-k)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -k $value":""</code>
+		</format>
+		<comment>
+			<value>This option allows the user to use a supplied sequence as the ancestral sequence at the root (otherwise a random sequence is used). The value is an integer number greater than zero which refers to one of the sequences supplied as input with the tree.</value>
+		<value>Method: The user can supply a sequence alignment as input, as well as the trees. This should be in relaxed PHYLIP format. The trees can then be placed in this file at the end, after a line stating how many trees there are.The file may look like this: </value>
+		<value>4 50</value>
+		<value>Taxon1 ATCTTTGTAGTCATCGCCGTATTAGCATTCTTAGATCTAA</value>
+		<value>Taxon2 ATCCTAGTAGTCGCTTGCGCACTAGCCTTCCGAAATCTAG</value>
+		<value>Taxon3 ACTTCTGTGTTTACTGAGCTACTAGCTTCCCTAAATCTAG</value>
+		<value>Taxon4 ATTCCTATATTCGCTAATTTCTTAGCTTTCCTGAATCTGG</value>
+		<value>1</value>
+		<value>(((Taxon1:0.2,Taxon2:0.2):0.1,Taxon3:0.3):0.1,Taxon4:0.4);</value>
+		<value>Note that the labels in the alignment do not have to match those in the tree (the ones in the tree will be used for output)   there doesn t even have to be the same number of taxa in the alignment as in the trees. The sequence length supplied by the alignment will be used to obtain the simulated sequence length (unless the  l option is set). The  k option also refers to one of the sequences to specify the ancestral sequence. (see Appendix A)</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+
+</parameters>
+</pise>

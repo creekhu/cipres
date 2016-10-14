@@ -1,0 +1,45 @@
+##
+## html4blast system configuration file
+##
+
+##
+## URLs
+##
+url.efe: 	http://bioweb.pasteur.fr/cgi-bin/efetch
+url.srs: 	http://srs.pasteur.fr/cgi-bin/wgetz
+
+##
+## Efetch databases
+##
+efe.gb: 	genbank
+efe.em: 	embl
+efe.emb: 	embl
+efe.sp: 	uniprot
+efe.tr: 	uniprot
+efe.gp: 	genpept
+efe.epd: 	epd
+efe.ref: 	refseq
+
+##
+## SRS databases
+##
+srs.gb: 	GENBANK
+srs.gp: 	GENPEPT
+srs.em: 	EMBL
+srs.emb: 	EMBL
+srs.sp: 	UNIPROT
+srs.tr: 	UNIPROT
+srs.enz: 	ENZYME
+srs.imgt: 	IMGT
+srs.pdb: 	PDB
+
+##
+## External queries URLs (Accessions only)
+##
+ext.gi: 	http://www.ncbi.nlm.nih.gov/htbin-post/Entrez/query?db=s&form=6&dopt=g&uid=
+ext.gb: 	http://www.ncbi.nlm.nih.gov/htbin-post/Entrez/query?db=n&form=6&dopt=g&uid=
+ext.em: 	http://www.ebi.ac.uk/htbin/expasyfetch?
+ext.emb: 	http://www.ebi.ac.uk/htbin/expasyfetch?
+ext.sp: 	http://www.expasy.ch/cgi-bin/sprot-search-ac?
+ext.tr: 	http://www.expasy.ch/cgi-bin/sprot-search-ac?
+ext.enz: 	http://www.expasy.ch/cgi-bin/get-enzyme-entry?

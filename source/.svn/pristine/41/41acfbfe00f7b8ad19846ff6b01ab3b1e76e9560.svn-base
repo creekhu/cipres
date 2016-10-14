@@ -1,0 +1,108 @@
+package org.ngbw.examples;
+
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import org.ngbw.sdk.UserAuthenticationException;
+import org.ngbw.sdk.Workbench;
+import org.ngbw.sdk.WorkbenchSession;
+import org.ngbw.sdk.common.util.FileUtils;
+import org.ngbw.sdk.common.util.Resource;
+import org.ngbw.sdk.core.shared.SourceDocumentBean;
+import org.ngbw.sdk.core.shared.SourceDocumentType;
+import org.ngbw.sdk.core.types.DataFormat;
+import org.ngbw.sdk.core.types.DataType;
+import org.ngbw.sdk.core.types.EntityType;
+import org.ngbw.sdk.database.Folder;
+import org.ngbw.sdk.database.SourceDocument;
+import org.ngbw.sdk.database.Task;
+
+
+public class TestRunCommand extends Thread 
+{
+	private static int THREADCOUNT = 5;
+	private int exitStatus = -100;
+
+	public static void main(String[] args) 
+	{
+		TestRunCommand[] threads = new TestRunCommand[THREADCOUNT];
+		for (int i = 0; i < THREADCOUNT; i++)
+		{
+			threads[i] = new TestRunCommand();
+			threads[i].start();
+		}
+		for (int i = 0; i < THREADCOUNT; i++)
+		{
+			try
+			{
+				threads[i].join();
+			}
+			catch (InterruptedException ie)
+			{
+			}
+		}
+		System.out.println("Results:");
+		System.out.println("==============================================================================");
+		for (int i = 0; i < THREADCOUNT; i++)
+		{
+			System.out.printf("t%d=%d ", i, threads[i].exitStatus);
+		}
+		System.out.println();
+	}
+
+	public void run() 
+	{
+		try
+		{
+			String inputFilename = "src/main/resources/examples/tooltest/CLUSTALW/clustalw_seq_in.fasta";
+			byte[] data = Resource.getResource(inputFilename).getBytes();
+			Map<String, byte[]> inputMap = new HashMap<String, byte[]>(1);
+			inputMap.put("data.fst", data);
+
+			// collect the output filenames
+			String outputFile1 = "data.aln";
+			String outputFile2 = "stdout.txt";
+			Map<String, String> outputMap = new HashMap<String, String>(2);
+			outputMap.put("1", outputFile1);
+			outputMap.put("2", outputFile2);
+
+			// build the command
+			String tool = "CLUSTALW";
+			String[] command = new String[4];
+			command[0] = "clustalw";
+			command[1] = "-infile=" + "data.fst";
+			command[2] = "-align=" + outputFile1;
+			command[3] = "> " + outputFile2; // currently being ignored
+
+			// execute the command
+			Workbench workbench = Workbench.getInstance();
+			Map<String, Map<String, byte[]>> output = 
+				workbench.runCommand(tool, command, inputMap, outputMap, true);
+
+			// Convert returned map to a map of filename -> file contents
+			System.out.println("Result files:");
+			Map<String, byte[]> result = new HashMap<String, byte[]>(output.size());
+			for (String key : output.keySet()) 
+			{
+				Map<String, byte[]> outputFile = output.get(key);
+				for (String fileName : outputFile.keySet()) 
+				{
+					result.put(fileName, (data = outputFile.get(fileName)));
+					System.out.println(fileName);
+				}
+			}
+			exitStatus = 0;
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+			exitStatus = -1;
+		}
+	}
+}

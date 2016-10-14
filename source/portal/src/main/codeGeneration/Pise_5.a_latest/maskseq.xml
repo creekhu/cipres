@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>MASKSEQ</title>
+<description>Mask off regions of a sequence. (EMBOSS)</description>
+<category>edit</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/maskseq.html</doclink>
+</head>
+
+<command>maskseq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- any [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>regions</name>
+	<attributes>
+		<prompt>Regions to mask (eg: 4-57,78-94) (-regions)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -regions=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Regions to mask. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are separated by any non-digit, non-alpha character. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45, 56-78 &lt;BR&gt; 1:45, 67=99;765..888 &lt;BR&gt; 1,5,8,10,23,45,57,99</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>tolower</name>
+	<attributes>
+		<prompt>Change masked region to lower-case (-tolower)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -tolower" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>The region can be 'masked' by converting the sequence characters to lower-case, some non-EMBOSS programs e.g. fasta can interpret this as a masked region. The sequence is unchanged apart from the case change. You might like to ensure that the whole sequence is in upper-case before masking the specified regions to lower-case by using the '-supper' flag.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>maskchar</name>
+	<attributes>
+		<prompt>Character to mask with (-maskchar)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@($(acdprotein)?X:N)</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -maskchar=$value"</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Character to use when masking. &lt;BR&gt; Default is 'X' for protein sequences, 'N' for nucleic sequences. &lt;BR&gt; If the mask character is set to be the SPACE character or a null character, then the sequence is 'masked' by changing it to lower-case, just as with the '-lowercase' flag.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>5</group>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>7</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

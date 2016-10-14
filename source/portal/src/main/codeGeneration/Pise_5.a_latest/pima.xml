@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PIMA</title>
+    <version>1.40</version>
+    <description>Pattern-Induced Multi-sequence Alignment program</description>
+    <category>alignment:multiple</category>
+    <authors>R. D. Smith and T. F. Smith</authors>
+    <reference>R. D. Smith and T. F. Smith. Pattern-induced multi-sequence alignment (PIMA) algorithm employing secondary structure-dependent gap penalties for use in comparative modelling. protein Engineering, vol5, number 1, pp 35-41, 1992</reference>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>pima</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>pima</name>
+<attributes>
+
+        <format>
+                <language>seqlab</language>
+                <code>pima</code>
+                <language>perl</language>
+                <code>"pima"</code>
+        </format>
+        <group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>sequence</name>
+<attributes>
+
+        <prompt>Sequences</prompt>
+        <format>
+                <language>perl</language>
+                <code>" $value" </code>
+        </format>
+        <group>3</group>
+        <comment>
+                <value> Name of the input file containing the sequences to be clustered and multi-aligned.  Sequences can be in any of the following formats: IG/Stanford, GenBank/GB, NBRF, EMBL, Pearson/Fasta, PIR/CODATA, Table (LOCUS_NAME SEQUENCE [one seq/line]).  LOCUS_NAMES can not contain left or right parentheses.  The format of the output sequence files will match the format of this input file. </value>
+	</comment>
+        <seqfmt>
+                <value>1</value>
+                <value>8</value>
+        </seqfmt>
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+	<name>cluster_name</name>
+	<attributes>
+		<prompt>cluster_name</prompt>
+		<comment><value>An arbitrary name used to label the cluster.</value></comment>
+		<format>
+                        <language>perl</language>
+                        <code>" $value"	</code>
+                </format>
+                <group>2</group>
+	</attributes>
+        </parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>pima_params</name>
+<prompt>Parameters</prompt>
+
+<parameters>
+
+	<parameter type="String">
+	<name>ref_seq_name</name>
+	<attributes>
+		<prompt>ref_seq_name</prompt>
+		<comment><value>[optional; if specified, then sec_struct_seq_filename must also be specified]. Locus name of one of the primary sequences for which the secondary structure is in the file seq_struct_seq_filename.</value></comment>
+	<format>
+                        <language>perl</language>
+                        <code>
+			($value)? " $value" : "" 
+			</code>
+                </format>
+                <group>4</group>
+	</attributes>
+        </parameter>
+
+	<parameter type="InFile">
+	<name>sec_struc_seq_filename</name>
+	<attributes>
+		<prompt>sec_struc_seq_filename</prompt>
+		<comment><value>[optional; if specified, then ref_seq_name must also be specified] Name of a file containing secondary structure sequences for one ormore of the primary sequences in the set.  The secondary structure sequences in this file must be in one of the formats listed above (see sequence_filename, above).  The locus name of each sequence must be the locus name of it's corresponding primary sequence with the suffix '.ss' (e.g. 1ldm.ss). An alpha-helix, 3-10 helix and beta-strand must be designated 'h', 'g', and 'e', repectively.  All other characters in the secondary structure sequences will be ignored with respect to the the structure-dependent gap penalty.  To allow gaps to be placed between the first and the second and the last elements of these structures, the first and last 2 elements of each should be changed to another character designation.  In the secondary structure sequence file pdb-dssp.ss provided with this package, these end cap elements are designated 'i', 'f', and 'd', for alpha-helices, 3-10 helices and beta-strands, respectfully.
+		</value></comment>
+		<format>
+			<language>perl</language>
+                	<code>($value)? " $value" : "" </code>
+        	</format>
+        	<group>5</group>
+	</attributes>
+        </parameter>
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>pima_options</name>
+<prompt>options</prompt>
+<group>1</group>
+<parameters>
+	
+	<parameter type="Float">
+	<name>score_cutoff</name>
+	<attributes>
+
+		<prompt> cluster score cutoff (-c) </prompt>
+		<comment><value>  Use a cluster score cutoff of number. This is the lowest match score to be used to incorporate a sequence into a cluster.  The default value of 0.0 will force all input sequences into 1 cluster, but the final pattern may be com-pletely degenerate.</value></comment>
+		<format>
+                        <language>perl</language>
+                        <code>($value)? " -c $value " : "" </code>
+                </format>
+                <vdef><value>0.0</value></vdef>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ext_gap_cost</name>
+	<attributes>
+	<prompt> gap extension penalty (-d) </prompt>
+	<comment> <value>Use a length dependent gap penalty of number. This is the cost of extending a gap.  The default value is dependent on the matrix file used.</value></comment>
+	<format>
+	        <language>perl</language>
+                <code>($value)? " -d $value" : "" </code>
+        </format>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>gap_open_cost</name>
+	<attributes>
+
+	<prompt> gap opening penalty (-i) </prompt>
+	<comment><value>  Use a length independent gap penalty of number. This is the cost of opening a gap.  The default value is dependent on the matrix file used.</value></comment>
+	<format>
+	        <language>perl</language>
+                <code>($value)? " -d $value" : "" </code>
+        </format>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>min_score</name>
+	<attributes>
+
+	<prompt> minimum local score (-l) </prompt>
+	<comment><value> Use minimum local score of number. This is the lowest score a quadrant can have before an attempt is made to join this local alignment with the local alignment at the previous step.  The default value is dependent on the matrix file used.</value></comment>
+ 	<format>
+	        <language>perl</language>
+                <code>($value)? " -l $value" : "" </code>
+        </format>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="InFile">
+	<name>mat_file</name>
+	<attributes>
+
+	<prompt> matrix file (-m) </prompt>
+	<comment><value>  Use matrix file with the name file. The default matrix fil is patgen.mat and is provided with this package.  The matrix file class1.mat uses the original pima alphabet.  The matrix file class2.mat is also provided, which is similar to the matrix file class1.mat but uses the new alphabet.</value></comment>
+	<format>
+	        <language>perl</language>
+                <code>($value)? " -m $value" : "" </code>
+        </format>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_num_ext</name>
+	<attributes>
+	
+	<prompt>Do not use numerical extensions on each step of the alignment. (-n)</prompt>
+	<format>
+	        <language>perl</language>
+                <code>($value)? " -n" : "" </code>
+        </format>
+	<vdef><value>0</value></vdef>
+	
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>sec_struc_gap_cost</name>
+	<attributes>
+	<prompt>secondary structure gap penalty (-t)</prompt>
+	<comment><value>Use a secondary structure gap penalty of number. This is the cost of a gap at a position matching a secondary structure character.  The default value is dependent on the matrix file used and is always 10 times the value of the length independent gap penalty of the matrix file.</value></comment>
+	<format>
+	        <language>perl</language>
+                <code>($value)? " -t $value " : "" </code>
+        </format>
+	
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+<parameter type="Results">
+<name>results</name>
+<attributes>
+
+        <filenames>*.cluster *.pattern *.pima</filenames>
+
+</attributes>
+</parameter>
+
+
+
+</parameters>
+</pise>
+
+
+
+
+
+
+
+	
+
+	

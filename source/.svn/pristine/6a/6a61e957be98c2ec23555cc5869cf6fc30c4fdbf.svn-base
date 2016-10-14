@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <version>3.2.1</version>
+    <description>align2model - create a multiple alignment of sequences to an existing model</description>
+    <authors>R. Hughey, A. Krogh</authors>
+    <reference>R. Hughey and A. Krogh., SAM: Sequence alignment and modeling software system. Technical Report UCSC-CRL-96-22, University of California, Santa Cruz, CA, September 1996. </reference>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/ismb99.tutorial.html</doclink>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/sam.html</doclink>
+  </head>
+
+
+  <command>align2model</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>align2model</name>
+      <attributes>
+	<format>
+	  <language>seqlab</language>
+	  <code>align2model</code>
+	  <language>perl</language>
+	  <code>"align2model"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="String">
+      <name>run</name>
+      <attributes>
+	<prompt>Run name</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>test</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>db</name>
+      <attributes>
+	<prompt>Sequences to align (-db)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -db $value"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>model_file</name>
+      <attributes>
+	<prompt>Model (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)? " -i $value" : ""</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>sam_model</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>a2m</name>
+      <attributes>
+	<filenames>*.a2m</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input</name>
+	<prompt>Input options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="String">
+	    <name>id</name>
+	    <attributes>
+	      <prompt>Sequence identifier(s) selection (separated by commas) (-id)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; ($value !~ /,/ || $value =~ s/,/ -id /g) ) ? " -id $value " : "" </code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>nscoreseq</name>
+	    <attributes>
+	      <prompt>Maximum number of sequences to be read (-nscoreseq)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -nscoreseq $value" : "" </code>
+	      </format>
+	      <vdef><value>100000</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control options</prompt>
+	<group>3</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>adpstyle</name>
+	    <attributes>
+	      <prompt>Dynamic programming style (-adpstyle</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " -adpstyle $value" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <vlist>
+		<value>1</value>
+		<label>1: Viterbi</label>
+		<value>4</value>
+		<label>4: posterior_decoded alignment on transitions and character emissions</label>
+		<value>5</value>
+		<label>5: posterior_decoded alignment on only character emissions</label>
+	      </vlist>
+	      <comment>
+		<value>Alignment methods 4 and 5 are much slower and memory consuming than standard Viterbi alignment.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>SW</name>
+	    <attributes>
+	      <prompt>Sequence scoring (-SW)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -SW $value":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: Global</label>
+		<value>1</value>
+		<label>1: semi-local (fragments)</label>
+		<value>2</value>
+		<label>2: local (fragments)</label>
+		<value>3</value>
+		<label>3: domains</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$adpstyle != 1</code>
+	      </precond>
+	      <comment>
+		<value>. 1: start matching the model at any location (rather than only the begin node) and end at any location (rather than only the end node). This will improve alignment for short sequences that match a segment of the model.</value>
+		<value>. 2: this is similar to Smith and Waterman method of sequence comparison, which will find the best alignment for any pair of subsequences within two sequences. When this is done, sequences can jump from the initial module into the match state of any module in the model, and can also jump out of the match state of any module within the model to the delete state of the next-to-last node. The first and next-to-last module are assumed to be FIMs, hence the rational is that a sequence will use the FIM for some period of time to consume characters that do not match the model, then the sequence will jump to the model node corresponding to the start of the fragment, use several model nodes, and then jump to the ending FIM to consume the rest of the sequence. </value>
+		<value> 3: use for domains. It matchs part of a model to all of a sequence.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>auto_fim</name>
+	    <attributes>
+	      <prompt>Add FIMs automatically (-auto_fim)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "" : " -auto_fim 1"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>jump_in_prob</name>
+	    <attributes>
+	      <prompt>Probability cost of jumping into the center of the model (-jump_in_prob)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -jump_in_prob $value" : ""</code>
+	      </format>
+	      <vdef><value>1.0</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$SW</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>jump_out_prob</name>
+	    <attributes>
+	      <prompt>Probability cost of jumping out the center of the model (-jump_out_prob)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -jump_out_prob $value" : ""</code>
+	      </format>
+	      <vdef><value>1.0</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$SW</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output options</prompt>
+	<group>4</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>a2mdots</name>
+	    <attributes>
+	      <prompt>Print dots to fill space need for other sequences' insertions (-a2mdots)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value) ? "" : " -a2mdots 0"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>dump_parameters</name>
+	    <attributes>
+	      <prompt>(-dump_parameters)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value ne $vdef)? " -dump_parameters $value":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: only modified parameters are printed</label>
+		<value>1</value>
+		<label>1: all parameters are printed</label>
+		<value>2</value>
+		<label>2: print dump parameters and exit</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+  </parameters>
+</pise>

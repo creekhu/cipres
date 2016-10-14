@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>filtersites</title>
+    <version>1.0</version>
+    <description>Filter conserved sites in an alignment</description>
+    <category>alignment:multiple</category>
+    <authors>K. Schuerer</authors>
+  </head>
+
+  <command>filtersites</command>
+  
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>filtersites</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"filtersites"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outalig</name>
+      <attributes>
+	<vdef><value>"filtersites.out"</value></vdef>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<precond>
+	  <language>perl</language>
+	  <code>! $weights</code>
+	</precond>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>outweights</name>
+      <attributes>
+	<vdef><value>"weights.out"</value></vdef>
+	<pipe>
+	  <pipetype>phylip_weights</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<withpipe>
+	  <pipetype>phylip_weights</pipetype>
+	  <parametername>infile</parametername>
+	</withpipe>
+	<precond>
+	  <language>perl</language>
+	  <code>$weights</code>
+	</precond>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; weights.out"</code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>infile</name>
+      <attributes>
+
+	<prompt>Alignment</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>10</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Float">
+	<name>threshold</name>
+	<attributes>
+	      <prompt>Threshold (-t)</prompt>
+	      <vdef><value>1.0</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -t $value" : ""</code>
+	      </format>
+	      <group>2</group>
+	</attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>weights</name>
+      <attributes>
+	<prompt>Phylip weights file rather than filtered alignment (for parsimony programs only) (-w)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value) ? " -w" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>3</group>
+	
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Switch">
+      <name>phylip_alig</name>
+      <attributes>
+	
+	<prompt>Phylip alignment output format</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)? " | readseq -p -f12 " : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>100</group>
+	<precond>
+	  <language>perl</language>
+	  <code>! $weights</code>
+	</precond>
+
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

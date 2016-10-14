@@ -1,0 +1,78 @@
+<h2>BOXSHADE</h2>
+<p>
+	<strong>BOXSHADE</strong> is a  program for pretty-printing multiple alignment output.
+	The program itself  doesn't do any alignment, you have to use a multiple
+	alignment program like  ClustalW or Pileup and use the output of these
+	programs as input for BOXSHADE.  Of course, you can also use manually
+	aligned sequences (in a proper format.  INPUT = aligned sequence files
+</p>
+<h3>Manual:
+	<a href="http://www.ch.embnet.org/software/BOX_doc.html">
+		http://www.ch.embnet.org/software/BOX_doc.html
+	</a>
+</h3>
+
+<h3>Test Input File</h3>
+<pre>126742336      -------ATGGTGCTGTCTCCCGCTGACAAGGCCAACGTCAAGGCCGCCTGGGGCAAGGT 
+110005943      ACCCACCATGGTGCTGTCTGCCGCCGACAAGTCCAATGTCAAGGCCGCCTGGGGCAAGGT 
+66865969       -------ATGGTGCTGTCTGCCGCCGACAAGTCCAATGTCAAGGCCGCCTGGGGCAAGGT 
+                      ************ **** ****** **** *********************** 
+
+126742336      CGGGGGCCACGCCGGCGAGTATGGCGCCGAGGCCCTGGAGAGG-----------------
+110005943      TGGCGGCAACGCTGGAGCTTATGGCGCAGAGGCTCTGGAGAGG-----------------
+66865969       TGGCGGCAACGCTCCAGCTTTTGGCGCAGAGGCCCTGGAGAGGTGAGCACCGCACCTGCC
+                ** *** ****    *  * ****** ***** *********                 
+
+126742336      ------------------------------------------------------------
+110005943      ------------------------------------------------------------
+66865969       CCGCGGGGATCGGGCCGCACGCCGGGCGCGTCCTTGTCCCGGGCCGCCCGGCCTAAGCCC
+
+ 
+
+126742336      ------------------------ATGTTCCTGAGCTTCCCCACCACCAAGACCTACTTC 
+110005943      ------------------------ATGTTCCTGAGCTTCCCCACCACCAAGACCTACTTC 
+66865969       AGTTCTCCTGCCTCTTCACCCAGGATGTTCCTGAGCTTCCCCACCACCAAGACCTACTTC 
+                                       ************************************ 
+
+126742336      CCCCACTTCGACGTGACCCACGGCTCCGCCCAGGTCAAGGCCCACGGCAAGAAGGTGGCC 
+110005943      CCCCACTTCGACCTGAGCCACGGCTCCGCCCAGGTCAAGGGCCACGGCGAGAAGGTGGCC 
+66865969       CCCCACTTCGACCTGAGCCACGGCTCCGCCCAGGTCAAGGCCCACGGCGAGAAGGTGGCC 
+               ************ *** *********************** ******* *********** 
+
+126742336      GATGCCCTCACCCAGGTCGTCGACCACTTGGACGACCTGCCCGGCGCCCTGTCCGCGCTC
+110005943      GCCGCGCTGACCAAAGCGGTGGGCCACCTGGACGACCTGCCCGGTACCCTGTCTGATCTG
+66865969       AACGCGCTGACCAAAGCGGTGGGCCACCTGGACGATCTGCCCGGTACCCTGTCTGATCTG
+                  ** ** *** * *  ** * **** ******* ********  ******* *  ** 
+
+126742336      AGCGACCTGCACGCCCAAAAGCTGCGGGTGGACCCTGTTAACTTCAAG------------
+110005943      AGTGACCTGCACGCCCACAAGCTGCGTGTGGACCCGGTCAACTTCAAG------------
+66865969       AGTGACCTGCACGCTCACAAGCTGCGTGTGGACCCGGTCAACTTCAAGGTGAGCTCGCGG
+               ** *********** ** ******** ******** ** *********            
+
+126742336      ------------------------------------------------------------
+110005943      ------------------------------------------------------------
+66865969       GCTGGGCCGGGACAGATCTGGGCTAGAGGGGCAGAGAATGCGGAGGCGCCCCCACCCAGC
+
+ 
+
+126742336      --------------------------------CTCCTGGCTCACTGCCTGCTGGTGACCC 
+110005943      --------------------------------CTTCTGAGCCACACCCTGCTGGTGACCC 
+66865969       CCCAGCCCCCCTGACGTCTCCTCTCTCGGCAGCTTCTGAGCCACACCCTGCTGGTGACCC 
+                                               ** ***   ***  ************** 
+
+126742336      TGGCCAACCACCACCCCAATGAATTCACTCCTGCGGTGCACGCCTCCCTGGACAAGTTCC
+110005943      TGGCCTGCCACCTCCCCAATGATTTCACCCCCGCCGTCCACGCCTCCCTGGACAAGTTCT
+66865969       TGGCCTCCCACCTCCCCAATGATTTCACCCCCGCGGTCCACGCCTCCCTGGACAAGTTCT
+               *****  ***** ********* ***** ** ** ** ********************* 
+
+126742336      TGGCCAACGTGAGCACCGTGCTCACCTCCAAGTATCGTTAA-------------------
+110005943      TGGCCAGCGTGGGCACCGTGCTGACCTCCAAATACCGTTAAGCTGGGGCCTCGACGACCC
+66865969       TGGCCAACGTGAGCACCGTGCTGACCTCCAAATACCGTTAA-------------------
+               ****** **** ********** ******** ** ******                   
+
+126742336      -----------------------------------------------
+110005943      CCTACCCTGGCCTGGAGCGCCCTTGCGCTCTGCGCACTCTCACCTCC
+66865969       -----------------------------------------------</pre>
+
+<h3>Test Output File</h3>
+<pre><img src="images/sample_boxshade_output.gif" alt="result" width="476" height="572" border="0" /></pre>

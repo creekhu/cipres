@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>GeneMark</title>
+    <version>2.4b</version>
+    <description>locate genes within a DNA sequence</description>
+    <authors>Borodovsky, McIninch</authors>
+    <reference>Borodovsky, M., Sprizhitsky Yu, Golovanov E. and Alexandrov A. (1986) Statistical Patterns in Primary Structures of Functional Regions in the E. Coli Genome:  II. Non-homogeneous Markov Models. Molecular Biology, 20, 833-840.</reference>
+    <reference>Borodovsky, M., Sprizhitsky Yu., Golovanov E. and Alexandrov A. (1986) Statistical Patterns in Primary Structures of Functional Regions in the E. Coli Genome:  III. Computer Recognition of Coding Regions. Molecular Biology, 20, 1145-1150. </reference>
+    <reference>Borodovsky, M. and McIninch J. (1993) GENMARK: Parallel Gene Recognition for both DNA Strands. Computers and Chemistry, 17, 123-133. </reference>
+    <category>nucleic:translation</category>
+    <category>gene finding</category>
+  </head>
+
+
+<command>genemark</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>genemark</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"gm"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>outfiles</name>
+<attributes>
+
+	<filenames>*.lst *.ldata *.gdata *.ps *.rgn *.orf *.bla *.fas</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>100</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>matrix</name>
+<attributes>
+
+	<prompt>Matrix, according to specie (-m)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -m $value" : "" </code>
+	</format>
+	<group>2</group>
+	<vlist>
+		<value>A.thaliana_1_4.mat</value>
+		<label>A.thaliana_1_4.mat</label>
+		<value>A.thaliana_2_4.mat</value>
+		<label>A.thaliana_2_4.mat</label>
+		<value>at_hi_3.mat</value>
+		<label>at_hi_3.mat (A. thaliana)</label>
+		<value>at_lo_3.mat</value>
+		<label>at_lo_3.mat</label>
+		<value>ahv1_3.mat</value>
+		<label>ahv1_3.mat</label>
+		<value>arthro2.mat</value>
+		<label>arthro2.mat</label>
+		<value>C.trachomatis_4.mat</value>
+		<label>C.trachomatis_4.mat</label>
+		<value>bjaponicum_3.mat</value>
+		<label>bjaponicum_3.mat</label>
+		<value>burgdorferi_4.mat</value>
+		<label>burgdorferi_4.mat</label>
+		<value>c.trachomatis_4.mat</value>
+		<label>c.trachomatis_4.mat</label>
+		<value>capri_4.mat</value>
+		<label>capri_4.mat</label>
+		<value>capsulatus_2.mat</value>
+		<label>capsulatus_2.mat</label>
+		<value>ce_hi_3.mat</value>
+		<label>ce_hi_3.mat (C. elegans)</label>
+		<value>ce_lo_3.mat</value>
+		<label>ce_lo_3.mat</label>
+		<value>chlamy.highGC_4.mat</value>
+		<label>chlamy.highGC_4.mat</label>
+		<value>chlamy.highgc_4.mat</value>
+		<label>chlamy.highgc_4.mat</label>
+		<value>chlamy_4.mat</value>
+		<label>chlamy_4.mat</label>
+		<value>dm_hi_4.mat</value>
+		<label>dm_hi_4.mat (D. melanogaster)</label>
+		<value>dm_lo_4.mat</value>
+		<label>dm_lo_4.mat</label>
+		<value>ebv_2.mat</value>
+		<label>ebv_2.mat</label>
+		<value>ec_hiexp_3.mat</value>
+		<label>ec_hiexp_3.mat (E. coli)</label>
+		<value>ec_phage_3.mat</value>
+		<label>ec_phage_3.mat</label>
+		<value>ecoli_4.mat</value>
+		<label>ecoli_4.mat</label>
+		<value>ecoli_5.mat</value>
+		<label>ecoli_5.mat</label>
+		<value>ehv2_2.mat</value>
+		<label>ehv2_2.mat</label>
+		<value>fugu_2.mat</value>
+		<label>fugu_2.mat</label>
+		<value>genit_2.mat</value>
+		<label>genit_2.mat</label>
+		<value>gg_hi_4.mat</value>
+		<label>gg_hi_4.mat (G. gallus)</label>
+		<value>gg_lo_4.mat</value>
+		<label>gg_lo_4.mat</label>
+		<value>giardia2.mat</value>
+		<label>giardia2.mat</label>
+		<value>gono_3.mat</value>
+		<label>gono_3.mat</label>
+		<value>hcmv_2.mat</value>
+		<label>hcmv_2.mat</label>
+		<value>hhv8_3.mat</value>
+		<label>hhv8_3.mat</label>
+		<value>hinflu_4.mat</value>
+		<label>hinflu_4.mat</label>
+		<value>hum_23_4.mat</value>
+		<label>hum_23_4.mat</label>
+		<value>hum_49_4.mat</value>
+		<label>hum_49_4.mat</label>
+		<value>hum_55_4.mat</value>
+		<label>hum_55_4.mat</label>
+		<value>hum_79_4.mat</value>
+		<label>hum_79_4.mat</label>
+		<value>hum_hi_4.mat</value>
+		<label>hum_hi_4.mat</label>
+		<value>hum_lo_4.mat</value>
+		<label>hum_lo_4.mat</label>
+		<value>jann_4.mat</value>
+		<label>jann_4.mat</label>
+		<value>kpneu_3.mat</value>
+		<label>kpneu_3.mat</label>
+		<value>lacto2.mat</value>
+		<label>lacto2.mat</label>
+		<value>lep_3.mat</value>
+		<label>lep_3.mat</label>
+		<value>lp_hi_2.mat</value>
+		<label>lp_hi_2.mat (Sea Urchin)</label>
+		<value>lp_lo_2.mat</value>
+		<label>lp_lo_2.mat</label>
+		<value>mm_hi_4.mat</value>
+		<label>mm_hi_4.mat (M. musculus)</label>
+		<value>mm_lo_4.mat</value>
+		<label>mm_lo_4.mat</label>
+		<value>mpneu_4.mat</value>
+		<label>mpneu_4.mat</label>
+		<value>myco_3.mat</value>
+		<label>myco_3.mat</label>
+		<value>P.aeruginosa_3.mat</value>
+		<label>P.aeruginosa_3.mat</label>
+		<value>P.furiosus_2.mat</value>
+		<label>P.furiosus_2.mat</label>
+		<value>p.aeruginosa_3.mat</value>
+		<label>p.aeruginosa_3.mat</label>
+		<value>p.furiosus_2.mat</value>
+		<label>p.furiosus_2.mat</label>
+		<value>pallidum_4.mat</value>
+		<label>pallidum_4.mat</label>
+		<value>phi80m3_2.mat</value>
+		<label>phi80m3_2.mat (phage)</label>
+		<value>prowazekii_4.mat</value>
+		<label>prowazekii_4.mat</label>
+		<value>pylori_2.mat</value>
+		<label>pylori_2.mat</label>
+		<value>pyogenes_3.mat</value>
+		<label>pyogenes_3.mat</label>
+		<value>radiodurans_4.mat</value>
+		<label>radiodurans_4.mat</label>
+		<value>rhizo.leg_3.mat</value>
+		<label>rhizo.leg_3.mat</label>
+		<value>rhizo.mel_4.mat</value>
+		<label>rhizo.mel_4.mat</label>
+		<value>rice_3.mat</value>
+		<label>rice_3.mat</label>
+		<value>rn_hi_4.mat</value>
+		<label>rn_hi_4.mat (R. norvegicus)</label>
+		<value>rn_lo_4.mat</value>
+		<label>rn_lo_4.mat</label>
+		<value>rubella_2.mat</value>
+		<label>rubella_2.mat</label>
+		<value>s.cerevisiae_at_3.mat</value>
+		<label>s.cerevisiae_at_3.mat</label>
+		<value>s.cerevisiae_t_5.mat</value>
+		<label>s.cerevisiae_t_5.mat</label>
+		<value>S.cerevisiae_AT_3.mat</value>
+		<label>S.cerevisiae_AT_3.mat</label>
+		<value>S.cerevisiae_T_5.mat</value>
+		<label>S.cerevisiae_T_5.mat</label>
+		<value>sc_hi_4.mat</value>
+		<label>sc_hi_4.mat (S. cerevisiae)</label>
+		<value>sc_lo_4.mat</value>
+		<label>sc_lo_4.mat</label>
+		<value>saimiri_2.mat</value>
+		<label>saimiri_2.mat</label>
+		<value>salm_4.mat</value>
+		<label>salm_4.mat</label>
+		<value>saureus_3.mat</value>
+		<label>saureus_3.mat</label>
+		<value>solf_2.mat</value>
+		<label>solf_2.mat</label>
+		<value>sp_hi_3.mat</value>
+		<label>sp_hi_3.mat (S. pombe)</label>
+		<value>sp_lo_3.mat</value>
+		<label>sp_lo_3.mat</label>
+		<value>strepneu_2.mat</value>
+		<label>strepneu_2.mat</label>
+		<value>subt_4.mat</value>
+		<label>subt_4.mat</label>
+		<value>syn_4.mat</value>
+		<label>syn_4.mat</label>
+		<value>t4_3.mat</value>
+		<label>t4_3.mat (T4 phage)</label>
+		<value>thalian4.mat</value>
+		<label>thalian4.mat</label>
+		<value>theil_3.mat</value>
+		<label>theil_3.mat</label>
+		<value>thermo_4.mat</value>
+		<label>thermo_4.mat</label>
+		<value>tuber_4.mat</value>
+		<label>tuber_4.mat</label>
+		<value>volvox_2.mat</value>
+		<label>volvox_2.mat</label>
+		<value>x_hi_3.mat</value>
+		<label>x_hi_3.mat (Xenopus)</label>
+		<value>x_lo_3.mat</value>
+		<label>x_lo_3.mat</label>
+		<value>yeast_5.mat</value>
+		<label>yeast_5.mat</label>
+		<value>933wv4_2.mat</value>
+		<label>933wv4_2.mat</label>
+	</vlist>
+	<comment>
+		<value>All the package proposed matrices are given here, which is a lot!</value>
+		<value>You can choose it according to the organism.</value>
+		<value>The last number given in the name is the order of the IMM (Interpolated Markov Chain): the bigger, the more complete/complex.</value>
+		<value>_hi_ indicates high GC content,</value>
+		<value>_lo_ indicates low GC content,</value>
+		<value>... and the standard error file gives sometimes a complete name of the matrix.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>search</name>
+<prompt>Search parameters</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>threshold</name>
+	<attributes>
+
+		<prompt>Probability threshold to identify gene-encoding ORFs (-t)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value != $vdef)? " -t $value" : "" </code>
+		</format>
+		<vdef><value>0.5</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>step</name>
+	<attributes>
+
+		<prompt>Step size (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value != $vdef)? " -s $value" : "" </code>
+		</format>
+		<vdef><value>12</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>Step the coding evaluation window step-size nucleotides for each evaluation. This parameter does not affect prediction performance so long as it is kept small (the default is 12). This value does, however, affect the number of data points in the graphical output and, hence, the size of the associated postscript file.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>window</name>
+	<attributes>
+
+		<prompt>Size of the sliding evaluation window (-w)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value != $vdef)? " -w $value" : "" </code>
+		</format>
+		<vdef><value>96</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>Use a sliding evaluation window of window-size nucleotides. The default value is 96. Smaller values may find smaller (&lt; window-size nucleotides) coding fragments, but prediction accuracy will decrease. Large values will yield stronger signals for large open-reading frames but skip over smaller coding fragments.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>codon</name>
+	<attributes>
+
+		<prompt>Codon table (-c)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)?" -c $value":""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>If specified, gm reads the file codon-table for a list of alternate codon translations. The codon-table file has a simple format: the codon is listed and followed by either a single letter IUPAC symbol for it's amino acid translation, the word 'start' to indicate it is a start codon, the word 'rare' to indicate is is a rare start codon, or the word 'stop' (or '*') to indicate the codon is a termination codon. The file should contain one codon per line and only those codons that differ from the standard encoding need to be listed.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_options</name>
+<prompt>Output options</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>list_options</name>
+	<prompt>List options (-l)</prompt>
+	<group>3</group>
+	<format>
+		<language>perl</language>
+		<code>($list_off || $list_orf || $list_regions || $list_exons || $list_quiet)?  " -l$list_off$list_orf$list_regions$list_exons$list_quiet" : ""</code>
+	</format>
+	<parameters>
+
+		<parameter type="Switch">
+		<name>list_off</name>
+		<attributes>
+
+			<prompt>Turn all options off (0)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($list_off=0))? "" : "" </code>
+			</format>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>list_orf</name>
+		<attributes>
+
+			<prompt>List open reading frame predictions (o)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($list_orf="o"))? "" : ""</code>
+			</format>
+			<comment>
+				<value>Includes RBS evaluations, if applicable.</value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>list_regions</name>
+		<attributes>
+
+			<prompt>List regions (r)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($list_regions="r"))? "" : ""</code>
+			</format>
+			<comment>
+				<value>List regions (from termination-codon to termination-codon in the same reading frame) that have a strong local signal in side of them.</value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>list_exons</name>
+		<attributes>
+
+			<prompt>List possible exons (x)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($list_exons="x"))? "" :""</code>
+			</format>
+			<comment>
+				<value>List possible exons (signals not correlated with a particular open reading frame).</value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>list_quiet</name>
+		<attributes>
+
+			<prompt>Quiet. Disable the file header information (q)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($list_quiet="q"))? "" :""</code>
+			</format>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Switch">
+	<name>do_postscript</name>
+	<attributes>
+
+		<prompt>Graphical output in PostScript</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)?  " -g$graph_off$graph_orf$graph_regions$graph_exons$frameshift$scale$landscape$termination$start" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>graph_options</name>
+	<prompt>Graphical output options (-g)</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$do_postscript</code>
+	</precond>
+	<group>4</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>zoom</name>
+		<attributes>
+
+			<prompt>Zoom level (-z)</prompt>
+			<format>
+				<language>perl</language>
+				<code> (defined $value)?" -z $value":""</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>The number of nucleotides appearing on each page in the graphical output is multiplied by zoom-level.</value>
+			</comment>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>graph_off</name>
+		<attributes>
+
+			<prompt>Turn all options off (0)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($graph_off=0))? "" : "" </code>
+			</format>
+			<group>4</group>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>graph_orf</name>
+		<attributes>
+
+			<prompt>Indicate open reading frames with a horizontal line at the 0.5 level (o)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($graph_orf="o"))? "" : ""</code>
+			</format>
+			<group>4</group>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>graph_regions</name>
+		<attributes>
+
+			<prompt>Indicate regions with grey bars at the 0.35 level (r)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($graph_regions="r"))? "" : ""</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>indicate regions (from termination-codon to termination-codon in the same reading frame) that have a strong local signal in side of them.</value>
+			</comment>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>graph_exons</name>
+		<attributes>
+
+			<prompt>Indicate possible exons (x)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($graph_exons="x"))? "" :""</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>Indicate possible exons (signals not correlated with a particular open reading frame).</value>
+			</comment>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>frameshift</name>
+		<attributes>
+
+			<prompt>Indicate suspected frameshift errors (f)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($frameshift="f"))? "" :""</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>Indicate suspected frameshift errors (indicated by a sudden change in signal frame).</value>
+			</comment>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>scale</name>
+		<attributes>
+
+			<prompt>Use an alternative horizontal scale based on powers of 10 (k)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($scale="k"))? "" :""</code>
+			</format>
+			<group>4</group>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>landscape</name>
+		<attributes>
+
+			<prompt>Landscape output (l)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($landscape="l"))? "" :""</code>
+			</format>
+			<group>4</group>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>termination</name>
+		<attributes>
+
+			<prompt>Indicate termination codons with a vertical tick (n)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($termination="n"))? "" :""</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>Indicate termination codons with a vertical tick extending downward from the 0.5 level.</value>
+			</comment>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>start</name>
+		<attributes>
+
+			<prompt>Indicate start and rare start codons with a vertical tick (s)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($start="s"))? "" :""</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>Indicate start and rare start codons with vertical ticks extending from the 0.5 level.</value>
+			</comment>
+		<precond>
+			<language>perl</language>
+			<code>$do_postscript</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>region_options</name>
+	<prompt>Regions output options (-r)</prompt>
+	<group>5</group>
+	<format>
+		<language>perl</language>
+		<code>($region_off || $region_translation || $region_nucleotide || $region_quiet)?  " -r$region_off$region_translation$region_nucleotide$region_quiet" : ""</code>
+	</format>
+	<parameters>
+
+		<parameter type="Switch">
+		<name>region_off</name>
+		<attributes>
+
+			<prompt>Turn all options off (0)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($region_off=0))? "" : "" </code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>region_translation</name>
+		<attributes>
+
+			<prompt>Write amino acid translations of the indicated regions (p)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($region_translation="p"))? "" : "" </code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>region_nucleotide</name>
+		<attributes>
+
+			<prompt>Write a copy of the nucleotide sequence of the indicated regions (n)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($region_nucleotide="n"))? "" : "" </code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>region_quiet</name>
+		<attributes>
+
+			<prompt>Suppress header information in the generated file. (q)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($region_quiet="q"))? "" :""</code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>orf_options</name>
+	<prompt>ORF output options (-o)</prompt>
+	<group>5</group>
+	<format>
+		<language>perl</language>
+		<code>($orf_off || $orf_translation || $orf_nucleotide || $orf_quiet)?  " -o$orf_off$orf_translation$orf_nucleotide$orf_quiet" : ""</code>
+	</format>
+	<parameters>
+
+		<parameter type="Switch">
+		<name>orf_off</name>
+		<attributes>
+
+			<prompt>Turn all options off (0)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($orf_off=0))? "" : "" </code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>orf_translation</name>
+		<attributes>
+
+			<prompt>Write amino acid translations of the indicated ORF (p)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($orf_translation="p"))? "" : "" </code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>orf_nucleotide</name>
+		<attributes>
+
+			<prompt>Write a copy of the nucleotide sequence of the indicated ORF (n)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($orf_nucleotide="n"))? "" : "" </code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>orf_quiet</name>
+		<attributes>
+
+			<prompt>Suppress header information in the generated file. (q)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; ($orf_quiet="q"))? "" :""</code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

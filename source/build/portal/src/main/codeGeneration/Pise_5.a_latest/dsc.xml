@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>DSC</title>
+    <version>1.2a</version>
+    <description>Discrimination of protein Secondary structure Class</description>
+    <authors>R. D. King, M.J.E. Sternberg</authors>
+    <reference>Identification and application of the concepts important for accurate and reliable protein secondary structure prediction by Ross D. King and Michael J.E. Sternberg (Protein Science). </reference>
+
+    <category>protein:2d structure</category>
+  </head>
+
+<command>dsc</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>dsc</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>dsc</code>
+		<language>perl</language>
+		<code>"dsc -m"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Protein sequence(s) File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<seqfmt>
+	  <value>15</value>
+	</seqfmt>
+	<group>10</group>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<!-- Fasta est detecte comme PIR
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>seqformat</name>
+<attributes>
+
+	<prompt>Sequence(s) Format</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>-m</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>-m</value>
+		<label>MSF (-m)</label>
+		<value>-p</value>
+		<label>PHD output (-p)</label>
+		<value>-w</value>
+		<label>CLUSTAL W (-w)</label>
+		<value>-s</value>
+		<label>PIR (-s)</label>
+		<value>-s</value>
+		<label>Fasta (-s)</label>
+		<value>-s</value>
+		<label>simple ASCII (-s)</label>
+	</vlist>
+
+</attributes>
+</parameter>
+-->
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control</name>
+<prompt>Control parameters</prompt>
+<group>1</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>poorly</name>
+	<attributes>
+
+		<prompt>Turn off removal of poorly Aligned sections (-a)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -a":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>isolated</name>
+	<attributes>
+
+		<prompt>Stop automatic removal of Isolated predictions (-i)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -i":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>filtering</name>
+	<attributes>
+
+		<prompt>Level of Filtering of predictions (-f)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -f$value":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>DSC incorporates rules to filter predictions. As default these rules are set on. These rules can be used recursively by setting the filter level, e.g. setting the flag to 2 would run the rules twice, 0 would not apply any filtering, level 1 is default.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>seqlen</name>
+	<attributes>
+
+		<prompt>Length of sequence used to determine poor alignment (-l)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -l$value":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>identity</name>
+	<attributes>
+
+		<prompt>Threshold peRcentage of identity used to determine poor alignment (-r)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -r$value":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output parameters</prompt>
+<group>1</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>casp</name>
+	<attributes>
+
+		<prompt>CASP output format (-c)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -c":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

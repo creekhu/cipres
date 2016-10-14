@@ -1,0 +1,14 @@
+. Sequence file : [phyml_input_default_data_20tax.txt]
+
+. Model of nucleotides substitution : JC69
+
+. Initial tree : [BIONJ]
+
+
+. Data	Nb of 	Likelihood	Discrete   	Proportion of	Transition/ 	Nucleotides frequencies               	
+  set	taxa	loglk     	gamma model	invariant    	transversion	f(A)      f(C)      f(G)      f(T)    	
+
+  #1	20   	-73.23926	No         	0.166    	1.000     	 0.25000   0.25000   0.25000   0.25000	
+
+  #2	20   	-50.27187	No         	0.105    	1.000     	 0.25000   0.25000   0.25000   0.25000	
+

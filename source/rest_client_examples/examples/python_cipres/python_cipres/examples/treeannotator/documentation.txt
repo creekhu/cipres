@@ -1,0 +1,16 @@
+Tree Annotator
+
+input.infile_ - Primary Input File
+input.tree_file_ - target tree files (only when tree_type eq "UTT")
+
+vparam.which_beast - Excl - only the default (3) is allowed today
+vparam.runtime_ - Float - Maximum Hours to Run 72 max, default=1.0
+vparam.burnin_type_ - Excl - States (default) or Trees.
+vparam.set_burnin_ - Integer - Number of states to discard default=200
+vparam.set_burnintrees_ - Integer - Number of trees to discard default=200.
+vparam.set_limit_ - Float  - limit for posterior probability;  no default; .
+vparam.tree_type_ - Excl - target tree type; Max Clade Credibility (MCC), or User Target Tree (UTT). (default=MCC).
+vparam.tree_heights_ - Excl - Set tree type:  keep, media, mean, ca (common ancestor) (default=keep).
+vparam.force_discrete_ - Switch - Force integer traits to be treated as discrete (default=0).
+vparam.hpd_interval_ - Float - HPD interval to be used for the bivariate traits (-hpd2D), less than 1;  (no default).
+vparam.set_output_ - String - Name the output file (default=out.txt).

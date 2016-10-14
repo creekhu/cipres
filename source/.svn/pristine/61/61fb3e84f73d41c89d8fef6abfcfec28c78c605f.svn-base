@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>BTWISTED</title>
+<description>Calculates the twisting in a B-DNA sequence (EMBOSS)</description>
+<category>nucleic:composition</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/btwisted.html</doclink>
+</head>
+
+<command>btwisted</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- PureDNA [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>puredna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>angledata</name>
+	<attributes>
+		<prompt>File containing base pair twist angles (-angledata)</prompt>
+		<vdef>
+			<value>Eangles.dat</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -angledata=$value" : ""</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>energydata</name>
+	<attributes>
+		<prompt>File containing base pair stacking energies (-energydata)</prompt>
+		<vdef>
+			<value>Eenergy.dat</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -energydata=$value" : ""</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>5</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

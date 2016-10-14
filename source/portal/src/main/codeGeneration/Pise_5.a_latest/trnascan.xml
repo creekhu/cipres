@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  
+  <head>
+    <title>tRNAscan-SE</title>
+    <version>1.21</version>
+    <description>detection of transfer RNA genes</description>
+    <authors>T. Lowe, S. Eddy</authors>
+    <reference>Fichant, G.A. and Burks, C. (1991) Identifying potential tRNA genes in genomic DNA sequences, J. Mol. Biol., 220, 659-671.</reference>
+    <reference>Eddy, S.R. and Durbin, R. (1994) RNA sequence analysis using covariance models, Nucl. Acids Res., 22, 2079-2088.</reference>
+    <reference>Pavesi, A., Conterio, F., Bolchi, A., Dieci, G., Ottonello, S. (1994) Identification of new eukaryotic tRNA genes in genomic DNA databases by a multistep weight matrix analysis of trnascriptional control regions, Nucl. Acids Res., 22, 1247-1256.</reference>
+    <reference>Lowe, T.M. and Eddy, S.R. (1997) tRNAscan-SE: A program for improved detection of transfer RNA genes in genomic sequence, Nucl. Acids Res., 25, 955-964.</reference>
+  </head>
+    
+  <command>trnascan</command>
+  
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>trnascan</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"tRNAscan-SE"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence</name>
+      <attributes>
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>prokaryotic</name>
+	    <attributes>
+	      <prompt>Improve detection of prokaryotic tRNAs (-P)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -P":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This parameter loosens the search parameters for EufindtRNA to improve detection of prokaryotic tRNAs. Use this option when scanning prokaryotic sequences or both eukaryotic and prokaryotic sequences in the same sequence file. This option also disables pseudogene checking automatically since criteria for pseudogene checking were developed for eukaryotic pseudogenes.</value>
+		<value>Use of this mode with prokaryotic sequences will also improve bounds prediction of the 3' end (the terminal CAA triplet).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>archeal</name>
+	    <attributes>
+	      <prompt>Select archeal-specific covariance model (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -A" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>This option selects an archaeal-specific covariance model for tRNA analysis, as well as slightly loosening the EufindtRNA search cutoffs.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>organellar</name>
+	    <attributes>
+	      <prompt>Bypasses the fast first-pass scanners that are poor at detecting organellar tRNAs (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -O":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This parameter bypasses the fast first-pass scanners that are poor at detecting organellar tRNAs and runs Cove analysis only. Since true organellar tRNAs have been found to have Cove scores between 15 and 20 bits, the search cutoff is lowered from 20 to 15 bits. Also, pseudogene checking is disabled since it is only applicable to eukaryotic cytoplasmic tRNA pseudogenes. Since Cove-only mode is used, searches will be very slow (see -C option below) relative to the default mode.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>general</name>
+	    <attributes>
+	      <prompt>general covariance model trained on all three phylogenetic domains (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -G" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>This option selects the general tRNA covariance model that was trained on tRNAs from all three phylogenetic domains (archaea, bacteria, &amp; eukarya). This mode can be used when analyzing a mixed collection of sequences from more than one phylogenetic domain, with only slight loss of sensitivity and selectivity.</value>
+		<value>The original publication describing this program and tRNAscan-SE version 1.0 used this general tRNA model exclusively.  If you wish to compare scores to those found in the paper or scans using v1.0, use this option.  Use of this option is compatible with all other search mode options described in this section.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>cove_only</name>
+	    <attributes>
+	      <prompt>Analyze sequences using Cove only (-C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -C":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Directs tRNAscan-SE to analyze sequences using Cove analysis only. This option allows a slightly more sensitive search than the default tRNAscan + EufindtRNA -&gt; Cove mode, but is much slower (by approx. 250 to 3,000 fold). Output format and other program defaults are otherwise identical to the normal analysis.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>trnascan_only</name>
+	    <attributes>
+	      <prompt>Use tRNAscan only to analyze sequences (-T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -T":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Directs tRNAscan-SE to use only tRNAscan to analyze sequences. This mode will default to using 'strict' parameters with tRNAscan analysis (similar to tRNAscan version 1.3 operation). This mode of operation is faster (3-5 times faster than default mode analysis), but will result in approximately 0.2 to 0.6 false positive tRNAs per Mbp, decreased sensitivity, and less reliable prediction of anticodons, tRNA isotype, and introns.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>eufindtrna_only</name>
+	    <attributes>
+	      <prompt>Use EufindtRNA only to search for tRNAs (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -E":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Since Cove is not being used as a secondary filter to remove false positives, this run mode defaults to 'Normal' parameters which more closely approximates the sensitivity and selectivity of the original algorithm describe by Pavesi and colleagues (see the option -e for a description of the various run modes).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>trnascan_mode</name>
+	    <attributes>
+	      <prompt>Strict or relaxed tRNAscan mode (-t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -t $value":""</code>
+	      </format>
+	      <vdef><value>S</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>S</value>
+		<label>S: strict</label>
+		<value>R</value>
+		<label>R: relaxed</label>
+	      </vlist>
+	      <comment>
+		<value>Relaxed parameters may give very slightly increased search sensitivity, but increase search time by 20-40 fold.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>eufindtrna_mode</name>
+	    <attributes>
+	      <prompt>EufindtRNA mode (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -e $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <vlist>
+		<value>S</value>
+		<label>S: strict</label>
+		<value>R</value>
+		<label>R: relaxed</label>
+		<value>N</value>
+		<label>N: normal</label>
+	      </vlist>
+	      <comment>
+		<value>Explicitly set EufindtRNA params, where &lt;mode&gt;= R, N, or S (relaxed, normal, or strict). The 'relaxed' mode is used for EufindtRNA when using tRNAscan-SE in default mode. With relaxed parameters, tRNAs that lack pol III poly-T terminators are not penalized, increasing search sensitivity, but decreasing selectivity. When Cove analysis is being used as a secondary filter for false positives (as in tRNAscan-SE's default mode), overall selectivity is not decreased.</value>
+		<value>Using 'normal' parameters with EufindtRNA does incorporate a log odds score for the distance between the B box and the first poly-T terminator, but does not disqualify tRNAs that do not have a terminator signal within 60 nucleotides. This mode is used by default when Cove analysis is not being used as a secondary false positive filter.</value>
+		<value>Using 'strict' parameters with EufindtRNA also incorporates a log odds score for the distance between the B box and the first poly-T terminator, but _rejects_ tRNAs that do not have such a signal within 60 nucleotides of the end of the B box. This mode most closely approximates the originally published search algorithm (3); sensitivity is reduced relative to using 'relaxed' and 'normal' modes, but selectivity is increased which is important if no secondary filter, such as Cove analysis, is being used to remove false positives. This mode will miss most prokaryotic tRNAs since the poly-T terminator signal is a feature specific to eukaryotic tRNAs genes (always use 'relaxed' mode for scanning prokaryotic sequences for tRNAs).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>matching</name>
+	    <attributes>
+	      <prompt>Search only sequences with names matching this string (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -n $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Search only sequences with names matching this string. Only those sequences with names (first non-white space word after '&gt;' symbol on FASTA name/description line) matching this string are analyzed for tRNAs.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>start</name>
+	    <attributes>
+	      <prompt>Start search at first sequence with name matching this string (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -s $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Start search at first sequence with name matching &lt;EXPR&gt; string and continue to end of input sequence file(s). This may be useful for re-starting crashed/aborted runs at the point where the previous run stopped. (If same names for output file(s) are used, program will ask if files should be over-written or appended to -- choose append and run will successfully be restarted where it left off).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>genetic</name>
+	    <attributes>
+	      <prompt>Genetic code (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef)? " -g /local/gensoft/lib/tRNAscan-SE/$value":""</code>
+	      </format>
+	      <group>1</group>
+	      <vdef><value>Standard</value></vdef>
+	      <vlist>
+		<value>Standard</value>
+		<label>Standard</label>
+		<value>gcode.cilnuc</value>
+		<label>Ciliate, Dasycladacean, &amp; Hexamita Nuclear</label>
+		<value>gcode.echdmito</value>
+		<label>Echinoderm mitochondrial</label>
+		<value>gcode.invmito</value>
+		<label>Invertebrate mitochondrial</label>
+		<value>gcode.othmito</value>
+		<label>Mold, Protozoan, &amp; Coelenterate mitochondrial</label>
+		<value>gcode.vertmito</value>
+		<label>Vertebrate mitochondrial</label>
+		<value>gcode.ystmito</value>
+		<label>Yeast mitochondrial</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code> (! ($trnascan_only || $eufindtrna_only)) </code>
+	      </precond>
+	      <comment>
+		<value>This option does not have any effect when using the -T or -E options -- you must be running in default or Cove only analysis mode.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>disable_checking</name>
+	    <attributes>
+
+	      <prompt>Manually disable checking tRNAs for poor primary or secondary structure scores often indicative of eukaryotic pseudogenes (-D)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -D":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>This will slightly speed the program and may be necessary for non-eukaryotic sequences that are flagged as possible pseudogenes but are known to be functional tRNAs.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>add_to_both_ends</name>
+	    <attributes>
+	      <prompt>Number of nucleotids to add to both ends during first-pass (-B</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -B $value" : ""</code>
+	      </format>
+	      <vdef><value>7</value></vdef>
+	      <comment>
+		<value>By default, tRNAscan-SE adds 7 nucleotides to both ends of tRNA predictions when first-pass tRNA predictions are passed to covariance model (CM) analysis.  CM analysis generally trims these bounds back down, but on occassion, allows prediction of an otherwise truncated first-pass tRNA prediction.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>cutoff</name>
+	    <attributes>
+
+	      <prompt>Cove cutoff score for reporting tRNAs (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -X $value":""</code>
+	      </format>
+	      <vdef><value>20</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This option allows the user to specify a different Cove score threshold for reporting tRNAs. It is not recommended that novice users change this cutoff, as a lower cutoff score will increase the number of pseudogenes and other false positives found by tRNAscan-SE (especially when used with the 'Cove only' scan mode). Conversely, a higher cutoff than 20.0 bits will likely cause true tRNAs to be missed by tRNAscan (numerous 'real' tRNAs have been found just above the 20.0 cutoff). Knowledgable users may wish to experiment with this parameter to find very unusual tRNAs or pseudogenes beyond the normal range of detection with the preceding caveats in mind.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>length</name>
+	    <attributes>
+
+	      <prompt>Max length of tRNA intron+variable region (-L)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -L $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set max length of tRNA intron+variable region (default=116bp). The default maximum tRNA length for tRNAscan-SE is 192 bp, but this limit can be increased with this option to allow searches with no practical limit on tRNA length. In the first phase of tRNAscan-SE, EufindtRNA searches for A and B boxes of &lt;length&gt; maximum distance apart, and passes only the 5' and 3' tRNA ends to covariance model analysis for confirmation (removing the bulk of long intervening sequences). tRNAs containing group I and II introns have been detected by setting this parameter to over 800 bp. Caution: group I or II introns in tRNAs tend to occur in positions other than the canonical position of protein-spliced introns, so tRNAscan-SE mispredicts the intron bounds and anticodon sequence for these cases. tRNA bound predictions, however, have been found to be reliable in these same tRNAs.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>previous_first_pass_result</name>
+	    <attributes>
+
+	      <prompt>Use a previous first pass result tabular file (-u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -u $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>This option allows the user to re-generate results from regions identified to have tRNAs by a previous tRNAscan-SE run. Either a regular tabular result file, or output saved with the -r option may be used as the specified &lt;file&gt;. This option is particularly useful for generating either secondary structure output (-f option) or ACeDB output (-a option) without having to re-scan entire sequences. Alternatively, if the -r option is used to generate the previous results file, tRNAscan-SE will pick up at the stage of Cove-confirmation of tRNAs and output final tRNA predicitons as with a normal run.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>! ($matching || $start)</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>statistics</name>
+	    <attributes>
+
+	      <prompt>Save statistics summary for run (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -m\\#":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>This option directs tRNAscan-SE to write a brief summary to a file which contains the run options selected as well as statistics on the number of tRNAs detected at each phase of the search, search speed, and other bits of information. See Manual documentation for explanation of each statistic.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>secondary_structure</name>
+	    <attributes>
+
+	      <prompt>Save secondary structure results file (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -f\\#":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Save final results and Cove tRNA secondary structure predictions. This output format makes visual inspection of individual tRNA predictions easier since the tRNA sequence is displayed along with the predicted tRNA base pairings.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>save_first_pass</name>
+	    <attributes>
+
+	      <prompt>Save first pass results (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -r\\#":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Save tabular, formatted output results from tRNAscan and/or EufindtRNA first pass scans. The format is similar to the final tabular output format, except no Cove score is available at this point in the search (if EufindtRNA has detected the tRNA, the negative log likelihood score is given). Also, the sequence ID number and source sequence length appear in the columns where intron bounds are shown in final output. This option may be useful for examining false positive tRNAs predicted by first-pass scans that have been filtered out by Cove analysis.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>false_positives</name>
+	    <attributes>
+
+	      <prompt>Save false positives (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -F\\#":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Save first-pass candidate tRNAs that were then found to be false positives by Cove analysis. This option saves candidate tRNAs found by either tRNAscan and/or EufindtRNA that were then rejected by Cove analysis as being false positives. tRNAs are saved in the FASTA sequence format.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>progress</name>
+	    <attributes>
+
+	      <prompt>Display program progress (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -d":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Messages indicating which phase of the tRNA search are printed to standard output. If final results are also being sent to standard output, some of these messages will be suppressed so as to not interrupt display of the results.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>brief</name>
+	    <attributes>
+
+	      <prompt>Use brief output format (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -b":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This eliminates column headers that appear by default when writing results in tabular output format. Useful if results are to be parsed or piped to another program.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>quiet</name>
+	    <attributes>
+
+	      <prompt>Quiet mode (-q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -q":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>The credits &amp; run option selections normally printed to standard error at the beginning of each run are suppressed.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>acedb</name>
+	    <attributes>
+
+	      <prompt>Output final results in ACeDB format instead of the default tabular format (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -a":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>trna_codon</name>
+	    <attributes>
+
+	      <prompt>Output a tRNA's corresponding codon in place of its anticodon (-N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -N":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>scanners</name>
+	    <attributes>
+	      <prompt>Displays which of the first-pass scanners detected the tRNA being output (-y)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -y":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>'Ts', 'Eu', or 'Bo' will appear in the last column of Tabular output, indicating that either tRNAscan 1.4, EufindtRNA, or both scanners detected the tRNA, respectively.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>unfinished_sequences</name>
+	    <attributes>
+	      <prompt>skip over N's in unfinished sequence (-i)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -i" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	
+	  <parameter type="Switch">
+	    <name>breakdown</name>
+	    <attributes>
+	      <prompt>Display the breakdown of the two components of the bit score (-H)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -H" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Since tRNA pseudogenes often have one very low component (good secondary structure but poor primary sequence similarity to the tRNA model, or vice versa), this information may be useful in deciding whether a low-scoring tRNA is likely to be a pseudogene.  The heuristic pseudogene detection filter uses this information to flag possible pseudogenes -- use this option to see why a hit is marked as a possible pseudogene.  The user may wish to examine score breakdowns from known tRNAs in the organism of interest to get a frame of reference.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+ 
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Results">
+      <name>results</name>
+      <attributes>
+	<filenames>*.stats *.log *.ss *.fpass.out *.fpos</filenames>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

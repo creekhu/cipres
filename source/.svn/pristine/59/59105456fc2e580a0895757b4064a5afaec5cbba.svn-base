@@ -1,0 +1,1492 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" >
+<pise>
+	<head>
+		<title>t_coffee</title>
+		<version>1.37</version>
+		<description>Multiple sequence alignment</description>
+		<authors>Notredame, C.</authors>
+		<reference>Notredame, C., Higgins, H.G., Heringa, J. (2000), T-Coffee: A novel method for fast and accurate multiple sequence alignment. J. Mol. Biol. 302:205-217.</reference>
+	</head>
+	<command>t_coffee</command>
+	<parameters>
+		<parameter ismandatory="1" ishidden="1" iscommand="1" type="String"><name>t_coffee</name>
+			<attributes>
+				<format>
+					<language>perl</language>
+					<code>"t_coffee"</code>
+				</format>
+				<vdef><value>t_coffee</value></vdef>
+				<group>0</group>
+				<comment>
+					<value>t_coffee -multiple sequence alignments</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter ismandatory="1" issimple="1" type="InFile"><name>sequences</name><attributes>
+				<prompt>Sequences</prompt>
+				<format>
+					<language>perl</language>
+					<code>" -infile=$value"</code>
+				</format>
+				<group>1</group>
+				<seqfmt>
+					<value>8</value>
+				</seqfmt>
+				<comment><value>Valid formats for the sequence include alignments. Gaps are automatically reset.</value></comment>
+			</attributes>
+		</parameter>
+		<parameter type="InFile"><name>in0</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$value"; "";}
+							else {$in = "";} </code>
+				</format>
+				<group>1</group>
+				<comment><value>Sequences wil be gathered in all the sequence, alignments and library files. 
+				Format recognition is automatic. these sequences will be pooled togethed and duplicates 
+				will be removed. Each file provided must contain only one copy of each sequence.
+				A maximum of 21 files may be given here.</value></comment>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in1</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}	</code>
+				</format>
+				<group>1</group>
+				</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in2</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}	</code>
+				</format>
+				<group>1</group>
+				</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in3</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in4</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in5</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in6</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in7</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in8</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in9</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in10</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in11</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in12</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in13</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in14</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in15</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in16</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; ""; }  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in17</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value"; "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in18</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+				<parameter type="InFile"><name>in19</name><attributes>
+				<prompt>Pdb structures, (multiple) Alignments, libraries or more sequences.</prompt>
+				<format>
+					<language>perl</language>
+					<code>if (defined $value){$in = "$in,$value";  "";}  </code>
+				</format>
+				<group>1</group>
+			</attributes>
+		</parameter>
+								
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>input_opt</name>
+				<prompt>Input options</prompt>
+				<group>2</group>
+				<parameters>
+					<parameter type="Excl"><name>type</name>
+						<attributes>
+							<prompt>Type of the sequences</prompt>
+							<format>
+								<language>perl</language>
+								<code>(not $value ==$vdef)? " -type=$value":""</code>
+							</format>
+							<comment>
+								<value>Sets the type of the sequences (protein or dna). If omitted it is guessed automatically. This flag is compatible with ClustalW.
+								</value>
+							</comment>
+							<vdef><value></value></vdef><vlist><value></value><label>Auto</label><value>DNA</value><label>DNA</label><value>PROTEIN</value><label>PROTEIN</label></vlist></attributes>
+					</parameter><parameter type="InFile"><name>parameters</name>
+						<attributes>
+							<prompt>File containing extra parameters</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " -parameters=$value":""</code>
+							</format>
+							<comment><value>Indicates a file containing extra parameters. 
+							Parameters read that way superseed all the other parameters of the command line. 
+							This parameter file can contain only valid parameters, comments are not allowed.</value></comment></attributes>
+					</parameter><parameter type="InFile"><name>tcoffee_defaults</name>
+						<attributes>
+							<prompt>Use t_coffee defaults. Can be set to a specific file.</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " -t_coffee_defaults=$value":""</code>
+							</format>
+							<comment>
+								<value>This flag tells the program to use some default parameter file for t_coffee. 
+								The format is the same as that with -parameters. Parameters from prompt or -parameters supersede t-coffee defaults.
+								t_coffee defaults supersedes dali_default values.</value>
+							</comment>
+						</attributes>
+					</parameter><parameter type="Switch">
+						<name>dali_defaults</name>
+						<attributes>
+							<prompt>Use dali_defaults. </prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " -dali_defaults":""</code>
+							</format>
+							<comment>
+								<value>dali_defaults indicates that t_coffee will use the default dali parameters (hardcoded). 
+								If a file is indicated as well, the parameters in this file will be used instead. 
+								</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>dali_file</name>
+						<attributes>
+							<prompt>File with default dali_parameters</prompt>
+							<format>
+								<language>perl</language>
+								<code>if ((defined $value)&amp;&amp;(defined $dali_defaults)) {"=$value";}
+								      elsif (defined $value) {" dali_defaults=$value";}
+								      else { "";}
+								</code>
+							</format>
+							<comment><value>The parameters in this file will be used as dali_defaults. 
+							         The format is the same as with -parameters </value>
+							</comment>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>alignment_computation</name>
+				<prompt>Options for Alignment Computations</prompt>
+				<group>2</group>
+				<parameters>
+					<parameter type="List"><name>method</name>
+						<attributes>
+							<prompt>Builtin method to use to produce library. </prompt>
+							<format>
+								<language>perl</language>
+								<code></code>
+							</format>
+							<vlist>
+								<value>Mclustalw_aln</value><label>clustalw_aln</label>
+								<value>Mclustalw_pair</value><label>clustalw_pair</label>
+								<value>Mlalign_id_pair</value><label>lalign_id_pair</label>
+								<value>Mfast_pair</value><label>fast_pair</label>
+								<value>Mslow_pair</value><label>slow_pair</label>
+								<value>Mifast_pair</value><label>ifast_pair</label>
+								<value>Malign_pdb_pair</value><label>align_pdb_pair</label>
+								<value>Msap_pair</value><label>sap_pair</label>
+								<value>Mlalign_rs_pair</value><label>lalign_rs_pair</label>
+								<value>Mlalign_id_m_pair</value><label>lalign_id_m_pair</label>
+								<value>Mlalign_s_pair</value><label>lalign_s_pair</label>
+								<value>Mlalign_rs_s_pair</value><label>lalign_rs_s_pair</label>
+								<value>Mfast_cdna_pair</value><label>fast_cdna_pair</label>
+							</vlist>
+							<separator>,</separator>
+							<vdef><value>Mlalign_id_pair</value></vdef>
+							<comment>
+								<value>Built-in methods can be requested using the following names:&gt;br&lt;
+								fast_pair : makes a global fasta style pairwise alignment. For proteins, 
+								matrix=blosum62mt, gep=-1, gop=-10, ktup=2. For DNA, matrix=idmat(id=10), 
+								gep=-1,gop=-20,ktup=5. Each pair of residue is geiven a score function of 
+								the weighting mode defined by -weight. gt;br&lt;
+								slow_pair: identical to fast-pair, but does a full dynamic programming using 
+								the Meyers and Millers algorithm. This method is recommended if your 
+								sequences are distantly related.gt;br&lt;
+								ifast_pair: Makes a global fasta alignment using the previously computed 
+								pairs as a library. i stands for iterative. Each pair of residue is given a
+								score function of the weighting mode defined by -weight.gt;br&lt;
+								align_pdb_pair: Uses the align_pdb routine to align two structures. The 
+								pairwise scores are those returned by the align_pdb program. If a structure 
+								is missing, fast-pair is used instead. Each pair of residue is given a score 
+								function defined by align_pdb.	gt;br&lt;
+								sap_pair: uses SAP to align two structures. Each pair of residue is given a
+								score function defined by sap. You must have sap installed on your system 
+								to use this method.gt;br&lt;
+								clustalw_pair: uses clustalw (default parameters) to align two sequences. 
+								Each pair of residue is given a score function of de weighting mode defined 
+								by -weight.gt;br&lt;
+								clustalw_aln: Makes a multiple alignment using ClustalW and adds it to the library. 
+								Each pair of residue is given a score function of the weighting mode defined by weight.
+								gt;br&lt;
+								lalign_rs_pair: Uses the output of lalign2list. Each pair of residue is given a score 
+								equal to the lalign raw score it comes from.gt;br&lt;
+								lalign_id_pair: Same as lalign_rs_pair, but using the level of identity as a weight.gt;br&lt;
+								lalign_m_pair: same as above, but does the alignment both ways (m stands for mirror)gt;br&lt;
+								lalign_s_pair: Same as above but does also the self comparison (s stands for self).
+								This is needed when extracting repeats. The weights used that way are based on identity.gt;br&lt;
+								lalign_rs_s_pair: Same as above but does also the self comparison (s stands for self).
+								This is needed when extracting repeats. The weights used that way are based on identity.gt;br&lt;
+								fast_cdna_pair: This method computes the pairwise alignment of two cDNA sequences. 
+								It is a fast_pair alignment that takes only takes into the account the amino-acid similarity 
+								and uses different penalties for amino-acid insertions and frameshifts. This alignment is 
+								turned into a library where matched nucleotides receive a score equal to the average 
+								level of identity at the amino-acid level. This mode is intended to clean cDNA obtained 
+								from ESTs or to align pseudogenes.
+								</value>
+							</comment>
+						</attributes>	
+					</parameter>
+					<parameter type="InFile"><name>method_in0</name>
+						<attributes>
+							<prompt>Custom made method 0 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "M$value"; "";}
+									else {$smethod = "";} </code>
+							</format>
+							<comment>
+								<value>These flags allows to define your own methods.
+								If you have a method available, write a perl script that will contain your favorite parameters, 
+								and some input/output facilities so that the script can be run using: gt;br&lt;
+								script.name -in sequence_file -out aln. gt;br&lt;
+								In and out must be legal formats. You will also need to provide a configuration file for the method. 
+								This file is saved as the method and can be used. You may maximal use 21 self defined methods here.
+								</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in1</name>
+						<attributes>
+							<prompt>Custom made method 1 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in2</name>
+						<attributes>
+							<prompt>Custom made method 2 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in3</name>
+						<attributes>
+							<prompt>Custom made method 3 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in4</name>
+						<attributes>
+							<prompt>Custom made method 4 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in5</name>
+						<attributes>
+							<prompt>Custom made method 5 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in6</name>
+						<attributes>
+							<prompt>Custom made method 6 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in7</name>
+						<attributes>
+							<prompt>Custom made method 7 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in8</name>
+						<attributes>
+							<prompt>Custom made method 8 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in9</name>
+						<attributes>
+							<prompt>Custom made method  9 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in10</name>
+						<attributes>
+							<prompt>Custom made method 10 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in11</name>
+						<attributes>
+							<prompt>Custom made method 11 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in12</name>
+						<attributes>
+							<prompt>Custom made method 12 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in13</name>
+						<attributes>
+							<prompt>Custom made method 13 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in14</name>
+						<attributes>
+							<prompt>Custom made method 14 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in15</name>
+						<attributes>
+							<prompt>Custom made method 15 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in16</name>
+						<attributes>
+							<prompt>Custom made method 16 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in17</name>
+						<attributes>
+							<prompt>Custom made method 17 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in18</name>
+						<attributes>
+							<prompt>Custom made method 18 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile"><name>method_in19</name>
+						<attributes>
+							<prompt>Custom made method 19 to make the library</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){$smethod = "$smethod,M$value";  "";}  </code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter ishidden="1" type="String"><name>collect_in</name>
+						<attributes>
+							<format>
+								<language>perl</language>
+								<code>$strig = "";
+									if ($smethod ne ""){$strig = $smethod;}
+									if ($method ne ""){if ($strig ne ""){$strig = "$strig,$method";}
+									    else {$strig = $method;}}
+									if ($in ne "") {if ($strig ne "") {$strig = "$strig,$in";}
+									    else {$strig = $in;}} 
+									if ($strig ne ""){" -in=$strig";}
+									else {"";}
+								</code>
+							</format>
+							<comment>
+							<value>this hidden parameter collects all the values for the -in tag</value>
+							</comment>
+						</attributes>	
+					</parameter><parameter type="InFile">
+						<name>profile0</name>
+						<attributes>
+							<prompt>Profile 0 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " -profile=$value":""</code>
+							</format>
+							<comment>
+								<value>These flags allows to input alignment and treat them as a single sequence. 
+								That way, it is possible to make a multiple alignment of profiles. 
+								In the current implementation the profiles are replaced with a consensus sequence and treated as 
+								normal sequences by the rest of the T-coffee strategy. If your profile contains two distant 
+								sub-groups you may prefer splitting it in two more homegenous multiple alignments. 
+								A maximum of 21 profiles can be given here.
+								</value>
+							</comment>
+						</attributes>
+					</parameter><parameter type="InFile">
+						<name>profile1</name>
+						<attributes>
+							<prompt>Profile 1 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile2</name>
+						<attributes>
+							<prompt>Profile 2 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile3</name>
+						<attributes>
+							<prompt>Profile 3 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile4</name>
+						<attributes>
+							<prompt>Profile 4 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile5</name>
+						<attributes>
+							<prompt>Profile 5 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile6</name>
+						<attributes>
+							<prompt>Profile 6 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile7</name>
+						<attributes> 
+							<prompt>Profile 7 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile8</name>
+						<attributes>
+							<prompt>Profile 8 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile9</name>
+						<attributes>
+							<prompt>Profile 9 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile10</name>
+						<attributes>
+							<prompt>Profile 10 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile11</name>
+						<attributes>
+							<prompt>Profile 11 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile12</name>
+						<attributes>
+							<prompt>Profile 12 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile13</name>
+						<attributes>
+							<prompt>Profile 13 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile14</name>
+						<attributes>
+							<prompt>Profile 14 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile15</name>
+						<attributes>
+							<prompt>Profile 15 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile16</name>
+						<attributes>
+							<prompt>Profile 16 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile17</name>
+						<attributes>
+							<prompt>Profile 17 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile18</name>
+						<attributes>
+							<prompt>Profile 18 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>profile19</name>
+						<attributes>
+							<prompt>Profile 19 to use with alignment</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? ",$value":""</code>
+							</format>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>normalise</name>
+						<attributes>
+							<prompt>Set the highest scoring pair</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value != $vdef)? " -do_normalise=$value":""</code>
+							</format>
+							<vdef><value>1000</value></vdef>
+							<comment>
+								<value>When using a value different from 0, this flag sets the score of the highest scoring pair to 1000. 
+								Use only positive values.</value>
+							</comment>
+							<ctrls><ctrl>
+									<message>You must enter 0 or a positive value.</message>
+									<language>perl</language>
+									<code>$value &lt; 0</code>
+								</ctrl></ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>extend</name>
+						<attributes>
+							<prompt>Library extension should be carried out with a weight superior to the specified value.</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value)&amp;&amp;  ($value != $vdef) )? " -extend=$value": ""</code>
+							</format>
+							<vdef><value>1</value></vdef>
+							<comment>
+								<value>When turned on, this flag indicates that the library extension should be carried out when 
+								performing the multiple alignment. 
+								&lt;UL&gt;&lt;LI&gt;If extend is set to 0, the extension is not made. 
+								&lt;LI&gt;If it is set to 1, the extension is made on all the pairs in the library (default). 
+								&lt;LI&gt;If the extension is set to another positve value, the extension is only carried out 
+								on pairs having a weight value superior to the specified limit.&lt;/UL&gt;</value>
+							</comment>
+							<ctrls><ctrl>
+									<message>You must enter 0 or a positive value.</message>
+									<language>perl</language><code>$value &lt; 0</code>
+								</ctrl></ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>dp_mode</name>
+						<attributes>
+							<prompt>Type of dynamic programming used</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef)? " -dp_mode=$value" :""</code>
+							</format>
+							<vdef><value>cfasta_pair_wise</value></vdef>
+							<vlist><value>cfasta_pair_wise</value><label>cfasta_pair_wise</label>
+								<value>fasta_pair_wise</value><label>fasta_pair_wise</label>
+								<value>gotoh_pair_wise</value><label>gotoh_pair_wise</label>
+								<value>myers_miller_pair_wise</value><label>myers_miller_pair_wise</label>
+							</vlist>
+							<comment>
+								<value>Indicates the type of dynamic programming used by the program.&lt;BR&gt;&lt;UL&gt;&lt;LI&gt; 
+gotoh_pair_wise: implementation of the gotoh algoritm(quadratic in memory and time).&lt;LI&gt;
+myers_miller_pair_wise: implementation of the myers and miller dynamic programming algoritm (quadratic in time and linear in space). 
+This algoritm is recommended for very long sequences. It is about 2 times slower than gotoh. it only accepts tg_mode=1. 
+&lt;LI&gt;
+fasta_pair_wise: implementation of the fasta algoritm. The sequence is hashed, looking for ktuple words. 
+Dynamic programming is only carried out on the ndiag best scoring diagonals. 
+This is much faster but less accurate than the two previous.&lt;LI&gt;
+cfasta_pair_wise: c stands for checked. Same algoritm as above. 
+The dynamic programming is carried out on the ndiag best diagonals, and then on the 2*ndiags, and so on until
+ the scores converge. Complexity will depend on the level of divergence of the sequences, but will usually be L*log(L),
+  with an accuracy comparable to the two first modes.
+&lt;/UL&gt;</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>ktuple</name>
+						<attributes>
+							<prompt>Ktuple size for dp_modes (c)fasta_pair_wise</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " -ktuple=$value": ""</code>
+							</format>
+							<comment>
+								<value>Indicates the ktuple size for cfasta_pair_wise and fasta_pair_wise dp_mode. 
+								It is set 1 for proteins and 2 for dna. The alphabet used for protein is not the 20 letter code,
+								 but a mildly degenerrated version, where some residues are grouped under one letter, based on physicochemical properties. 
+								 This alphabet is set with the flag -sim_matrix=vasiliky.</value>
+							</comment>
+							<precond><language>perl</language><code>(($dp_mode eq "fasta_pair_wise") || ($dp_mode eq "cfasta_pair_wise"))</code></precond>
+							<ctrls><ctrl>
+									<message>You must enter a positive value.</message>
+									<language>perl</language><code>if (defined $value){$value &lt;= 0 ;}</code>
+								</ctrl>
+							</ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>ndiag</name>
+						<attributes>
+							<prompt>Indicates the number of diagonals used by the fasta_pair_wise algorithm (ndiag)</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value)&amp;&amp;(not $value==$vdef))? " -ndiag=$value": ""</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<comment>
+								<value>Indicates the number of diagonals used by the fasta_pair_wise algoritm. 
+								When set to 0, n_diag=Log (length of smallest sequence)
+</value>
+							</comment>
+							<precond><language>perl</language><code>(($dp_mode eq "fasta_pair_wise") || ($dp_mode eq "cfasta_pair_wise"))</code></precond>
+							<ctrls><ctrl>
+									<message>You must enter 0 or a positive value.</message>
+									<language>perl</language><code>$value &lt; 0</code>
+								</ctrl></ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>diag_mode</name>
+						<attributes>
+							<prompt>Indicates the manner in which diagonals are scored during fasta hashing.</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value != $vdef )? " -diag_mode=$value": ""</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<vlist><value>0</value><label>0</label><value>1</value><label>1</label></vlist>
+							<comment>
+								<value>Indicates the manner in which diagonals are scored during the fasta hashing. 
+								&lt;UL&gt;&lt;LI&gt;0 indicates that the score of a diagonal is equal to the sum of the scores of the exact matches it contains. 
+								&lt;LI&gt;1 indicates that this score is set equal to the score of the best uninterupted segment. 
+								1 Can be useful when dealing with fragments of sequences.
+&lt;/UL&gt;
+</value>
+							</comment>
+							<precond><language>perl</language><code>(($dp_mode eq "fasta_pair_wise") || ($dp_mode eq "cfasta_pair_wise"))</code></precond>
+						</attributes>
+					</parameter>
+					<parameter type="String">
+						<name>sim_matrix</name>
+						<attributes>
+							<prompt>The manner in which amino acids are degenerated during hashing.</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value)&amp;&amp;($value ne $vdef) )? " -sim_matrix=$value": ""</code>
+							</format>
+							<vdef><value>vasiliky</value></vdef>
+							<comment>
+								<value>Indicates the manner in which the amino acid is being degenerated when hashing. 
+								All the substitution matrix are acceptable. 
+								Categories will be defined as sub_group of residues all having a positive substitution score (they can overlap). 
+								If you wish to keep the non degenerated amin acid alphabet, use -sim_matrix=idmat
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="String">
+						<name>matrix</name>
+						<attributes>
+							<prompt>Indicates the substitution matrix.</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value))? " -matrix=$value": ""</code>
+							</format>
+							<comment>
+								<value>Indicates the substitution matrix.
+								</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>gap_open</name>
+						<attributes>
+							<prompt>Gap opening penalty</prompt>
+							<format>
+								<language>perl</language>
+								<code>if ((defined $value) &amp;&amp; ($value != $vdef) ){
+								    $value=-1*abs($value);
+								    " -gapopen=$value";}
+								    else {"";}
+								</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<comment>
+								<value>Indicates the penalty for opening a gap. 
+								The applied penalty is a negative value or zero. 
+								We recommend a value of -10 with pam matrices and a value of 0 when a library is used.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>gapext</name>
+						<attributes>
+							<prompt>Gap extension penalty</prompt>
+							<format>
+								<language>perl</language>
+								<code>if ((defined $value) &amp;&amp; ($value != $vdef)){
+								     $value=-1*abs($value);
+								     " -gapext=$value";}
+								     else {"";}</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<comment>
+								<value>Indicates the penalty applied for extending a gap. 
+								The applied penalty is 0 or negative.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>Cosmetic_penalty</name>
+						<attributes>
+							<prompt>cosmetic penalty (for unalignable parts) </prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value != $vdef) )? " -cosmetic_penalty=$value": ""</code>
+							</format>
+							<vdef><value>-50</value></vdef>
+							<comment>
+								<value>Indicates the penalty applied for opening a gap. This penalty is set to a very low value. 
+								It will only have an influence on the portions of the alignment that are unalignable. 
+								It will not make them more correct, but only more pleasing to the eye (avoid streches of lonely residues). 
+								The cosmetic penalty is automatically turned off if a substitution matrix is used rather than a library. 
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>tg_mode</name>
+						<attributes>
+							<prompt>Terminal gap penalty mode</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value != $vdef)? " -tg_mode=$value": ""</code>
+							</format>
+							<vdef><value>1</value></vdef>
+							<vlist><value>0</value><label>0</label><value>1</value><label>1</label><value>2</value><label>2</label></vlist>
+							<comment>
+								<value>&lt;UL&gt;&lt;LI&gt;0: Indicates that terminal gaps must be penalized with a gapopen and a gapext penalty.&lt;LI&gt;
+1: indicates that terminal gaps must be penalized only with gapext penalty (default). &lt;LI&gt; 2: Indicates that terminal gaps must not be penalized.
+&lt;/UL&gt;</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="String">
+						<name>weight</name>
+						<attributes>
+							<prompt>Way of weighting alignments for library.</prompt><format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value ne $vdef) )? " -weight=$value": ""</code>
+							</format>
+							<vdef><value>sim</value></vdef>
+							<comment>
+								<value>Weight defines the way alignmnets are weighted when turned into a library. Four types are possible:&lt;UL&gt;
+&lt;LI&gt;winsimN: Indicates that the weight assigned to a given pair will be equal to the percent identity within a window of 2N+1 len centerd on that pair. For Instance winsim10 defines a window of 10 residues around the pair being considered. 
+&lt;LI&gt;sim:  (default) Indicates that the weight equals the average identity within the match residues.
+&lt;LI&gt;sim_&lt;matrix_name or matrix_file&gt; : Indicates the average identity with two residues regarded as identical when their substitution value is positive. The valid matrices names are in matrices.h . Matrices not found in this header are considered to be filenames.
+&lt;LI&gt;value: Indicates that all pairs found in the alignments must be given the sane weight equal to value. This is usefull when the alignment one wishes to turn into a library must be given a pre-specified score (for instance if they come from a structure super-imposition program). Value is an integer like -weight= 1000.
+&lt;/UL&gt;</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>seq_weigth</name>
+						<attributes>
+							<prompt>File containing individual weights for each sequence.</prompt><format>
+								<language>perl</language>
+								<code>(defined $value) ? " -seqweight=$value": ""</code>
+							</format>
+							<comment>
+								<value>These are the individual weights assigned to each sequence (filename). 
+								The t-coffee weights (default) try to compensate the bias in consistency caused by redundancy in 
+								the sequences</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>seq_to_align</name>
+						<attributes>
+							<prompt>File containing sequences to align</prompt><format>
+								<language>perl</language>
+								<code>(defined $value) ? " -seq_to_align=$value": ""</code>
+							</format>
+							<comment>
+								<value>You may not wish to align all the sequences brought in by the -in flag. 
+								The file is simply a list of names of sequences in fasta format. However note that library 
+								extension will be carried out on all the sequences. Default is to align all the sequences (no file).
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>tree_computation</name>
+				<prompt>Tree computation and output options</prompt>
+				<group>2</group>
+				<parameters>
+					<parameter type="String">
+						<name>newtree</name>
+						<attributes>
+							<prompt>Indicates the filename of the new tree to compute.</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " -newtree=$value.dnd": ""</code>
+							</format>
+							<comment>
+								<value>Indicates the name of the file containing the new tree to compute. 
+								The defaukt will be &gt;sequence_name&lt;.dnd or &gt;run_name.dnd&lt;. The file keeps the extension .dnd. </value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>usetree</name>
+						<attributes>
+							<prompt>Use precomputed tree in phylips format</prompt><format>
+								<language>perl</language>
+								<code>(defined $value)?  " -usetree=$value": ""</code>
+							</format>
+							<comment>
+								<value>This flag indicates that rather than computing a new dendrogram, t_coffee can use a pre-computed one. 
+								The tree files are in phylips format and compatible with Clustalw. 
+								In most cases using a precomputed tree will halve the computation time required by t_coffee. 
+								It is also possible to use trees output by ClustalW or Phylips.
+								</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>tree_mode</name>
+						<attributes>
+							<prompt>Mode to compute the dendrogram</prompt><format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value ne $vdef) )? " -tree_mode=$value": ""</code>
+							</format>
+							<vdef><value>fast</value></vdef>
+							<vlist><value>slow</value><label>slow</label><value>fast</value>
+								<label>fast</label><value>very_fast</value><label>very_fast</label></vlist>
+							<comment>
+								<value>This flag indicates the method used for computing the dendrogram. 
+								&lt;UL&gt;&lt;LI&gt;slow: The chosen dp_mode using the extended library. 
+								&lt;LI&gt;fast: The fasta dp_mode using the extended library. 
+								&lt;LI&gt;very_fast: The fasta dp_mode using pam 250mt.&lt;/UL&gt;
+								</value>
+							</comment>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>alignment_output</name>
+				<prompt>Alignment output options</prompt>
+				<group>2</group>
+				<parameters>
+					<parameter type="List">
+						<name>output</name>
+						<attributes>
+							<prompt>Output format for the alignment file (more can be indicated).</prompt><format>
+								<language>perl</language>
+								<code>" -output=$value"</code>
+							</format>
+							<vdef><value>clustalw</value></vdef>
+							<vlist>
+								<value>clustalw</value><label>clustalw (alignment)</label>
+								<value>clustalw_aln</value><label>clustalw alignment</label>
+								<value>gcg</value><label>gcg (msf alignment)</label>
+								<value>msf_aln</value><label>msf alignment</label>
+								<value>pir_aln</value><label>pir alignment</label>
+								<value>fasta_aln</value><label>fasta alignment</label>
+								<value>phylip</value><label>phylip format</label>
+								<value>pir_seq</value><label>pir sequences (no gap)</label>
+								<value>fasta_seq</value><label>fasta sequences (no gap)</label>
+								<value>score_html</value><label>reliability plot in html</label>
+								<value>score_pdf</value><label>reliability plot in pdf (ps2pdf needed)</label>
+								<value>score_ps</value><label>reliability plot in postscript</label>
+							</vlist>
+							<separator>,</separator>
+							<comment>
+								<value>Indicates the format used for computing the outfile. 
+										More than one format can be indicated, This results in more output files. 
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="String">
+						<name>outfile</name>
+						<attributes>
+							<prompt>Output file name for alignment files</prompt><format>
+								<language>perl</language>
+								<code>if (defined $value){
+									if ($output eq "clustalw") {" -outfile=$value.aln";} 
+									elsif ($output eq "clustalw_aln") {" -outfile=$value.aln";} 
+									elsif ($output eq "gcg") {" -outfile=$value.msf";} 
+									elsif ($output eq "msf_aln") {" -outfile=$value.msf";} 
+									elsif ($output eq "phylip") {" -outfile=$value.phylip";} 
+									elsif ($output eq "pir_aln") {" -outfile=$value.pir_aln";} 
+									elsif ($output eq "pir_seq") {" -outfile=$value.pir_seq";} 
+									elsif ($output eq "fasta_aln") {" -outfile=$value.fasta_aln";} 
+									elsif ($output eq "fasta_seq") {" -outfile=$value.fasta_seq";} 
+									elsif ($output eq "score_html") {" -outfile=$value.score_html";} 
+									elsif ($output eq "score_pdf") {" -outfile=$value.score_pdf";} 
+									elsif ($output eq "score.ps") {" -outfile=$value.score_ps";} 
+									else { " -outfile=$value";}
+									}
+								       else {"";}</code>
+							</format>
+							<comment>
+								<value>Indicates the name of the alignment file output by t_coffee. File extensions do not change.
+								If the default is used, the alignment is named for instance &gt;your sequences&lt;.aln or &gt;run_name&lt;.aln .
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>evaluate_mode</name>
+						<attributes>
+							<prompt>T_coffee score normalisation mode</prompt><format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " -evaluate_mode=$value": ""</code>
+							</format>
+							<vdef><value>t_coffee_fast</value></vdef>
+							<vlist>
+								<value>t_coffee_fast</value><label>t_coffee_fast</label>
+								<value>t_coffee_non_extended</value><label>t_coffee_non_extended</label>
+								<value>t_coffee_slow</value><label>t_coffee_slow</label>
+							</vlist>
+							<comment>
+								<value>Indicates the mode used to normalize the t_coffee score when computing the reliability score.
+&lt;UL&gt;&lt;LI&gt;t_coffee_fast (default): Use an estimation of the maximum extended score. The same for every position.
+&lt;LI&gt;t_coffee_non_extended: The score of each residue is the ration between the sum of its non extended scores with the column and the sum of all its possible non extended scores.\n
+&lt;LI&gt;t_coffee slow: For each residue, normalize the score with the proper maximum extended score. This computation takes as much time as the computation of the alignment.
+&lt;/UL&gt;</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>case</name>
+						<attributes>
+							<prompt>Case for sequence output</prompt><format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " -case=$value": ""</code>
+							</format>
+							<vdef><value>upper</value></vdef>
+							<vlist>
+								<value>upper</value><label>upper</label>
+								<value>lower</value><label>lower</label>
+							</vlist>
+							<comment>
+								<value>Triggers the choice of the case for the sequence output.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>cpu</name>
+						<attributes>
+							<prompt>Cpu time to be added to computation time</prompt><format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value != $vdef) )?  " -cpu=$value": ""</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<comment>
+								<value>Indicates the cpu time (microseconds) that must be added to the t_coffee computation time.
+</value>
+							</comment>
+							<ctrls><ctrl><message>A positive number must be provided.</message>
+									<language>perl</language>
+									<code> $ value &lt; 0</code>
+								</ctrl></ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="String">
+						<name>outseqweight</name>
+						<attributes>
+							<prompt>Name for the file containing the applied weights.</prompt><format>
+								<language>perl</language>
+								<code>(defined $value) ?  " -outseqweight=$value.weight": ""</code>
+							</format>
+							<comment>
+								<value>Output file name containing the weights applied.
+ File extension .weight.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>outorder</name>
+						<attributes>
+							<prompt>Order of the library output</prompt><format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value ne $vdef) )?  " -outorder=$value": ""</code>
+							</format>
+							<vdef><value>aligned</value></vdef>
+							<vlist><value>input</value><label>input</label><value>aligned</value><label>aligned</label></vlist>
+							<comment>
+								<value>Sets the order of the output as the input order (default) or the order of the aligned.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="String">
+						<name>out-lib</name>
+						<attributes>
+							<prompt>Name of the library output</prompt><format>
+								<language>perl</language>
+								<code>(defined $value) ?  " -out_lib=$value.tc_lib": ""</code>
+							</format>
+							<comment>
+								<value>Set the name of the library output. Default implies &gt;run_name&lt;.tc_lib.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Switch">
+						<name>seqnos</name>
+						<attributes>
+							<prompt>Display residue number at end of line.</prompt><format>
+								<language>perl</language>
+								<code>" -seqnos=on"</code>
+							</format>
+							<vdef><value>on</value></vdef>
+							<comment>
+								<value>Causes the output alignment to contain residue numbers at the end of the line.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Switch">
+						<name>clean_aln</name>
+						<attributes>
+							<prompt>Use cleaning mode for reliability score.</prompt><format>
+								<language>perl</language>
+								<code>" -clean_aln"</code>
+							</format>
+							<comment>
+								<value>This flag causes t-coffee to post-process the multiple alignment. Residues that have a reliability score smaller or equal to -clean_threshold (as given by an evaluation that uses the -clean_evaluate_mode) are realigned to the rest of the alignment. residues with a score higher than the threshold constitute a rigid framework that can not be altered.
+The cleaning algorith is greedy. It starts from the top left segment of low constitency residues and works its way left to tight, top to bottom along the alignment. You can require the operation tobe carried out for several cycles using the -clean-iteration  flag.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>clean_threshold</name>
+						<attributes>
+							<prompt>Reliability score threshold for cleaning mode.</prompt><format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp;($value !=$vdef))? " -clean_threshold=$value": ""</code>
+							</format>
+							<vdef><value>1</value></vdef>
+							<comment>
+								<value>See clean_aln for details. Default value of 1.
+</value>
+							</comment>
+							<precond>
+								<language>perl</language>
+								<code>(defined $clean_aln)</code>
+							</precond>
+							<ctrls><ctrl>
+									<message>The value must be between 0 and 9.</message>
+									<language>perl</language>
+									<code>($value &gt;= 10) || ($value &lt; 0)</code>
+								</ctrl>
+							</ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>clean_iteration</name>
+						<attributes>
+							<prompt>Amount of cycles for the cleaning option.</prompt><format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp;($value !=$vdef))? " -clean_iteration=$value": ""</code>
+							</format>
+							<vdef><value>1</value></vdef>
+							<comment>
+								<value>See clean_aln for details. Default value of 1.
+</value>
+							</comment>
+							<precond>
+								<language>perl</language>
+								<code>(defined $clean_aln)</code>
+							</precond>
+							<ctrls><ctrl>
+									<message>The value must be larger than 0. </message>
+									<language>perl</language>
+									<code>($value &lt;= 0) </code>
+								</ctrl>
+							</ctrls>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>clean_evaluation_mode</name>
+						<attributes>
+							<prompt>Evaluation mode of realigning segments for cleaning option.</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef)? " -clean_evaluate_mode=$value": ""</code>
+							</format>
+							<vdef><value>t_coffee_fast</value></vdef>
+							<vlist>
+								<value>t_coffee_fast</value><label>t_coffee_fast</label>
+								<value>t_coffee_non_extended</value><label>t_coffee_non_extended</label>
+								<value>t_coffee_slow</value><label>t_coffee_slow</label>
+							</vlist>
+							<comment>
+								<value>Indicates the mode for the evaluation that will indicate the segments that should be realigned. See -evaluation_mode for the list of accepted modes.	
+</value>
+							</comment>
+							<precond>
+								<language>perl</language>
+								<code>(defined $clean_aln)</code>
+							</precond>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Results"><name>newtreefile</name>
+			<attributes>
+				<filenames>*.nj *.dat</filenames>
+			</attributes>
+		</parameter><parameter type="Results">
+			<name>phylipnewtreefile</name>
+			<attributes>
+				<filenames>*.dnd *.ph *.phb</filenames>
+				<pipe>
+					<pipetype>Phylip_tree</pipetype>
+					<language>perl</language>
+					<code>1</code>
+				</pipe>
+			</attributes>
+		</parameter>
+		<parameter type="Results"><name>aligfile</name>
+			<attributes>
+				<filenames>*.aln *.gds *.phylip *.clustalw_aln *.phy</filenames>
+				<pipe>
+					<pipetype>readseq_ok_alig</pipetype>
+					<language>perl</language>
+					<code>1</code>
+				</pipe>
+			</attributes>
+		</parameter><parameter type="Results"><name>readseq_ok_aligfile</name>
+			<attributes>
+				<precond>
+					<language>perl</language>
+					<code>(rindex $output,"phylip")!=-1 || (rindex $output,"gcg")!=-1 || (rindex $output,"msf_aln")!=-1 || (rindex $output,"pir_aln")!=-1</code>
+				</precond>
+				<filenames>*.phylip *.msf *.pir_aln *.msf_aln *.phy *.pir</filenames>
+				<pipe>
+					<pipetype>readseq_ok_alig</pipetype>
+					<language>perl</language>
+					<code>1</code>
+				</pipe>
+			</attributes>
+		</parameter><parameter type="Results"><name>picture</name>
+			<attributes>
+				<filenames>*.score_ps *.score_html *.score_pdf</filenames>
+			</attributes>
+		</parameter>
+		<parameter type="Results"><name>other</name>
+			<attributes>
+				<filenames>*.weight *.tc_lib *.fasta_* *.pir_seq</filenames>
+			</attributes>
+		</parameter><parameter type="Paragraph">
+			<paragraph>
+				<name>generic_output</name>
+				<prompt>Generic output options</prompt>
+				<group>2</group>
+				<parameters>
+					<parameter type="String">
+						<name>run_name</name>
+						<attributes>
+							<prompt>General prefix name for the output files.</prompt><format>
+								<language>perl</language>
+								<code>(defined $value)? " -run_name=$value": ""</code>
+							</format>
+							<comment>
+								<value>This flag causes the prefix &gt;your sequences&lt; to be replaced by the name you give here when renaming the default files. However, this run_name is preceded by specific filenames given for alignment- or treefiles
+.
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Switch">
+						<name>convert</name>
+						<attributes>
+							<prompt>Only convert sequences (no alignment).</prompt><format>
+								<language>perl</language>
+								<code>(defined $value)? " -convert": ""</code>
+							</format>
+							<comment>
+								<value>Indicates that the program must not compute the alignment but simply convert all the sequences, alignments anf libraries in the format indicated by the -output flag. This flag can also be used if you simply want to compute a library (i.e. you have an alignment and you want to turn it into a library).
+</value>
+							</comment>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+	</parameters>
+</pise>

@@ -1,0 +1,31 @@
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+RAxML consensus tree computation
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 6 -m GTRGAMMA -n con.tre.tre -J MR -z RAxML_bootstrap.boot.tre 
+
+
+
+
+Found 100 trees in File RAxML_bootstrap.boot.tre
+
+RAxML Majority Rule consensus tree written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-A7B707F88071411B809DB951E76236FC/RAxML_MajorityRuleConsensusTree.con.tre.tre

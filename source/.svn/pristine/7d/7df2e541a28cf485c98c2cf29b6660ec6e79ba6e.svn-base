@@ -1,0 +1,116 @@
+<h2>CONSENSE</h2>
+<p>
+	<strong>CONSENSE</strong> reads a file of computer-readable trees
+	and prints out (and  may also write out onto a file)
+	a consensus tree. At the moment it carries out a family of consensus
+	tree methods called the Ml (M-sub-L) methods (Margush and McMorris, 1981).
+	These include strict consensus and majority  rule consensus.
+	Basically the consensus tree consists of monophyletic groups that occur 
+	as often as possible in the data. If a group occurs in more than 50% of all the 
+	input trees it will definitely appear in the consensus tree. Part of Phylip.<br />
+	INPUT = phylip tree files
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/consense.html">
+		http://evolution.genetics.washington.edu/phylip/doc/consense.html
+	</a>
+</h3>
+       <h3>TEST  SET OF INPUT TREES </h3>
+       <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>(A,(B,(H,(D,(J,(((G,E),(F,I)),C))))));</pre>
+               <pre>(A,(B,(D,((J,H),(((G,E),(F,I)),C)))));</pre>
+             <pre>(A,(B,(D,(H,(J,(((G,E),(F,I)),C))))));</pre>
+             <pre>(A,(B,(E,(G,((F,I),((J,(H,D)),C))))));</pre>
+             <pre>(A,(B,(E,(G,((F,I),(((J,H),D),C))))));</pre>
+             <pre>(A,(B,(E,((F,I),(G,((J,(H,D)),C))))));</pre>
+             <pre>(A,(B,(E,((F,I),(G,(((J,H),D),C))))));</pre>
+             <pre>(A,(B,(E,((G,(F,I)),((J,(H,D)),C)))));</pre>
+             <pre>(A,(B,(E,((G,(F,I)),(((J,H),D),C)))));</pre></td>
+         </tr>
+       </table>
+       <h3>TEST  SET OUTPUT </h3>
+       <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>Consensus tree program, version 3.6</pre>
+             <pre>&nbsp;</pre>
+             <pre>Species in order: </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; 1. A</pre>
+             <pre>&nbsp; 2. B</pre>
+             <pre>&nbsp; 3. H</pre>
+             <pre>&nbsp; 4. D</pre>
+             <pre>&nbsp; 5. J</pre>
+             <pre>&nbsp; 6. G</pre>
+             <pre>&nbsp; 7. E</pre>
+             <pre>&nbsp; 8. F</pre>
+             <pre>&nbsp; 9. I</pre>
+             <pre>&nbsp; 10. C</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Sets included in the consensus tree</pre>
+             <pre>&nbsp;</pre>
+             <pre>Set (species in order)&nbsp;&nbsp;&nbsp;&nbsp; How many times out of&nbsp;&nbsp;&nbsp; 9.00</pre>
+             <pre>&nbsp;</pre>
+             <pre>.......**.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9.00</pre>
+             <pre>..********&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9.00</pre>
+             <pre>..****.***&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.00</pre>
+             <pre>..***.....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.00</pre>
+             <pre>..***....*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.00</pre>
+             <pre>..*.*.....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.00</pre>
+             <pre>..***..***&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Sets NOT included in consensus tree:</pre>
+             <pre>&nbsp;</pre>
+             <pre>Set (species in order)&nbsp;&nbsp;&nbsp;&nbsp; How many times out of&nbsp;&nbsp;&nbsp; 9.00</pre>
+             <pre>&nbsp;</pre>
+             <pre>.....**...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.00</pre>
+             <pre>.....*****&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.00</pre>
+             <pre>..**......&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.00</pre>
+             <pre>.....****.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.00</pre>
+             <pre>..****...*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>.....*.**.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>..*.******&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>....******&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>...*******&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.00</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Extended majority rule consensus tree</pre>
+             <pre>&nbsp;</pre>
+             <pre>CONSENSUS TREE:</pre>
+             <pre>the numbers on the branches indicate the number</pre>
+             <pre>of times the partition of the species into the two sets</pre>
+             <pre>which are separated by that branch occurred</pre>
+             <pre>among the trees, out of&nbsp;&nbsp; 9.00 trees</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--------------------C</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--6.0-|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +------H</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--4.0-|</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--6.0-|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +------J</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--2.0-|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-------------D</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--6.0-|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +------F</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +----------------9.0-|</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+------I</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +--9.0-|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +----------------------------------G</pre>
+             <pre>&nbsp; +------|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</pre>
+             <pre>&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-----------------------------------------E</pre>
+             <pre>&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |</pre>
+             <pre>&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +------------------------------------------------B</pre>
+             <pre>&nbsp; |</pre>
+             <pre>&nbsp; +-------------------------------------------------------A</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; remember: this is an unrooted tree!</pre>
+             <pre>&nbsp;</pre></td>
+         </tr>
+       </table>
+       <p>&nbsp;</p>
+       <p><br />
+       </p>

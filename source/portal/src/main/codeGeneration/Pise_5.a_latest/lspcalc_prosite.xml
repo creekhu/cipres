@@ -1,0 +1,1462 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>LASSAP</title>
+    <version>1.2.1b</version>
+    <description>check results against prosite (LArge Scale Sequence compArison Package)</description>
+    <authors>Glemet, Codani</authors>
+  </head>
+
+  <command>lspcalc_prosite</command>
+
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>lspcalc_prosite</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"/local/gensoft/lib/LASSAP/pasteur/Lsprebank.pl -r $infile -n resultsdb"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Switch">
+      <name>prosite_lspcalc</name>
+      <attributes>
+	<vdef><value>1</value></vdef>
+      </attributes>
+    </parameter>
+    
+    <parameter issimple="1" type="Switch">
+      <name>lspread</name>
+      <attributes>
+	<prompt>Save results for further analysis (lspread)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>998</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>lspread_flag_selection</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>($sel_options)? " -s \\"{  $sel_options }\\"" : ""</code>
+	</format>
+	<group>500</group>
+      </attributes>
+    </parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_options</name>
+<prompt>Output options</prompt>
+<parameters>
+
+	<parameter issimple="1" type="Switch">
+	<name>view_alignment</name>
+	<attributes>
+
+		<prompt>View alignment (-a)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -a" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1000</group>
+		<comment>
+			<value>Not available for all methods.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>scut</name>
+	<attributes>
+
+		<prompt>Score cutoff (report results of scores greater than cutoff) (-scut)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -scut $value" : "" </code>
+		</format>
+		<group>800</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ecut</name>
+	<attributes>
+
+		<prompt>Expect cutoff (Report results of expect values lower than cutoff) (-ecut)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -ecut $value" : "" </code>
+		</format>
+		<group>800</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>max</name>
+	<attributes>
+
+		<prompt>Maximum number of results reported (-max)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -max $value" : "" </code>
+		</format>
+		<group>800</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>queryname</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"/local/gensoft/lib/LASSAP/pasteur/majcmd.pl $cmdfile $query;"</code>
+	</format>
+	<group>-10</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>selection_options</name>
+<prompt>Results selection options</prompt>
+<parameters>
+
+	<parameter issimple="1" type="Excl">
+	<name>bc</name>
+	<attributes>
+
+		<prompt>Boolean connector for selection</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<vdef><value>&amp;</value></vdef>
+		<group>490</group>
+		<vlist>
+			<value>|</value>
+			<label>|: OR</label>
+			<value>&amp;</value>
+			<label>&amp;: AND</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_HD</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_HD &amp;&amp; ($not_HD_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>HD</name>
+	<attributes>
+
+		<prompt>Select string in database header (HD)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<comment>
+			<value>Warning : for HD, in the current version, only ID field is scanned. This will be replaced by a full header scan, as implemented in database selections. </value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$HD &amp;&amp; ($hf="HD") &amp;&amp; (($prosite_lspread &amp;&amp; ($hf="HQ")) || 1) &amp;&amp; (($HD_field &amp;&amp; ($HD_field_s="# $HD_field")) || 1) &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc ($not_HD_s $hf $HD_field_s $HD))" : "($not_HD_s $hf $HD_field_s $HD)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>HD_field</name>
+	<attributes>
+
+		<prompt>Type of database header (for HD)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<vdef><value>ID</value></vdef>
+		<group>520</group>
+		<vlist>
+			<value></value>
+			<label>all fields</label>
+			<value>ID</value>
+			<label>ID</label>
+			<value>AC</value>
+			<label>AC</label>
+			<value>OS</value>
+			<label>OS</label>
+			<value>DE</value>
+			<label>DE</label>
+			<value>OC</value>
+			<label>OC</label>
+			<value>KW</value>
+			<label>KW</label>
+			<value>CL</value>
+			<label>CL</label>
+			<value>AL</value>
+			<label>AL</label>
+			<value>CC</value>
+			<label>CC</label>
+			<value>GN</value>
+			<label>GN</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$HD</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Excl">
+	<name>RS_op</name>
+	<attributes>
+
+		<prompt>Score selection operator (RS)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&gt;</value></vdef>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RS &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc RS $value $RS)" : "RS $value $RS") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RS</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter issimple="1" type="Integer">
+	<name>RS</name>
+	<attributes>
+
+		<prompt>Score selection value (RS)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Excl">
+	<name>RP_op</name>
+	<attributes>
+
+		<prompt>Probability selection operator (RP)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&lt;=</value></vdef>
+		<vlist>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RP &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc RP $value $RP)" : "RP $value $RP") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RP</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter issimple="1" type="Integer">
+	<name>RP</name>
+	<attributes>
+
+		<prompt>Probability selection value (RP)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>RE_op</name>
+	<attributes>
+
+		<prompt>Expect selection operator (RE)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&lt;</value></vdef>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RE &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc RE $value $RE)" : "RE $value $RE") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RE</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>RE</name>
+	<attributes>
+
+		<prompt>Expect selection value (RE)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>RI_op</name>
+	<attributes>
+
+		<prompt>Identities selection operator (RI)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&gt;</value></vdef>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RI &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc RI $value $RI)" : "RI $value $RI") &amp;&amp; ($lspextend=1) &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RI</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>RI</name>
+	<attributes>
+
+		<prompt>Select on Identities (RI)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>RM_op</name>
+	<attributes>
+
+		<prompt>Positive Matches operator (RM)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&gt;</value></vdef>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RM &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc RM $value $RM)" : "RM $value $RM") &amp;&amp; ($lspextend=1) &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RM</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>RM</name>
+	<attributes>
+
+		<prompt>Select on Positive Matches (RM)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>RL_op</name>
+	<attributes>
+
+		<prompt>Alignment Length selection operator (RL)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>&gt;</value></vdef>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$RL &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc RL $value $RL)" : "RL $value $RL") &amp;&amp; ($lspextend=1) &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$RL</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>RL</name>
+	<attributes>
+
+		<prompt>Select on alignment Length (RL)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>OBQ_op</name>
+	<attributes>
+
+		<prompt>Offset Begin Query operator (OBQ)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OBQ &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc OBQ $value $OBQ)" : "OBQ $value $OBQ") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$OBQ</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>OBQ</name>
+	<attributes>
+
+		<prompt>Offset Begin Query (OBQ)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>OEQ_op</name>
+	<attributes>
+
+		<prompt>Offset End Query operator (OEQ)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OEQ &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc OEQ $value $OEQ)" : "OEQ $value $OEQ") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$OEQ</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>OEQ</name>
+	<attributes>
+
+		<prompt>Offset End Query (OEQ)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>OBD_op</name>
+	<attributes>
+
+		<prompt>Offset Begin Database operator (OBD)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OBD &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc OBD $value $OBD)" : "OBD $value $OBD") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$OBD</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>OBD</name>
+	<attributes>
+
+		<prompt>Offset Begin Database (OBD)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>OED_op</name>
+	<attributes>
+
+		<prompt>Offset End Database operator (OED)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OED &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc OED $value $OED)" : "OED $value $OED") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$OED</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>OED</name>
+	<attributes>
+
+		<prompt>Offset End Database (OED)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>SLD_op</name>
+	<attributes>
+
+		<prompt>Sequence length selection operator (SLD)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$SLD &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc SLD $value $SLD)" : "SLD $value $SLD") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$SLD</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>SLD</name>
+	<attributes>
+
+		<prompt>Select on sequence length in database (SLD)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>SLQ_op</name>
+	<attributes>
+
+		<prompt>Sequence length selection operator (SLQ)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$SLQ &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc SLQ $value $SLQ)" : "SLQ $value $SLQ") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$SLQ</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>SLQ</name>
+	<attributes>
+
+		<prompt>Select on sequence length in database (SLQ)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>SLA_op</name>
+	<attributes>
+
+		<prompt>Sequence length selection operator (SLA)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>547</group>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$SLA &amp;&amp; ($sel_options=($sel_options)? "($sel_options $bc SLA $value $SLA)" : "SLA $value $SLA") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$SLA</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>SLA</name>
+	<attributes>
+
+		<prompt>Select on sequence length in both database and query (SLA)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>read_flag_selection</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($sel_options)? " -pp \\"{ ($sel_options) }\\" " : ""</code>
+	</format>
+	<group>595</group>
+<precond>
+	<language>perl</language>
+	<code>! ($prosite_lspcalc || $prosite_lspread)</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>prosite_flag_selection</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($sel_options)? " -pp \\"{ (($sel_options) &amp; ( ( (! HQ #ID _GLYCOSYLATION) &amp; (! HQ #ID _PHOSPHO_SITE)) &amp; (! HQ #ID MYRISTYL) ) )}\\" " : " -pp \\"{ ( ( (! HQ #ID _GLYCOSYLATION) &amp; (! HQ #ID _PHOSPHO_SITE)) &amp; (! HQ #ID MYRISTYL) ) }\\""</code>
+	</format>
+	<group>595</group>
+<precond>
+	<language>perl</language>
+	<code>$prosite_lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>prosite_options</name>
+<prompt>Prosite selection options</prompt>
+<parameters>
+
+	<parameter type="Excl">
+	<name>db_bc</name>
+	<attributes>
+
+		<prompt>Boolean connector for selection</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+		<vdef><value>&amp;</value></vdef>
+		<vlist>
+			<value>|</value>
+			<label>|: OR</label>
+			<value>&amp;</value>
+			<label>&amp;: AND</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>all_fields</name>
+	<attributes>
+
+		<prompt>All fields</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$all_fields &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc H $all_fields)" : "H $all_fields") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>ID</name>
+	<attributes>
+
+		<prompt>ID</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$ID &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc H \\#ID $ID)" : "H \\#ID $ID") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>AC</name>
+	<attributes>
+
+		<prompt>AC</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$AC &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc H \\#AC $AC)" : "H \\#AC $AC") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_OS</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_OS &amp;&amp; ($not_OS_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>OS</name>
+	<attributes>
+
+		<prompt>OS: organism</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OS &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc ($not_OS_s H \\#OS $OS))" : "($not_OS_s H \\#OS $OS)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_OC</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_OC &amp;&amp; ($not_OC_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>OC</name>
+	<attributes>
+
+		<prompt>OC: organism class</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$OC &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $bc ($not_OC_s H \\#OC $OC))" : "($not_OC_s H \\#OC $OC)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_DE</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_DE &amp;&amp; ($not_DE_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>DE</name>
+	<attributes>
+
+		<prompt>DE: description</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$DE &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc ($not_DE_s H \\#DE $DE))" : "($not_DE_s H \\#DE $DE)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>not_KW</name>
+	<attributes>
+
+		<prompt>NOT</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$not_KW &amp;&amp; ($not_KW_s = "\\!") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>KW</name>
+	<attributes>
+
+		<prompt>KW: keyword</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$KW &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc ($not_KW_s H \\#KW $KW))" : "($not_KW_s H \\#KW $KW)") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>lengths_op</name>
+	<attributes>
+
+		<prompt>sequences length operator</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vlist>
+			<value>&lt;</value>
+			<label>&lt;</label>
+			<value>&lt;=</value>
+			<label>&lt;=</label>
+			<value>=</value>
+			<label>=</label>
+			<value>&gt;=</value>
+			<label>&gt;=</label>
+			<value>&gt;</value>
+			<label>&gt;</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>$lengths &amp;&amp; ($prosite_sel_options=($prosite_sel_options)? "($prosite_sel_options $db_bc L $lengths_op $lengths)" : "L $lengths_op $lengths") &amp;&amp; 0</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>$lengths</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>lengths</name>
+	<attributes>
+
+		<prompt>sequences length (L)</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>db_flag_selection</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($prosite_sel_options)? " \\"{  " : ""</code>
+	</format>
+	<group>750</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>db_flag_selection2</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>($prosite_sel_options)? " $prosite_sel_options }\\"  " : ""</code>
+	</format>
+	<group>760</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>prosite_cmd</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" ; lspcalc -M PATT -db resultsdb -db prosite "</code>
+	</format>
+	<group>700</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>lspcalc_files</name>
+<prompt>lspcalc files</prompt>
+<parameters>
+
+	<parameter ismandatory="1" issimple="1" type="InFile">
+	<name>infile</name>
+	<attributes>
+
+		<prompt>lspcalc result file (-o option)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>10</group>
+		<pipe>
+			<pipetype>lspcalc_result</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+		<withpipe>
+			<pipetype>lspcalc_result</pipetype>
+				<parametername>cmdfile</parametername>
+				<parametername>query</parametername>
+		</withpipe>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="InFile">
+	<name>cmdfile</name>
+	<attributes>
+
+		<prompt>lspcalc command file (*.cmd)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>10</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Sequence">
+	<name>query</name>
+	<attributes>
+
+		<prompt>Query sequence</prompt>
+		<format>
+			<language>perl</language>
+			<code>"" </code>
+		</format>
+		<group>-20</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>results_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" -o prosite_results"</code>
+	</format>
+	<vdef><value>prosite_results</value></vdef>
+	<group>799</group>
+<precond>
+	<language>perl</language>
+	<code>(! $view_alignment) &amp;&amp; $lspread</code>
+</precond>
+	<pipe>
+		<pipetype>lspcalc_prosite_result</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<withpipe>
+		<pipetype>lspcalc_prosite_result</pipetype>
+			<parametername>outcmdfile=cmdfile</parametername>
+			<parametername>resultsdb</parametername>
+			<parametername>resultsdbseq</parametername>
+			<parametername>resultsdbind</parametername>
+			<parametername>resultsdbtab</parametername>
+	</withpipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>outcmdfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"$results_file.cmd"</value></vdef>
+	<group>701</group>
+<precond>
+	<language>perl</language>
+	<code>$lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>resultsdb</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"resultsdb"</value></vdef>
+	<group>701</group>
+<precond>
+	<language>perl</language>
+	<code>$lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>resultsdbseq</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"resultsdb.seq"</value></vdef>
+	<group>701</group>
+<precond>
+	<language>perl</language>
+	<code>$lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>resultsdbind</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"resultsdb.ind"</value></vdef>
+	<group>701</group>
+<precond>
+	<language>perl</language>
+	<code>$lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>resultsdbtab</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"resultsdb.tab"</value></vdef>
+	<group>701</group>
+<precond>
+	<language>perl</language>
+	<code>$lspread</code>
+</precond>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

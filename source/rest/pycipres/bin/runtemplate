@@ -1,0 +1,185 @@
+#!/usr/bin/env python
+
+"""
+    -u
+        username
+    -p
+        password
+    -a
+        appid
+    -t
+        toolspec directory
+    -s
+        rest service url
+    -n
+        number of times to submit toolspec
+    -w
+        wait for submissions to finish
+    -v 
+        validate only, don't submit
+    -j 
+       just show job status 
+    -l 
+       just list jobs 
+"""
+import sys
+import os
+import re
+import string
+import subprocess
+import tempfile
+import getopt
+import time
+import requests
+import xml.etree.ElementTree as ET
+import pycipres.jobtemplate as JT
+import pycipres.appmanage as AM
+import traceback
+
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
+    user = password = appid = testspec = service = jobcount = None
+    waitForCompletion = False
+    validateOnly = False
+    jobhandle = None
+    justList = False
+
+    # Get default url, user, etc,  from our config file
+    app = AM.AppManagement()
+    defaults = app.getDefaultProperties()
+    user = defaults.getProperty("PYCIPRES_EU")
+    password = defaults.getProperty("TESTPASS")
+    appid = defaults.getProperty("PYCIPRES_APPID")
+    service = defaults.getProperty("URL") + "/job/"
+    # defaultTestDataRoot=defaults.getProperty("TESTDATA")
+
+    # Some command line may override defaults.  Others have no default in config file.
+    options, remainder = getopt.getopt(argv[1:], "j:u:p:a:t:s:n:whvl")
+    for opt, arg in options:
+        if opt in ("-u"):
+            user = arg
+        elif opt in ("-p"):
+            password = arg
+        if opt in ("-t"):
+            testspec = arg
+        elif opt in ("-s"):
+            service = arg
+        elif opt in ("-n"):
+            jobcount = int(arg)
+        elif opt in ("-w"):
+            waitForCompletion = True
+        elif opt in ("-v"):
+            validateOnly = True
+        elif opt in ("-a"):
+            appid = int(arg)
+        elif opt in ("-j"):
+            jobhandle = arg
+        elif opt in ("-l"):
+            justList = True
+        elif opt in ("-h"):
+            print __doc__
+            return 0
+    if not (user and password):
+        print "Missing user and/or password"
+        print __doc__
+        return -1
+    if not (service and appid):
+        print "Missing service and/or appid"
+        print __doc__
+        return -1
+    if not ((testspec and jobcount) or jobhandle or justList):
+        print "Must specify either testspec and jobcount to submit a job or " \
+            "-j jobhandle to get a job's status or -l to list all jobs"
+        print __doc__
+        return -1
+
+    if justList:
+        tj = JT.JobTemplate(
+            baseurl=service,
+            user=user,
+            credentials = (user, password),
+            appid=appid,
+            verbose=True)
+        tj.listJobs()
+        return
+    
+    if jobhandle:
+        tj = JT.JobTemplate(
+            baseurl=service, 
+            user=user,
+            credentials = (user, password),
+            appid=appid,
+            verbose=True,
+            jobhandle=jobhandle
+        )
+        return
+
+    jobs = []
+    for i in range(jobcount):
+        tj = JT.JobTemplate(
+            baseurl=service, 
+            user=user,
+            credentials = (user, password),
+            appid=appid,
+            testdir = testspec,
+            validateOnly = validateOnly, 
+        )
+
+        # If job parameters are invalid throws an exception with list of errors.
+        # TODO: We need to parse and display the errors.  Do parsing JobTemplate class
+        try:
+            tj.doPost()
+            if validateOnly:
+                print "Job is OK, command line is '%s'" % (tj.commandline)
+            else:
+                jobs.append(tj)
+                print "Submitted %s" % (tj.jobhandle)
+            sys.stdout.flush()
+        except Exception, e:
+            traceback.print_exc()
+            # print e
+
+            
+    
+    if waitForCompletion and not validateOnly:
+        if len(jobs):
+            print "Submitted and waiting for %d jobs" % ( len(jobs) ) 
+        while True: 
+
+            unfinishedJobs = 0
+
+            # jobs[:] makes a copy of the list in jobs.  You need to work on a copy if
+            # you want to remove items from a list you're iterating over.
+            for job in jobs[:]:
+                if job.jobIsTerminal:
+                    print "%s finished. %s. Results:" % (job.jobhandle, ('OK', 'FAILED')[job.isFailed])
+                    for name in job.resultFiles:
+                        print name, ' is at ', job.resultFiles[name]
+                    sys.stdout.flush()
+                    jobs.remove(job)
+                    continue
+                else:
+                    et = job.updateJobStatus()
+                    if job.jobIsTerminal:
+                        job.printJobStatus(jobstatus=et)
+                        # print "%s finished. %s. Results:" % (job.jobhandle, ('OK', 'FAILED')[job.isFailed])
+                        for name in job.resultFiles:
+                            print name, ' is at ', job.resultFiles[name]
+                        sys.stdout.flush()
+                        jobs.remove(job)
+                        continue
+                    unfinishedJobs += 1
+
+            if not unfinishedJobs:
+                break;
+            time.sleep(30)
+
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+

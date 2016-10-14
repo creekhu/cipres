@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConversionRegistry>
+	<RecordFilters>
+		<!-- Flatfile Filter -->
+		<RecordFilter class="org.ngbw.sdk.conversion.BlastTEXTRecordFilter">
+			<DataFormat id="BLAST_TEXT" /> 
+		</RecordFilter>
+		<RecordFilter class="org.ngbw.sdk.conversion.FastaOutputRecordFilter">
+			<DataFormat id="FASTOUT" /> 
+		</RecordFilter>
+		<RecordFilter class="org.ngbw.sdk.conversion.FlatfileRecordFilter">
+			<DataFormat id="FASTA" /> 
+			<DataFormat id="GENBANK" /> 
+			<DataFormat id="GENPEPT" /> 
+			<DataFormat id="UNIPROT" /> 
+			<DataFormat id="EMBL" /> 
+			<DataFormat id="PDB" /> 
+		</RecordFilter>
+		<RecordFilter class="org.ngbw.sdk.conversion.PdbFinderParser">
+			<DataFormat id="PDB_FINDER" /> 
+		</RecordFilter>
+		<!-- XML file Filter -->
+		<RecordFilter class="org.ngbw.sdk.conversion.XMLFileRecordFilter">
+			<DataFormat id="UNIPROT_XML" /> 
+			<DataFormat id="EMBL_XML" /> 
+		</RecordFilter>
+	</RecordFilters>
+	<SequenceParsers>
+		<SequenceParser class="org.ngbw.sdk.conversion.DefaultSequenceParser">
+			<DataFormat id="FASTA" /> 
+			<DataFormat id="GENBANK" /> 
+			<DataFormat id="GENPEPT" /> 
+			<DataFormat id="UNIPROT" /> 
+			<DataFormat id="EMBL" /> 
+		</SequenceParser>
+	</SequenceParsers>
+	<SourceDocumentReaders>
+		<!-- all registered RecordTypes (EntityType + DataType [CoreRegistry has mapped notrivial RecordFields]) with DataFormats without parser -->
+		<SourceDocumentReader class="org.ngbw.sdk.api.conversion.MockSourceDocumentReader">
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="MSF"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="MSF"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="HTML"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="HTML"/>
+			<SourceDocumentType entityType="COMPOUND" dataType="STRUCTURE" dataFormat="MMCIF"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="STRUCTURE" dataFormat="MMCIF"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="STRUCTURE" dataFormat="MMCIF"/>
+			<SourceDocumentType entityType="TAXON" dataType="PHYLOGENETIC_TREE" dataFormat="NEWICK"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="PHYLOGENETIC_TREE" dataFormat="NEWICK"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="PHYLOGENETIC_TREE" dataFormat="NEWICK"/>
+			<SourceDocumentType entityType="CONTINUOUS_CHARACTER" dataType="MATRIX" dataFormat="PHYLIP"/>
+			<SourceDocumentType entityType="DISCRETE_CHARACTER" dataType="MATRIX" dataFormat="PHYLIP"/>
+			<SourceDocumentType entityType="APPLICATION_DATA" dataType="SERIALIZED_BINARY" dataFormat="SIRIUSWB"/>
+			<SourceDocumentType entityType="UNKNOWN" dataType="UNKNOWN" dataFormat="UNKNOWN"/>
+			<SourceDocumentType entityType="COMPOUND" dataType="STRUCTURE" dataFormat="PDB"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="STRUCTURE" dataFormat="PDB"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="STRUCTURE" dataFormat="PDB"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE" dataFormat="UNIPROT"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE" dataFormat="GENPEPT"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE" dataFormat="GENBANK"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE" dataFormat="EMBL"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE" dataFormat="FASTA"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE" dataFormat="FASTA"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE" dataFormat="PDB_FINDER"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE" dataFormat="PDB_FINDER"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="CLUSTAL"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="CLUSTAL"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="NEEDLE"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="NEEDLE"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="PHYLIP"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="PHYLIP"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="NEXUS"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="NEXUS"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="SEQUENCE_ALIGNMENT" dataFormat="FASTA"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="SEQUENCE_ALIGNMENT" dataFormat="FASTA"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="BLAST_OUTPUT" dataFormat="BLAST_TEXT"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="BLAST_OUTPUT" dataFormat="BLAST_TEXT"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="BLAST_OUTPUT" dataFormat="BLAST_XML"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="BLAST_OUTPUT" dataFormat="BLAST_XML"/>
+			<SourceDocumentType entityType="PROTEIN" dataType="FASTA_OUTPUT" dataFormat="FASTOUT"/>
+			<SourceDocumentType entityType="NUCLEIC_ACID" dataType="FASTA_OUTPUT" dataFormat="FASTOUT"/>
+		</SourceDocumentReader>
+	</SourceDocumentReaders>
+
+	<SourceDocumentConverters>
+		<!-- sequence formats -->
+		<SourceDocumentConverter
+			class="org.ngbw.sdk.conversion.SequenceFormatConverter"/>
+	</SourceDocumentConverters>
+</ConversionRegistry>

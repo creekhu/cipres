@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>DISTMAT</title>
+<description>Creates a distance matrix from multiple alignments (EMBOSS)</description>
+<category>phylogeny:distance matrix</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/distmat.html</doclink>
+</head>
+
+<command>distmat</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [set of sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>File containing a sequence alignment.</value>
+		</comment>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>nucmethod</name>
+	<attributes>
+		<prompt>Method to use -- Multiple substitution correction methods for nucleotides (-nucmethod)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Uncorrected</label>
+				<value>1</value>
+				<label>Jukes-Cantor</label>
+				<value>2</value>
+				<label>Kimura</label>
+				<value>3</value>
+				<label>Tamura</label>
+				<value>4</value>
+				<label>Tajima-Nei</label>
+				<value>5</value>
+				<label>Jin-Nei Gamma</label>
+			</vlist>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(acdprotein))</code>
+			</precond>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -nucmethod=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Multiple substitution correction methods for nucleotides.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>protmethod</name>
+	<attributes>
+		<prompt>Method to use -- Multiple substitution correction methods for proteins (-protmethod)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Uncorrected</label>
+				<value>1</value>
+				<label>Jukes-Cantor</label>
+				<value>2</value>
+				<label>Kimura Protein</label>
+			</vlist>
+			<precond>
+				<language>perl</language>
+				<code>$acdprotein</code>
+				<language>acd</language>
+				<code>$acdprotein</code>
+			</precond>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -protmethod=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>Multiple substitution correction methods for proteins.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>ambiguous</name>
+	<attributes>
+		<prompt>Use the ambiguous codes in the calculation. (-ambiguous)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -ambiguous" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Option to use the ambiguous codes in the calculation of the Jukes-Cantor method or if the sequences are proteins.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>gapweight</name>
+	<attributes>
+		<prompt>Weight given to gaps (-gapweight)</prompt>
+		<vdef>
+			<value>0.</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -gapweight=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Option to weight gaps in the uncorrected (nucleotide) and Jukes-Cantor distance methods.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>position</name>
+	<attributes>
+		<prompt>Base position to analyse. (-position)</prompt>
+		<vdef>
+			<value>123</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -position=$value" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>Choose base positions to analyse in each codon i.e. 123 (all bases), 12 (the first two bases), 1, 2, or 3 individual bases.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>calculatea</name>
+	<attributes>
+		<prompt>Calculate the a-parameter (-calculatea)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -calculatea" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>This will force the calculation of the a-parameter in the Jin-Nei Gamma distance calculation, otherwise the default is 1.0 (see -parametera option).</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>parametera</name>
+	<attributes>
+		<prompt>a-parameter (-parametera)</prompt>
+		<vdef>
+			<value>1.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -parametera=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>User defined a parameter to be use in the Jin-Nei Gamma distance calculation. The suggested value to be used is 1.0 [Jin et al.] and this is the default.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>10</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

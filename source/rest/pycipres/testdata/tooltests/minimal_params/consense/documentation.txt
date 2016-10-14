@@ -1,0 +1,22 @@
+CONSENSE
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+type_ - Excl - Consensus type
+Section: ****************************************************************************
+output
+*************************************************************************************
+print_tree_ - Switch - Print out tree (3)
+print_treefile_ - Switch - Write out trees onto tree file (4)
+printdata_ - Switch - Print out the data at start of run (1)
+indent_tree_ - Switch - Indent treefile
+Section: ****************************************************************************
+other_options
+*************************************************************************************
+outgroup_ - Integer - Outgroup (default, use as outgroup species 1) (O)
+rooted_ - Switch - Trees to be treated as rooted
+outfile_ - Results -
+treefile_ - Results -
+indented_treefile_ - Results -
+params_ - Results -
+tmp_params_ - Results -
+

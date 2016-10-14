@@ -1,0 +1,55 @@
+<!-- Fast Tree search: Protein command line with everything: two steps below
+This should run as  raxmlHPC-PTHREADS     -T 8 -f E -p 12345 -m GTRGAMMA -n infile.tre    -s infile.tx        -O 
+ then            && raxmlHPC-PTHREADS     -T 8 -f J -t RAxML_result.infile.tre -n sh.infile.tre -s infile.txt -m GTRGAMMA  -O
+ 
+ this test makes sure the naming thing works out ok when the second step is omitted
+NGBW-JOB-RAXMLHPC2_WORKFLOW-8A77BC0F7725449ABC8051BC2D7C0740 (saved)
+
+raxmlHPC-PTHREADS -s infile.txt -m GTRGAMMA -p 12345  -f E -O -n infile.tre    
+&& raxmlHPC-PTHREADS -f J -t RAxML_fastTree.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m GTRGAMMA
+~
+
+
+RAXMLHPC2_WORKFLOW
+This test:
+toolId=RAXMLHPC2_WORKFLOW
+runtime_=0.50
+select_workflow_=FTS	       (no default)
+datatype_=dna                  (default, can be others)
+dna_gtrcat_=GTRGAMMA           (no default, a value for the model must be set)
+outgroup_=					   (default is no outgroup)
+provide_parsimony_seed_=1	   (default)
+parsimony_seed_val_=12345	   (default)
+disable_seqcheck_=1            (sets the -O value, default is off)
+fasttreesearch_workflow2_=1     (sets the -f e option to optimize paramters, default is off)
+fasttreesearch_workflow3_=1     (sets the -f J option to find -SH like values, default is off)
+parsimony_seed_val2_=12345      (sets the parsimony seed for the -f J step, required, default=12345)
+outsuffix_FTS_=infile           (sets the name for the output files delivered via-n for each step)
+
+'raxmlHPC-HYBRID raxmlHPC-PTHREADS -n infile.tre -s infile.txt   -p 12345 -m GTRGAMMA -f E -O 
+&& raxmlHPC-PTHREADS -f e -t RAxML_fastTree.infile.tre  -n brL.infile.tre -s infile.txt -O -m GTRGAMMA 
+&& raxmlHPC-PTHREADS -f J -t RAxML_result.brL.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m GTRGAMMA'
+
+Test passed
+
+other model options:
+If not DNA , set datatype_=(protein/rna/binary/multi) then set this parameter
+(GTRCAT default;  prot_sub_model_=PROTGAMMA/PROTCAT; rna_model_ ;bin_model_=BINCAT/BINGAMMA; multi_model_=MULTICAT/MULTIGAMMA)
+Then set sub_parameters for protein:
+prot_matrix_spec_= (DAYHOFF is default)
+
+other modifiers can be set:
+invariable_= - switch - Estimate proportion of invariable sites (GTRGAMMA + I)
+ascertainment_= switch -
+ascertainment_corr_= excl - sets the kind of correction used
+use_emp_freqs_= to use empirical frequencies, protein only 
+
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+
+upload modifying files
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+
+printbrlength_ - Switch - Print branch lengths (-k)

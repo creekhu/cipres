@@ -1,0 +1,59 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0//EN"     
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.dtd">
+<validators>
+    <field name="username">
+        <field-validator type="requiredstring">
+        	<param name="trim">true</param>
+            <message>Username is required</message>
+        </field-validator>
+        <field-validator type="stringlength">
+        	<param name="minLength">5</param>
+        	<message>A valid username must be at least ${minLength} characters</message>
+        </field-validator>
+    </field>
+    <field name="newPassword">
+        <field-validator type="requiredstring">
+        	<param name="trim">true</param>
+            <message>Password is required</message>
+        </field-validator>
+    </field>
+    <field name="confirmNewPassword">
+        <field-validator type="requiredstring">
+        	<param name="trim">true</param>
+            <message>Confirm Password is required</message>
+        </field-validator>
+        <field-validator type="fieldexpression">
+        	<param name="expression">
+        		(confirmNewPassword.equals(newPassword))
+        	</param>
+        	<message>Confirm Password and Password are not identical</message>
+        </field-validator>
+    </field>
+    <field name="firstName">
+        <field-validator type="requiredstring">
+        	<param name="trim">true</param>
+            <message>First name is required</message>
+        </field-validator>
+    </field>
+    <field name="lastName">
+        <field-validator type="requiredstring">
+        	<param name="trim">true</param>
+            <message>Last name is required</message>
+        </field-validator>
+    </field>
+    <field name="email">
+        <field-validator type="requiredstring">
+        	<param name="trim">true</param>
+            <message>Email is required</message>
+        </field-validator>
+        <field-validator type="email">
+        	<message>Email is invalid</message>
+        </field-validator>
+    </field>
+    <!-- 
+    <validator type="expression">
+    	<param name="expression">username != password</param>
+    	<message>Username and Password can't be the same</message>
+    </validator>
+    -->
+</validators>

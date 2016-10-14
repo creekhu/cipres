@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>MELTING</title>
+    <version>4.1f</version>
+    <description>enthalpie, entropy and melting temperature</description>
+    <authors>N. Le Novere</authors>
+    <reference>Nicolas Le Novere (2001), MELTING, computing the melting temperature of nucleic acid duplex. Bioinformatics 17(12), 1226-1227</reference>
+    <category>nucleic:composition</category>
+  </head>
+  
+  <command>melting</command>
+
+  <parameters>
+
+    <!-- ** Program name ** -->
+    <parameter type="String" ismandatory="1" iscommand="1" ishidden="1">
+      <name>melting</name>
+      <attributes>
+	<group>0</group>
+	<format>
+	  <language>perl</language>
+	  <code>"melting -q -v"</code>
+	</format>
+      </attributes>
+    </parameter>
+
+    <!-- ** Hybridation type ** -->
+    <parameter type="Excl" ismandatory="1" issimple="1">
+      <name>hybridation_type</name>
+      <attributes>
+	<prompt>Hybridisation type (-H)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -H$value"</code>
+	</format>
+	<group>1</group>
+	<vlist>
+	  <value>dnadna</value>
+	  <label>Dna/Dna</label>
+	  <value>dnarna</value>
+	  <label>Dna/Rna</label>
+	  <value>rnarna</value>
+	  <label>Rna/Rna</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <!-- ** Nearest neighbor parameters file ** -->
+    <parameter type="Excl" ismandatory="1" issimple="1">
+      <name>nnfile</name>
+      <attributes>
+	<prompt>Nearest Neighbor parameters set (-A)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value &amp;&amp; $value ne $vdef) ? " -A$value" : ""</code>
+	</format>
+	<vdef>
+	  <value>default</value>
+	</vdef>
+	<vlist>
+	  <value>default</value>
+	  <label>(default)</label>
+	  <value>all97a.nn</value>
+	  <label>Allawi et al 1997</label>
+	  <value>bre86a.nn</value>
+	  <label>Breslauer et al 1986</label>
+	  <value>fre86a.nn</value>
+	  <label>Freier et al 1986</label>
+	  <value>san96a.nn</value>
+	  <label>SantaLucia et al 1996</label>
+	  <value>sug95a.nn</value>
+	  <label>Sugimoto et al 1995</label>
+	  <value>sug96a.nn</value>
+	  <label>Sugimoto et al 1996</label>
+	  <value>xia98a.nn</value>
+	  <label>Xia et al 1998</label>
+	</vlist>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Sequence ** -->
+    <parameter type="String" ismandatory="1" issimple="1">
+      <name>sequence</name>
+      <attributes>
+	<prompt>Sequence string (-S)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -S$value"</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Complementary sequence ** -->
+    <parameter type="String">
+      <name>complement_string</name>
+      <attributes>
+	<prompt>Complementary sequence (-C)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>$value ? " -C$value" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Salt concentration ** -->
+    <parameter type="Float" ismandatory="1" issimple="1">
+      <name>salt_concentratio</name>
+      <attributes>
+	<prompt>Salt concentration (0.0 &lt; x &lt; 10.0 M) (-N)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -N$value"</code>
+	</format>
+	<group>1</group>
+	<scalemin> <value>0</value> </scalemin>
+	<scalemax> <value>10</value> </scalemax>
+      </attributes>
+    </parameter>
+
+    <!-- ** Nucleic acid concentration ** -->
+    <parameter type="Float" ismandatory="1" issimple="1">
+      <name>nucacid_concentration</name>
+      <attributes>
+	<prompt>Nucleic acid concentration in excess (0.0 &lt; x &lt; 0.1 M) (-P)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>$value ? " -P$value" : ""</code>
+	  <language>python</language>
+	  <code>("", " -P" + str(value))[value &lt; 0.0]</code>
+	</format>
+	<group>1</group>
+	<scalemin> <value>0</value> </scalemin>
+	<scalemax> <value>0.1</value> </scalemax>
+      </attributes>
+    </parameter>
+
+    <!-- ** Nucleic acid correction factor ** -->
+    <parameter type="Float">
+      <name>correction_factor</name>
+      <attributes>
+	<prompt>Nucleic acid correction factor (-F)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>$value ? " -F$value" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Salt correction ** -->
+    <parameter type="Excl">
+      <name>salt_correction</name>
+      <attributes>
+	<prompt>Salt correction (-K)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>$value ? " -K$value" : ""</code>
+	</format>
+	<group>1</group>
+	<vlist>
+	  <value>wet91a</value>
+	  <label>Wetmur 1991</label>
+	  <value>san96a</value>
+	  <label>SantaLucia et al. 1996</label>
+	  <value>san98a</value>
+	  <label>SantaLucia 1998</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <!-- ** Approximative computation ** -->
+    <parameter type="Switch">
+      <name>approx</name>
+      <attributes>
+	<prompt>Force approximative temperature computation (-x)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>$value ? " -x" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>dangling_ends</name>
+      <attributes>
+        <prompt>parameters for dangling ends: dnadnade.nn</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -Ddnadnade.nn " : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>	
+
+     <parameter type="Switch">
+      <name>mismatches</name>
+      <attributes>
+        <prompt>nn parameters for mismatches: dnadnamm.nn</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -Mdnadnamm.nn " : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>	
+
+  </parameters>
+
+</pise>
+

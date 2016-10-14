@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" targetNamespace="http://www.ngbw.org/conversion/impl/blastxml"
+	xmlns="http://www.ngbw.org/conversion/impl/blastxml">
+
+  <xs:element name="BlastOutput">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="BlastOutput_program" />
+        <xs:element ref="BlastOutput_version" />
+        <xs:element ref="BlastOutput_reference" />
+        <xs:element ref="BlastOutput_db" />
+        <xs:element ref="BlastOutput_query-ID" />
+        <xs:element ref="BlastOutput_query-def" />
+        <xs:element ref="BlastOutput_query-len" />
+        <xs:element ref="BlastOutput_param" />
+        <xs:element ref="BlastOutput_iterations" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="BlastOutput_db">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="BlastOutput_iterations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Iteration" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="BlastOutput_param">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Parameters" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="BlastOutput_program">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="BlastOutput_query-def">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="BlastOutput_query-ID">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="BlastOutput_query-len">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="BlastOutput_reference">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="BlastOutput_version">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Hit_num" />
+        <xs:element ref="Hit_id" />
+        <xs:element ref="Hit_def" />
+        <xs:element ref="Hit_accession" />
+        <xs:element ref="Hit_len" />
+        <xs:element ref="Hit_hsps" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Hit_accession">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hit_def">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hit_hsps">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Hsp" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Hit_id">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hit_len">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hit_num">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Hsp_num" />
+        <xs:element ref="Hsp_bit-score" />
+        <xs:element ref="Hsp_score" />
+        <xs:element ref="Hsp_evalue" />
+        <xs:element ref="Hsp_query-from" />
+        <xs:element ref="Hsp_query-to" />
+        <xs:element ref="Hsp_hit-from" />
+        <xs:element ref="Hsp_hit-to" />
+        <xs:element ref="Hsp_query-frame" />
+        <xs:element ref="Hsp_hit-frame" />
+        <xs:element ref="Hsp_identity" />
+        <xs:element ref="Hsp_positive" />
+        <xs:element ref="Hsp_align-len" />
+        <xs:element ref="Hsp_qseq" />
+        <xs:element ref="Hsp_hseq" />
+        <xs:element ref="Hsp_midline" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Hsp_align-len">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_bit-score">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_evalue">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_hit-frame">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_hit-from">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_hit-to">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_hseq">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_identity">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_midline">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_num">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_positive">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_qseq">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_query-frame">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_query-from">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_query-to">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Hsp_score">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Iteration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Iteration_iter-num" />
+        <xs:element ref="Iteration_hits" />
+        <xs:element ref="Iteration_stat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Iteration_hits">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Hit" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Iteration_iter-num">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Iteration_stat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Statistics" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Parameters">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Parameters_expect" />
+        <xs:element ref="Parameters_sc-match" />
+        <xs:element ref="Parameters_sc-mismatch" />
+        <xs:element ref="Parameters_gap-open" />
+        <xs:element ref="Parameters_gap-extend" />
+        <xs:element ref="Parameters_filter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Parameters_expect">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Parameters_filter">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Parameters_gap-extend">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Parameters_gap-open">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Parameters_sc-match">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Parameters_sc-mismatch">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Statistics_db-num" />
+        <xs:element ref="Statistics_db-len" />
+        <xs:element ref="Statistics_hsp-len" />
+        <xs:element ref="Statistics_eff-space" />
+        <xs:element ref="Statistics_kappa" />
+        <xs:element ref="Statistics_lambda" />
+        <xs:element ref="Statistics_entropy" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Statistics_db-len">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics_db-num">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics_eff-space">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics_entropy">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics_hsp-len">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics_kappa">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+  <xs:element name="Statistics_lambda">
+    <xs:complexType mixed="true" />
+  </xs:element>
+
+</xs:schema>

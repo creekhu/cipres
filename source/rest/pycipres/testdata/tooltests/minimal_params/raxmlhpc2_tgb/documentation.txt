@@ -1,0 +1,86 @@
+RAXMLHPC2_TGB
+infile_ - Primary Input File
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+more_memory_ - Switch - I have a data set that may require more than 125 GB of memory
+nchar_ - Integer - Enter the number of patterns in your dataset
+ntax_ - Integer - Enter the number of taxa in your dataset
+datatype_ - Excl - Sequence Type
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+number_cats_ - Integer - Specify the number of distinct rate categories (-c)
+treetop_ - InFile - Supply a starting tree (Not available when doing rapid bootstrapping, -x) (-t)
+provide_parsimony_seed_ - Switch - Specify a random seed value for parsimony inferences (-p)
+parsimony_seed_val_ - Integer - Enter a random seed value for parsimony inferences (gives reproducible results from random starting tree)
+rearrangement_yes_ - Switch - Specify an initial rearrangement setting (-i)
+number_rearrange_ - Integer - Specify the distance from original pruning point (-i)
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+estimate_perpartbrlen_ - Switch - Estimate individual per-partition branch lengths (-M)
+invariable_ - Excl - Estimate proportion of invariable sites (GTRGAMMA + I) (only active with -f a option)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+Section: ****************************************************************************
+nucleic_opts
+*************************************************************************************
+dna_gtrcat_ - Switch - Use GTRCAT for the bootstrapping phase, and GTRGAMMA for the final tree inference (default)
+dna_gtrgamma_ - Switch - Use GTRGAMMA for the bootstrapping phase and GTRGAMMA for the final tree (takes longer)
+Section: ****************************************************************************
+protein_opts
+*************************************************************************************
+prot_sub_model_ - Excl - Choose GAMMA or CAT model:
+prot_matrix_spec_ - Excl - Protein Substitution Matrix
+user_prot_matrix_ - InFile - Upload a Custom Protein Substitution Matrix
+mulcustom_aa_matrices_ - Switch - Use a Partition file that specifies AA Matrices
+user_prot_matrixq1_ - InFile - Select the First Protein Substitution Matrix Called in Your Partition File
+user_prot_matrixq2_ - InFile - Select the Second Protein Substitution Matrix Called in Your Partition File
+user_prot_matrixq3_ - InFile - Select the Third Protein Substitution Matrix Called in Your Partition File
+user_prot_matrixq4_ - InFile - Select the Fourth Protein Substitution Matrix Called in Your Partition File
+user_prot_matrixq5_ - InFile - Select the Fifth Protein Substitution Matrix Called in Your Partition File
+use_emp_freqs_ - Excl - Use empirical frequencies?
+Section: ****************************************************************************
+Sec_structure_opts
+*************************************************************************************
+sec_str_file_ - InFile - Upload a Secondary Structure File (-S)
+rna_model_ - Excl - Use an RNA Secondary Structure Substitution Model (-A)
+Section: ****************************************************************************
+bin_opts
+*************************************************************************************
+bin_model_ - Excl - Binary data model (-m)
+Section: ****************************************************************************
+multi_opts
+*************************************************************************************
+multi_model_ - Excl - Multiple State Data Model (-m)
+choose_multi_model_ - Excl - Select a Multiple state data model (-K)
+Section: ****************************************************************************
+set_analysis
+*************************************************************************************
+startingtreeonly_ - Switch - Only compute a randomized parsimony starting tree (-y)
+specify_runs_ - Switch - Specify the number alternative runs on distinct starting trees? (-#/-N)
+altrun_number_ - Integer - Enter number of number alternative runs
+bipartitions_ - Switch - Draw bipartitions onto a single tree topology. (-f b)
+ancestral_states_ - Switch - Compute Marginal Ancestral States using a rooted reference tree. (-f A)
+log_likelihood_ - Switch - Compute a log likelihood test (-f h)
+compute_mr_ - Switch - Compute majority rule consensus tree (-J; GAMMA models only)
+specify_mr_ - Excl - Specify majority rule consensus tree (-J) technique
+bunchotops_ - InFile - File with topologies for bipartitions or bootstopping (-z)
+compute_ml_distances_ - Switch - Compute pair-wise ML distances (-f x; GAMMA models only)
+fast_tree_ - Switch - Run very fast experimental tree search(-f E)
+Section: ****************************************************************************
+bootstrap_config
+*************************************************************************************
+mulparambootstrap_seed_ - Switch - Conduct Multiparametric Bootstrapping? (-b)
+mulparambootstrap_seed_val_ - Integer - Enter a random seed value for multi-parametric bootstrapping
+bootstrap_seed_ - Switch - Conduct rapid bootstrapping? (-x)
+bootstrap_seed_val_ - Integer - Enter a random seed value for rapid bootstrapping
+mlsearch_ - Switch - Conduct a rapid Bootstrap analysis and search for the best-scoring ML tree in one single program run. (-f a)
+printbrlength_ - Switch - Print branch lengths (-k)
+specify_bootstraps_ - Switch - Specify an Explicit Number of Bootstraps
+bootstop_ - Integer - Bootstrap iterations (-#|-N)
+use_bootstopping_ - Switch - Let RAxML halt bootstrapping automatically
+freq_bootstopping_ - Switch - Stop Bootstrapping Automatically with Frequency Criterion
+mr_bootstopping_ - Switch - Stop Bootstrapping Automatically with Majority Rule Criterion (recommended)
+mrbootstopping_type_ - Excl - Select Majority Rule Criterion: (autoMRE is recommended)
+use_apobootstopping_ - Switch - Use a posteriori bootstrapping
+aposterior_bootstopping_ - Excl - Select the criterion for a posteriori bootstopping analysis
+apo_tops_ - InFile - File with topologies for a posteriori bootstopping (-z)
+all_outputfiles_ - Results -
+

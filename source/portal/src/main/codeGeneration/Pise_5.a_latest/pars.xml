@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>pars - Discrete character parsimony</description>
+    &phylip_header;
+  </head>
+
+
+  <command>pars</command>
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>pars</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "pars &lt; params" </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	<prompt>Input File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $infile infile; "</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>Example input file:</value>
+	  <value>     5    6</value>
+	  <value>Alpha     110110</value>
+	  <value>Beta      110000</value>
+	  <value>Gamma     100110</value>
+	  <value>Delta     001001</value>
+	  <value>Epsilon   001110</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>pars_opt</name>
+	<prompt>Pars options</prompt>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>search_opt</name>
+	    <attributes>
+	      <prompt>Search option (S)</prompt>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <flist>
+		<value>0</value>
+		<code>""</code>
+		<value>1</value>
+		<code>"S\\nY\\n"</code>
+		<value>2</value>
+		<code>"S\\nN\\n"</code>
+	      </flist>
+	      <vlist>
+		<value>0</value>
+		<label>More thorough search</label>
+		<value>1</value>
+		<label>Rearrange on one best tree</label>
+		<value>2</value>
+		<label>Less thorough</label>
+	      </vlist>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <comment>
+		  <value>PARS is a general parsimony program which carries out the Wagner
+   parsimony method with multiple states. Wagner parsimony allows changes
+   among all states. The criterion is to find the tree which requires the
+   minimum number of changes. The Wagner method was originated by Eck and
+   Dayhoff (1966) and by Kluge and Farris (1969). Here are its
+   assumptions:
+</value>
+		 <value>  1. Ancestral states are unknown.</value>
+ <value>   2. Different characters evolve independently.</value>
+ <value>   3. Different lineages evolve independently.</value>
+  <value>  4. Changes to all other states are equally probable (Wagner).</value>
+  <value>  5. These changes are a priori improbable over the evolutionary time
+       spans involved in the differentiation of the group in question.</value>
+  <value>  6. Other kinds of evolutionary event such as retention of
+       polymorphism are far less probable than these state changes.</value>
+  <value>  7. Rates of evolution in different lineages are sufficiently low that
+       two changes in a long segment of the tree are far less probable
+       than one change in a short segment.</value>
+		  <value>PARS can handle both bifurcating and multifurcating trees. In doing
+   its search for most parsimonious trees, it adds species not only by
+   creating new forks in the middle of existing branches, but it also
+   tries putting them at the end of new branches which are added to
+   existing forks. Thus it searches among both bifurcating and
+   multifurcating trees. If a branch in a tree does not have any
+   characters which might change in that branch in the most parsimonious
+   tree, it does not save that tree. Thus in any tree that results, a
+   branch exists only if some character has a most parsimonious
+   reconstruction that would involve change in that branch.
+</value>
+
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>save_trees</name>
+	    <attributes>
+	      <prompt> Number of trees to save? (V)</prompt>
+	      <paramfile>params</paramfile>
+	      <vdef>
+		<value>100</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ?
+		"V\\n$value\\n" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Switch">
+	    <name>use_ancestral_state</name>
+	    <attributes>
+	      <prompt>Use ancestral states in input file (A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "A\\n" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <comment>
+		<value>There should also be, in the input  file  after  the  numbers  of species  and  characters,  an A on the first line of the file.  There must also be, before the character data, a line or lines giving the ancestral states  for each  character.   It will look like the data for a species (the ancestor).  It must start with the letter A in the first column.   There  then  follow  enough characters  or  blanks  to  complete  the  full length of a species name (e. g. ANCESTOR).  Then  the  states  which  are  ancestral  for  the  individual characters  follow.   These  may  be  0, 1 or ?, the latter indicating that the ancestral state is unknown.</value>
+		<value>Examples:</value>
+		<value>ANCESTOR  0010011</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>jumble_opt</name>
+	<prompt>Randomize options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>jumble</name>
+	    <attributes>
+	      <prompt>Randomize (jumble) input order (J)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "j\\n$jumble_seed\\n$times\\n" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>20</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Integer">
+	    <name>jumble_seed</name>
+	    <attributes>
+	      <prompt>Random number seed (must be odd)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>19</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Random number seed must be odd</message>
+		  <language>perl</language>
+		  <code>$value &lt;= 0 || (($value % 2) == 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$jumble</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>times</name>
+	    <attributes>
+	      <prompt>Number of times to jumble</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>19</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>weight_opt</name>
+	<prompt>Weight options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>weights</name>
+	    <attributes>
+	      <prompt>Weighted sites (W)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value) ? "W\\n" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <comment>
+		<value>The weights follow the format described in the main
+   documentation file, with integer weights from 0 to 35 allowed by using
+   the characters 0, 1, 2, ..., 9 and A, B, ... Z.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="InFile">
+	    <name>weight_file</name>
+	    <attributes>
+	      <prompt>Weight file</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"ln -s $weight_file weights; "</code>
+	      </format>
+	      <group>-9</group>
+	      <precond>
+		<language>perl</language>
+		<code>$weights</code>
+		</precond>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>user_tree_opt</name>
+	<prompt>User tree options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>user_tree</name>
+	    <attributes>
+	      <prompt>Use User tree (default: no, search for best tree) (U)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "U\\n" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>To give your tree to the program, you must normally put it in the alignement file, after the sequences, preceded by a line indicating how many trees you give.</value>
+		<value>Here, this will be automatically appended: just give a treefile and the number of trees in it.</value>
+	      </comment>
+	      <ctrls>
+		<ctrl>
+		  <message>you cannot randomize (jumble) your dataset and give a user tree at the same time</message>
+		  <language>perl</language>
+		  <code>$user_tree &amp;&amp; $jumble</code>
+		</ctrl>
+	      </ctrls>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>tree_file</name>
+	    <attributes>
+	      <prompt>User Tree file</prompt>
+		<format>
+		<language>perl</language>
+		<code>($value)? "cat $tree_file &gt;&gt; infile; " : ""</code>
+	      </format>
+	      <group>-1</group>
+	      <comment>
+		<value>Give a tree whenever the infile does not already contain the tree.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$user_tree</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Integer">
+	    <name>tree_nb</name>
+	    <attributes>
+	      <prompt>How many tree(s) in the User Tree file</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"echo $value &gt;&gt; infile; "</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>-2</group>
+	      <comment>
+		<value>Give this information whenever the infile does not already contain the tree.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$tree_file</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>bootstrap</name>
+	<prompt>Bootstrap options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>multiple_dataset</name>
+	    <attributes>
+	      <prompt>Analyze multiple data sets (M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "M\\nD\\n$datasets_nb\\n$multi_seed\\n$multi_times\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>datasets_nb</name>
+	    <attributes>
+	      <prompt>How many data sets</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>9</group>
+	      <ctrls>
+		<ctrl>
+		  <message>enter a value &gt; 0 ; there must be no more than 1000 datasets for this server</message>
+		  <language>perl</language>
+		  <code>($value &gt; 1000) || ($value &lt; 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>multi_seed</name>
+	    <attributes>
+	      <prompt>Random number seed (must be odd)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>19</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Random number seed must be odd</message>
+		  <language>perl</language>
+		  <code>$value &lt;= 0 || (($value % 2) == 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>multi_times</name>
+	    <attributes>
+	      <prompt>Number of times to jumble</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>19</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>consense</name>
+	    <attributes>
+	      <prompt>Compute a consensus tree</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "; cp infile infile.mix; cp outtree outtree.mix; cp outfile outfile.mix; mv outtree intree; consense &lt; consense.params; cp outtree outtree.consense; cp outfile outfile.consense; mv outtree.mix outtree; mv infile.mix infile; mv outfile.mix outfile" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset &amp;&amp; $print_treefile</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>print_tree</name>
+	    <attributes>
+	      <prompt>Print out tree (3)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "3\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to print a semi-graphical picture of the tree in the outfile.</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_step</name>
+	    <attributes>
+	      <prompt>Print out steps in each character (4)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "4\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>print_states</name>
+	    <attributes>
+	      <prompt>Print states at all nodes of tree (5)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "5\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>print_treefile</name>
+	    <attributes>
+	      <prompt>Write out trees onto tree file (6)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "" : "6\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to save the tree in a treefile (a standard representation of trees where the tree is specified by a nested pairs of parentheses, enclosing names and separated by commas).</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>printdata</name>
+	    <attributes>
+	      <prompt>Print out the data at start of run (1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "1\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>indent_tree</name>
+	    <attributes>
+	      <prompt>Indent treefile</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " &amp;&amp; indenttree -o outtree.indent outtree" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>parcimony_opt</name>
+	<prompt>Parcimony options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>use_threshold</name>
+	    <attributes>
+	      <prompt>Use Threshold parsimony (T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "T\\n$threshold\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Integer">
+	    <name>threshold</name>
+	    <attributes>
+	      <prompt>Threshold value (if use threshold parsimony)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$use_threshold</code>
+	      </precond>
+	      <ctrls>
+		<ctrl>
+		  <message>You must enter a numeric value, greater than 1</message>
+		  <language>perl</language>
+		  <code>($threshold !~ /^\d+(\.\d+)?$/) || ($threshold &lt; 1)</code>
+		</ctrl>
+	      </ctrls>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_options</name>
+	<prompt>Other options</prompt>
+	<parameters>
+	  
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+	      <prompt>Outgroup root (default, use as outgroup species 1) (O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? "o\\n$value\\n" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <ctrls>
+		<ctrl>
+		  <message>Please enter a value greater than 0</message>
+		  <language>perl</language>
+		  <code>$value &lt; 1</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	<filenames>outfile</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile</code>
+	</precond>
+	<filenames>outtree</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>indented_treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile &amp;&amp; $indent_tree</code>
+	</precond>
+	<filenames>outtree.indent</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>terminal_type</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<group>-1</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>tmp_params</name>
+      <attributes>
+	<filenames>*.params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>consense_confirm</name>
+      <attributes>
+        <format>
+          <language>perl</language>
+          <code>"Y\\n"</code>
+        </format>
+        <group>1000</group>
+        <precond>
+          <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <paramfile>consense.params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>consense_terminal_type</name>
+      <attributes>
+        <format>
+          <language>perl</language>
+          <code>"T\\n"</code>
+        </format>
+        <group>-2</group>
+        <precond>
+          <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <paramfile>consense.params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>consense_outfile</name>
+      <attributes>
+        <precond>
+          <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <filenames>outfile.consense</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>consense_treefile</name>
+      <attributes>
+        <precond>
+        <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <filenames>outtree.consense</filenames>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

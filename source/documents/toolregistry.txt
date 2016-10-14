@@ -1,0 +1,198 @@
+The purpose of the tool registry is to define what tools (i.e. domain specific programs)
+the application can run and which compute hosts they will run on.
+
+* OVERALL STRUCTURE of tool-registry.cfg.xml:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ToolRegistry>
+
+    <ToolResources>
+        <!--
+        One or more ToolResources are defined here.  A ToolResource corresponds to
+        a host where the application may run jobs.
+        -->
+        <ToolResource>
+            ...
+        </ToolResource>
+        <ToolResource>
+            ...
+        </ToolResource>
+            ...
+    </ToolResources>
+
+    <ToolGroups>
+        <!--
+        One or more tool groups are defined here.  In general only one group needs to be defined.  
+        Additional groups can be used to selectively enable/disable tools groups of tools.
+        -->
+        <ToolGroup>
+            <Tool 
+                ...
+            </Tool> 
+            <Tool 
+                ...
+            </Tool>
+        </ToolGroup> 
+    </ToolGroups>
+</ToolRegistry>
+
+Any text of the form ${name} is replaced at build time with the value of "name" from your build.properties file 
+or default/build.properties.template. 
+
+
+* TOOLRESOURCE
+
+    =================================================================================================================
+    Here's an excerpt from the scigap/example application tool registry for running tools
+    on the same machine as the web application, i.e. "the local host".  Should only be used for
+    quick jobs since the use of SSHProcessWorker means the web application will be unresponsive
+    to the user until the job finishes.
+
+    <ToolResource id="LOCALHOST" type="LOCAL_SHELL" 
+            class="org.ngbw.sdk.tool.DefaultToolResource"
+            filehandler="org.ngbw.sdk.tool.LocalFileHandler"
+            processworker="org.ngbw.sdk.tool.SSHProcessWorker">
+
+        <Parameters>
+            <Parameter key="host" value="localhost" />
+            <Parameter key="workspace" value="${workspace}"/>
+        </Parameters>
+
+    </ToolResource> 
+
+    - The "id" can be anything. It will also be referenced in the <tool> elements that run on this resource.
+    - I'm not sure if "type" matters
+    - class is always "org.ngbw.sdk.tool.DefaultToolResource"
+    - filehandler: use LocalFileHandler when the file system where jobs will run is local to the web application or nfs mounted.
+    - processworker: SSHProcessWorker can run jobs on local or remote host.
+        The framework defines several different filehandlers and processworkers in scigap/sdk/src/main/java/org/ngbw/sdk/tool.
+        They conform to the interfaces defined in scigap/sdk/api/tool/FileHandler and ProcessHandler. 
+    - Parameters: are passed to both the filehandler and the processworker.  LocalFileHandler and SSHProcessWorker
+        require the "host" and "workspace" parameters.  Workspace is where working dirs will be created to
+        run the jobs.  "${workspace}" is replaced at build time with the value of the "workspace" property
+        from build.properties as explained in framework_install.txt.
+
+		Different FileHandlers (e.g. SFTPFileHandler) and ProcessWorkers (e.g. SSHExecProcessWorker) will require
+		different parameters.  For the time being, the definitive way to find out which parameters are required is to
+		look at the source code for the FileHandler and ProcessWorker classes you're using.
+
+    =================================================================================================================
+    Here's an excerpt from Cipres's tool registry for running jobs on TSCC.  TSCC is a cluster with a torque/pbs 
+    scheduler.  We use the SSHExecProcessWorker and configure it with runner=SSHExecProcessRunner.   We also use 
+    SFTPFileHandler.  This combination uses sftp to transfer files from cipres to the execution host, then runs
+    ssh to log into the remote host and execute the script given by the "submit" parameter. The submit script, 
+    installed on the remote host, creates a job submission script and submits it with qsub.  Parameters "login" 
+    and "fileHost" are both set to the name of an entry in the ssl.properties file that tells the filehandler and 
+    processworker how to connect to the remote host.
+
+    The other parameters are:
+        - workspace : directory on tscc where job working dirs will be created.  Must have ARCHIVE
+        FAILED and MANUAL subdirs, should be owned by the user account that will be running the jobs. 
+        
+        - rc : This is optional.  If specified, this script will be run on the remote host before
+        running each of the other scripts (like submit,check, cancel).  Can be used to set PATH
+        and other env vars.
+
+        - submit, check, cancel are scripts installed on the remote host.  See framework_install.txt,
+        "Running on Remote Compute Hosts".
+
+        - coresPerNode is required unless all jobs will be single threaded, using a single core.
+        This is used to predict the charge for a job.
+
+    <ToolResource id="${tool.resource.cluster}" type="REMOTE_SHELL"
+        class="org.ngbw.sdk.tool.DefaultToolResource"
+        filehandler="org.ngbw.sdk.tool.SFTPFileHandler"
+        processworker="org.ngbw.sdk.tool.SSHExecProcessWorker">
+        <Parameters>
+            <Parameter key="runner" value="org.ngbw.sdk.common.util.SSHExecProcessRunner" />
+            <Parameter key="login" value="${tscc.login}" />
+            <Parameter key="fileHost" value="${tscc.fileHost}"/>
+            <Parameter key="workspace" value="${tscc.workspace}"/>
+            <Parameter key="rc" value="${tscc.rc}"  />
+            <Parameter key="submit" value="${tscc.submit}"  />
+            <Parameter key="check" value="${tscc.check}"  />
+            <Parameter key="cancel" value="${tscc.cancel}"  />
+            <Parameter key="coresPerNode" value="16"  />
+        </Parameters>
+    </ToolResource> 
+
+    Here are the corresponding properties in build.properties. Note that the value of tscc.login and tscc.fileHost 
+    is "tscc".  This tells the filehandler and processworker to use the entries prefixed with "tscc." in ssl.properties.   
+    Also note that we don't need to give full paths to the scripts submit_v2.py, etc, because they are installed such 
+    that they are on the path of cluster_user@tscc-login1.sdsc.edu.
+
+        tool.resource.cluster=TSCC
+        tscc.login=tscc
+        tscc.fileHost=tscc
+        tscc.submit=submit_v2.py
+        tscc.check=checkjobs_v2.py
+        tscc.cancel=delete_v2.py
+        tscc.rc=/home/cluster_user/ngbw/contrib/scripts/workbench.rc
+        tscc.project=cluster_user
+        tscc.workspace=/projects/ps-ngbt/backend/tscc_test_workspace
+        # These two are used in ssl.properties: 
+        tscc.username=cluster_user
+        tscc.keyFile=@{env.HOME}/.ssh/id_dsa
+
+    And in cipres's sdk/src/main/resources/ssl.properties, we have:
+        tscc.host=tscc-login1.sdsc.edu
+        tscc.username=${tscc.username}
+        tscc.keyFile=${tscc.keyFile}
+        tscc.minconn=0
+        tscc.maxconn=${ssl.maxconn}
+        tscc.end
+        
+* TOOLGROUPS
+    =================================================================================================================
+    Tool Groups are used to define groups of tools for which you would like to achieve some sort of selective behavior.
+    For example, perhaps you wish to selectively disable all of a particular group of tools. If XSEDE goes down, for example
+    you can disable all XSEDE tools if you place them in a tool group. In our case, we find it useful to define 
+    a group of tools that appears only in the REST service, and another that appears in both the REST service and
+    the web portal.  To do this we define:
+
+        <ToolGroup id="RESTONLY" disable="${rest.tools.disable}"> 
+        </ToolGroup>
+
+    and within this group we define <Tool> elements for tools that appear only in the REST service.
+
+    We set rest.tools.disable=true in our our build.properties file when building the web portal, and we 
+    set rest.tools.disable=false, when building the REST service. 
+    
+        
+* TOOLS
+
+    ================================================================================================================= 
+    
+    Within the one or more tool groups, we place the definition of individual tools that are to be deployed. All tools must 
+    have a corresponding PISE XML document. 
+    
+    Here is an example of a tool definition:
+    
+    <Tool id="BLASTN" 
+        name="BLAST-N, using threading on a full node for performance"
+        configfile="pisexml/blastn.xml" toolresource="gordon"
+        commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
+
+        <InputParameters>
+            <InputParameter id="infile_" entityType="UNKNOWN" dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE" />
+        </InputParameters>
+        <OutputParameters></OutputParameters>
+    </Tool> 
+
+    The format works like this: 
+    <Tool id="TOOLNAME" <!-- always in caps, must be the same as the configfilename with .xml extension removed --> 
+        name="description, which is an arbitrary text string"
+        configfile="path to the pise tool description, usually relative to this file" 
+        toolresource="the id of a toolresource defined above"
+        commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
+        <InputParameters>
+            <InputParameter id="infile_" entityType="string" dataType="string" dataFormat="string" iomode="FILE" />
+        </InputParameters>
+        <OutputParameters></OutputParameters>
+    </Tool> 
+
+    The entityType, dataType, and dataFormat are vestiges of a previous attempt to further control the data types. This turned out to be not so useful.
+    Typically, people will only use UNKNOWN for the values of these parameters. So far, iomode=FILE in all cases. No other option is defined.
+
+    
+            

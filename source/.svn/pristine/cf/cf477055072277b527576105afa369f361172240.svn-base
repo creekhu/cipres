@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>GIBBS</title>
+    <description>motif sampling</description>
+    <authors>Neuwald &amp; Lawrence</authors>
+    <reference>Neuwald, Liu, and Lawrence (1995). Gibbs motif sampling: detection of bacterial outer membrane protein repeats.  Protein Science 4, 1618-1632. (for Gibbs site sampling, Gibbs motif sampling, purge, and scan programs)</reference>
+    <reference>Lawrence, Altschul, Boguski, Liu, Neuwald and Wootton (1993) Detecting Subtle Sequence Signals: A Gibbs Sampling Strategy for Multiple Alignment, Science 262:208-214.  (for Gibbs site sampling program)</reference>
+</head>
+
+
+<command>gibbs</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>gibbs</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"gibbs "</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>sequence</name>
+<attributes>
+
+	<prompt>Sequences file</prompt>
+	<format>
+		<language>perl</language>
+		<code>($purge)? " $sequence.b$score" : " $sequence"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>lengths</name>
+<attributes>
+
+	<prompt>Lengths of elements for each type (eg: e1,e2)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>format:</value>
+		<value>long[,long]</value>
+		<value>example:</value>
+		<value>18,18,18</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>expected</name>
+<attributes>
+
+	<prompt>Expected number of elements for each type (eg: l1,l2) (motif sampler)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>3</group>
+	<comment>
+		<value>format:</value>
+		<value>long[,long]</value>
+		<value>example:</value>
+		<value>18,18,18</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>purge</name>
+<attributes>
+
+	<prompt>Run purge to remove closely related sequences</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "purge $sequence" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>-10</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_options</name>
+<prompt>Output options</prompt>
+<group>4</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>scan</name>
+	<attributes>
+
+		<prompt>Create a scan output file (file.sn) (-f)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -f" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control_options</name>
+<prompt>Control options</prompt>
+<group>4</group>
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>sites_options</name>
+	<prompt>Sites sampler options</prompt>
+	<group>4</group>
+	<parameters>
+
+		<parameter type="Integer">
+		<name>sites_cycles</name>
+		<attributes>
+
+			<prompt>Maximum number of cycles in each run (-m)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -m$value" : ""</code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		<name>element_order</name>
+		<attributes>
+
+			<prompt>Use element order in probabilities (-o)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -o" : ""</code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>sites_pseudo_counts</name>
+		<attributes>
+
+			<prompt>Pseudo counts for ordering model (-q)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -q$value" : ""</code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>readings</name>
+		<attributes>
+
+			<prompt>Number of near-optimum readings taken (-R)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -R$value" : ""</code>
+			</format>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>motif_options</name>
+	<prompt>Motif sampler options</prompt>
+	<group>4</group>
+	<parameters>
+
+		<parameter type="Switch">
+		<name>wilcoxon</name>
+		<attributes>
+
+			<prompt>Output wilcoxon rank test information (-w)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -w" : ""</code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>4</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>fractional_weight</name>
+		<attributes>
+
+			<prompt>Fractional weight (0 to 1.0) on priors (-W)</prompt>
+			<format>
+				<language>perl</language>
+				<code>(defined $value)? " -W$value" : ""</code>
+			</format>
+			<group>4</group>
+			<ctrls>
+				<ctrl>
+				<message>The value must be between 0 to 1.0</message>
+					<language>perl</language>
+					<code>$value &lt; 0 || $value &gt; 1.0</code>
+				</ctrl>
+			</ctrls>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	<parameter type="Integer">
+	<name>cycles</name>
+	<attributes>
+
+		<prompt>Number of cycles between shifts (sites sampler) or maximum number of cycles per run  (motif sampler) (-c)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -c$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>cutoff</name>
+	<attributes>
+
+		<prompt>Prob. cutoff for near optimum sampling (-C)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -C$value" : ""</code>
+		</format>
+		<group>4</group>
+		<ctrls>
+			<ctrl>
+			<message>(0 &lt; Cutoff &lt;= 1)</message>
+				<language>perl</language>
+				<code>$value &lt; 0 || $value &gt; 1</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>fragmentation</name>
+	<attributes>
+
+		<prompt>Use fragmentation (-d)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -d"</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>convergence</name>
+	<attributes>
+
+		<prompt>Rapid convergence limit (higher = longer to converge) (-L)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -L$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>nucleic</name>
+	<attributes>
+
+		<prompt>Use nucleic acid alphabet (-n)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>pseudo_counts</name>
+	<attributes>
+
+		<prompt>Number of pseudo counts for product multinomial model (-p)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -p$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>shuffle</name>
+	<attributes>
+
+		<prompt>Randomly shuffle input sequences (-r)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -r" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>seed</name>
+	<attributes>
+
+		<prompt>Seed for random number generator (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -s$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>sampling_runs</name>
+	<attributes>
+
+		<prompt>Maximum number of sampling runs (-t)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -t$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>low_complexity</name>
+	<attributes>
+
+		<prompt>Remove protein low complexity regions (-x)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -x"</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>purge_options</name>
+<prompt>purge options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$purge</code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="Integer">
+	<name>score</name>
+	<attributes>
+
+		<prompt>Score threshold</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<group>-9</group>
+	<precond>
+		<language>perl</language>
+		<code>$purge</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>method</name>
+	<attributes>
+
+		<prompt>Heuristic method</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " $value" : ""</code>
+		</format>
+		<vdef><value>-b</value></vdef>
+		<group>-8</group>
+		<vlist>
+			<value>-b</value>
+			<label>-b: blast</label>
+			<value>-e</value>
+			<label>-e: exhaustive</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$purge</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>keep</name>
+	<attributes>
+
+		<prompt>Keep first sequence in the set (-q)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -q" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>-8</group>
+	<precond>
+		<language>perl</language>
+		<code>$purge</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>mask</name>
+	<attributes>
+
+		<prompt>Use xnu to mask low complexity regions (-x)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -x"</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>-8</group>
+	<precond>
+		<language>perl</language>
+		<code>$purge</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ishidden="1" type="String">
+	<name>purge_sep</name>
+	<attributes>
+
+		<format>
+			<language>perl</language>
+			<code>";"</code>
+		</format>
+		<group>-1</group>
+	<precond>
+		<language>perl</language>
+		<code>$purge</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Results">
+	<name>purged_sequence</name>
+	<attributes>
+
+	<precond>
+		<language>perl</language>
+		<code>$purge</code>
+	</precond>
+		<filenames>$sequence.b$score</filenames>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>scan_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"$sequence.sn"</value></vdef>
+	<pipe>
+		<pipetype>gibbs_motif</pipetype>
+			<language>perl</language>
+			<code>$scan</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,283 @@
+CIPRES_THREADSPP=8
+CIPRES_NP=1
+running:
+raxmlHPC-PTHREADS -T 8 -s infile.txt -m GTRGAMMA -p 12345 -f E -O -n infile.tre
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+This is the RAxML Master Pthread
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 7
+
+This is RAxML Worker Pthread Number: 6
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 627 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 28.43%
+
+RAxML experimental very fast tree search
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 627
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 8 -s infile.txt -m GTRGAMMA -p 12345 -f E -O -n infile.tre 
+
+
+Time after init : 0.098439
+Time after init and starting tree: 0.338711
+Time after init, starting tree, mod opt: 1.045533
+Partion 0 number of Cats: 1
+LH after SPRs -10582.618266, after NNI -10581.871146
+LH after SPRs -10581.865810, after NNI -10581.848453
+RAxML fast tree written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_fastTree.infile.tre
+
+Model parameters (binary file format) written to: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_binaryModelParameters.infile.tre
+Total execution time: 3.166933
+Good bye ... 
+CIPRES_THREADSPP=8
+CIPRES_NP=1
+running:
+raxmlHPC-PTHREADS -T 8 -f e -t RAxML_fastTree.infile.tre -n brL.infile.tre -s infile.txt -O -m GTRGAMMA
+
+
+IMPORTANT WARNING: Sequences Cirrospilus_nr_vittatus_AUS_D3866_ABCH_F and Cirrospilus_nr_vittatus_AUS_D3865_ABCH_F are exactly identical
+
+
+IMPORTANT WARNING: Sequences Cirrospilus_vittatus_CA_D4173_ABC_F and Cirrospilus_vittatus_CA_D4177_ABC_F are exactly identical
+
+
+IMPORTANT WARNING: Sequences Cirrospilus_vittatus_CA_D4173_ABC_F and Cirrospilus_vittatus_CA_D3666_ABC_F are exactly identical
+
+
+IMPORTANT WARNING: Sequences Cirrospilus_sp_NM_D3677_ABC_F and Cirrospilus_sp_NM_D3676_ABC_F are exactly identical
+
+
+IMPORTANT WARNING: Sequences Cirrospilus_vittatus_CA_D4176_ABC_F and Cirrospilus_vittatus_CA_D4169_ABC_F are exactly identical
+
+
+IMPORTANT WARNING: Sequences Cirrospilus_vittatus_CA_D4176_ABC_F and Cirrospilus_vittatus_CA_D3791_ABC_M are exactly identical
+
+IMPORTANT WARNING
+Found 6 sequences that are exactly identical to other sequences in the alignment.
+Normally they should be excluded from the analysis.
+
+Just in case you might need it, an alignment file with 
+sequence duplicates removed is printed to file infile.txt.reduced
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+This is the RAxML Master Pthread
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 6
+
+This is RAxML Worker Pthread Number: 7
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 627 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 28.43%
+
+RAxML Model Optimization up to an accuracy of 0.100000 log likelihood units
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 627
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 8 -f e -t RAxML_fastTree.infile.tre -n brL.infile.tre -s infile.txt -O -m GTRGAMMA 
+
+
+
+Model parameters (binary file format) written to: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_binaryModelParameters.brL.infile.tre
+123.335691 -10567.687354
+
+
+Overall Time for Tree Evaluation 123.340453
+Final GAMMA  likelihood: -10567.687354
+
+Number of free parameters for AIC-TEST(BR-LEN): 194
+Number of free parameters for AIC-TEST(NO-BR-LEN): 9
+
+
+Model Parameters of Partition 0, Name: No Name Provided, Type of Data: DNA
+alpha: 0.167421
+Tree-Length: 2.414039
+rate A <-> C: 0.545160
+rate A <-> G: 2.921235
+rate A <-> T: 4.169013
+rate C <-> G: 0.408976
+rate C <-> T: 3.969170
+rate G <-> T: 1.000000
+
+freq pi(A): 0.228397
+freq pi(C): 0.237276
+freq pi(G): 0.289816
+freq pi(T): 0.244511
+
+Final tree written to:                 /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_result.brL.infile.tre
+Execution Log File written to:         /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_log.brL.infile.tre
+CIPRES_THREADSPP=8
+CIPRES_NP=1
+running:
+raxmlHPC-PTHREADS -T 8 -f J -t RAxML_result.brL.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m GTRGAMMA
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+This is the RAxML Master Pthread
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 6
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 7
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 627 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 28.43%
+
+RAxML computation of SH-like support values on a given tree
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 627
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 8 -f J -t RAxML_result.brL.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m GTRGAMMA 
+
+
+Time after model optimization: 248.479659
+Initial Likelihood -10569.899974
+
+NNI interchanges 0 Likelihood -10569.899925
+
+Final Likelihood of NNI-optimized tree: -10569.899925
+
+RAxML NNI-optimized tree written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_fastTree.sh.infile.tre
+
+Same tree with SH-like supports written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-EB1E6565D63640E0A4DB0FB830C0E6EC/RAxML_fastTreeSH_Support.sh.infile.tre
+
+Total execution time: 248.881192

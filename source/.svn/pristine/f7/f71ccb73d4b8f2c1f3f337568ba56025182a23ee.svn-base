@@ -1,0 +1,236 @@
+-------------------------------------
+How to define a program's parameters.
+-------------------------------------
+
+** See examples in TextDef directory **
+** see also the yacc parser ** :-)
+
+Global description :
+
+(everything in the definition file is terminated with a ";")
+
+Title	<title> ;
+	<title> is a string between "
+	the first word gives the name of the program, and can be used
+	to construct an url towards the documentation
+
+	example:
+	Title		"BLAST (Basic Local Alignment Search Tool)" ;
+
+Cmd	<command> ;
+	<command> is the name of this definition; it's used everywhere
+	(filenames, data structures, ...); it's kind of a key.
+
+	example:
+	Cmd 	"cds";
+
+	default group for command type parameter : 0
+
+
+for each parameter, you have a description:
+
+	<type>	<variable> {
+		<attributes list>
+	};
+
+	where:
+
+	 <type> is either:
+		'InFile'
+		'Sequence'
+		'OutFile'
+		'Results'	output files (not real "parameters" known
+				by the user)
+		'Switch'
+		'Excl'		single choice list
+		'List'		multiple choice list
+		'Integer'
+		'String'
+		'Paragraph'	a list of grouped parameters
+
+	<variable> is a variable name that you can use to code
+	some conditions
+
+	<attributes_list> is a list of attributes of the form:
+
+		<attribute> <attribute_value> ;
+
+		where <attribute> is either:
+
+			'vdef'		(default value)
+			'vlist'		(list of values)
+			'flist'		(list of format - see format)
+			'format'	(code to trnaform the input value
+					 into a correct syntax for the 
+					 parameter)
+			'prompt'	text presented to the user
+			'group'		position of this parameter in the
+					command line
+			'mandatory'
+			'hidden'	not visible to the user
+			'command'	is this "parameter" the command name
+					(when the program itself is a
+					choice)
+			'comment'	explanation of the parameter for 
+					the user
+			'ctrl'		extra controls of the entered value
+			'precond'	pre-condition of the parameter
+			'standout'	is it the standard output of the 
+					program?
+			'simple'	is it a parameter for a beginner?
+			'clean'		for files
+			'seqfmt'	sequence format (for readseq)
+			'paramfile'	when parameters are stored in a file
+			'filenames'	output files to propose
+			'scale*'	for Integer
+			'separator'	for List
+			'size'		for presentation
+
+		and <attribute_value> :
+
+		a litteral
+		like:			in attributes:
+			string:			vdef prompt paramfile filenames
+			integer:		vdef group 
+			decimal:		vdef
+			boolean:		vdef mandatory clean simple
+						command hidden standout
+
+		a list:
+			{ <strings> } (comment)
+			where <strings> is a list of strings between ""
+		or:	{ <integers> } (seqfmt)
+
+		some lists have a special format, with, for each item, 2
+		elements : a "key" and a "text" (format, precond, vlist, flist)
+
+			{ key string }
+
+		as well as this kind of lists (ctrl):
+			{ key1 { key2 string } }
+
+
+	---------------------------
+	attributes containing code:
+	---------------------------
+
+	- these attributes are flagged by a language name (as 'perl') in
+	order to allow the "executable" part of the interface to be
+	in whatever interpreted language you want (tcl, java, ...)
+
+	- the code must be SURROUNDED BY SINGLE QUOTES
+
+	- there are special variables that you can use in the code
+	(here in perl):
+		$value: entered value of the current parameter
+		$vdef: default value of the current parameter
+		$<variable>: same as value, but not temporary
+		where <variable> is the name that you have given to the
+		parameter
+
+		$value is not defined (perl) when not entered by the user
+		this is usefull to distinguish a zero value from a non entered
+		value for integers (cf B parameter of Blast)
+
+		$value == $vdef means that the user did not change the
+		proposed value
+
+
+	- the code is always evaluated in an evaluation name space
+	(see the file lib/evaluation.pl) in order to protect
+	the name space of the interface itself
+
+	- format, form:
+			{ 
+				language code 
+				language code 
+			}
+
+
+		the code is intended for the RHS of an affectation
+		examples (in perl):
+			' " -f $value" '
+			will be used as (if the name of the variable is file):
+			$file = " -f $value";
+		others examples:	
+			' " E=$expect" '
+		conditional assignation:
+			'($value > 10)? " -f $sup " : " -f "inf" '
+
+		note: you must explicitly give the separator (even a space)
+		between parameters;
+		the generated interface will not put it for you (this is
+		for programs which have grouped options, like ps).
+
+
+	- precond, form:
+			{ 
+				language code 
+				language code 
+			}
+		
+		same as format, except that it's used in a test
+		example:
+			'$e < 4'
+			will be used as:
+			if ($e < 4)
+
+	- ctrl, of the form:
+		{
+			message { 
+					language code 
+					language code 
+				}
+			message { 
+					language code 
+					language code 
+				}
+		}
+
+	- flist (list of formats for different values, usefull for
+	parameters like Excl, List, ...)
+
+		{
+			value	code
+		}
+
+	- paramfile: this attribute directs the part of the command line
+	for this parameter into a file; this is usefull for programs wo
+	take their parameters from a file of from the standard input, like 
+	Phylip programs.
+
+
+How to actually generate your interface?
+
+	To generate all applis type (in the top directory):
+		make applis
+	To generate one program, called xx:
+		make PROGRAM=xx web
+
+	Then there are files to install from subdirectories:
+
+	Html/{Dev|Prod}/:
+		xx.html
+		xx-simple.html
+
+	Cgi/{Dev|Prod}/:
+		xx.pl
+		(put at the place indicated by the HTML form of course
+		see $CGI_DIR_TEST and $CGI_DIR_PROD in 
+		Maker/make-html-utils.pl)
+
+		don't forget lib files (for CGI):
+			CGI_Lite.pm    
+			convseq.pl     
+			do_command.pl  
+			evaluation.pl
+		to install in the $web_lib (defined in Maker/make-cgi.pl
+		see README-WEB file in the same directory)
+
+Remarks :
+
+	- scalemin default is 0
+	- scalemax default is 100
+	- scaleinc default is 1
+
+

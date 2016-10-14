@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>aconvert</description>
+    <authors>Russel, Barton</authors>
+  </head>
+
+  <command>aconvert</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>aconvert</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"aconvert"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>blcfile</name>
+      <attributes>
+	<prompt>AMPS Block File (.blc)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " -f $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+	  <pipetype>amps_blc_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Excl">
+      <name>inseqformat</name>
+      <attributes>
+	<prompt>Input format (-in)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)?  " -in $value" : ""</code>
+	</format>
+	<vlist>
+	  <value>m</value>
+	  <label>m = MSF format</label>
+	  <value>c</value>
+	  <label>c = Clustal format</label>
+	  <value>b</value>
+	  <label>b = AMPS BLOCK format</label>
+	  <value>f</value>
+	  <label>f = FASTA format</label>
+	  <value>p</value>
+	  <label>p = PIR format</label>
+	  <value>s</value>
+	  <label>s = PFAM (Sanger) format</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Excl">
+      <name>outseqformat</name>
+      <attributes>
+	<prompt>Output format (-out)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)?  " -out $value" : ""</code>
+	</format>
+	<vlist>
+	  <value>m</value>
+	  <label>m = MSF format</label>
+	  <value>c</value>
+	  <label>c = Clustal format</label>
+	  <value>b</value>
+	  <label>b = AMPS BLOCK format</label>
+	  <value>f</value>
+	  <label>f = FASTA format</label>
+	  <value>p</value>
+	  <label>p = PIR format</label>
+	  <value>s</value>
+	  <label>s = PFAM (Sanger) format</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

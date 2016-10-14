@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Pratt</title>
+    <version>2.1</version>
+    <description>pattern discovery</description>
+    <authors>K. Sturzrehm, I. Jonassen</authors>
+  </head>
+
+<command>pratt</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>pratt</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "pratt" </code>
+	</format>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>4</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>seqformat</name>
+<attributes>
+
+	<prompt>Sequence File format</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>fasta</value></vdef>
+	<group>3</group>
+	<vlist>
+		<value>swissprot</value>
+		<label>swissprot</label>
+		<value>fasta</value>
+		<label>fasta</label>
+		<value>gcg</value>
+		<label>gcg</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>conservation</name>
+<prompt>Pattern conservation parameters</prompt>
+<group>5</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>CM</name>
+	<attributes>
+
+		<prompt>CM: min Nr of Seqs to Match (between 2 and 4)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -CM $value":""</code>
+		</format>
+		<group>5</group>
+		<ctrls>
+			<ctrl>
+			<message>value must be between 2 and 4</message>
+				<language>perl</language>
+				<code>$value &amp;&amp; ($value &lt; 2 || $value &gt; 4)</code>
+			</ctrl>
+			<ctrl>
+			<message>value must be an integer between 2 and 4</message>
+				<language>perl</language>
+				<code>$value =~ /\\./ </code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>Cpct</name>
+	<attributes>
+
+		<prompt>C%: min Percentage Seqs to Match</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -C% $value":""</code>
+		</format>
+		<vdef><value>100</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>restrictions</name>
+<prompt>Pattern restrictions parameters</prompt>
+<group>5</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>PP</name>
+	<attributes>
+
+		<prompt>PP: pos in seq</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -PP $value":""</code>
+		</format>
+		<vdef><value>off</value></vdef>
+		<group>5</group>
+		<vlist>
+			<value>off</value>
+			<label>off</label>
+			<value>complete</value>
+			<label>complete pattern match has to be in this area</label>
+			<value>start</value>
+			<label>start: pattern match has to start in this area</label>
+		</vlist>
+		<ctrls>
+			<ctrl>
+			<message>you must give a file to define the regions (PF)</message>
+				<language>perl</language>
+				<code>$PP &amp;&amp; $PP ne "off" &amp;&amp; ! $PF</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>PF</name>
+	<attributes>
+
+		<prompt>PF: Restriction File name (if PP not off)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -PF $value"</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This file contains lines to restrict pattern searches to certain regions in a sequence, say ACE2_YEAST: </value>
+			<value>&gt;ACE2_YEAST (100,200)</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$PP &amp;&amp; $PP ne "off"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>PL</name>
+	<attributes>
+
+		<prompt>PL: max Pattern Length</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -PL $value":""</code>
+		</format>
+		<vdef><value>50</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>PN</name>
+	<attributes>
+
+		<prompt>PN: max Nr of Pattern Symbols</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -PN $value":" -AUTO"</code>
+		</format>
+		<vdef><value>50</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>PX</name>
+	<attributes>
+
+		<prompt>PX: max Nr of consecutive x's</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -PX $value":""</code>
+		</format>
+		<vdef><value>5</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>FN</name>
+	<attributes>
+
+		<prompt>FN: max Nr of flexible spacers</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -FN $value":""</code>
+		</format>
+		<vdef><value>2</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>FL</name>
+	<attributes>
+
+		<prompt>FL: max Flexibility</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -FL $value":""</code>
+		</format>
+		<vdef><value>2</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>FP</name>
+	<attributes>
+
+		<prompt>FP: max Flex.Product</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -FP $value":""</code>
+		</format>
+		<vdef><value>10</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>BI</name>
+	<attributes>
+
+		<prompt>BI: Input Pattern Symbol File?</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -BI on":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>BF</name>
+	<attributes>
+
+		<prompt>BF: Input Pattern Symbol File name (if BI on)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value) ? " -BI $value" : "/local/gensoft/lib/pratt/Pratt.sets.big" </code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>default file is: /local/gensoft/lib/pratt/Pratt.sets.big</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$BI</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>BN</name>
+	<attributes>
+
+		<prompt>BN: Nr of Pattern Symbols Initial Search</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -BN $value":""</code>
+		</format>
+		<vdef><value>20</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>scoring</name>
+<prompt>Pattern Scoring parameters</prompt>
+<group>5</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>S</name>
+	<attributes>
+
+		<prompt>S: Scoring</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value != $vdef)? " -S $value":""</code>
+		</format>
+		<vdef><value>info</value></vdef>
+		<group>5</group>
+		<vlist>
+			<value>info</value>
+			<label>info (information content)</label>
+			<value>mdl</value>
+			<label>mdl (Minimum Description Length)</label>
+			<value>tree</value>
+			<label>tree (diversity calculated from a dendrogram)</label>
+			<value>dist</value>
+			<label>dist (distances matrix)</label>
+			<value>ppv</value>
+			<label>ppv (Positive Predictive Value)</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>treefile</name>
+	<attributes>
+
+		<prompt>Tree File (if Scoring = tree)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -SF $value "</code>
+		</format>
+		<group>5</group>
+	<precond>
+		<language>perl</language>
+		<code>$S eq "tree"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>distfile</name>
+	<attributes>
+
+		<prompt>Distances File (if Scoring = dist)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -SF $value; "</code>
+		</format>
+		<group>5</group>
+	<precond>
+		<language>perl</language>
+		<code>$S eq "dist"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ishidden="1" type="String">
+	<name>swissprotdb</name>
+	<attributes>
+
+		<format>
+			<language>perl</language>
+			<code>" -SF /local/gensoft/lib/pratt/sprot.dat"</code>
+		</format>
+		<group>5</group>
+	<precond>
+		<language>perl</language>
+		<code>$S eq "ppv"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>mdl_param</name>
+	<prompt>MDL parameters (Z0-Z3) (if MDL scoring)</prompt>
+	<precond>
+		<language>perl</language>
+		<code>$S eq "mdl"</code>
+	</precond>
+	<group>5</group>
+	<parameters>
+
+		<parameter ismandatory="1" type="Integer">
+		<name>Z0</name>
+		<attributes>
+
+			<prompt>Z0</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value != $vdef)? " -Z0 $value" : "" </code>
+			</format>
+			<vdef><value>10.00</value></vdef>
+			<group>5</group>
+		<precond>
+			<language>perl</language>
+			<code>$S eq "mdl"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Integer">
+		<name>Z1</name>
+		<attributes>
+
+			<prompt>Z1</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value != $vdef)? " -Z1 $value" : ""</code>
+			</format>
+			<vdef><value>10.00</value></vdef>
+			<group>5</group>
+		<precond>
+			<language>perl</language>
+			<code>$S eq "mdl"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Integer">
+		<name>Z2</name>
+		<attributes>
+
+			<prompt>Z2</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value != $vdef)? " -Z2 $value" : ""</code>
+			</format>
+			<vdef><value>3.00</value></vdef>
+			<group>5</group>
+		<precond>
+			<language>perl</language>
+			<code>$S eq "mdl"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Integer">
+		<name>Z3</name>
+		<attributes>
+
+			<prompt>Z3</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value != $vdef)? " -Z3 $value" : ""</code>
+			</format>
+			<vdef><value>10.00</value></vdef>
+			<group>5</group>
+		<precond>
+			<language>perl</language>
+			<code>$S eq "mdl"</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>search</name>
+<prompt>Search parameters</prompt>
+<group>5</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>G</name>
+	<attributes>
+
+		<prompt>G: Pattern Graph from:</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -G $value":""</code>
+		</format>
+		<vdef><value>seq</value></vdef>
+		<group>5</group>
+		<vlist>
+			<value>seq</value>
+			<label>seq</label>
+			<value>al</value>
+			<label>al (alignment)</label>
+			<value>query</value>
+			<label>query</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>GF</name>
+	<attributes>
+
+		<prompt>Alignment or Query Filename (if G set to al or query)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -GF $value"</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>alignment file must be in CLUSTALW format</value>
+			<value>query file must be in Fasta format</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$G eq "al" or $G eq "query"</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>E</name>
+	<attributes>
+
+		<prompt>E: Search Greediness</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -E $value":""</code>
+		</format>
+		<vdef><value>3</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>R</name>
+	<attributes>
+
+		<prompt>R: Pattern Refinement</prompt>
+		<format>
+			<language>perl</language>
+			<code>(! $value)? " -R off" : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>RG</name>
+	<attributes>
+
+		<prompt>RG: Generalise ambiguous symbols (if Pattern Refinement on)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -RG on" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>5</group>
+	<precond>
+		<language>perl</language>
+		<code>$R</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output options</prompt>
+<group>5</group>
+<parameters>
+
+	<parameter type="OutFile">
+	<name>OF</name>
+	<attributes>
+
+		<prompt>OF: Output Filename</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -OF $value" : "" </code>
+		</format>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Results">
+	<name>outfiles</name>
+	<attributes>
+
+		<group>5</group>
+		<filenames>*.pat</filenames>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>OP</name>
+	<attributes>
+
+		<prompt>OP: PROSITE Pattern Format</prompt>
+		<format>
+			<language>perl</language>
+			<code>(! $value)? " -OP off " : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ON</name>
+	<attributes>
+
+		<prompt>ON: max number patterns</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -ON $value":""</code>
+		</format>
+		<vdef><value>50</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>OA</name>
+	<attributes>
+
+		<prompt>OA: max number Alignments</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -OA $value":""</code>
+		</format>
+		<vdef><value>50</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>M</name>
+	<attributes>
+
+		<prompt>M: Print Patterns in sequences</prompt>
+		<format>
+			<language>perl</language>
+			<code>(! $value)? " -M off " : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>MR</name>
+	<attributes>
+
+		<prompt>MR: ratio for printing</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -MR $value":""</code>
+		</format>
+		<vdef><value>10</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>MV</name>
+	<attributes>
+
+		<prompt>MV: print vertically</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -MV on " : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter isclean="1" type="Results">
+<name>report</name>
+<attributes>
+
+	<filenames>report</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# cd to directory with this script and run it as './runtooltest > results.txt 2>&1'
+# will run 'tooltest <dir> validate' on each subdir of subdir of current dir.
+#
+TOP=.
+for i in $TOP/*
+do
+	if [ -d $i ] ; then
+		echo "\n###########################################################################################"
+		# basename  $i
+		echo  $i
+		echo "############################################################################################"
+		tooltest.py $i validate
+		echo
+	fi
+done

@@ -1,0 +1,29 @@
+
+This is a raxml gui command line.
+The test provides the command line at the bottom of the page.
+
+this is the command line raxmlgui makes: raxmlHPC-PTHREADS.exe -T 2 -f A -t "0" -s infile.txt  -m GTRGAMMA -n infile -O -w  "C:/Users/mmiller/Desktop/cipres/raxmlgui/DNA_2/"   
+
+NGBW-JOB-RAXMLHPC8_REST_XSEDE-4B2917C9BA164339A416A27AEA3205EF (saved)
+
+raxmlHPC-PTHREADS  -f A  -n result -s infile.txt -m GTRGAMMA -p 12345 -t tree.tre  -O
+
+RAXMLHPC8_XSEDE
+infile_ - Primary Input File
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+datatype_ - Excl - Sequence Type
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+invariable_ - Excl - Estimate proportion of invariable sites (GTRGAMMA + I)
+prot_matrix_spec_ - Excl - Protein Substitution Matrix
+empirical_ - Excl - Use empirical base frequencies?
+mlsearch_ - Switch - Find best tree using maximum likelihood search
+use_bootstopping_ - Switch - Let RAxML halt bootstrapping automatically (HIGHLY recommended)
+printbrlength_ - Switch - Print branch lengths (-k)
+all_outputfiles_ - Results -
+
+Job is OK, command line is 
+this is the command line we make: 'raxmlHPC-PTHREADS (-T 8)  -f A -t tree.tre -s infile.txt -m GTRGAMMA -n result -p 12345  -O '

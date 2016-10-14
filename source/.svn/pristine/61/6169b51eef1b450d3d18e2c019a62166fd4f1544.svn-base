@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>REDATA</title>
+<description>Search REBASE for enzyme name, references, suppliers etc. (EMBOSS)</description>
+<category>nucleic:restriction</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/redata.html</doclink>
+</head>
+
+<command>redata</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>enzyme</name>
+	<attributes>
+		<prompt>Restriction enzyme name (-enzyme)</prompt>
+		<vdef>
+			<value>BamHI</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -enzyme=$value"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>Enter the name of the restrcition enzyme that you wish to get details of. The names often have a 'I' in them - this is a capital 'i', not a '1' or an 'l'. The names are case-indeppendent ('AaeI' is the same as 'aaei')</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>isoschizomers</name>
+	<attributes>
+		<prompt>Show isoschizomers (-isoschizomers)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noisoschizomers"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Show other enzymes with this specificity. (Isoschizomers)</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>references</name>
+	<attributes>
+		<prompt>Show references (-references)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noreferences"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>suppliers</name>
+	<attributes>
+		<prompt>Show suppliers (-suppliers)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nosuppliers"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>6</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

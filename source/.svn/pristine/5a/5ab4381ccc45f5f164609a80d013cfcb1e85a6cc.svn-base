@@ -1,0 +1,17 @@
+
+<h2>
+	<a href="http://tacg.sourceforge.net/" class="toolkit">Your Tool</a>
+</h2>
+<p>
+	Yourtool is a command-line program that.</p>
+<p>	<strong>If you use MYTOOL, please cite: Me, M. (2002) "mytool is cool" BMC Bioinformatics 3:8.</strong></p>
+
+	<p><strong>Manual: <a href="yourtool/manual.html">manual html</a></strong></p>
+
+<p>
+	<strong>INPUT = Nucleic Acid Sequences.</strong>
+</p>
+<p>
+	<strong>Input file <a href="tool_tests/yourtool_in.txt">yourtool_in.txt</a></strong></p>
+<p>
+	<strong>Output file: <a href="tool_tests/yourtool_out.txt">yourtool_out.txt</a></strong></p>

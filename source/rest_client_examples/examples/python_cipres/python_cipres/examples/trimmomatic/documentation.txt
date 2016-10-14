@@ -1,0 +1,18 @@
+Trimmomatic
+This one uses only default params.
+input.inputfile1_ - First Read file, must be .gz
+input.inputfile2_ -  Second read file, must be .gz, when PE is selected only
+
+vparam.runtime_ - Float – number of hours to run, default = 0.5
+vparam.se_vs_pe - Excl - SE or PE (default)
+vparam.phred_ - Excl - 33 or 64, default=33
+vparam.pairedoutput1_ - String - Name of output file. Default= paired_output_1.tx
+vparam.unpairedoutput1_ - String - Name of output file. Default= unpaired_output_1.txt
+vparam.pairedoutput2_ - String - Name of output file. Default= paired_output_2.txt
+vparam.unpairedoutput2_ - String - Name of output file. Default= unpaired_output_2.txt
+vparam.seoutput1_ - String - Name of single end output. default=se_output_1.txt
+vparam.leading_ - Integer  - LEADING;  default=30.
+vparam.trailing_ - Integer - TRAILING. (default=30).
+vparam.slidingwindowsize_ - Integer - SLIDINGWINDOW windowSize (default=4).
+vparam.requiredQuality_ - String - SLIDINGWINDOW requiredQuality (default=20).
+vparam.minlen_ - Integer - MINLEN;  (default=36)

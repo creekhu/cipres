@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<bean id="gmail.mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+   		<property name="host"><value>smtp.gmail.com</value></property>
+        <property name="port"><value>587</value></property>
+        <property name="protocol"><value>smtp</value></property>
+        <property name="username"><value>${mailSender.gmail.username}</value></property>
+        <property name="password"><value>${mailSender.gmail.password}</value></property>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.quitwait">false</prop>
+            </props>
+        </property> 
+	</bean>	
+
+    <bean id="ucsd.mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${email.smtpServer}" />
+        <property name="port"><value>${email.smtpServer.port}</value></property>
+    </bean>
+    
+    <!-- you can configure properites such as from, subject, message, etc here. However, I think
+         only "from" property makes sense here, so all others are expected to be passed in the function call
+    -->
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from">
+            <value><![CDATA[${job.email.from} <${email.serviceAddr}>]]></value>
+        </property>   
+        <!-- property name="subject" value="[Enter Your Subject Here...]"/ -->
+    </bean>
+    <!-- Optional: configuration for freemark template -->
+    <bean id="mailTemplateEngine" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <!-- load the templates from src/main/resources/mail-template/ directory -->
+        <property name="templateLoaderPath" value="/tool"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">0</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="locale">zh_CN</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- add and delete the property as needed (i.e. do not set mailTemplateEngine if it's not configured above -->
+    <bean id="mailService" class="org.cipres.utils.MailService">
+        <property name="mailTemplateEngine" ref="mailTemplateEngine"></property>
+        <property name="mailSender" ref="${mailSender}"></property>
+        <property name="mailMessage" ref="mailMessage"/>
+    </bean>
+
+	<!-- determines whether the application sends job completion eamils -->
+	<bean id="jobEmailEnable" class="org.ngbw.sdk.tool.JobCompleteEvent$Enable">
+		<property name="enable" value="${job.email.enable}" />
+	</bean>
+
+</beans>

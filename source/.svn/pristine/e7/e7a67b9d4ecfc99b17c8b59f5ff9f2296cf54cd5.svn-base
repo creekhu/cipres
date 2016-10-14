@@ -1,0 +1,1 @@
+raxmlHPC-HYBRID -f a  -n outfile.tre -s infile.txt -N 100 -p 362  -m PROTGAMMABLOSUM62F -k  -x 12345 -o Cirrospilus_variegatus_BOL_D3753_ABCH_F -O

@@ -1,0 +1,58 @@
+
+1/2012
+
+We've been having far too many problems with gridftp and the file system we
+use for working dirs on trestles and gordon is now mounted on both those
+hosts and our web hosts, so I'm switching us from using gridftp to using
+local file system access.  Code changes were very straightforward and minimal.
+Getting the file system permissions and paths just right took a little more
+work.  Here's what was needed:
+
+
+Since 2 different users will be using the working directory (portal creates the dir, stages files in/out, 
+moves the directory, while xsede side creates files, reads/writes files) we need to get the ownership
+and permissions just right:
+
+- working dir needs to be accessed from same path on trestles/gordon and the web server.
+On billiards and qball2 I created a symbolic link from /projects/ps-ngbt to /archive/science/ngbt 
+to accomplish this.  
+	Note that I Can’t use local file handler when running a dev build of the 
+	portal from my laptop since the file system isn’t mounted there.  I'll have to change tool-registry.cfg.xml
+	and SSHExecProcessWorker to use gridftp from my laptop or I can look into using macfuse to mount
+	the filesystem on my mac.
+
+- Users that runs the portal instances (portal2prod, portal2test, terri) and user that runs on 
+tresltes/gordon (cipres) must be in the same group, cipres.
+
+- Directory that houses the working dirs must be in the cipres group and must be rwxrws---.
+The “s” in there, the SGID bit, means that anything created under here will be in the “cipres” group. 
+ARCHIVE and FAILED subdirs should have the same permissions, as should all existing subdirs.  
+I think this will do it: find [YOURDIR] -type d -exec chmod 2770 {} \;
+(Set/unset SGID with chmod g+s or g-s.  Or with a leading “2”, as in “chmod 2755”).  
+
+- Set umask for portal user and xsede user to 0007 so that by default files are created with 
+full permissions for both owner and group.   Set in ngbw/scripts/workbench.rc.
+
+- Umask is ignored for qsub stdout and stderr files, they have no access for group.  This can be 
+overcome by adding “-W umask=0007” to the qsub scripts.  I modified submit.py, gordon_submit.py,
+and RaXML-Light-1.0.9.sh to set the umask for qsub stdout/stderr files.
+
+- Hardcoded local file handler in SSHExecFileHandler and modified tool registry to use local file handler.
+	Looked into why file handler is hardcoded in the process handlers instead of just read from the
+	tool registry.  At one time, Paul rewrote the process workers to each run in it's own process
+	and to make them lightweight, he didn't want to read all the registries (i.e. instantiate a 
+	full workbench) so he passed the needed parameters on the command line to them.  In a corresponding way
+	when I implemented the running task table, I stored all the needed parameters in the db, so process
+	workers wouldn't need to be modified to instantiate a workbench and read the registries.  It wouldn't
+	be trivial to restructure them again so that they instead read the registry. SO - file handler is 
+	hardcoded in the process worker as well as the tool-registry.cfg.xml.
+
+- LoadResults instantiates a process worker using the info from the running task table, but the running
+task table doesn't say what kind of file handler to use.  So, even if job was submitted with a gridftp
+file handler, once we made the change in the code to use local file handler, results will be retrieved
+with local file handler.  This works because local file handler doesn't require any parameters that would
+be missing from the running task entry.  
+
+
+
+

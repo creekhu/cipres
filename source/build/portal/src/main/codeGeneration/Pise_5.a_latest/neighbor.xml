@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>neighbor - Neighbor-Joining and UPGMA methods</description>
+    &phylip_header;
+  </head>
+  
+  <command>neighbor</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>neighbor</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"neighbor &lt; params"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>distance_method</name>
+      <attributes>
+	<prompt>Distance method</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value eq "upgma") ? "N\\n" : ""</code>
+	</format>
+	<vdef><value>neighbor</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>neighbor</value>
+	  <label>Neighbor-joining</label>
+	  <value>upgma</value>
+	  <label>UPGMA</label>
+	</vlist>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	<prompt>Distances matrix File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -sf $infile infile; "</code>
+	</format>
+	<group>-10</group>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>jumble_opt</name>
+	<prompt>Randomize options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>jumble</name>
+	    <attributes>
+	      <prompt>Randomize (jumble) input order (J)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "J\\n$jumble_seed\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>20</group>
+	      <paramfile>params</paramfile>
+	      <precond>
+		<language>perl</language>
+		<code>not $multiple_dataset</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>jumble_seed</name>
+	    <attributes>
+	      <prompt>Random number seed for jumble (must be odd)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>19</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Random number seed must be odd</message>
+		  <language>perl</language>
+		  <code>$value &lt;= 0 || (($value % 2) == 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$jumble</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>bootstrap</name>
+	<prompt>Bootstrap options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>multiple_dataset</name>
+	    <attributes>
+	      <prompt>Analyze multiple data sets (M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "M\\n$datasets_nb\\n$multiple_seed\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>datasets_nb</name>
+	    <attributes>
+	      <prompt>How many data sets</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>9</group>
+	      <ctrls>
+		<ctrl>
+		  <message>there must be no more than 1000 datasets for this server</message>
+		  <language>perl</language>
+		  <code>$value &gt; 1000</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>multiple_seed</name>
+	    <attributes>
+	      
+	      <prompt>Random number seed for multiple dataset (must be odd)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <ctrls>
+		<ctrl>
+		  <message>Random number seed must be odd</message>
+		  <language>perl</language>
+		  <code>$value &lt;= 0 || (($value % 2) == 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>consense</name>
+	    <attributes>
+	      <prompt>Compute a consensus tree</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "; cp infile infile.neighbor; cp outtree outtree.neighbor; mv outfile outfile.neighbor; mv outtree intree; consense &lt; consense.params; cp outtree outtree.consense; cp outfile outfile.consense; mv outtree.neighbor outtree; mv infile.neighbor infile; mv outfile.neighbor outfile" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset &amp;&amp; $print_treefile</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>consense_confirm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"Y\\n"</code>
+	</format>
+	<group>1000</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$consense</code>
+	</precond>
+	<paramfile>consense.params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>consense_terminal_type</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"T\\n"</code>
+	</format>
+	<group>-2</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$consense</code>
+	</precond>
+	<paramfile>consense.params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>consense_outfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$consense</code>
+	</precond>
+	<filenames>outfile.consense</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>consense_treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$consense</code>
+	</precond>
+	<filenames>outtree.consense</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>print_tree</name>
+	    <attributes>
+	      <prompt>Print out tree (3)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "3\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to print a semi-graphical picture of the tree in the outfile.</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_treefile</name>
+	    <attributes>
+	      <prompt>Write out trees onto tree file (4)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "4\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to save the tree in a treefile (a standard representation of trees where the tree is specified by a nested pairs of parentheses, enclosing names and separated by commas).</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>indent_tree</name>
+	    <attributes>
+	      <prompt>Indent treefile</prompt>
+	      <format>
+		<language>perl</language>
+		<code> " &amp;&amp; indenttree -o outtree.indent outtree" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>printdata</name>
+	    <attributes>
+	      <prompt>Print out the data at start of run (1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "1\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_options</name>
+	<prompt>Other options</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+	      <prompt>Outgroup species (default, use as outgroup species 1) (O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "O\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <ctrls>
+		<ctrl>
+		  <message>Please enter a value greater than 0</message>
+		  <language>perl</language>
+		  <code>defined $value &amp;&amp; $value &lt; 1</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$distance_method eq "neighbor"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>triangular</name>
+	    <attributes>
+	      <prompt>Matrix format</prompt>
+	      <vdef><value>square</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>square</value>
+		<label>Square</label>
+		<value>lower</value>
+		<label>Lower-triangular</label>
+		<value>upper</value>
+		<label>Upper-triangular</label>
+	      </vlist>
+	      <flist>
+		<value>square</value>
+		<code>""</code>
+		<value>lower</value>
+		<code>"L\\n"</code>
+		<value>upper</value>
+		<code>"R\\n"</code>
+	      </flist>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	<filenames>outfile</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile</code>
+	</precond>
+	<filenames>outtree</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>indented_treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile &amp;&amp; $indent_tree</code>
+	</precond>
+	<filenames>outtree.indent</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"Y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>terminal_type</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<group>-1</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>tmp_params</name>
+      <attributes>
+	<filenames>*.params</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

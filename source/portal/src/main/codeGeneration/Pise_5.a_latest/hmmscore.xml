@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <version>3.2.1</version>
+    <description>hmmscore - calculate NLL scores, smooth curves and Z-scores for sequences given a model</description>
+    <authors>R. Hughey, A. Krogh</authors>
+    <reference>R. Hughey and A. Krogh., SAM: Sequence alignment and modeling software system. Technical Report UCSC-CRL-96-22, University of California, Santa Cruz, CA, September 1996. </reference>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/ismb99.tutorial.html</doclink>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/papers/nullmod/nullmod.html</doclink>
+  </head>
+
+  <command>hmmscore</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>hmmscore</name>
+      <attributes>
+	<format>
+	  <language>seqlab</language>
+	  <code>hmmscore</code>
+	  <language>perl</language>
+	  <code>"hmmscore"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="String">
+      <name>run</name>
+      <attributes>
+	<prompt>Run name</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>test</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>db</name>
+      <attributes>
+	<prompt>Sequences to score against model (-db)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -db $value"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>model_file</name>
+      <attributes>
+	<prompt>Model (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)? " -i $value" : ""</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>sam_model</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>scorefile</name>
+      <attributes>
+	<filenames>*.dist</filenames>
+	<pipe>
+	  <pipetype>sam_score</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfiles</name>
+      <attributes>
+	<filenames>$run.smooth *.sel</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input</name>
+	<prompt>Input options</prompt>
+	<group>2</group>
+	<parameters>
+
+	<parameter type="String">
+	<name>id</name>
+	<attributes>
+	      <prompt>Sequence identifier(s) selection (separated by commas) (-id)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; ($value !~ /,/ || $value =~ s/,/ -id /g) )? " -id $value" : "" </code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>nscoreseq</name>
+	    <attributes>
+	      <prompt>Maximum number of sequences to be read (-nscoreseq)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -nscoreseq $value" : "" </code>
+	      </format>
+	      <vdef><value>100000</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ishidden="1" type="Switch">
+	    <name>read_smooth</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>" -read_smooth 1"</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$smooth_file</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>smooth_file</name>
+	    <attributes>
+	      <prompt>Read a smooth curve from this smooth_file (-smooth_file and -read_smooth)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? "mv $value $run.smooth; " : ""</code>
+	      </format>
+	      <group>-10</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control options</prompt>
+	<group>3</group>
+	<parameters>
+
+	<parameter type="Excl">
+	<name>adjust_score</name>
+	<attributes>
+	      <prompt>Adjust score option (-adjust_score)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -adjust_score $value" : "" </code>
+	      </format>
+	      <vdef><value>2</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: no adjustment</label>
+		<value>1</value>
+		<label>1: add to score the log of the sum of sequence and model length (if SW=2)</label>
+		<value>2</value>
+		<label>2: add to score the log of the sum of sequence length (if SW=1 or 2)</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>auto_fim</name>
+	    <attributes>
+	      <prompt>Automatically add FIMs to the model before scoring when simple or complex null model subtraction is used (-auto_fim)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(!$value)? " -auto_fim 0" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>jump_in_prob</name>
+	    <attributes>
+	      <prompt>Probability cost of jumping into the center of the model (if SW set) (-jump_in_prob)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value != $vdef)? " -jump_in_prob $value" : "" </code>
+	      </format>
+	      <vdef><value>1.0</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$SW</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>jump_out_prob</name>
+	    <attributes>
+	      <prompt>Probability cost of jumping out the center of the model (if SW set) (-jump_out_prob)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value != $vdef)? " -jump_out_prob $value" : "" </code>
+	      </format>
+	      <vdef><value>1.0</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$SW</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>SW</name>
+	    <attributes>
+	      <prompt>Sequence scoring (-SW)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -SW $value":""</code>
+	      </format>
+	      <vdef><value>2</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: Global</label>
+		<value>1</value>
+		<label>1: semi-local</label>
+		<value>2</value>
+		<label>2: local</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>window_size</name>
+	    <attributes>
+	      <prompt>Window size for use in Z-score calculation (-window_size)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -window_size $value" : "" </code>
+	      </format>
+	      <vdef><value>1000</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>Zmax</name>
+	    <attributes>
+	      <prompt>Z-score beyond which points are considered outliers during curve fitting (-Zmax)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -Zmax $value" : "" </code>
+	      </format>
+	      <vdef><value>4.0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>subtract_null</name>
+	    <attributes>
+		<prompt>Null model scoring (-subtract_null)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value ne $vdef)? " -subtract_null $value":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>0</value>
+			<label>0: the unadjusted NLL scores of the model will be reported</label>
+			<value>1</value>
+			<label>1: use a simple null model</label>
+			<value>2</value>
+			<label>2: a regularizer of the same length and form as the model is used as a complex null model</label>
+			<value>3</value>
+			<label>3: a user-specified model identified by the NULLMODEL keyword is used</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>selection</name>
+	<prompt>Selection options</prompt>
+	<group>2</group>
+	<parameters>
+
+		<parameter type="Excl">
+		<name>select_score</name>
+		<attributes>
+
+			<prompt>Selection criteria used for listing sequence scores in file runname.dist (-select_score)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value ne $vdef)? " -select_score $value" : "" </code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>2</group>
+			<vlist>
+				<value>0</value>
+				<label>0: all scores are placed in the file</label>
+				<value>1</value>
+				<label>1: sequences are selected according to their NLL scores and NLLNull</label>
+				<value>2</value>
+				<label>2: sequences are selected according to their per-base NLL scores and NLLperase</label>
+				<value>3</value>
+				<label>3: sequences are selected according to their per-model-node NLL scores and NLLperNode</label>
+				<value>4</value>
+				<label>4: sequences are selected according to their Z-scores and Zmax</label>
+			</vlist>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		<name>select_seq</name>
+		<attributes>
+
+			<prompt>Selection criteria used for placing sequences in the file runname.sel (-select_seq)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value ne $vdef)? " -select_seq $value" : "" </code>
+			</format>
+			<vdef><value>0</value></vdef>
+			<group>2</group>
+			<vlist>
+				<value>0</value>
+				<label>0: no sequences are placed in the file</label>
+				<value>1</value>
+				<label>1: sequences are selected according to their NLL scores and NLLNull</label>
+				<value>2</value>
+				<label>2: sequences are selected according to their per-base NLL scores and NLLperBase</label>
+				<value>3</value>
+				<label>3: sequences are selected according to their per-model-node NLL scores and NLLperNode</label>
+				<value>4</value>
+				<label>4: sequences are selected according to their Z-scores and Zmax</label>
+			</vlist>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>NLLNull</name>
+		<attributes>
+
+			<prompt>If select_score/seq=1, sequences with an NLL or NLLNull score smaller than this number are selected (-NLLNull)</prompt>
+			<format>
+				<language>perl</language>
+				<code> (defined $value)? " -NLLNull $value" : "" </code>
+			</format>
+			<group>2</group>
+		<precond>
+			<language>perl</language>
+			<code>$select_score == 1 || $select_seq == 1</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>NLLperBase</name>
+		<attributes>
+
+			<prompt>If select_score/seq=2, sequences with an NLL score per base smaller than this number are selected (-NLLperBase)</prompt>
+			<format>
+				<language>perl</language>
+				<code> (defined $value)? " -NLLperBase  $value" : "" </code>
+			</format>
+			<group>2</group>
+		<precond>
+			<language>perl</language>
+			<code>$select_score == 2 || $select_seq == 2</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>NLLperNode</name>
+		<attributes>
+
+			<prompt>If select_score/seq=3, sequences with an NLL score per model node smaller than this number are selected (-NLLperNode)</prompt>
+			<format>
+				<language>perl</language>
+				<code> (defined $value)? " -NLLperNode  $value" : "" </code>
+			</format>
+			<group>2</group>
+		<precond>
+			<language>perl</language>
+			<code>$select_score == 3 || $select_seq == 3</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="InFile">
+		<name>NLLFile</name>
+		<attributes>
+
+			<prompt>File with already-calculated sequence distances (-NLLFile)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value)? " -NLLFile $value" : ""</code>
+			</format>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>calc_smooth</name>
+	<attributes>
+
+		<prompt>Calculate a smooth curve and write it to smooth_file (-calc_smooth)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -calc_smooth 1" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>sort</name>
+	<attributes>
+
+		<prompt>Sequence sorting (-sort)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value ne $vdef)? " -sort $value":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>0</value>
+			<label>0: sequences and results are not sorted</label>
+			<value>1</value>
+			<label>1: sequences are sorted by Z-scores, if available, or by NLL-NULL score per base</label>
+			<value>2</value>
+			<label>2: sequences are sorted by their raw NLL score</label>
+			<value>3</value>
+			<label>3: sequences are sorted by NLL-NULL score per base</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

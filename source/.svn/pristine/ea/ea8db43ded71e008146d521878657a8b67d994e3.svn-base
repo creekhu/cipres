@@ -1,0 +1,6 @@
+toolId = GARLI2_TGB
+runtime_=0.5
+bootstrapreps_=48
+outgroup_tax_=MAA.ATCC25291
+searchreps_value_=2
+d_numratecats_=18

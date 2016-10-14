@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>PRIMA</title>
+<description>Selects primers for PCR and DNA amplification. (EMBOSS)</description>
+<category>nucleic:primers</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/prima.html</doclink>
+</head>
+
+<command>prima</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>targetrange</name>
+	<attributes>
+		<prompt>Specify a Target Range? (-targetrange)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -targetrange" : ""</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+	<name>minprimertm</name>
+	<attributes>
+		<prompt>Minimum Primer Tm (deg Celsius) (-minprimertm)</prompt>
+		<vdef>
+			<value>53</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -minprimertm=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+	<name>maxprimertm</name>
+	<attributes>
+		<prompt>Maximum Primer Tm (deg Celsius) (-maxprimertm)</prompt>
+		<vdef>
+			<value>58</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -maxprimertm=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>targetsection</name>
+		<prompt>Target options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>targetstart</name>
+		<attributes>
+			<prompt>Target start position. (-targetstart)</prompt>
+				<precond>
+					<language>perl</language>
+					<code>$targetrange</code>
+					<language>acd</language>
+					<code>$targetrange</code>
+				</precond>
+			<vdef>
+				<language>acd</language>
+				<code>$sequence.begin</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -targetstart=$value" : ""</code>
+			</format>
+			<group>5</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>targetend</name>
+		<attributes>
+			<prompt>Target end position. (-targetend)</prompt>
+				<precond>
+					<language>perl</language>
+					<code>$targetrange</code>
+					<language>acd</language>
+					<code>$targetrange</code>
+				</precond>
+			<vdef>
+				<language>acd</language>
+				<code>$sequence.length</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -targetend=$value" : ""</code>
+			</format>
+			<group>6</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>overlap</name>
+	<attributes>
+		<prompt>Minimum overlap of sequences (-overlap)</prompt>
+		<vdef>
+			<value>50</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -overlap=$value" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>primersection</name>
+		<prompt>Primer options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>minprimerlen</name>
+		<attributes>
+			<prompt>Minimum primer length (-minprimerlen)</prompt>
+			<vdef>
+				<value>18</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minprimerlen=$value" : ""</code>
+			</format>
+			<group>8</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxprimerlen</name>
+		<attributes>
+			<prompt>Maximum primer length (-maxprimerlen)</prompt>
+			<vdef>
+				<value>22</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxprimerlen=$value" : ""</code>
+			</format>
+			<group>9</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>minpmgccont</name>
+		<attributes>
+			<prompt>Minimum primer GC fraction (-minpmgccont)</prompt>
+			<vdef>
+				<value>.40</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minpmgccont=$value" : ""</code>
+			</format>
+			<group>10</group>
+			<scalemin><value>.30</value></scalemin>
+			<scalemax><value>.70</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxpmgccont</name>
+		<attributes>
+			<prompt>Maximum primer GC fraction (-maxpmgccont)</prompt>
+			<vdef>
+				<value>.55</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxpmgccont=$value" : ""</code>
+			</format>
+			<group>11</group>
+			<scalemin><value>.30</value></scalemin>
+			<scalemax><value>.70</value></scalemax>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>productsection</name>
+		<prompt>Product options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>minprodlen</name>
+		<attributes>
+			<prompt>Minimum product length (-minprodlen)</prompt>
+				<precond>
+					<language>acd</language>
+					<code>@(!$(targetrange))</code>
+				</precond>
+			<vdef>
+				<value>100</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minprodlen=$value" : ""</code>
+			</format>
+			<group>12</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxprodlen</name>
+		<attributes>
+			<prompt>Maximum product length (-maxprodlen)</prompt>
+				<precond>
+					<language>acd</language>
+					<code>@(!$(targetrange))</code>
+				</precond>
+			<vdef>
+				<value>300</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxprodlen=$value" : ""</code>
+			</format>
+			<group>13</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>minprodgccont</name>
+		<attributes>
+			<prompt>Minimum product GC fraction (-minprodgccont)</prompt>
+			<vdef>
+				<value>.40</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minprodgccont=$value" : ""</code>
+			</format>
+			<group>14</group>
+			<scalemin><value>.30</value></scalemin>
+			<scalemax><value>.70</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxprodgccont</name>
+		<attributes>
+			<prompt>Maximum product GC fraction (-maxprodgccont)</prompt>
+			<vdef>
+				<value>.55</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxprodgccont=$value" : ""</code>
+			</format>
+			<group>15</group>
+			<scalemin><value>.30</value></scalemin>
+			<scalemax><value>.70</value></scalemax>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>saltconc</name>
+	<attributes>
+		<prompt>Salt concentration (mM) (-saltconc)</prompt>
+		<vdef>
+			<value>50</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -saltconc=$value" : ""</code>
+		</format>
+		<group>16</group>
+		<scalemin><value>1</value></scalemin>
+		<scalemax><value>100</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>dnaconc</name>
+	<attributes>
+		<prompt>DNA concentration (mM) (-dnaconc)</prompt>
+		<vdef>
+			<value>50</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -dnaconc=$value" : ""</code>
+		</format>
+		<group>17</group>
+		<scalemin><value>1</value></scalemin>
+		<scalemax><value>100</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>list</name>
+	<attributes>
+		<prompt>Force list-style output (-list)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -list" : ""</code>
+		</format>
+		<group>18</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>19</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>20</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

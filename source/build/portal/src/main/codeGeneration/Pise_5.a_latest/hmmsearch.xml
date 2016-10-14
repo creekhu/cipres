@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmsearch - search a sequence database with a profile HMM</description>
+    <authors>S. Eddy</authors>
+    <category>hmm</category>
+  </head>
+
+  <command>hmmsearch</command>
+
+  <parameters>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>Description of hmmsearch</prompt>
+	<comment>
+	  <value>hmmsearch reads an HMM from hmmfile and searches seqfile for significantly similar sequence matches.</value>
+	  <value>hmmsearch may take minutes or even hours to run, depending on the size of the sequence database.</value>
+	  <value>The output consists of four sections: a ranked list of the best scoring sequences, a ranked list of the best scoring domains, alignments for all the best scoring domains, and a histogram of the scores. sequence score may be higher than a domain score for the same sequence if there is more than domain in the sequence; the sequence score takes into account all the domains. All sequences scoring above the -E and -T cutoffs are shown in the first list, then every domain found in this list is shown in the second list of domain hits. If desired, E-value and bit score thresholds may also be applied to the domain list using the --domE and --domT options.</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmsearch</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmsearch"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="InFile">
+      <name>hmmfile</name>
+      <attributes>
+	<prompt>HMM file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>seq_DB</name>
+      <attributes>
+	<prompt>choose one protein sequence database</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>uniprot</value></vdef>
+	<group>3</group>
+	&protdbs;
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>alignments_number</name>
+      <attributes>
+	<prompt>number of reported alignments (-A n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -A $value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Limits the alignment output to the n best scoring domains. -A0 shuts off the alignment output and can be used to reduce the size of output files.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Float">
+      <name>E_value_cutoff</name>
+      <attributes>
+	<prompt>E_value cutoff (-E x)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -E $value" : ""</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<group>1</group>
+	<comment>
+	  <value>Set the E-value cutoff for the per-sequence ranked hit list to x, where x is a positive real number. The default is 10.0. Hits with E-values better than (less than) this threshold will be shown.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Float">
+      <name>Bit_cutoff</name>
+      <attributes>
+	<prompt>Bit score cutoff (-T x)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -T $value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Set the bit score cutoff for the per-sequence ranked hit list to x, where x is a real number. The default is negative infinity; by default, the threshold is controlled by E-value and not by bit score. Hits with bit scores better than (greater than) this threshold will be shown.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>E_value_calculation</name>
+      <attributes>
+	<prompt>Control of E_value calculation (-Z n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -Z $value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Calculate the E-value scores as if we had seen a sequence database of n sequences. The default is the number of sequences seen in your database file seqfile.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>expert_options</name>
+	<prompt>Expert options</prompt>
+	<parameters>
+	  
+	  <parameter type="Float">
+	    <name>domE</name>
+	    <attributes>
+	      <prompt>E-value cutoff for the per-domain ranked hit list (--domE x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --domE $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the E-value cutoff for the per-domain ranked hit list to x, where x is a positive real number. The default is infinity; by default, all domains in the sequences that passed the first threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>domT</name>
+	    <attributes>
+	      <prompt>bit score cutoff for the per-domain ranked hit list  (--domT x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --domT $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the bit score cutoff for the per-domain ranked hit list to x, where x is a real number. The default is negative infinity; by default, all domains in the sequences that passed the first threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list. Important note: only one domain in a sequence is absolutely controlled by this parameter, or by --domT. The second and subsequent domains in a sequence have a de facto bit score threshold of 0 because of the details of how HMMER works. HMMER requires at least one pass through the main model per sequence; to do more than one pass (more than one domain) the multidomain alignment must have a better score than the single domain alignment, and hence the extra domains must contribute positive score. See the Users' Guide for more detail. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>forward</name>
+	    <attributes>
+	      <prompt>forward algorithm (--forward)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --forward" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Use the Forward algorithm instead of the Viterbi algorithm to determine the per-sequence scores. Per-domain scores are still determined by the Viterbi algorithm. Some have argued that Forward is a more sensitive algorithm for detecting remote sequence homologues; my experiments with HMMER have not confirmed this, however.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>null2</name>
+	    <attributes>
+	      <prompt>turns off the second post processing step (--null2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --null2" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Turn off the post hoc second null model. By default, each alignment is rescored by a postprocessing step that takes into account possible biased composition in either the HMM or the target sequence. This is almost essential in database searches, especially with local alignment models. There is a very small chance that this postprocessing might remove real matches, and in these cases --null2 may improve sensitivity at the expense of reducing specificity by letting biased composition hits through.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>xnu</name>
+	    <attributes>
+	      <prompt>turns on XNU filtering (--xnu)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " --xnu" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Turn on XNU filtering of target protein sequences. Has no effect on nucleic acid sequences. In trial experiments, --xnu appears to perform less well than the default post hoc null2 model.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

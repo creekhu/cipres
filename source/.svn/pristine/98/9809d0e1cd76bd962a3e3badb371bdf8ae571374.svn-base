@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>cosa</title>
+    <description>Clustal ouput structural analysis</description>
+    <authors>T. Rose</authors>
+    <category>alignment:multiple</category>
+    <category>protein:3d structure</category>
+  </head>
+
+  <command>cosa</command>
+
+  <parameters>
+
+    <parameter ishidden="1" iscommand="1" type="String">
+      <name>cosa</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"cosa"</code>
+	</format>
+	<group>1</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>alig</name>
+      <attributes>
+
+	<prompt>Alignment</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>100</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>struct_pos</name>
+      <attributes>
+	<prompt>Position in the sequence multialignment of the  structure used as reference</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>pdbin</name>
+      <attributes>
+
+	<prompt>PDB entry</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>4</group>
+	<pipe>
+		<pipetype>pdbfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="OutFile">
+      <name>pdbout</name>
+      <attributes>
+	<prompt>Name of the output PDB file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef>
+	  <value>tmp_clustal.pdb</value>
+	</vdef>
+	<pipe>
+		<pipetype>pdbfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<group>5</group>
+
+      </attributes>
+    </parameter>
+    
+    <parameter type="OutFile">
+      <name>txtout</name>
+      <attributes>
+	<prompt>Name of the output result file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef>
+	  <value>tmp_stats.txt</value>
+	</vdef>
+	<group>6</group>
+
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>default_pdbout</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>not $pdbout</code>
+	</precond>
+	<filenames>tmp_clustal.pdb</filenames>
+	<pipe>
+	  <pipetype>pdbfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>default_txtout</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>not $txtout</code>
+	</precond>
+	<filenames>tmp_stats.txt</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

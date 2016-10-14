@@ -1,0 +1,227 @@
+To enable single sign on using shibboleth and iplant's idp:
+==================================================================================
+
+- build with -Diplant=1
+	this sets the build property "iplant.enabled" which replaces text in web.xml,
+	setting the context-param iplant.enabled=1.  Value of the context-param is
+	checked in NgbwSupport.java and gui code for iplant login is conditional
+	based on it.
+
+- in sdk/cipres-*.properties set iplant.charge.number to the xsede allocation number
+to use for iplant jobs. 
+	code in Tool.java, getTgChargeNumber determines whether we charge to iplant,
+	user's personal allocation or cipres community account.  We always charge to
+	cipres community account unless the tool is configured with an accountGroup = 
+	teragrid property in the tool registry.
+
+
+How it works
+==================================================================================
+	We have a "Login via Iplant" link or button on login.jsp next to the normal
+	"Login via Cipres" form.  If the user clicks "Login via Iplant" it links to
+	/portal2/iplantLogin.action which we have configured for shibboleth protection.
+	That means shibboleth intervenes: if there is already an active shibboleth session for 
+	cipres on the Iplant Idp, shibboleth lets the request for /portal2/iplantLogin.action
+	proceed and sends the user's attributes in the request header.   If not,
+	the browser is redirected to a login form at Iplant.  Once the user logs in the browser 
+	returns to /portal2/iplantLogin.action.
+
+	struts.xml specifies that when iplantLogin.action url is requested, the web app calls 
+	FolderManager.iplantLogin.  The method is actually in the SessionManager base class, and 
+	calls SessionManager.input(), which looks at the shibboleth headers and completes the login.
+
+	If a user tries to start at a page other than login.jsp, our authentication
+	interceptor detects that he doesn't have a WORKBENCH_SESSION cookie, so returns
+	"login" which struts.xml global-results redirects to login!input which takes us to
+	SessionManager.input().  If the user already has a shibboleth session for cipres, 
+	the shibboleth request headers will be in the the request (because we've
+	configured login!input to get them in shibd.conf) and the case is the same as
+	above. If not, SessionManager.input() returns "input" and struts.xml dictates that
+	login.jsp will be displayed.
+
+	When a user logs in with shibboleth, SessionManager.input() looks up the the iplant eppn
+	attribute in our SSO table to see if it's already been linked to an entry in our USER
+	table.  If not, the method returns iplant_register and struts.xml dictates that we display
+	iplantRegister.jsp, a form that asks the user to enter his cipres credentials if he
+	wants to link his iplant id with an existing cipres account.  Otherwise we create a
+	brand new USER record for him.  The SSO table is how we link a iplant user id (the eppn
+	attribute) to a cipres USER record.  If we create a new USER record, we use the
+	eppn as the user id and create a dummy password.   
+
+	We keep track of whether the user came in via shibboleth/iplant or cipres with a 
+	IPLANT_USER session attribute.
+
+	Iplant uses a custom single sign out solution.  To end the shibboleth session cleanly, when 
+	the user logs out, if IPLANT_USER is true, we need to redirect to <host>/Shibboleth.sso/Logout.  
+	struts.xml specifies the redirect to /Shibboleth.sso/Logout, but that causes a redirect to 
+	/portal2/Shibboleth.sso/Logout so apache needs to rewrite that url without the "/portal2" prefix.   
+	Our metadata and our shibboleth2.xml also have configuration that allows the single sign out
+	to work properly.
+
+	Another reason for keeping track of which way the user came in, is that we charge xsede
+	jobs to iplant's allocation iff the user came in via iplant.
+
+	At first I was surprised to find that if I logged into the Iplant DE, which uses the same Iplant
+	IdP as cipres, and then came to cipres I wasn't automatically logged in.  If I press the
+	"Login via Iplant" link, I will be logged in without having to enter username and password, but
+	I was surpised that I had to press the link.  The reason is that we only protect that link and 
+	the one that the auth interceptor hits, and not the whole application.  I thought iplant would 
+	send the user's attributes when the auth interceptor redirected us to a protected url, but it 
+	doesn't because we don't yet have a session for *Cipres* on the idp.  That session isn't 
+	created until we hit a url that is configured as *requiring* a shib session.  The reason
+	I don't shib protect the whole app is that shib auth is just an option for us, not mandatory.  We're
+	still offering the normal cipres login procedure.
+	
+
+
+Shibboleth Metadata
+==================================================================================
+The default metadata generated at Shibboleth.sso/Metadata isn't adequate.  It doesn't
+handle our virtual hosts and requires us to use https urls.  The metadata we're 
+using is in edittedMetadata2 in this directory. Note that it has a SingleLogoutService
+entry for each http and https virtual host.  Also note the AssertionConsumerService
+entries for each http and https virtual host.
+
+
+Apache HTTPD Configuration (in /etc/httpd)
+==================================================================================
+On our test server, billiards.sdsc.edu, I wanted to be able to run 3 separate
+instances of the application, so I configured apache with 3 virtual hosts,
+billiards1, billiards2 and billiards3.  Note the RewriteRule and ProxyPass
+statements below in this snippet from our httpd.conf:
+
+</VirtualHost>
+	# billiards1 is Terri's
+	<VirtualHost *:80>
+		ServerName billiards1.sdsc.edu
+
+		# Shibboleth service handlers are by default located under /Shibboleth.sso.
+		# The tomcat app needs to redirect to them (eg. to /Shibboleth.sso/Logout)
+		# and it's much simpler to have tomcat use urls that are under the approot (i.e. "portal2").
+		# So we let tomcat use /portal2/Shibboleth.sso/Logout and we have apache
+		# redirect the browser to /Shibboeth.sso/Logout with this rewrite rule.
+		#
+		# Also note that it needs to be an https url since we're setting <Sessions handlerSSL=true> in
+		# shibboleth2.xml which means all handlers must be https urls,  so that the user won't see warnings
+		# about secure data being sent in the clear.
+		RewriteEngine on
+		RewriteRule (.*)/portal2/Shibboleth.sso/(.*) https://billiards1.sdsc.edu/Shibboleth.sso/$2 [R]
+
+		# Everything else under /portal2 is sent to tomcat.
+		ProxyPass /portal2 ajp://billiards.sdsc.edu:9004/portal2
+		ProxyPassReverse /portal2  ajp://billiards.sdsc.edu:9004/portal2
+
+		ErrorLog logs/terri_error.log
+		CustomLog logs/terri_access.log combined
+	</VirtualHost>
+
+	# billiards2 is Jeff's
+	<VirtualHost *:80>
+		ServerName billiards2.sdsc.edu
+		RewriteEngine on
+		RewriteRule (.*)/portal2/Shibboleth.sso/(.*) https://billiards2.sdsc.edu/Shibboleth.sso/$2 [R]
+		ProxyPass /portal2 ajp://billiards.sdsc.edu:9013/portal2
+		ProxyPassReverse /portal2  ajp://billiards.sdsc.edu:9013/portal2
+		ErrorLog logs/jeff_error.log
+		CustomLog logs/jeff_acess.log combined
+	</VirtualHost>
+
+	# billiards3 is Test
+	<VirtualHost *:80>
+		ServerName billiards3.sdsc.edu
+		RewriteEngine on
+		RewriteRule (.*)/portal2/Shibboleth.sso/(.*) https://billiards3.sdsc.edu/Shibboleth.sso/$2 [R]
+		ProxyPass /portal2 ajp://billiards.sdsc.edu:7072/portal2
+		ProxyPassReverse /portal2  ajp://billiards.sdsc.edu:7072/portal2
+		ErrorLog logs/test_error.log
+		CustomLog logs/test_access.log combined
+</VirtualHost>
+
+Apache is configured with ssl and in conf.d/ssl.conf.
+I have the same 3 virtual hosts with the same ProxyPass and ProxyReverse statements.
+I'm using the same cert for the virtual hosts so you will get a bad cert warning.
+
+In conf.d/shib.conf, I have the stuff it comes with by default, plus the urls I need
+protected by shibboleth:
+
+# "Login via Iplant" points to iplantLogin.action.
+<Location /portal2/iplantLogin.action>
+	AuthType shibboleth
+	ShibRequestSetting requireSession 1
+	ShibUseHeaders On
+	require valid-user
+</Location>
+# This makes sure that if the user already has a shibboleth session for cipres, the 
+# shibboleth headers will be sent in any requests for the login!input.action url,
+# which is where the AuthenticationInterceptor and struts.xml redirect to.
+<Location /portal2/login!input.action>
+	AuthType shibboleth
+	ShibRequestSetting requireSession 0
+	ShibUseHeaders On
+	require shibboleth
+</Location>
+
+
+Shibboleth Configuration (in /etc/shibboleth)
+==================================================================================
+I think the only files I changed from the distributeion are shibboleth2.xml
+and attribute-map.xml.   A copy of each is committed in this directory.
+
+I believe Edwin or Dennis gave me the attribute-map.xml to use.  I don't know
+the significance of any of it.
+
+Some important things in shibboleth2.xml:
+
+- Our entity ID is https://billiards.sdsc.edu/shibboleth-sp (it's the same for all the virtual hosts).
+and this must agree with what's specified in the metadata we registered with iplant's idp.
+
+- The iplant production idp is https://gucumatz.iplantcollaborative.org/idp/shibboleth.
+
+- Their test idp is https://gucumatz.iplantcollaborative.org/test-idp/shibboleth.
+
+- If you change the idp be sure to change the url throughout the file.  For example in
+MetadataProvider.
+
+- We're using global/single logout, so I commented out the <Logout> element and inserted:
+
+<!-- LogoutInitiators enable SP-initiated local or global/single logout of sessions. -->
+<LogoutInitiator type="Chaining" Location="/Logout" relayState="cookie">
+	<LogoutInitiator type="SAML2" template="bindingTemplate.html"/>
+	<LogoutInitiator type="Local"/>
+</LogoutInitiator>
+
+<md:SingleLogoutService Location="/SLO/SOAP" Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"/>
+<md:SingleLogoutService Location="/SLO/Redirect" conf:template="bindingTemplate.html"
+Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"/>
+<md:SingleLogoutService Location="/SLO/POST" conf:template="bindingTemplate.html"
+Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"/>
+<md:SingleLogoutService Location="/SLO/Artifact" conf:template="bindingTemplate.html"
+Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"/>
+
+- Email me, see "Errors" element.  
+
+- I fooled around with setting up my own error pages but commented it out and don't really 
+remember how it works.
+
+- We set handlerSSL="true" which means all handlers (eg <host>/Shibboleth.sso/Logout) must
+be at https urls:
+        <Sessions lifetime="28800" timeout="3600" checkAddress="false" relayState="ss:mem" handlerSSL="true">
+Otherwise the user will see warnings, for example, after entering username and password at iplant, 
+about secure data being sent in the clear.
+
+
+
+ HTTP/SHIBBOLETH/CIPRES Interactions
+==================================================================================
+If you deploy a version of the web application that has the iplant changes enabled
+but you don't have a shibboleth enabled httpd in front of it, the app should work
+fine except that the "IPlant Users Login Here" link won't do anything.
+
+Conversely, if you deploy a version of the cipres app that doesn't have iplant 
+changes enabled and shibboleth is configured everything should be fine.
+
+
+
+
+
+

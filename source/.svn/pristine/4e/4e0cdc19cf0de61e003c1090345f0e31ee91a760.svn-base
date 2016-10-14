@@ -1,0 +1,8 @@
+toolId = MAFFT_TG
+runtime_=0.5
+datatype_=dna
+auto_analysis_=0
+analysis_type_=fast
+fast_executables_=fftnsi2
+outputFormat_=1
+outputOrder_=--reorder

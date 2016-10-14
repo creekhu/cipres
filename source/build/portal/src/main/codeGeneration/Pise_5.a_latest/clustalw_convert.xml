@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Clustalw</title>
+    <version>1.82</version>
+    <description>format conversion</description>
+    <authors>Des Higgins</authors>
+    <category>format</category>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>clustalw_convert</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>clustalw_convert</name>
+	<attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"clustalw -convert"</code>
+	</format>
+	<group>0</group>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+	
+	<prompt>Alignment to convert (-infile)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>  " -infile=$value"</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>7 formats are automatically recognised: NBRF/PIR, EMBL/SWISSPROT, Pearson (Fasta), Clustal (*.aln), GCG/MSF (Pileup), GCG9/RSF and GDE flat file. All non-alphabetic characters (spaces, digits, punctuation marks) are ignored except '-' which is used to indicate a GAP ('.' in GCG/MSF).</value>
+	  <value>FASTA and NBRF/PIR formats are recognised by having a '&gt;' as the first character in the file. </value>
+	  <value>EMBL/Swiss Prot formats are recognised by the letters ID at the start of the file (the token for the entry name field). </value>
+	  <value>CLUSTAL format is recognised by the word CLUSTAL at the beginning of the file.</value>
+	  <value>GCG/MSF format is recognised by one of the following:</value>
+	  <value> - the word PileUp at the start of the file. </value>
+	  <value> - the word !!AA_MULTIPLE_ALIGNMENT or !!NA_MULTIPLE_ALIGNMENT at the start of the file.</value>
+	  <value> - the word MSF on the first line of the line, and the characters .. at the end of this line.</value>
+	  <value>GCG/RSF format is recognised by the word !!RICH_SEQUENCE at the beginning of the file.</value>
+	</comment>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>formats</name>
+      <attributes>
+	
+	<prompt>Output format (-output)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>  " -output=$value"</code>
+	</format>
+	<vdef><value>GCG</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>CLU</value>
+	  <label>CLUSTALW</label>
+	  <value>GCG</value>
+	  <label>GCG/MSF</label>
+	  <value>PIR</value>
+	  <label>NBRF/PIR</label>
+	  <value>GDE</value>
+	  <label>GDE</label>
+	  <value>PHYLIP</value>
+	  <label>PHYLIP</label>
+	</vlist>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>gdefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$formats eq "GDE"</code>
+	</precond>
+	<filenames>*.gde</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>clufile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$formats eq "CLU"</code>
+	</precond>
+	<filenames>*.aln</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>phyfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$formats eq "PHYLIP"</code>
+	</precond>
+	<filenames>*.ph*</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>gcgfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$formats eq "GCG"</code>
+	</precond>
+	<filenames>*.msf</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>pirfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$formats eq "PIR"</code>
+	</precond>
+	<filenames>*.pir</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>TRANSEQ</title>
+<description>Translate nucleic acid sequences (EMBOSS)</description>
+<category>nucleic:translation</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/transeq.html</doclink>
+</head>
+
+<command>transeq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- nucleotide [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>nucleotide</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>frame</name>
+	<attributes>
+		<prompt>Frame(s) to translate -- Translation frames [select  values] (-frame)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>1</label>
+				<value>2</value>
+				<label>2</label>
+				<value>3</value>
+				<label>3</label>
+				<value>F</value>
+				<label>Forward three frames</label>
+				<value>-1</value>
+				<label>-1</label>
+				<value>-2</value>
+				<label>-2</label>
+				<value>-3</value>
+				<label>-3</label>
+				<value>R</value>
+				<label>Reverse three frames</label>
+				<value>6</value>
+				<label>All six frames</label>
+			</vlist>
+			<separator>,</separator>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -frame=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>table</name>
+	<attributes>
+		<prompt>Code to use -- Genetic codes (-table)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Standard</label>
+				<value>1</value>
+				<label>Standard (with alternative initiation codons)</label>
+				<value>2</value>
+				<label>Vertebrate Mitochondrial</label>
+				<value>3</value>
+				<label>Yeast Mitochondrial</label>
+				<value>4</value>
+				<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+				<value>5</value>
+				<label>Invertebrate Mitochondrial</label>
+				<value>6</value>
+				<label>Ciliate Macronuclear and Dasycladacean</label>
+				<value>9</value>
+				<label>Echinoderm Mitochondrial</label>
+				<value>10</value>
+				<label>Euplotid Nuclear</label>
+				<value>11</value>
+				<label>Bacterial</label>
+				<value>12</value>
+				<label>Alternative Yeast Nuclear</label>
+				<value>13</value>
+				<label>Ascidian Mitochondrial</label>
+				<value>14</value>
+				<label>Flatworm Mitochondrial</label>
+				<value>15</value>
+				<label>Blepharisma Macronuclear</label>
+				<value>16</value>
+				<label>Chlorophycean Mitochondrial</label>
+				<value>21</value>
+				<label>Trematode Mitochondrial</label>
+				<value>22</value>
+				<label>Scenedesmus obliquus</label>
+				<value>23</value>
+				<label>Thraustochytrium Mitochondrial</label>
+			</vlist>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -table=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>regions</name>
+	<attributes>
+		<prompt>Regions to translate (eg: 4-57,78-94) (-regions)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>$sequence.begin-$sequence.end</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -regions=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Regions to translate. &lt;BR&gt; If this is left blank, then the complete sequence is translated. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are separated by any non-digit, non-alpha character. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45, 56-78 &lt;BR&gt; 1:45, 67=99;765..888 &lt;BR&gt; 1,5,8,10,23,45,57,99 &lt;BR&gt; Note: you should not try to use this option with any other frame than the default, -frame=1</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>trim</name>
+	<attributes>
+		<prompt>Trim trailing X's and *'s (-trim)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -trim" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This removes all 'X' and '*' characters from the right end of the translation. The trimming process starts at the end and continues until the next character is not a 'X' or a '*'</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>clean</name>
+	<attributes>
+		<prompt>Change all *'s to X's (-clean)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -clean" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>This changes all STOP codon positions from the '*' character to 'X' (an unknown residue). This is useful because some programs will not accept protein sequences with '*' characters in them.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>alternative</name>
+	<attributes>
+		<prompt>Define frame '-1' as starting in the last codon (-alternative)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -alternative" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>The default definition of frame '-1' is the reverse-complement of the set of codons used in frame 1. (Frame -2 is the set of codons used by frame 2, similarly frames -3 and 3). This is a common standard, used by the Staden package and other programs. If you prefer to define frame '-1' as using the set of codons starting with the last codon of the sequence, then set this to be true.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq -- stopprotein (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>8</group>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq -- stopprotein</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>10</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

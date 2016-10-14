@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+  
+  <head>
+    <title>PSORT</title>
+    <description>predicts protein subcellular localization sites from their amino acid sequences (Psort version II)</description>
+    <category>protein:composition</category>
+    <authors>Nakai, K. and Horton, P.</authors>
+    <reference>PSORT: a program for detecting the sorting signals of proteins and predicting their subcellular localization,trends Biochem. Sci., in press, 1999.</reference>
+  </head>
+  
+  <command>psort2</command>
+  <parameters>
+    <parameter type="String" iscommand="1"  ishidden="1" ismandatory="1">
+      <name>psort2</name>
+      <attributes>
+	<group>0</group>
+	<format>
+	  <language>perl</language>
+	  <code>psort</code>
+	</format>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Sequence" ismandatory="1" issimple="1">
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Protein sequence file</prompt>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>Verbose</name>
+      <attributes>
+	<prompt>Verbose mode</prompt>
+	<vdef>
+	  <value>1</value>
+	</vdef>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -w" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+    <name>htmlfile</name>
+    <attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" &gt; psort2.html"</code>
+	</format>
+	<vdef><value>"psort2.html"</value></vdef>
+	<group>100</group>
+    </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

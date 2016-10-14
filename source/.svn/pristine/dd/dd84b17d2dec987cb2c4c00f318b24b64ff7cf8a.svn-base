@@ -1,0 +1,5 @@
+toolId=RAXMLHPC2_TGB
+runtime_=0.1 
+bootstrap_seed_=1 
+bootstop_=50 
+dna_gtrcat_=GTRGAMMA 

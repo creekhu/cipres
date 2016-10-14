@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY nucdbs SYSTEM "XMLDIR/nucdbs.xml">
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+<!ENTITY fastapath SYSTEM "XMLDIR/fastapath.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>SSEARCH</title>
+    <version>3.4t20</version>
+    <description>Sequence database search (version 3)</description>
+    <authors>W. Pearson</authors> 
+    <reference>Pearson, W. R. (1991) Searching protein sequence libraries: comparison of the sensitivity and selectivity of the Smith-Waterman and FASTA algorithms. Genomics 11: 635-650 </reference>
+    <reference>Smith, T. F. and Waterman, M. S. (1981) Identification of common molecular subsequences. J. Mol. Biol. 147: 195-197 </reference> 
+    <doclink>http://bioweb.pasteur.fr/docs/softgen.html#FASTA</doclink>
+  </head>
+  
+
+  <command>ssearch</command>
+
+  <parameters>
+
+    <parameter type="Label">
+      <name>ssearch_expl</name>
+      <attributes>
+        <prompt>ssearch: protein or DNA query vs similar db</prompt>
+	<comment>
+	  <value>ssearch - scan a protein or dna sequence library for similar sequences using the Smith and Waterman algorithm.</value>
+	</comment>  
+      </attributes>	    
+    </parameter>  
+  
+    <parameter ismandatory="1" ishidden="1" iscommand="1" type="String">
+      <name>ssearch</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"ssearch -q"</code>
+	</format>
+	<vdef><value>ssearch34_t</value></vdef>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>Query sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>10</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>seqtype</name>
+      <attributes>
+	<prompt>Is it a DNA or protein sequence (-n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value eq "DNA")  ? " -n" : ""</code>
+	</format>
+	<group>1</group>
+	<vlist>
+	  <value>DNA</value>
+	  <label>DNA</label>
+	  <value>protein</value>
+	  <label>protein</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>protein_db</name>
+      <attributes>
+	<prompt>Protein Database</prompt>
+	<format>
+	  <language>perl</language>
+	  &fastapath;
+	</format>
+	<vdef><value>sptrnrdb</value></vdef>
+	<group>20</group>
+	&protdbs;
+	<precond>
+	  <language>perl</language>
+	  <code>$seqtype eq "protein"</code>
+	</precond>  
+	<comment>
+	  <value>Please note that Swissprot usage by and for commercial entities requires a license agreement.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>nucleotid_db</name>
+      <attributes>
+	<prompt>Nucleotid Database</prompt>
+	<format>
+	  <language>perl</language>
+	  &fastapath;
+	</format>
+	<vdef><value>embl</value></vdef>
+	<group>20</group>
+	&nucdbs;
+	<precond>
+	   <language>perl</language>
+	   <code>$seqtype eq "DNA"</code>
+	</precond>   
+      </attributes>
+   
+    </parameter>
+
+    <!-- no such option 
+    <parameter type="Switch">
+      <name>break_long</name>
+      <attributes>
+	<prompt>Break long library sequences into blocks (-N)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -N $value" : ""</code>
+	</format>
+      </attributes>
+    </parameter>
+    -->
+
+   
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>slectivity_opt</name>
+	<prompt>Selectivity options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>ktup</name>
+	    <attributes>
+	      <prompt>ktup : sensitivity and speed of the search (protein:2, DNA:6)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " $value":""</code>
+	      </format>
+	      <group>30</group>
+	      <comment>
+		<value>ktup sets the sensitivity and speed of the search. If ktup=2, similar regions in the two sequences being compared are found by looking at pairs of aligned residues; if ktup=1, single aligned amino acids are examined. ktup can be set to 2 or 1 for protein sequences, or from 1 to 6 for DNA sequences. The default if ktup is not specified is 2 for proteins and 6 for DNA. 1ktup=1 should be used for oligonucleotides (DNA query length &lt; 20).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>gapinit</name>
+	    <attributes>
+	      <prompt>Penalty for gap initiation (-12 by default for ssearch with proteins, -16 for DNA) (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -f $value":""</code>
+	      </format>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>gapext</name>
+	    <attributes>
+	      <prompt>Penalty for gap extention (-2 by default for ssearch with proteins, -4 for DNA) (-g)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -g $value":""</code>
+		</format>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- no such option
+	  <parameter type="Float">
+	    <name>high_expect</name>
+	    <attributes>
+	      <prompt>Maximal expectation value threshold for displaying scores and alignments (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -E $value":""</code>
+	      </format>
+	      <vdef><value>10.0</value></vdef>
+	      <comment>
+		<value>Expectation value limit for displaying scores and alignments. Typically 10.0 for protein sequence comparisons and 2.0 for DNA sequence comparisons.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  -->
+
+	  <!-- no such option
+	  <parameter type="Float">
+	    <name>low_expect</name>
+	    <attributes>
+	      <prompt>Minimal expectation value threshold for displaying scores and alignments (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -F $value":""</code>
+	      </format>
+	      <comment>
+		<value>This allow one to skip over close relationships in searches for more distant relationships.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  -->
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>score_opt</name>
+	<prompt>Scoring options</prompt>
+	<group>4</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>nucleotid_match</name>
+	    <attributes>
+	      <prompt>Reward for a nucleotid match (-r)</prompt>
+	      <vdef><value>+5</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>nucleotid_mismatch</name>
+	    <attributes>
+	      <prompt>Penalty for a nucleotid mismatch (-r)</prompt>
+	      <vdef><value>-4</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; ($value != $vdef || $dna_match != 5)) ? " -r \"$dna_match/$value\"" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>defined $dna_match</code>
+	      </precond>
+	      <comment>
+		<value>'+5/-4' are the default values for nucleotid match/mismatch, but '+3/-2' can perform better in some cases.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>matrix</name>
+	    <attributes>
+
+	      <prompt>Scoring matrix file (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value ne $vdef) ? " -s $value" : ""</code>
+	      </format>
+	      <vdef><value>BL50</value></vdef>
+	      <vlist>
+		<value>BL50</value>
+		<label>BLOSUM50</label>
+		<value>BL62</value>
+		<label>BLOSUM62</label>
+		<value>BL80</value>
+		<label>BLOSUM80</label>
+		<value>P20</value>
+		<label>PAM20</label>
+		<value>P40</value>
+		<label>PAM40</label>
+		<value>P120</value>
+		<label>PAM120</label>
+		<value>P250</value>
+		<label>PAM250</label>
+		<value>M10</value>
+		<label>MDM_10</label>
+		<value>M20</value>
+		<label>MDM_20</label>
+		<value>M40</value>
+		<label>MDM_40</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>optimize_opt</name>
+	<prompt>Optimization options</prompt>
+	<group>4</group>
+	<parameters>
+ 
+	  <parameter type="Excl">
+	    <name>stat</name>
+	    <attributes>
+	      <prompt>Specify statistical calculation. (-z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($random &amp;&amp; $value > 0) ? " -z 1$value"
+		: ($value != $vdef) ? " -z $value" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <vlist>
+		<value>-1</value>
+		<label>-1: turn off statistics</label>
+		<value>0</value>
+		<label> 0: no correction of library sequebce length</label>
+		<value>1</value>
+		<label> 1: weigthed regression against the length of the library sequence</label>
+		<value>2</value>
+		<label> 2: maximum likelihood estimates of Lambda abd K</label>
+		<value>3</value>
+		<label> 3: Altschul-Gish parameters</label>
+		<value>4</value>
+		<label> 4: Variation1 of 1</label>
+		<value>5</value>
+		<label> 5: Variation2 of 1</label>
+	      </vlist>
+	      <comment>
+		<value>In general, 1 and 2 are the best methods.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>random</name>
+	    <attributes>
+	      <prompt>Estimate stat parameters from shuffled copies of each library sequence (-z)</prompt>
+	      <vdef><value>0</value></vdef>
+	      <precond>
+		<language>$stat &gt; 0</language>
+		<code></code>
+	      </precond>
+	      <comment>
+		<value>This doubles the time required for a search, but allows accurate statistics to be estimated for libraries comprised of a single protein family.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>affichage</name>
+	<prompt>Report options</prompt>
+	<group>4</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>histogram</name>
+	    <attributes>
+	      <prompt>No histogram (-H)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -H":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>scores</name>
+	    <attributes>
+	      <prompt>number of similarity scores to be shown (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -b $value":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>alns</name>
+	    <attributes>
+	      <prompt>number of alignments to be shown (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -d $value":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter issimple="1" type="Switch">
+	    <name>html_output</name>
+	    <attributes>
+	      <prompt>HTML output (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m 6" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>markx</name>
+	    <attributes>
+	      <prompt>Alternate display of matches and mismatches in alignments</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value != $vdef )? " -m $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0 [: identities] [. conservative repl] [ non-conserv repl]</label>
+		<value>1</value>
+		<label>1: [ identities] [x conservative repl] [X non-conserv repl]</label>
+		<value>2</value>
+		<label>2: [. identities] [res mismatch] - don't display the 2nd seq</label>
+		<value>3</value>
+		<label>3: writes a file of library sequences in FASTA format</label>
+		<value>4</value>
+		<label>4: displays a graph of the alignment</label>
+		<value>9</value>
+		<label>9: 0 + percent identity + coordinates</label>
+		<value>10</value>
+		<label>10: output more information</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>! $html_output</code>
+	      </precond>
+	      <comment>
+		<value>(MARKX) =0,1,2,3,4. Alternate display of matches and mismatches in alignments.</value>
+		<value>MARKX=0 uses ':','.',' ', for identities, conservative replacements, and non-conservative replacements, respectively.</value>
+		<value>MARKX=1 uses ' ','x', and 'X'. </value>
+		<value>MARKX=2 does not show the second sequence, but uses the second alignment line to display matches with a '.' for identity, or with the mismatched residue for mismatches. MARKX=2 is useful for aligning large numbers of similar sequences.</value>
+		<value>MARKX=3 writes out a file of library sequences in FASTA format. MARKX=3 should always be used with the 'SHOWALL' (-a) option, but this does not completely ensure that all of the sequences output will be aligned. </value>
+		<value>MARKX=4 displays a graph of the alignment of the library sequence with repect to the query sequence, so that one can identify the regions of the query sequence that are conserved.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>init1</name>
+	    <attributes>
+	      <prompt>sequences ranked by the z-score based on the init1 score (-1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -1":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>z_score_out</name>
+	    <attributes>
+	      <prompt>Show normalize score as (-B)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -B" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>1</value>
+		<label>z-score</label>
+		<value>0</value>
+		<label>bit-score</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+	
+
+	  <parameter type="Switch">
+	    <name>showall</name>
+	    <attributes>
+	      <prompt>both sequences are shown in their entirety in alignments (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -a":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>linlen</name>
+	    <attributes>
+	      <prompt>output line length for sequence alignments (max. 200) (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -w $value":""</code>
+	      </format>
+	      <vdef><value>60</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>offsets</name>
+	    <attributes>
+	      <prompt>Start numbering the aligned sequences at position x1 x2 (2 numbers) (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -X \"$value\"":""</code>
+	      </format>
+	      <comment>
+		<value>causes ssearch to start numbering the aligned sequences starting with offset1 and offset2, rather than 1 and 1. This is particularly useful for showing alignments of promoter regions.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>info</name>
+	    <attributes>
+	      <prompt>Display more information about the library sequence in the alignment (-L)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -L":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>statfile</name>
+	    <attributes>
+	      <prompt>Write out the sequence identifier, superfamily number, and similarity scores to this file (-R)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -R $value":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+  
+ 
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_opt</name>
+	<prompt>Other options</prompt>
+	<group>4</group>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>filter</name>
+	    <attributes>
+	      <prompt>Lower case filtering (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -S" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Treat lower-case characters in the query or library sequence as 'low-complexity' residues. These characters are treated as 'X' during the initial scan, but are treated as normal residues during the final alignment. Sinces statistical significance is calculated from similarity score calculated during library search, low complexity regions will not produce statistical significant matches.</value>
+		<value>If a significant alignment contains low complexity regions the final score may be higher than the score obtainded during the search.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<pipe>
+	  <pipetype>mview_input</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<group>100</group>
+	<filenames>ssearch.out</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>html_outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; ssearch.html"</code>
+	</format>
+	<group>100</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$html_output</code>
+	</precond>
+	<vdef>
+	  <value>"ssearch.html"</value>
+	</vdef>
+      </attributes>
+    </parameter>
+
+</parameters>
+</pise>

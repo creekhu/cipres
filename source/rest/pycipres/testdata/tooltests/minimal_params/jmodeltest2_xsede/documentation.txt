@@ -1,0 +1,35 @@
+JMODELTEST2_XSEDE
+infile_ - Primary Input File
+user_fixedtree_ - infile - Select a User-defined fixed tree for likelihood calculations (-u)
+
+runtime_ - Float - Maximum Hours to Run (up to 168 hours)
+name_output_ - String - Specify the name of your output file (-o)
+name_suffix_ - String - Specify a suffix for your log file (-n)
+convert_phylip_ - Switch - Convert input to Phylip format (then exit) default=0
+information_criterion_ - Excl - Clustering search (-H); AIC; AICc; BIC (default)
+threshold_heuristic_ - Float - Perform threshold heuristic search. (-G; default = 0.1)
+set_subschemes_ - Excl - Set the number of substitution schemes (-s) default=11, options: 3,5,7,11.203
+uneq_basefmodels_ - Switch - Include models with unequal base frequencies. (-f); default=1
+convert_phylip_ - Switch - Convert input to Phylip format (then exit) default=0
+information_criterion_ - Switch - Specify a seed for this run (by default a random seed is used)
+invar_models_ - Switch - Include models with a proportion invariable sites.  (-i) default=1
+numratecat_models_ - Integer - Include models with rate variation among sites, set number of categories  (-g; default = 4)
+confidenceint_models_ - Integer - Confidence interval for the model selection process (-c; default = 100)
+set_basetree_ - Excl - Base tree topology for likelihood calculations. (-t): fixed; BIONJ; ML; default=ML
+def_topsearch_ - Excl - Set tree topology search operation option for Maximum-Likelihood search (-S) NNI, SPR, BEST (default)
+criteria_1_ - List - Select Information Criterion (choose all needed) multi selections; -AIC, -AICc,-BIC, -DT
+confidence_selection_ - Float - Confidence level for the hLRTs (-h; default is 0.01)
+parameter_importances_ - Switch - Calculate the parameter importances (-p) default=1
+modeland_importances_ - Switch - Do model averaging and parameter importances (-v) default=0
+print_paup_ - Switch - Print out the PAUP block (-w) default=1
+estimate_modelavg_ - Switch - Estimate model-averaged phylogeny for each active criterion (-a) default=1
+strict_consensus_ - Switch - Use strict consensus type for model-averaged phylogeny (-z) default=0
+calculate_delta_ - Switch - Calculate delta AIC,AICc,BIC against unconstrained likelihood. (-uLnL) default=0
+hierarchical_likelihood_ - Switch - Perform hierarchical likelihood ratio tests (-hLRT) default=0
+specify_hyporder_ - String - Specify the hypothesis order (-O; default ftvwxgp) default=ftvwxgp
+backward_selection_ - Switch - Backward selection for the hLRT (-r) default=0
+seed_val_ - Integer - Enter the seed value here
+dynamical_likelhood_ - Switch - Perform dynamical likelihood ratio tests. (-dLRT) default=0
+seed_val_ - Integer - Enter the seed value here
+
+

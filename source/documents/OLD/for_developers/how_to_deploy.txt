@@ -1,0 +1,57 @@
+We run a test version of ngbw at http://8ball.sdsc.edu/web and the production version at
+http://snooker.sdsc.edu/web.  Normally Jeremy is in charge of deployment, but sometimes
+other developers need to redeploy the test server, and in an emergency we may need
+to redploy to production.
+
+There are three different versions of the passwords jar: passwords-dev-2.0.jar,
+passwords-test-2.0.jar and passwords-prod-2.0.jar.  The dev and test versions
+connect to the test database.  Test has a larger connection pool than dev.  The
+prod version connects to the production database.
+
+DEPLOYING TEST NGBW ON 8BALL
+=============================================================================
+1. Build the sdk
+
+Either make sure that you have passwords-test-2.0.jar installed as passwords.jar in
+your .m2 repo, or (the recommended approach) make the same password.jar structures in  your
+repo, except replace passwords.jar with passwords-*.jar, so that you have:
+
+  ~.m2/repository/org/ngbw/passwords-test/2.0/passwords-test-2.0.jar
+  ~.m2/repository/org/ngbw/passwords-prod/2.0/passwords-prod-2.0.jar
+
+and leave ~.m2/repository/org/ngbw/passwords/2.0/passwords-2.0.jar as the development
+version.  In this case, build the sdk as "mvn clean install -Denv=test".
+
+In a pinch, it wouldn't be a disaster to build the sdk with passwords-dev.jar.
+
+2. Build the web
+
+"mvn clean install -Devn=dev".  
+(Note that it's env=test for sdk, but env=dev for the web project).
+
+3. Deploy
+
+Log in to the Tomcat manager application at http://8ball.sdsc.edu/manager/html.  The login information 
+for this page is:
+ 
+	Username: manager
+	Password: Sn00ker
+  
+Once you are there, follow these steps:
+	1. Undeploy the web application by clicking "Undeploy" on the right end of the "/web" table row.
+	2. Restart the Tomcat server, by logging into 8ball and executing these commands:
+		a. sudo /etc/init.d/tomcat.8ball.sh stop
+		b. sudo /etc/init.d/tomcat.8ball.sh start
+	3. Click "List Applications" near the upper left of the manager page, to force the phantom webapp 
+	remnant to reappear in the list.
+	4. If "/web" appears again, get rid of it for good by clicking "Undeploy" one more time.
+	5. Deploy the newly built war file by selecting it in the "Select WAR file to upload" upload 
+	field near the bottom of the page, and click "Deploy".
+
+This should complete the deployment process.  It is definitely slower than deploying automatically as part of the Maven build, but it's really not that time-consuming if you don't need to redeploy very often
+
+
+DEPLOYING PRODUCTION NGBW ON SNOOKER
+=============================================================================
+
+

@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY nucdbs SYSTEM "XMLDIR/nucdbs.xml">
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+<!ENTITY blast_init SYSTEM "XMLDIR/blast_init.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>BLAST2</title>
+    <version>2.2.10</version>
+    <description>with gaps</description>
+    <authors>Altschul, Madden, Schaeffer, Zhang, Miller, Lipman</authors>
+    <reference>Altschul, Stephen F., Thomas L. Madden, Alejandro A. Schaeffer,Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), Gapped BLAST and PSI-BLAST: a new generation of protein database search programs,  Nucleic Acids Res. 25:3389-3402.</reference>
+
+  </head>
+
+  <command>blast2</command>
+
+  <parameters>
+
+    &blast_init;
+
+    <parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+      <name>blast2</name>
+      <attributes>
+	<prompt>Blast program</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"blastall -p $value"</code>
+	</format>
+	<vdef><value>blastp</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>blastn</value>
+	  <label>blastn: nucleotide query / nucleotide db</label>
+	  <value>blastp</value>
+	  <label>blastp: amino acid query / protein db</label>
+	  <value>blastx</value>
+	  <label>blastx: nucleotide query translated / protein db</label>
+	  <value>tblastn</value>
+	  <label>tblastn: protein query / translated nucleotide db</label>
+	  <value>tblastx</value>
+	  <label>tblastx: nucleotide query transl. / transl. nucleotide db</label>
+	  <value>psitblastn</value>
+	  <label>psitblastn: protein query / transl. nucleotide db</label>
+	  
+	</vlist>
+	<comment>
+	  <value>The five BLAST programs described here perform the following tasks:</value>
+	  <value>. blastp compares an amino acid query sequence against a protein sequence database;</value>
+	  <value>. blastn compares a nucleotide query sequence against a nucleotide sequence database;</value>
+	  <value>. blastx compares the six-frame conceptual translation products of a nucleotide query sequence (both strands) against a protein sequence database;</value>
+	  <value>. tblastn compares a protein query sequence against a nucleotide sequence database dynamically translated in all six reading frames (both strands).</value>
+	  <value>. tblastx compares the six-frame translations of a nucleotide query sequence against the six-frame translations of a nucleotide sequence database.</value>
+	  <value>psitblastn compares a protein query sequence against a nucleotide sequence database dynamically translated in all six reading frames (both strands) using a position specific matrix created by PSI-BLAST.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Integer">
+      <name>nb_proc</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -a 2"</code>
+	</format>
+	<group>6</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -i $query" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+
+    <parameter type="Integer">
+      <name>start_region</name>
+      <attributes>
+	<prompt>Start of required region in query sequence (-L)</prompt>
+      </attributes>
+    </parameter>
+
+     <parameter type="Integer">
+      <name>end_region</name>
+      <attributes>
+	<prompt>End of required region in query sequence (-L)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -L \"$start_region $value\"": " -L $start_region"</code>
+	</format>
+	<precond>
+	  <language>perl</language>
+	  <code>$start_region</code>
+	</precond>
+	<group>5</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>protein_db</name>
+      <attributes>
+	<prompt>protein db</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " -d $value" </code>
+	</format>
+	<vdef><value>uniprot</value></vdef>
+	<group>2</group>
+	&protdbs;
+	<comment>
+	  <value>Choose a protein db for blastp or blastx.</value>
+	</comment>
+	<precond>
+	  <language>perl</language>
+	  <code>$blast2 =~ /^blast[px]/</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>nucleotid_db</name>
+      <attributes>
+	<prompt>nucleotid db</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " -d $value" </code>
+	</format>
+	<vdef><value>embl</value></vdef>
+	<group>3</group>
+	&nucdbs;
+	<comment>
+          <value>choose a nucleotide db for blastn, tblastn or tblastx</value>
+	</comment>
+	<precond>
+	   <language>perl</language>
+	   <code>$blast2 =~ /^blastn|tblast[nx]$/</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>filter_opt</name>
+	<prompt>Filtering and masking options</prompt>
+	<group>4</group>
+	<comment>
+	  <value>BLAST 2.0 and 2.1 uses the dust low-complexity filter for blastn and seg for the other programs. Both 'dust' and 'seg' are integral parts of the NCBI toolkit and are accessed automatically.</value>
+	  <value>If one uses '-F T' then normal filtering by seg or dust (for blastn) occurs (likewise '-F F' means no filtering whatsoever). </value>
+	  <value>This options also takes a string as an argument.  One may use such a string to change the specific parameters of seg or invoke other filters. Please see the 'Filtering Strings' section (below) for details.</value>
+	</comment>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>filter</name>
+	    <attributes>
+	      <prompt>Filter query sequence (DUST with blastn, SEG with others) (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "" : " -F F"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>other_filters</name>
+	    <attributes>
+	      <prompt>Filtering options (-F must be true)</prompt>
+	      <comment><value>The -F argument can take a string as input specifying that seg should be run with certain values or that other non-standard filters should be used.</value>
+		<value> A coiled-coiled filter, based on the work of Lupas et al. (Science, vol 252, pp. 1162-4 (1991)) written by John Kuzio (Wilson et al., J Gen Virol, vol. 76, pp. 2923-32 (1995)), may be invoked specifying: -F 'C'</value>
+		<value> One may also run both seg and coiled-coiled together by using a ';': -F 'C;S'</value>
+		<value> Filtering by dust may also be specified by: -F 'D'</value>
+		<value> It is possible to specify that the masking should only be done during the process of building the initial words by starting the filtering command with 'm', e.g.: -F 'm S' which specifies that seg (with default arguments) should be used for masking, but that the masking should only be done when the words are being built.</value>
+		<value> If the -U option (to mask any lower-case sequence in the input FASTA file) is used and one does not wish any other filtering, but does wish to mask when building the lookup tables then one should specify: -F 'm'</value>
+	      </comment>
+	      <group>4</group>		
+	      <vlist>
+		<value>v1</value>
+		<label>masking instead of filtering (with Seg)</label>
+		<value>v2</value>
+		<label>coiled-coiled filter</label>
+		<value>v3</value>
+		<label>both seg and coiled-coiled filters</label>
+		<value>v4</value>
+		<label>dust filter (DNA query)</label>
+		<value>v5</value>
+		<label>lower-case masking (-U must be true)</label>
+	      </vlist>
+	      <flist>
+		<value>v1</value>
+		<code>" -F \"m S\""</code>
+		<value>v2</value>
+		<code>" -F C"</code>
+		<value>v3</value>
+		<code>" -F \"C;S\""</code>
+		<value>v4</value>
+		<code>" -F D"</code>
+		<value>v5</value>
+		<code>" -F m"</code>
+	      </flist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>lower_case</name>
+	    <attributes>
+        	<prompt>Use lower case filtering (-U)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -U T" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <comment><value> This option specifies that any lower-case letters in the input FASTA file should be masked.</value></comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>selectivity_opt</name>
+	<prompt>Selectivity options</prompt>
+	<group>5</group>
+	<comment>
+	  <value>The programs blastn and blastp offer fully gapped alignments. blastx and tblastn have 'in-frame' gapped alignments and use sum statistics to link alignments from different frames. tblastx provides only ungapped alignments.</value>
+	</comment>
+	<parameters>
+
+	  <parameter issimple="1" type="Integer">
+	    <name>Expect</name>
+	    <attributes>
+	      <prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -e $value":""</code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>The statistical significance threshold for reporting matches against database sequences; the default value is 10, such that 10 matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical significance ascribed to a match is greater than the EXPECT threshold, the match will not be reported. Lower EXPECT thresholds are more stringent, leading to fewer chance matches being reported. Fractional values are acceptable. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>word_size</name>
+	    <attributes>
+	      <prompt>Word Size (-W) (zero invokes default behavior)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -W $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>dist_hits</name>
+	    <attributes>
+	      <prompt>Multiple Hits window size (zero for single hit algorithm) (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -A $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Integer">
+	    <name>extend_hit</name>
+	    <attributes>
+	      <prompt>Threshold for extending hits (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -f $value":""</code>
+	      </format>
+	      <comment>
+		<value>Blast seeks first short word pairs whose aligned score reaches at least this value (default for blastp is 11) (T in the NAR paper and in Blast 1.4)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>dropoff_extent</name>
+	    <attributes>
+	      <prompt>X dropoff for blast extention in bits (0.0 invokes default behavior) (-y)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -y $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>keep_hits</name>
+	    <attributes>
+	      <prompt>Number of best hits from region to keep (-K)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -K $value" : ""</code>
+	      </format>
+	      <comment>
+		<value>If this option is used a value of 100 is recommended.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gapped_alig</name>
+	    <attributes>
+	      <prompt>Perform gapped alignment (not available with tblastx) (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "": " -g F"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 ne "tblastx"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>dropoff</name>
+	    <attributes>
+
+	      <prompt>X dropoff value for gapped alignment (in bits) (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -X $value":""</code>
+	      </format>
+	      <comment>
+		<value>This is the value that control the path graph region explored by Blast during a gapped extension (Xg in the NAR paper) (default for blastp is 15).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	 
+	  <parameter type="Integer">
+	    <name>dropoff_final</name>
+	    <attributes>
+	      <prompt>X dropoff value for final alignment (in bits) (-Z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -Z $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scoring_opt</name>
+	<prompt>Scoring options</prompt>
+	<group>4</group>
+	<parameters>
+	
+
+	  <parameter type="Integer">
+	    <name>mismatch</name>
+	    <attributes>
+	      <prompt>Penalty for a nucleotide mismatch (blastn) (-q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -q $value":""</code>
+	      </format>
+	      <vdef><value>-3</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 eq "blastn"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>match</name>
+	    <attributes>
+	      <prompt>Reward for a nucleotide match (blastn) (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -r $value":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 eq "blastn"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Excl">
+	    <name>matrix</name>
+	    <attributes>
+	      <prompt>Matrix (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef)? " -M $value" : ""</code>
+	      </format>
+	      <vdef><value>BLOSUM62</value></vdef>
+	       <vlist>
+		<value>BLOSUM62</value>
+		<label>BLOSUM62</label>
+		<value>BLOSUM45</value>
+		<label>BLOSUM45</label>
+		<value>BLOSUM80</value>
+		<label>BLOSUM80</label>
+		<value>PAM30</value>
+		<label>PAM30</label>
+		<value>PAM70</value>		
+		<label>PAM70</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 ne "blastn"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>open_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to open a gap (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -G $value":""</code>
+	      </format>
+	      <comment>
+		<value>default is 5 for blastn, 10 for blastp, blastx and tblastn</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>extend_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to extend a gap (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -E $value":""</code>
+	      </format>
+	      <group>5</group>
+	      <comment>
+		<value>default is 2 for blastn, 1 for blastp, blastx and tblastn</value>
+		<value>Limited values for gap existence and extension are supported for these three programs. Some supported and suggested values are:</value>
+		<value>Existence Extension</value>
+		<value>10 1</value>
+		<value>10 2</value>
+		<value>11 1</value>
+		<value>8 2</value>
+		<value>9 2</value>
+		<value>(source: NCBI Blast page)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>translation_opt</name>
+	<prompt>Translation options</prompt>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>gc_query</name>
+	    <attributes>
+	      <prompt>Query Genetic code to use (blastx) (-Q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -Q $value":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>1</value>
+		<label>1: Standard</label>
+		<value>2</value>
+		<label>2: Vertebrate Mitochondrial</label>
+		<value>3</value>
+		<label>3: Yeast Mitochondrial</label>
+		<value>4</value>
+		<label>4: Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+		<value>5</value>
+		<label>5: Invertebrate Mitochondrial</label>
+		<value>6</value>
+		<label>6: Ciliate Macronuclear and Dasycladacean</label>
+		<value>9</value>
+		<label>9: Echinoderm Mitochondrial</label>
+		<value>10</value>
+		<label>10: Euplotid Nuclear</label>
+		<value>11</value>
+		<label>11: Bacterial</label>
+		<value>12</value>
+		<label>12: Alternative Yeast Nuclear</label>
+		<value>13</value>
+		<label>13: Ascidian Mitochondrial</label>
+		<value>14</value>
+		<label>14: Flatworm Mitochondrial</label>
+		<value>15</value>
+		<label>15: Blepharisma Macronuclear</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 =~ /blastx$/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>gc_db</name>
+	    <attributes>
+	      <prompt>DB Genetic code (for tblast[nx] only) (-D)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " -D $value":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>1</value>
+		<label>1: Standard</label>
+		<value>2</value>
+		<label>2: Vertebrate Mitochondrial</label>
+		<value>3</value>
+		<label>3: Yeast Mitochondrial</label>
+		<value>4</value>
+		<label>4: Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+		<value>5</value>
+		<label>5: Invertebrate Mitochondrial</label>
+		<value>6</value>
+		<label>6: Ciliate Macronuclear and Dasycladacean</label>
+		<value>9</value>
+		<label>9: Echinoderm Mitochondrial</label>
+		<value>10</value>
+		<label>10: Euplotid Nuclear</label>
+		<value>11</value>
+		<label>11: Bacterial</label>
+		<value>12</value>
+		<label>12: Alternative Yeast Nuclear</label>
+		<value>13</value>
+		<label>13: Ascidian Mitochondrial</label>
+		<value>14</value>
+		<label>14: Flatworm Mitochondrial</label>
+		<value>15</value>
+		<label>15: Blepharisma Macronuclear</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 =~ /^tblast/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+	    <name>strand</name>
+	    <attributes>
+	      <prompt>Query strand to search against database (for
+              blastn, blastx or tblastx) (-S)</prompt>
+	      <format>
+		<language>perl</language>
+	        <code>(defined $value and $value != $vdef)? " -S $value" : ""</code>
+	      </format>
+	      <vdef><value>3</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>1</value>
+		<label>1: top</label>
+		<value>2</value>
+		<label>2: bottom</label>
+		<value>3</value>
+		<label>3: both</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 =~ /^blast[nx]|tblastx/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	 
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>affichage</name>
+	<prompt>Report options</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>Descriptions</name>
+	    <attributes>
+	      <prompt>How many short descriptions? (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -v $value":""</code>
+	      </format>
+	      <vdef><value>500</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which one-line descriptions will be reported (-v).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Alignments</name>
+	    <attributes>
+	      <prompt>How many alignments? (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -b $value":""</code>
+	      </format>
+	      <vdef><value>250</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which high-scoring segment pairs will be reported (-b).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>view_alignments</name>
+	    <attributes>
+	      <prompt>Alignment view options  (not with blastx/tblastx) (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>0</value>
+		<label>0: pairwise</label>
+		<value>1</value>
+		<label>1: query-anchored showing identities</label>
+		<value>2</value>
+		<label>2: query-anchored no identities</label>
+		<value>3</value>
+		<label>3: flat query-anchored, show identities</label>
+		<value>4</value>
+		<label>4: flat query-anchored, no identities</label>
+		<value>5</value>
+		<label>5: query-anchored no identities and blunt ends</label>
+		<value>6</value>
+		<label>6: flat query-anchored, no identities and blunt ends</label>
+		<value>7</value>
+		<label>7: XML Blast output</label>
+		<value>8</value>
+		<label>8: Tabular output</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 !~ /blastx$/</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>show_gi</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$protein_db eq "nrprot"</code>
+	      </precond>
+	      <prompt>Show GI's in deflines (only available for NCBI db such as nrprot) (-I)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -I" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <comment>
+		<value>Causes NCBI gi identifiers to be shown in the output, in addition to the accession and/or locus name. </value>
+		<value>Warning: only available for NCBI db such as nrprot.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>seqalign_file</name>
+	    <attributes>
+	      <prompt>SeqAlign file (-J option must be true) (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -O $value" : ""</code>
+	      </format>
+	      <group>4</group>
+	      <comment>
+		<value>SeqAlign is in ASN.1 format, so that it can be read with NCBI tools (such as sequin). This allows one to view the results in different formats.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$believe</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>believe</name>
+	    <attributes>
+	      <prompt>Believe the query defline (-J)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -J":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter> 
+
+	  <parameter type="Switch">
+	    <name>htmloutput</name>
+	    <attributes>
+	      <prompt>Html output</prompt>
+	      <vdef><value>1</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>($_html) and ($view_alignments !~ /^[78]$/)</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " &amp;&amp; html4blast -o blast2.html -g" : ""</code>
+	      </format>
+	      <group>20</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>htmlopt</name>
+	      <prompt>HTML output options (html4blast)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$htmloutput and ($_html) and ($view_alignments !~ /^[78]$/)</code>
+	      </precond>
+
+	      <parameters>
+		
+		<parameter ishidden="1" type="String">
+		  <name>html4blast_input</name>
+		  <attributes>
+		    <format>
+		      <language>perl</language>
+		      <code>" blast2.txt"</code>
+		    </format>
+		    <group>30</group>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>external_links</name>
+		  <attributes>
+		    <prompt>Use external web sites for databases entries retrieval links (-e instead of -s)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <group>25</group>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -e" : " -s" </code>
+		    </format>
+		    <group>25</group>
+
+		    <comment>
+		      <value>-s option will use SRS for databases entries retrieval links, whereas -e will use the original database site links.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>one_HSP_per_line</name>
+		  <attributes>
+		    <prompt>Draw one HSP per line in image instead of putting all HSP in one line (-l)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <group>25</group>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -l" : "" </code>
+		    </format>
+		    <group>25</group>
+		    <comment>
+		      <value>Useful for genomes searching, where there is only one sequence in the database.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>image_query</name>
+		  <attributes>
+		    <prompt>Generate images names based on corresponding query (-q)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <group>25</group>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -q" : "" </code>
+		    </format>
+		    <group>25</group>
+		    <comment>
+		      <value>Useful when you only want to keep the image.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Results">
+		  <name>htmlfile</name>
+		  <attributes>
+		    <filenames>blast2.html</filenames>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+   
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>othersopt</name>
+	<prompt>Other Options</prompt>
+	<group>5</group>
+	<parameters>
+
+	 
+	  <parameter type="InFile">
+	    <name>restrict_db</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$protein_db eq "nrprot"</code>
+	      </precond>
+	      <prompt>Restrict search of database to GI's in file (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -l $value" : ""</code>
+	      </format>
+	      <group>7</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>psi_checkpoint</name>
+	    <attributes>
+	      <prompt>PSI-TBLASTN checkpoint file (-R)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -R $value" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$blast2 eq psitblastn</code>
+	      </precond>
+	      <pipe>
+		<pipetype>psiblast_matrix</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+	      <withpipe>
+		<pipetype>psiblast_matrix</pipetype>
+		<parametername>query</parametername>
+	      </withpipe>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>txtoutput</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; blast2.txt"</code>
+	</format>
+	<precond>
+	  <language>perl</language>
+	  <code>$view_alignments !~ 7</code>
+	</precond>
+	<group>7</group>
+      </attributes>
+    </parameter>
+   
+    <parameter type="Results">
+      <name>tmp_outfile</name>
+      <attributes>
+	<filenames>blast2.txt</filenames>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>$view_alignments !~ [78]</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+
+    <parameter type="Results">
+      <name>xmloutput</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; blast2.xml"</code>
+	</format>
+	<precond>
+	  <language>perl</language>
+	  <code>$view_alignments =~ 7</code>
+	</precond>
+	<filenames>blast2.xml</filenames>
+	<group>7</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

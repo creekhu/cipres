@@ -1,0 +1,65 @@
+ML search: One step or several.
+raxmlgui makes this commandline
+raxmlHPC-PTHREADS.exe -T 2 -f d -m PROTGAMMABLOSUM62F -N 1 -O -p 130 -o 1_Euglena_gracilis -s infile2.txt"  -n infile2.tre  
+&&raxmlHPC-PTHREADS.exe -T 2 -f J -m PROTGAMMABLOSUM62F -t  RAxML_bestTree.infile2.tre"  -n sh.infile2.tre -s infile2.txt"  
+&& type RAxML_result.infile2.tre* > combined_results.infile2.tre 
+ exit
+ 
+ Use asc bias
+NGBW-JOB-RAXMLHPC2_WORKFLOW-BB9BCB550A4E4966AD6A0C594F489E0F (saved)
+
+raxmlHPC-HYBRID -s infile.txt -m ASC_GTRGAMMA -p 12345 -k -O -f d -N 10 -n infile.tre  --asc-corr lewis 
+&& raxmlHPC-PTHREADS -f J -t RAxML_bestTree.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m ASC_GTRGAMMA  --asc-corr lewis  
+&& cat RAxML_result.infile.tre* > combined_results.infile.tre
+
+
+RAXMLHPC2_WORKFLOW
+This test:
+toolId=RAXMLHPC2_WORKFLOW   (required)
+first step:
+runtime_=0.50				   (default)
+specify_workflow_=MLS	       (no default)
+datatype_=protein              (default=dna, can be others)
+prot_sub_model_=PROTGAMMA      (no default, a value for the model must be set)
+prot_matrix_spec_=BLOSUM62     (default is DAYHOFF, many other options)
+invariable_=				   (default is null)
+ascertainment_=ASC_            (default is null; ASC_ turns on the option; invariable and asc are mutually exclusive)
+use_emp_freqs_=F               (default is null, F is the other choice)
+printbrlength_=1               (print branch lengths, default = 0)
+outgroup_=					   (default is no outgroup)
+disable_seqcheck_=1            (default is 0)
+workflow step specific:
+mlsearch_shlike_=1             (find sh-like values, default 0)
+outsuffix_MLS_=infile          (name the output files from bootstrapping step, default=infile)
+mlsearch_combine_=1            (combine the output files default=0)
+
+Commandline is:
+we make this commandlineS
+'raxmlHPC-HYBRID -f d -m ASC_PROTGAMMABLOSUM62F  -N 10   -O  -p 12345 -s infile.txt -n infile.tre   -k 
+&& raxmlHPC-PTHREADS -f J -m ASC_PROTGAMMABLOSUM62 -t RAxML_bestTree.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O  
+&& type RAxML_result.infile.tre* > combined_results.infile.tre'
+
+test pass
+
+dna_gtrcat_=GTRGAMMA (dataytpe -= dna by default)
+other model options:
+If not DNA , set datatype_=(protein/rna/binary/multi) then set this parameter
+(GTRCAT default;  prot_sub_model_=PROTGAMMA/PROTCAT; rna_model_ ;bin_model_=BINCAT/BINGAMMA; multi_model_=MULTICAT/MULTIGAMMA)
+Then set sub_parameters for protein:
+prot_matrix_spec_= (DAYHOFF is default)
+
+other modifiers can be set:
+invariable_= - switch - Estimate proportion of invariable sites (GTRGAMMA + I)
+ascertainment_= switch -
+ascertainment_corr_= excl - sets the kind of correction used
+use_emp_freqs_= to use empirical frequencies, protein only 
+
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+
+upload modifying files
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+
+printbrlength_ - Switch - Print branch lengths (-k)

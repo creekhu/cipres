@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>LVB</title>
+    <version>2.1</version>
+    <description>Reconstructing Evolution With Parsimony And Simulated Annealing</description>
+    <authors>D. Barker</authors>
+    <reference> Barker, D. 2004. LVB: Parsimony and simulated annealing in the search for phylogenetic trees. Bioinformatics, 20, 274-275. </reference> 
+    <category>phylogeny</category>
+  </head>
+
+  <command>lvb</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>lvb</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"lvb &lt; params"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>infile</name>
+      <attributes>
+	<prompt>Alignement File</prompt>
+	<format>
+	  <language>perl</language>
+	   <code>"ln -sf $infile infile; "</code>
+	</format>
+	<group>-10</group>
+	<seqfmt>
+	  <value>11</value>
+	  <value>12</value>
+	</seqfmt>
+	<comment>
+	  <value>You had better provide a Phylip 3.6, MSF or FASTA formatted alignment. Clustalw format will ***not*** work for this service. You may use the readseq form on the same server to convert your clustalw alignment to a Phylip INTERLEAVED format (#12).</value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Excl">
+      <name>format</name>
+      <attributes>
+	<prompt>Format is INTERLEAVED or SEQUENTIAL</prompt>
+	<group>1</group>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>I</value></vdef>
+	<vlist>
+	  <value>I</value>
+	  <label>INTERLEAVED</label>
+	  <value>S</value>
+	  <label>SEQUENTIAL</label>
+	</vlist>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Excl">
+      <name>gaps_treatment</name>
+      <attributes>
+	<prompt>Treatment of gaps represented by '-' </prompt>
+	<group>2</group>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>U</value></vdef>
+	<vlist>
+	  <value>U</value>
+	  <label>UNKNOWN</label>
+	  <value>F</value>
+	  <label>FIFTH STATE</label>
+	</vlist>
+	<comment>
+	  <value>A gap represented by the letter 'O' in the data matrix is always treated as a character state in its own right (fifth state). lvb can treat gaps represented by
+'-' in either of the following ways:</value>
+<value>
+Fifth state
+     '-' is treated as equivalent to 'O'. </value>
+<value>
+Unknown
+     '-' is treated as equivalent to '?', i.e., as an ambiguous site that may contain 'A' or 'C' or 'G' or 'T' or 'O'. </value>
+<value>
+'Fifth state' may give excessive weight to multi-site gaps, since each affected base will be counted as one event.</value>
+	</comment>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="0" type="Integer">
+      <name>seed</name>
+      <attributes>
+	<prompt>Seed for the random number generator (seed)</prompt>
+	<group>3</group>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? "$value\\n" : "\\n"</code>
+	</format>
+	<comment>
+	  <value>When prompted for the random number seed, enter an
+integer in the range 0 to 900000000 inclusive. The default value is
+taken from the system clock and hence will vary from one analysis to
+the next, changing every second. The default is usually 
+appropriate.</value>
+	</comment>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Excl">
+      <name>duration</name>
+      <attributes>
+	<prompt>Duration of the analysis FAST or SLOW</prompt>
+	<group>4</group>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>F</value></vdef>
+	<vlist>
+	  <value>F</value>
+	  <label>FAST</label>
+	  <value>S</value>
+	  <label>SLOW</label>
+	</vlist>
+	<comment>
+	  <value>Please choose the duration of the analysis.
+If the data matrix contains a large number of sequences, a SLOW analysis
+might find a shorter tree.</value>
+	</comment>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" type="Integer">
+      <name>bootstrap</name>
+      <attributes>
+	<prompt>How many bootstrap replicates required (bootstrap)</prompt>
+	<group>5</group>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<ctrls>
+	  <ctrl>
+	    <message>this server allows no more than 1000 replicates</message>
+	    <language>perl</language>
+	    <code>$bootstrap &gt; 1000</code>
+	  </ctrl>
+	</ctrls>
+	<comment>
+	  <value>Number of bootstrap replicates required
+as an integer in the range 1 to 1000 inclusive,
+or 0 for no bootstrapping (this server allows no more than
+1000 replicates)</value>
+	</comment>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+       <name>res</name>
+      <attributes>
+	<filenames>outtree</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>other_results</name>
+      <attributes>
+	<filenames>stat* sum log data ini*</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

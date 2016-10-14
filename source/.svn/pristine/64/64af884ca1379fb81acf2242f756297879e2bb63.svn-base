@@ -1,0 +1,13 @@
+/tmp/20150315T05:10:53-cipres-5034.gramauditGateway user attribute (pycipres_eu@yahoo.com) submitted for job 2541836.trestles-fe1.local.
+
+job status updated.
+Job Id: 2541836.trestles-fe1.local
+    Job_Name = NGBW-JOB-RAXMLHPC2_WORKFLOW-155BAD35C64F47939491207FB69FC3C5
+    Job_Owner = cipres@trestles-login2.local
+    resources_used.cput = 00:00:00
+    resources_used.mem = 20556kb
+    resources_used.vmem = 291852kb
+    resources_used.walltime = 00:10:03
+
+job status updated.
+Nodes:        trestles-11-31

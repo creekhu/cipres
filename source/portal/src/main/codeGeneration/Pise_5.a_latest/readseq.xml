@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>READSEQ</title>
+    <authors>D. Gilbert</authors>
+    <category>format</category>
+  </head>
+
+  <command>readseq</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>readseq</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>readseq</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>seq</name>
+      <attributes>
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<vdef><value>"readseq.out"</value></vdef>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>outformat</name>
+      <attributes>
+	<prompt>Output Sequence Format</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -f$value"</code>
+	</format>
+	<vdef><value>8</value></vdef>
+	<group>3</group>
+	<vlist>
+	  <value>1</value>
+	  <label>1. IG/Stanford</label>
+	  <value>2</value>
+	  <label>2. GenBank/GB</label>
+	  <value>3</value>
+	  <label>3. NBRF</label>
+	  <value>4</value>
+	  <label>4. EMBL</label>
+	  <value>5</value>
+	  <label>5. GCG</label>
+	  <value>6</value>
+	  <label>6. DNAStrider</label>
+	  <value>7</value>
+	  <label>7. Fitch</label>
+	  <value>8</value>
+	  <label>8. Pearson/Fasta</label>
+	  <value>9</value>
+	  <label>9. Zuker</label>
+	  <value>10</value>
+	  <label>10. Olsen (in-only)</label>
+	  <value>11</value>
+	  <label>11. Phylip3.2</label>
+	  <value>12</value>
+	  <label>12. Phylip</label>
+	  <value>13</value>
+	  <label>13. Plain/Raw</label>
+	  <value>14</value>
+	  <label>14. PIR/CODATA</label>
+	  <value>15</value>
+	  <label>15. MSF</label>
+	  <value>16</value>
+	  <label>16. ASN.1</label>
+	  <value>17</value>
+	  <label>17. PAUP</label>
+	  <value>18</value>
+	  <label>18. Pretty (out-only)</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>select</name>
+	<prompt>Selection parameters</prompt>
+	<parameters>
+	  
+	  <parameter type="String">
+	    <name>items</name>
+	    <attributes>
+	      <prompt>select Item number(s) from several</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " \\-i" . join(",",split(/[,\\s]/,$value))  : "" </code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="Switch">
+      <name>allseq</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> (! $items)? " -a":""</code>
+	</format>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>lowcase</name>
+	    <attributes>
+	      <prompt>Change to lower case (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -c":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>uppcase</name>
+	    <attributes>
+	      <prompt>Change to UPPER case (-C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -C":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>degap</name>
+	    <attributes>
+	      <prompt>Remove gap symbols (-degap)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -degap":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>reverse</name>
+	    <attributes>
+	      <prompt>Change to Reverse-complement (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -r":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>listonly</name>
+	    <attributes>
+	      <prompt>List sequences only (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -l":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>pretty</name>
+	<prompt>Pretty format (18) parameters</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>width</name>
+	    <attributes>
+	      <prompt>Sequence line width (-width)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)?" -width=$value":""</code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>tab</name>
+	    <attributes>
+	      <prompt>Left indent (-tab)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)?" -tab=$value":""</code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>col</name>
+	    <attributes>
+	      <prompt>Column space within sequence line on output (-col)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)?" -col=$value":""</code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>gap</name>
+	    <attributes>
+	      <prompt>Count gap chars in sequence numbers (-gap)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)? " -gap" : "" </code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>nameleft</name>
+	    <attributes>
+	      <prompt>Name on left/right side</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -name$value" : "" </code>
+	      </format>
+	      <group>3</group>
+	      <vlist>
+		<value>left</value>
+		<label>left</label>
+		<value>right</value>
+		<label>right</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>nametop</name>
+	    <attributes>
+	      <prompt>Name at top (-nametop)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -nametop" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>numleft</name>
+	    <attributes>
+	      <prompt>Sequence index on left/right side</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -num$value" : "" </code>
+	      </format>
+	      <group>3</group>
+	      <vlist>
+		<value>left</value>
+		<label>left</label>
+		<value>right</value>
+		<label>right</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>numtop</name>
+	    <attributes>
+	      <prompt>Index on top/bottom</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -num$value" : "" </code>
+	      </format>
+	      <group>3</group>
+	      <vlist>
+		<value>top</value>
+		<label>top</label>
+		<value>bot</value>
+		<label>bottom</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>match</name>
+	    <attributes>
+	      <prompt>Use match base (.) for 2..n species (-match)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -match=." : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>interline</name>
+	    <attributes>
+	      <prompt>How many blank line(s) between sequence blocks</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)?" -inter=$value":""</code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>DCA</title>
+    <version>1.1</version>
+    <description>Divide-and-Conquer Multiple Sequence Alignment</description>
+    <authors>J. Stoye</authors>
+	<reference>A.W.M. Dress, G. Füllen, S.W. Perrey, A Divide and Conquer Approach to Multiple Alignment, Proceedings of the Third International Conference on Intelligent Systems for Molecular Biology (ISMB 95), AAAI Press, Menlo Park, CA, USA, 107-113, 1995.</reference>
+	<reference>J. Stoye, Multiple Sequence Alignment with the Divide-and-Conquer Method, Gene 211(2), GC45-GC56, 1998. (Gene-COMBIS)</reference>
+    <category>alignment:multiple</category>
+  </head>
+
+
+  <command>dca</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>dca</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"dca"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+        <seqfmt>
+          <value>8</value>
+        </seqfmt>
+	<group>100</group>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+
+	<filenames>dca.out</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>$suppress_output &amp;&amp; ($output_format eq "2" || $output_format eq "3") </code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control parameters</prompt>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>cost</name>
+	    <attributes>
+	      <prompt>Cost matrix (default: depends on sequences) (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c $value" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <vlist>
+		<value>blosum30</value>
+		<label>blosum30</label>
+		<value>blosum45</value>
+		<label>blosum45</label>
+		<value>blosum62</value>
+		<label>blosum62</label>
+		<value>pam160</value>
+		<label>pam160</label>
+		<value>pam250</value>
+		<label>pam250</label>
+		<value>unitcost</value>
+		<label>unitcost</label>
+		<value>dna</value>
+		<label>dna</label>
+		<value>rna</value>
+		<label>rna</label>
+		<value>dnarna</value>
+		<label>dnarna</label>
+	      </vlist>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gaps</name>
+	    <attributes>
+
+	      <prompt>Penalize end gaps as internal gaps (default: free shift) (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -g":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>approximate</name>
+	    <attributes>
+
+	      <prompt>Use approximate cut positions (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -a":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>On: FastDCA (use approximate cut positions); Off: slower, more accurate algorithm (search for eaxct cut positions)</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>intensity</name>
+	    <attributes>
+
+	      <prompt>Weight intensity (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value &amp;&amp; $value != $vdef)? " -b $value" : "" </code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>1</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Weight intensity must be &gt;= 0.0 and &lt;= 1.0</message>
+		  <language>perl</language>
+		  <code>$intensity &lt; 0.0 || $intensity &gt; 1.0</code>
+		</ctrl>
+	      </ctrls>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>recursion</name>
+	    <attributes>
+
+	      <prompt>Recursion stop size (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value != $vdef)? " -l $value" : "" </code>
+	      </format>
+	      <vdef><value>30</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>5 ... 100 recommended; small: faster algorithm, maybe worse.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>window</name>
+	    <attributes>
+
+	      <prompt>Window size (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value != $vdef)? " -w $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>To correct the alignment in the proximity of division sites, the sequences can be re-aligned inside a window of size w &gt;= 0 placed across each slicing site.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+
+	  <parameter ishidden="1" type="Switch">
+	    <name>quiet</name>
+	    <attributes>
+
+	      <format>
+		<language>perl</language>
+		<code>" -q"</code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>output_format</name>
+	    <attributes>
+
+	      <prompt>Output format (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -f $value" : "" </code>
+	      </format>
+	      <vdef><value>2</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>1</value>
+		<label>1 (aln)</label>
+		<value>2</value>
+		<label>2 (fasta)</label>
+		<value>3</value>
+		<label>3 (nex)</label>
+		<value>4</value>
+		<label>4 (dca)</label>
+	      </vlist>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>suppress_output</name>
+	    <attributes>
+
+	      <prompt>Suppress output about progress of the program (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -o":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+
+  </parameters>
+</pise>

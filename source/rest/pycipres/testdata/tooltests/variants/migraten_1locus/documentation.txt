@@ -1,0 +1,6 @@
+Migrate N, simple interface 
+
+infile_
+choose_paramfile_ required, but not input
+runtime_, float default = 0.5
+num_loci_, integer, required, no default.

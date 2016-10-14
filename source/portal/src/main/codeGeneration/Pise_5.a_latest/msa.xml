@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>MSA</title>
+    <version>2.1</version>
+    <description>multiple sequence alignment</description>
+    <authors>S. F. Altschul</authors>
+  </head>
+  
+  <command>msa</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>msa</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"msa"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seqs</name>
+      <attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control parameters</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>optimal</name>
+	    <attributes>
+
+	      <prompt>Turns off the optimal multiple alignment</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>forcedres</name>
+	    <attributes>
+
+	      <prompt>forced aligned residues file (see the documentation)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -f $value" : "" </code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>Cost</name>
+	<prompt>Cost parameters</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>endgap</name>
+	    <attributes>
+
+	      <prompt>charges terminal gaps the same as internal gaps</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -g":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>unweight</name>
+	    <attributes>
+
+	      <prompt>cost = unweighted sum</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -b":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>maxscore</name>
+	    <attributes>
+
+	      <prompt>maximum score of an optimal multiple alignment</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)? " -d$value" : ""</code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>epsilons</name>
+	    <attributes>
+
+	      <prompt>Epsilons file (see the documentation)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -e $value" : "" </code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>costs</name>
+	    <attributes>
+
+	      <prompt>Costs file (see the documentation)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c $value" : "" </code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>quiet</name>
+	    <attributes>
+
+	      <prompt>suppress verbose output</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -o":""</code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>MSBAR</title>
+<description>Mutate sequence beyond all recognition (EMBOSS)</description>
+<category>nucleic:mutation</category>
+<category>protein:mutation</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/msbar.html</doclink>
+</head>
+
+<command>msbar</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- any [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>count</name>
+	<attributes>
+		<prompt>Number of times to perform the mutation operations (-count)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -count=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>point</name>
+	<attributes>
+		<prompt>Types of point mutations to perform -- Point mutation operations [select  values] (-point)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>None</label>
+				<value>1</value>
+				<label>Any of the following</label>
+				<value>2</value>
+				<label>Insertions</label>
+				<value>3</value>
+				<label>Deletions</label>
+				<value>4</value>
+				<label>Changes</label>
+				<value>5</value>
+				<label>Duplications</label>
+				<value>6</value>
+				<label>Moves</label>
+			</vlist>
+			<separator>,</separator>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -point=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>block</name>
+	<attributes>
+		<prompt>Types of block mutations to perform -- Block mutation operations [select  values] (-block)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>None</label>
+				<value>1</value>
+				<label>Any of the following</label>
+				<value>2</value>
+				<label>Insertions</label>
+				<value>3</value>
+				<label>Deletions</label>
+				<value>4</value>
+				<label>Changes</label>
+				<value>5</value>
+				<label>Duplications</label>
+				<value>6</value>
+				<label>Moves</label>
+			</vlist>
+			<separator>,</separator>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -block=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>inframe</name>
+	<attributes>
+		<prompt>Do 'codon' and 'block' operations in frame (-inframe)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -inframe" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>codon</name>
+	<attributes>
+		<prompt>Types of codon mutations to perform -- Codon mutation operations [select  values] (-codon)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>None</label>
+				<value>1</value>
+				<label>Any of the following</label>
+				<value>2</value>
+				<label>Insertions</label>
+				<value>3</value>
+				<label>Deletions</label>
+				<value>4</value>
+				<label>Changes</label>
+				<value>5</value>
+				<label>Duplications</label>
+				<value>6</value>
+				<label>Moves</label>
+			</vlist>
+			<separator>,</separator>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(acdprotein))</code>
+			</precond>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -codon=$value"</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>Types of codon mutations to perform. These are only done if the sequence is nucleic.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>minimum</name>
+	<attributes>
+		<prompt>Minimum size for a block mutation (-minimum)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -minimum=$value" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>maximum</name>
+	<attributes>
+		<prompt>Maximum size for a block mutation (-maximum)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -maximum=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<scalemin>
+			<language>acd</language>
+			<code>$minimum</code>
+		</scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Sequence" ismandatory="0" issimple="0" ishidden="0">
+	<name>othersequence</name>
+	<attributes>
+		<prompt>Other sequences that the mutated result should not match (-othersequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -othersequence=$value -sformat=fasta" : ""</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>If you require that the resulting mutated sequence should not match a set of other sequences, then you can specify that set of sequences here. For example, if you require that the mutated sequence should not be the same as the input sequence, enter the input sequence here. If you want the result to be different to previous results of this program, specify the previous result sequences here. The program will check that the result does not match the sequences specified here before writing it out. If a match is found, then the mutation is started again with a fresh copy of the input sequence. If, after 10 such retries, there is still a match to the set of sequence given here, then the matching mutated sequence is written with a warning message.</value>
+		</comment>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>10</group>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>12</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

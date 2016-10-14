@@ -1,0 +1,1 @@
+raxmlHPC-HYBRID -s infile.txt -p 12345 -m PROTGAMMABLOSUM62F -k -O -f d -N 10 -n infile.tre    && type RAxML_result.infile.tre* > combined_results.infile.tre

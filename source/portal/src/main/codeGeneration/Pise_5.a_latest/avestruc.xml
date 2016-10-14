@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>avestruc</description>
+    <authors>Russel, Barton</authors>
+  </head>
+
+  <command>avestruc</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>avestruc</name>
+      <attributes>
+	<format>
+	  <language>seqlab</language>
+	  <code>avestruc</code>
+	  <language>perl</language>
+	  <code>"avestruc"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>aligfile</name>
+      <attributes>
+	<prompt>Alignment file produced by stamp (-f)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -f $value"</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>This must be a STAMP alignment file, containing both transformations and a sequence alignment. It will not work on transformation files lacking sequence alignment data or STAMP data. </value>
+	</comment>
+	<pipe>
+	  <pipetype>stamp_alig_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>average</name>
+      <attributes>
+	<filenames>average.pdb</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>polyA</name>
+      <attributes>
+	<prompt>Generate polyalanine model (the default is a C alpha model) (-polyA)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -polyA" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="String">
+      <name>stamp_char</name>
+      <attributes>
+	<prompt>STAMP char (-c)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value &amp;&amp; $value ne $vdef)? " -c $value" : ""</code>
+	</format>
+	<vdef><value>G</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value>STAMP char is the label of the STAMP field specified by the `#' character in the alignment file.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Float">
+      <name>threshold</name>
+      <attributes>
+	<prompt>Threshold (-t)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -t $value" : ""</code>
+	</format>
+	<vdef><value>6.0</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value>threshold is the minimum (or maximum in the case of RMS deviation) value of the specified STAMP parameter tolerated.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>window</name>
+      <attributes>
+	<prompt>Window (-w)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -w $value" : ""</code>
+	</format>
+	<vdef><value>3</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value>Tells the minimum number of residues over which this must be true for structural equivalence.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>aligned</name>
+      <attributes>
+	<prompt>Averaged position for all positions structures are present at a position (-aligned)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -aligned" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>ident</name>
+      <attributes>
+	<prompt>Name residues as a single amino acid type (-ident)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -ident" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>cons</name>
+      <attributes>
+	<prompt>Name residues as a conserved type (-cons)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -cons" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

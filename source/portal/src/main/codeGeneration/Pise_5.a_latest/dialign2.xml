@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>DIALIGN</title>
+    <version>2.1</version>
+    <description>DNA and protein sequence alignment based on segment-to-segment comparison</description>
+    <category>alignment:multiple</category>
+    <authors>Morgenstern, Dress, Werner</authors>
+    <reference>B. Morgenstern (1999). DIALIGN 2: improvement of the segment-to-segment approach to multiple sequence alignment. Bioinformatics 15, 211 - 218.</reference>
+  </head>
+
+  <command>dialign2</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>dialign2</name>
+      <attributes>
+	<format>
+	  <language>seqlab</language>
+	  <code>dialign2</code>
+	  <language>perl</language>
+	  <code>"dialign2"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence</name>
+      <attributes>
+	<prompt>Sequences</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value" </code>
+	</format>
+	<group>100</group>
+	<comment>
+	  <value>Give here the sequences you want to align (you can give more than 2 sequences). The FASTA format is accepted - example:</value>
+	  <value>&gt;name1</value>
+	  <value>TACTTTACCCAGTAGTCATGTACAGAGT</value>
+	  <value>ACCGCCTCAATAAAAAGCCTAAGAGTCA</value>
+	  <value>&gt;name2</value>
+	  <value>CCCATATGTGTAGAAGTTGCCTCGAGTG</value>
+	  <value>TTTACGCGGGGGCGGGCATTCTTTAAAC</value>
+	  <value>CACGCGGGGGATATTGCGAAACACCCAT</value>
+	  <value>GAGAGAGGGGGGAATGCCCCGTA</value>
+	  <value>&gt;name3</value>
+	  <value>ACCTACTCTCCCCCCCCTTTTCCCAACT</value>
+	  <value>ATCTAATCTATTTYCAGGGCGTGGACGG</value>
+	  <value>GGGGG</value>
+	</comment>
+	<seqfmt>
+	  <value>1</value>
+	  <value>8</value>
+	  <value>4</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>protein_dna</name>
+      <attributes>
+
+	<prompt>Nucleic acid or protein alignment</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value eq "n")? " -n" : "" </code>
+	</format>
+	<vdef><value>p</value></vdef>
+	<group>3</group>
+	<vlist>
+	  <value>p</value>
+	  <label>p: protein</label>
+	  <value>n</value>
+	  <label>n: nucleic</label>
+	</vlist>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>dialign_opt</name>
+	<prompt>Others options</prompt>
+	<group>7</group>
+	<parameters>
+
+	  <parameter type="Float">
+	    <name>threshold</name>
+	    <attributes>
+
+	      <prompt>Threshold</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -thr $value" : "" </code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>7</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>translation</name>
+	    <attributes>
+
+	      <prompt>Translation of nucleotide diagonals into peptide diagonals (DNA)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($protein_dna eq "n" &amp;&amp; $value)? "t" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>max_simil</name>
+	    <attributes>
+
+	      <prompt>Maximum number of * characters representing degree similarity</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -stars $value" : "" </code>
+	      </format>
+	      <vdef><value>5</value></vdef>
+	      <group>7</group>
+	      <comment>
+		<value>The number of `*' characters below the alignment reflects the degree of local similarity among sequences. More precisely: They represent the sum of `weights' of diagonals connecting residues at the respective position.</value>
+		<value>The number of `*' characters is normalized such that regions of maximum similarity have N `*' characters per column. N can be specified by the user. By default, N = 5. Note that the number of `*' characters depicts therelative degree of similarity within an alignment, since in every alignment, the region of maximum similarity gets N `*' characters.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<group>7</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>fasta</name>
+	    <attributes>
+
+	      <prompt>Alignment in fasta format</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -fa" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>7</group>
+	      <comment>
+		<value>Be aware that only upper-case letters are regarded to be aligned in fasta output file.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Results">
+      <name>ali</name>
+      <attributes>
+
+	<filenames>*.ali *.fa</filenames>
+
+      </attributes>
+    </parameter>
+
+
+  </parameters>
+</pise>

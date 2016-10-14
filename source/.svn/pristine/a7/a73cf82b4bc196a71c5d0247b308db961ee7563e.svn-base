@@ -1,0 +1,8 @@
+toolId = RAXMLHPC2_TGB
+vparam.runtime_=0.50
+vparam.bootstrap_seed_val_=698
+vparam.dna_gtrcat_=GTRGAMMA
+vparam.parsimony_seed_val_=786
+vparam.specify_bootstrap_=0
+vparam.use_bootstopping=1
+vparam.outsuffix_ = runname.tre

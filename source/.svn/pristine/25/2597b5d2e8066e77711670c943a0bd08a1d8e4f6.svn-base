@@ -1,0 +1,41 @@
+DPPDIV
+
+command line this example:
+
+<dppdiv-pthreads -T 16 -in infile.txt> this is hard wired
+
+-tre tree.tre (user supplied tree)
+
+-n 10000 -pf 100 -sf 100 -out fun -pm 3.0 -ra 2.0 -rb 4.0 -hsh 2.0 -s1 12345 -s2 12345   
+upload_calfile_ is an optional Upload node calibrations file (optional)    
+
+this test passes
+
+this run is produced by this set of instructions:
+
+
+dpm_hyperprior_=0  (switch 0/1 default=0) requires uploaded cal file
+gamma_hyperpriorshape_=2.0  float Shape for gamma hyper prior on alpha concentration parameter(-hsh
+gamma_hyperpriorscale_= float Scale for gamma hyper prior on alpha concentration parameter (-hsc
+gamma_omrates_=4.0 float Scale for gamma om rates (-rb) vder=4.0
+gamma_shape_=2.0 float Shape for gamma on rates (-ra)
+hyperprior_oncal_=0 switch 0/1 (Hyperprior on calibrations from a gamma- (-ghp) ndefault = 0 requires uploaded cal file
+input_branchlengths_=0  switch 0/1 Use input branch lengths (-ubl) default = 0
+mcmc_cycles_=1000000 integer default 1,000,000
+npr_value_=3 excl, 1,2,3,4 allowed values, 	1=Uniform;2=Yule;3=cbd,4=cbd fix
+offset_exponential_=0 switch 0/1 (All calibrated nodes are offset exponential (-exhp) default=0) requires uploaded cal file
+outfile_prefix_=fun  string Output file prefix
+print_freq_=100  integer Print frequency default=100
+print_moves_=0 >Print moves to .info.out file (-vb) default=0
+prior_mean_=3.0 float Prior mean of number of rate categories (-pme_ext_= float (Relative Extinction Rate (-bda ))default is null
+ro_nodemove_=0 switch 0/1 Use random-order node moves (-rdn)dfault0
+run_uncorrelated_=0   Run under uncorrelated gamma-distributed rates (-urg) default 0
+runtime_=0.25 float default =0.25
+sample_frequency_=100 integer Sample frequency default 100
+starting_val_diverserate_= float starting_val_diverserate default is null
+seed1_=12345 integer
+seed2_=12345 integer 
+single_nodemove_=0 switch 0/1 Use single node move (-snm)
+soft_bounds_=0 switch 0/1 (Turn on soft bounds on calibrated nodes (-soft default 0) requires uploaded cal file
+strict_clock_=0 Run under strict clock (and estimate substitution rate) (-clok default 0)
+turnoff_move_=0 excl, 1,2,3,4,5,6 Turn off this move

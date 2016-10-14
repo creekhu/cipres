@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SIXPACK</title>
+<description>Display a DNA sequence with 6-frame translation and ORFs (EMBOSS)</description>
+<category>display</category>
+<category>nucleic:gene finding</category>
+<category>nucleic:translation</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/sixpack.html</doclink>
+</head>
+
+<command>sixpack</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- DNA [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>table</name>
+	<attributes>
+		<prompt>Code to use -- Genetic codes (-table)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Standard</label>
+				<value>1</value>
+				<label>Standard (with alternative initiation codons)</label>
+				<value>2</value>
+				<label>Vertebrate Mitochondrial</label>
+				<value>3</value>
+				<label>Yeast Mitochondrial</label>
+				<value>4</value>
+				<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+				<value>5</value>
+				<label>Invertebrate Mitochondrial</label>
+				<value>6</value>
+				<label>Ciliate Macronuclear and Dasycladacean</label>
+				<value>9</value>
+				<label>Echinoderm Mitochondrial</label>
+				<value>10</value>
+				<label>Euplotid Nuclear</label>
+				<value>11</value>
+				<label>Bacterial</label>
+				<value>12</value>
+				<label>Alternative Yeast Nuclear</label>
+				<value>13</value>
+				<label>Ascidian Mitochondrial</label>
+				<value>14</value>
+				<label>Flatworm Mitochondrial</label>
+				<value>15</value>
+				<label>Blepharisma Macronuclear</label>
+				<value>16</value>
+				<label>Chlorophycean Mitochondrial</label>
+				<value>21</value>
+				<label>Trematode Mitochondrial</label>
+				<value>22</value>
+				<label>Scenedesmus obliquus</label>
+				<value>23</value>
+				<label>Thraustochytrium Mitochondrial</label>
+			</vlist>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -table=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Genetics code used for the translation</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>firstorf</name>
+	<attributes>
+		<prompt>ORF at the beginning of the sequence (-firstorf)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nofirstorf"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>Count the beginning of a sequence as a possible ORF, even if it's inferior to the minimal ORF size.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>lastorf</name>
+	<attributes>
+		<prompt>ORF at the end of the sequence (-lastorf)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nolastorf"</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Count the end of a sequence as a possible ORF, even if it's not finishing with a STOP, or inferior to the minimal ORF size.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>mstart</name>
+	<attributes>
+		<prompt>ORF start with an M (-mstart)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -mstart" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Displays only ORFs starting with an M.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq -- stopprotein (-outseq)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -outseq=$value" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>ORF sequence output</value>
+		</comment>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="0">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq -- stopprotein</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>reverse</name>
+	<attributes>
+		<prompt>Display translation of reverse sense (-reverse)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noreverse"</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>Display also the translation of the DNA sequence in the 3 reverse frames</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>orfminsize</name>
+	<attributes>
+		<prompt>Minimum size of ORFs (-orfminsize)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -orfminsize=$value" : ""</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>Minimum size of Open Reading Frames (ORFs) to display in the translations.</value>
+		</comment>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>uppercase</name>
+	<attributes>
+		<prompt>Regions to put in uppercase (eg: 4-57,78-94) (-uppercase)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -uppercase=$value" : ""</code>
+		</format>
+		<group>11</group>
+		<comment>
+			<value>Regions to put in uppercase. &lt;BR&gt; If this is left blank, then the sequence case is left alone. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are separated by any non-digit, non-alpha character. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45, 56-78 &lt;BR&gt; 1:45, 67=99;765..888 &lt;BR&gt; 1,5,8,10,23,45,57,99</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>highlight</name>
+	<attributes>
+		<prompt>Regions to colour in HTML (eg: 4-57 red 78-94 green) (-highlight)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -highlight=$value" : ""</code>
+		</format>
+		<group>12</group>
+		<comment>
+			<value>Regions to colour if formatting for HTML. &lt;BR&gt; If this is left blank, then the sequence is left alone. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are followed by any valid HTML font colour. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45 blue 56-78 orange &lt;BR&gt; 1-100 green 120-156 red &lt;BR&gt; A file of ranges to colour (one range per line) can be specifed as '\@filename'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>number</name>
+	<attributes>
+		<prompt>Number the sequences (-number)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nonumber"</code>
+		</format>
+		<group>13</group>
+		<comment>
+			<value>Number the sequence at the beginning and the end of each line.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>width</name>
+	<attributes>
+		<prompt>Width of sequence to display (-width)</prompt>
+		<vdef>
+			<value>60</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -width=$value" : ""</code>
+		</format>
+		<group>14</group>
+		<comment>
+			<value>Number of nucleotides displayed on each line</value>
+		</comment>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>length</name>
+	<attributes>
+		<prompt>Line length of page (0 for indefinite) (-length)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -length=$value" : ""</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>margin</name>
+	<attributes>
+		<prompt>Margin around sequence for numbering. (-margin)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -margin=$value" : ""</code>
+		</format>
+		<group>16</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Display sequence ID (-name)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noname"</code>
+		</format>
+		<group>17</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the ID name of the sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>description</name>
+	<attributes>
+		<prompt>Display description (-description)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nodescription"</code>
+		</format>
+		<group>18</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the description of the sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>offset</name>
+	<attributes>
+		<prompt>Offset to start numbering the sequence from (-offset)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -offset=$value" : ""</code>
+		</format>
+		<group>19</group>
+		<comment>
+			<value>Number from which you want the DNA sequence to be numbered.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Use HTML formatting (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>20</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>21</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY nucdbs SYSTEM "XMLDIR/nucdbs.xml">
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>GIBBS</title>
+    <description>scan a database with a sampled motif</description>
+    <authors>Neuwald, Lawrence</authors>
+  </head>
+
+
+<command>gibbs_scan</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>gibbs_scan</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"/local/gensoft/bin/scan "</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>motif_file</name>
+<attributes>
+
+	<prompt>Motif scan file (file.sn)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>gibbs_motif</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>db</name>
+<attributes>
+
+	<prompt>Database</prompt>
+	<format>
+		<language>perl</language>
+		<code> " /local/gensoft/lib/gibbs/db/$value" </code>
+	</format>
+	<vdef><value>nrprot</value></vdef>
+	&protdbs;
+	&nucdbs;
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control_options</name>
+<prompt>Control options</prompt>
+<group>4</group>
+<parameters>
+
+	<parameter type="Float">
+	<name>e_value</name>
+	<attributes>
+
+		<prompt>Maximum E-value detected (-e)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -e$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>p_value</name>
+	<attributes>
+
+		<prompt>Minimum -log10(P-value) required for each motif (-E)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -E$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>repeats</name>
+	<attributes>
+
+		<prompt>Scan for repeats (-r)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -r" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>max_repeats</name>
+	<attributes>
+
+		<prompt>Maximum number of repeats per sequence (-M)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -M$value" : ""</code>
+		</format>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code>$repeats</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>min_repeats</name>
+	<attributes>
+
+		<prompt>Minimum number of repeats per sequence (-m)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -m$value" : ""</code>
+		</format>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code>$repeats</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>order</name>
+	<attributes>
+
+		<prompt>Require motifs to be in correct order (-o)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -o" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>product</name>
+	<attributes>
+
+		<prompt>Use product multinomial model instead of Gribskov method (-P)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -P" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>pseudo_count</name>
+	<attributes>
+
+		<prompt>Pseudo counts for product multinomial model (-p)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -p$value" : ""</code>
+		</format>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code>$product</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>shuffle</name>
+	<attributes>
+
+		<prompt>Shuffle input sequences (-S)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -S" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>seed</name>
+	<attributes>
+
+		<prompt>Seed for random number generator (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -s$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>mask</name>
+	<attributes>
+
+		<prompt>Mask out sequence regions...</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " $value" : ""</code>
+		</format>
+		<group>4</group>
+		<vlist>
+			<value>-X</value>
+			<label>-X: ... NOT matching motif(s)</label>
+			<value>-x</value>
+			<label>-x: ... matching motif(s)</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>heap</name>
+	<attributes>
+
+		<prompt>Size of heap for saving sequences (-h)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -h$value" : ""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_options</name>
+<prompt>Output options</prompt>
+<group>4</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>seqfile</name>
+	<attributes>
+
+		<prompt>Create sequence file for output (-c)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -c" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

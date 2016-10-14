@@ -1,0 +1,9 @@
+DROP INDEX SD_SIGNATURE_INDEX ON source_documents;
+ALTER TABLE source_documents ADD UNIQUE KEY (SIGNATURE);
+ALTER TABLE task_input_parameters ADD FOREIGN KEY (TASK_ID) REFERENCES tasks (TASK_ID);
+ALTER TABLE task_input_source_documents ADD FOREIGN KEY (INPUT_ID) REFERENCES task_input_parameters (INPUT_ID);
+ALTER TABLE task_input_source_documents ADD FOREIGN KEY (SOURCE_DOCUMENT_ID) REFERENCES source_documents (SOURCE_DOCUMENT_ID);
+ALTER TABLE task_output_parameters ADD FOREIGN KEY (TASK_ID) REFERENCES tasks (TASK_ID);
+ALTER TABLE task_output_source_documents ADD FOREIGN KEY (OUTPUT_ID) REFERENCES task_output_parameters (OUTPUT_ID);
+ALTER TABLE task_output_source_documents ADD FOREIGN KEY (SOURCE_DOCUMENT_ID) REFERENCES source_documents (SOURCE_DOCUMENT_ID);
+ALTER TABLE userdata ADD FOREIGN KEY (SOURCE_DOCUMENT_ID) REFERENCES source_documents (SOURCE_DOCUMENT_ID);

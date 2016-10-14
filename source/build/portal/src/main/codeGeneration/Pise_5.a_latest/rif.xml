@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Ca MLST</title>
+    <description>NCBI BLAST for RIF Web site</description>
+    <authors>Altschul, Madden, Schaeffer, Zhang, Miller, Lipman</authors>
+    <reference>Altschul, Stephen F., Thomas L. Madden, Alejandro A. Schaeffer,Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), Gapped BLAST and PSI-BLAST: a new generation of protein database search programs,  Nucleic Acids Res. 25:3389-3402.</reference>
+    <doclink>http://www.pasteur.fr/recherche/unites/RIF/private/</doclink>
+  </head>
+  
+
+  <command>rif</command>
+  
+  <parameters>
+    
+    <parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+      <name>rif</name>
+      <attributes>
+	
+	<prompt>Blast program</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"blastall -p $value "</code>
+	</format>
+	<vdef><value>blastp</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>blastn</value>
+	  <label>blastn: nucleotide query / nucleotide db</label>
+	  <value>tblastn</value>
+	  <label>tblastn: protein query / translated nucleotide db</label>
+	  <value>tblastx</value>
+	  <label>tblastx: nucleotide query transl. / transl. nucleotide db</label>
+	</vlist>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="Integer">
+      <name>nb_proc</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>" -a 2"</code>
+	</format>
+	<group>6</group>
+	<precond>
+	  <language>perl</language>
+	  <code>! $psi</code>
+	</precond>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -i $query" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" ishidden="1" type="String">
+      <name>nucleotid_db</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code> " -d camlst" </code>
+	</format>
+	<group>3</group>
+	<precond>
+	  <language>perl</language>
+	  <code>($rif =~ /^blastn|^tblastn|^tblastx/)  </code>
+	</precond>	
+	
+      </attributes>
+</parameter>
+    
+    <parameter issimple="1" type="Integer">
+      <name>Expect</name>
+      <attributes>
+	
+	<prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (-e)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -e $value":""</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<group>5</group>
+	<comment>
+	  <value>The statistical significance threshold for reporting matches against database sequences; the default value is 10, such that 10 matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical significance ascribed to a match is greater than the EXPECT threshold, the match will not be reported. Lower EXPECT thresholds are more stringent, leading to fewer chance matches being reported. Fractional values are acceptable. </value>
+	</comment>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="String" ishidden="1">
+      <name>filter</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -F F -T F"</code>
+	</format>
+	<group>5</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>txtoutput</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code> " &gt; rif.txt" </code>
+	</format>
+	<group>7</group>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="Switch">
+      <name>htmloutput</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>($_html) &amp;&amp; ($view_alignments ne "7")</code>
+	</precond>
+	<format>
+	  <language>perl</language>
+	  <code> " &amp;&amp; html4blast -o rif.html -s -g rif.txt" </code>
+	</format>
+	<group>8</group>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>tmp_outfile</name>
+      <attributes>
+	
+	<filenames>rif.txt</filenames>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>$view_alignments ne "7"</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>htmlfile</name>
+      <attributes>
+	
+	<filenames>rif.html</filenames>
+	
+      </attributes>
+    </parameter>
+
+    
+  </parameters>
+</pise>

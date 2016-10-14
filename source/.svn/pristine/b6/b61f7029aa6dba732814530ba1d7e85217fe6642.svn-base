@@ -1,0 +1,1589 @@
+# tfasty -q query.fasta /isilon/ngbw/8ball/FASTA/GBHTC.fasta
+TFASTY compares a protein to a translated DNA data bank
+ version 34.26.5 April 26, 2007
+Please cite:
+ Pearson et al, Genomics (1997) 46:24-36
+
+Query library query.fasta vs /isilon/ngbw/8ball/FASTA/GBHTC.fasta library
+searching /isilon/ngbw/8ball/FASTA/GBHTC.fasta library
+
+  1>>>SQ SEQUENCE 357 AA; 40007 MW; 721EAC06CEE4 357 aa - 357 aa
+ vs  /isilon/ngbw/8ball/FASTA/GBHTC.fasta library
+
+       opt      E()
+< 20     0     0:
+  22     1     0:=          one = represents 721 library sequences
+  24     8     0:=
+  26    40    10:*
+  28   232   112:*
+  30  1091   680:*=
+  32  2894  2628:===*=
+  34  7241  7128:=========*=
+  36 14821 14639:====================*
+  38 23548 24193:=================================*
+  40 32216 33747:============================================= *
+  42 39646 41252:=======================================================  *
+  44 41959 45505:===========================================================*
+  46 42132 46347:===========================================================*
+  48 43221 44372:===========================================================*
+  50 41315 40490:========================================================*=
+  52 35367 35597:=================================================*
+  54 33652 30406:==========================================*====
+  56 25735 25399:===================================*
+  58 22566 20852:============================*===
+  60 18515 16891:=======================*==
+  62 18195 13542:==================*=======
+  64 11138 10770:==============*=
+  66  8908  8512:===========*=
+  68  6707  6695:=========*
+  70  5180  5247:=======*
+  72  4092  4100:=====*
+  74  2987  3197:====*
+  76  2851  2488:===*
+  78  1818  1934:==*
+  80  1435  1502:==*
+  82   893  1149:=*
+  84   714   910:=*
+  86   530   704:*
+  88   672   545:*          inset = represents 5 library sequences
+  90   329   422:*
+  92   203   326:*         :=======================================*
+  94   130   252:*         :==========================             *
+  96   145   195:*         :=============================         *
+  98    46   151:*         :==========                    *
+ 100    60   117:*         :============           *
+ 102    40    90:*         :========         *
+ 104    36    70:*         :========     *
+ 106    23    54:*         :=====     *
+ 108    26    42:*         :======  *
+ 110    12    32:*         :===   *
+ 112    17    25:*         :====*
+ 114    10    19:*         :== *
+ 116     6    15:*         :==*
+ 118     3    12:*         := *
+>120    68     9:*         :=*============
+567156411 residues in 493474 sequences
+ statistics sampled from 60000 to 493406 sequences
+  Expectation_n fit: rho(ln(x))= 5.4691+/-0.000145; mu= 4.5896+/- 0.010
+ mean_var=59.4255+/-11.746, 0's: 0 Z-trim: 7  B-trim: 2565 in 1/56
+ Lambda= 0.166375
+ Kolmogorov-Smirnov  statistic: 0.0234 (N=29) at  48
+
+TFASTY (3.5 Sept 2006) function [optimized, BL50 matrix (15:-5)] ktup: 2
+ join: 37, opt: 33, open/ext: -14/ -2 shift: -20, subs: -24 width:  16
+ Scan time: 135.810
+The best scores are:                             initn opt bits E(493474)
+ngbw|AB225984|GBHTC|Aspergillus oryza (1079) [f]  744  759 191.3 4.9e-47
+ngbw|AB224629|GBHTC|Aspergillus oryza ( 617) [f]  498  529 136.0 1.2e-30
+ngbw|DQ222519|GBHTC|Solanum tuberosum ( 969) [f]  562  521 134.2   7e-30
+ngbw|AK246586|GBHTC|Solanum lycopersi ( 980) [f]  500  512 132.0 3.2e-29
+ngbw|BX815873|GBHTC|Arabidopsis thali (1009) [f]  386  508 131.0 6.3e-29
+ngbw|AK246667|GBHTC|Solanum lycopersi (1045) [f]  548  508 131.0 6.5e-29
+ngbw|AY104492|GBHTC|Zea mays PCO10400 (1052) [f]  509  508 131.0 6.6e-29
+ngbw|BX841772|GBHTC|Arabidopsis thali ( 975) [f]  398  507 130.8 7.3e-29
+ngbw|BX827441|GBHTC|Arabidopsis thali (1300) [f]  379  508 131.1   8e-29
+ngbw|BX828016|GBHTC|Arabidopsis thali (1325) [f]  427  508 131.1 8.1e-29
+ngbw|BX827392|GBHTC|Arabidopsis thali (1363) [f]  427  508 131.1 8.3e-29
+ngbw|BX813944|GBHTC|Arabidopsis thali (1009) [f]  386  503 129.8 1.5e-28
+ngbw|BX816429|GBHTC|Arabidopsis thali (1032) [f]  386  503 129.8 1.5e-28
+ngbw|BX813948|GBHTC|Arabidopsis thali (1045) [f]  386  503 129.8 1.5e-28
+ngbw|BX829289|GBHTC|Arabidopsis thali (1260) [f]  372  500 129.2 2.9e-28
+ngbw|BX816810|GBHTC|Arabidopsis thali ( 972) [f]  386  497 128.4 3.8e-28
+ngbw|BX815009|GBHTC|Arabidopsis thali (1023) [f]  386  497 128.4   4e-28
+ngbw|BX815850|GBHTC|Arabidopsis thali ( 907) [f]  386  494 127.7 5.9e-28
+ngbw|BX815448|GBHTC|Arabidopsis thali ( 929) [f]  386  494 127.7   6e-28
+ngbw|BX828456|GBHTC|Arabidopsis thali (1259) [f]  374  492 127.2 1.1e-27
+ngbw|BX827243|GBHTC|Arabidopsis thali (1366) [f]  416  491 127.0 1.4e-27
+ngbw|BX814227|GBHTC|Arabidopsis thali ( 998) [f]  377  488 126.2 1.7e-27
+ngbw|BX828385|GBHTC|Arabidopsis thali (1439) [f]  414  485 125.6   4e-27
+ngbw|AY105926|GBHTC|Zea mays PCO13363 (1132) [f]  327  465 120.7   9e-26
+ngbw|BX817157|GBHTC|Arabidopsis thali (1033) [f]  351  463 120.2 1.2e-25
+ngbw|BX813996|GBHTC|Arabidopsis thali (1279) [f]  342  461 119.8   2e-25
+ngbw|AY109419|GBHTC|Zea mays CL26634_ (1373) [r]  501  456 118.6 4.8e-25
+ngbw|DQ442396|GBHTC|Striga asiatica c ( 459) [f]  338  414 108.4 1.9e-22
+ngbw|AY108540|GBHTC|Zea mays PCO13192 ( 924) [f]  303  408 107.0 9.8e-22
+ngbw|BX829108|GBHTC|Arabidopsis thali ( 840) [f]  240  352 93.6   1e-17
+ngbw|EF483875|GBHTC|Schizochytrium sp ( 655) [f]  291  349 92.8 1.3e-17
+ngbw|BX827318|GBHTC|Arabidopsis thali ( 895) [f]  398  339 90.5 9.2e-17
+ngbw|DQ122791|GBHTC|Medicago sativa c ( 498) [f]  250  251 69.3 1.2e-10
+ngbw|BX828485|GBHTC|Arabidopsis thali (2260) [f]  338  254 70.2   3e-10
+ngbw|DQ124021|GBHTC|Coffea arabica cl ( 221) [f]  164  187 53.8 2.5e-06
+ngbw|DQ218230|GBHTC|Gibberella monili ( 755) [f]   95  177 51.6   4e-05
+ngbw|BX828738|GBHTC|Arabidopsis thali (1114) [f]  263  167 49.2  0.0003
+ngbw|BX829197|GBHTC|Arabidopsis thali (1327) [f]  192  157 46.8  0.0019
+ngbw|EF051293|GBHTC|Gymnadenia conops (1230) [f]  156  140 42.7    0.03
+ngbw|EF483876|GBHTC|Schizochytrium sp ( 452) [f]  129  130 40.2   0.063
+ngbw|AY110822|GBHTC|Zea mays CL43760_ ( 638) [r]  110  130 40.3   0.086
+ngbw|BX814542|GBHTC|Arabidopsis thali ( 376) [f]   82  122 38.3     0.2
+ngbw|BX828399|GBHTC|Arabidopsis thali (1002) [f]  117  127 39.6    0.21
+ngbw|BX829004|GBHTC|Arabidopsis thali ( 972) [f]   70  123 38.6     0.4
+ngbw|BX827063|GBHTC|Arabidopsis thali (1125) [f]   70  123 38.6    0.46
+ngbw|AY105230|GBHTC|Zea mays PCO07295 ( 832) [f]   65  121 38.1    0.49
+ngbw|BX828807|GBHTC|Arabidopsis thali (1078) [f]  121  122 38.4    0.52
+ngbw|BX824254|GBHTC|Arabidopsis thali (1002) [f]  144  121 38.2    0.58
+ngbw|BX824486|GBHTC|Arabidopsis thali (1043) [f]  144  121 38.2     0.6
+ngbw|BX821022|GBHTC|Arabidopsis thali (1084) [f]   89  121 38.2    0.62
+ngbw|BX820489|GBHTC|Arabidopsis thali (1095) [f]   89  121 38.2    0.63
+ngbw|DQ267251|GBHTC|Tragopogon praten ( 238) [f]   91  112 35.8     0.7
+ngbw|DQ267250|GBHTC|Tragopogon dubius ( 238) [f]   91  112 35.8     0.7
+ngbw|BX826669|GBHTC|Arabidopsis thali (1083) [f]  131  119 37.7    0.87
+ngbw|BX826801|GBHTC|Arabidopsis thali (1135) [f]  131  119 37.7     0.9
+ngbw|AY107243|GBHTC|Zea mays PCO11157 ( 791) [f]   69  114 36.4     1.5
+
+>>ngbw|AB225984|GBHTC|Aspergillus oryzae cDNA, contig se  (1079 aa)
+Frame: f initn: 744 init1: 672 opt: 759  Z-score: 979.1  bits: 191.3 E(): 4.9e-47
+Smith-Waterman score: 767;  45.583% identity (69.965% similar) in 283 aa overlap (9-279:211-1057)
+
+       10        20        30          40        50        60      
+SQ     APIASRTFQRRLGYLLAGVATG--AAATVAYKAQKNNNYYKYNNNNNNNSGFKAGALAAA
+       :  :::.: :    .  .: .   :  : :..:.   .: .  .. .... :  ..::.:
+ngbw|A ARTASRAFLRSTPSVRPAVRSTRFALPTQAFRASARRGYASEAGEAKSSNTFLWAGLAVA
+        220       250       280       310       340       370      
+
+         70        80                  90       100       110      
+SQ     AGVVHLAHEEDKKTA----------DYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWH
+       .:.    . .   ..          ::::::. ::.:: :. .::.  .:::::::::::
+ngbw|A GGAGAYFYLQGGDSVSSKNFVPTKEDYQKVYDEIARRLADETDYDDG-SYGPVLVRLAWH
+        400       430       460       490       520        550     
+
+        120       130       140       150       160       170      
+SQ     SSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGG
+       .:::.::. .:::: :.:.:.  ::.  .::::. :  :::::: .::::.:.::.::.:
+ngbw|A ASGTYDKETGTGGSNGATMRFAPESDHGANAGLKAARDFLEPVKAKFPWITYSDLWTLAG
+         580       610       640       670       700       730     
+
+        180       190       200       210       220       230      
+SQ     VVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALL
+         .:::: :: :::: :: :        .:::::..:: ..::... :. :::.:.:::.
+ngbw|A SCAIQELGGPAIPWRPGRQDKDVAACTPDGRLPDASKDHQHVRDIFYRMGFNDQEIVALV
+         760       790       820       850       880       910     
+
+        240       250       260        270         
+SQ     GAHALGKTHLKNSGFEGPWGAANNIFTNEFY-LNLLNEDWKLEK
+       ::::::..:   :::.:::. . ..:::::. : :..: :. .:
+ngbw|A GAHALGRAHPDRSGFDGPWNFSPTVFTNEFF\LCLIDEKWQPRK
+         940       970      1000       1030        
+
+>>ngbw|AB224629|GBHTC|Aspergillus oryzae cDNA, contig se  (617 aa)
+Frame: f initn: 498 init1: 406 opt: 529  Z-score: 684.7  bits: 136.0 E(): 1.2e-30
+Smith-Waterman score: 529;  50.968% identity (79.355% similar) in 155 aa overlap (82-235:158-616)
+
+              90       100       110       120       130       140 
+SQ     DYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKES
+       ::. :   :. .:.  :  :.  . :::.:::::::.::.: ...:::: :. .::. :.
+ngbw|A DYDAVRRDIVAQLKKPDYDDG--SAGPVFVRLAWHSAGTYDAESDTGGSNGAGMRYEAEG
+         170       200         230       260       290       320   
+
+             150       160       170       180       190       200 
+SQ     QDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDM
+        ::.::::...  ::::::.. :::.:.::.::.:::.:.:: ::.. :. ::::: .: 
+ngbw|A GDPANAGLQHGRAFLEPVKERHPWITYSDLWTLAGVVAIKELGGPEVEWKPGRTDLVDDS
+           350       380       410       440       470       500   
+
+              210       220       230     
+SQ     -TPDNGRLPDGDKDANYVRNFYKRLDFNDREVVAL
+        .:  :::::. . :...: ...:. :::.:.:::
+ngbw|A KVPPRGRLPDAAQGAEHLRFIFNRMGFNDQEIVAL
+           530       560       590        
+
+>>ngbw|DQ222519|GBHTC|Solanum tuberosum clone 121A05 asc  (969 aa)
+Frame: f initn: 562 init1: 216 opt: 521  Z-score: 671.1  bits: 134.2 E(): 7e-30
+Smith-Waterman score: 617;  41.991% identity (69.697% similar) in 231 aa overlap (108-337:172-810)
+
+       110       120       130       140       150       160       
+SQ     PVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWIS
+       :...::::::.::.:  ..::: . ::.:.: :.   .: ::. : ..:::...::: .:
+ngbw|D PIMLRLAWHSAGTYDVCSKTGGPF-GTMRFKAEQAHGANNGLDIALRLLEPIREQFPTLS
+           190       220        250       280       310       340  
+
+       170       180       190       200       210       220       
+SQ     YGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLD
+       ..:.. :.:::...   :: .:.. :: : ::   : .:::::. :  ...:. : :.. 
+ngbw|D HADFHQLAGVVAVEVTGGPDVPFHPGREDKPE--PPVEGRLPDATKGCDHLRDVFVKQMG
+            370       400       430         460       490       520
+
+        230       240       250       260       270       280      
+SQ     FNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQ
+       ..:...::: :::.::. : . ::::::: :   :: : .. .::.              
+ngbw|D LSDKDIVALSGAHTLGRCHKERSGFEGPWTANPLIFDNSYFTELLS--------------
+              550       580       610       640                    
+
+        290       300       310       320       330       
+SQ     YNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+        .  .: ..::.: ::. :  .  .:..::::.:::: :..::  .: : :
+ngbw|D -GEKEGLLQLPSDKALLCDPAFRLLVEKYAADEDAFFADYAKAHLTLSELG
+         670       700       730       760       790      
+
+>>ngbw|AK246586|GBHTC|Solanum lycopersicum cDNA, clone:   (980 aa)
+Frame: f initn: 500 init1: 193 opt: 512  Z-score: 659.4  bits: 132.0 E(): 3.2e-29
+Smith-Waterman score: 603;  41.126% identity (69.264% similar) in 231 aa overlap (108-337:126-764)
+
+       110       120       130       140       150       160       
+SQ     PVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWIS
+       :...::::::.::.:  ..::: . ::.:.: :    .: ::. : ..:::...::: .:
+ngbw|A PIMLRLAWHSAGTYDVCSKTGGPF-GTMRFKAELAHGANNGLDIALRLLEPIREQFPTLS
+             150       180        210       240       270       300
+
+       170       180       190       200       210       220       
+SQ     YGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLD
+       ..:.. :.:::...   :: .:.. :: : :.   : .:::::. :  ...:. : :.. 
+ngbw|A HADFHQLAGVVAVEVTGGPDVPFHPGREDKPK--PPVEGRLPDATKGCDHLRDVFKKQMG
+              330       360       390         420       450        
+
+        230       240       250       260       270       280      
+SQ     FNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQ
+       ..:...::: :::.::..: . ::::::: :   :: : .. .::.              
+ngbw|A LSDQDIVALSGAHTLGRAHKERSGFEGPWTANPLIFDNSYFTELLS--------------
+      480       510       540       570       600                  
+
+        290       300       310       320       330       
+SQ     YNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+        .  .: ..::.: ::. :  .  .:..::::.:::: :...:   : : :
+ngbw|A -GEKEGLLQLPSDKALLCDPAFRPLVEKYAADEDAFFADYAEAHLKLSELG
+           630       660       690       720       750    
+
+>>ngbw|BX815873|GBHTC|Arabidopsis thaliana Full-length c  (1009 aa)
+Frame: f initn: 386 init1: 130 opt: 508  Z-score: 654.0  bits: 131.0 E(): 6.3e-29
+Smith-Waterman score: 585;  36.667% identity (66.296% similar) in 270 aa overlap (69-337:69-815)
+
+       70        80        90       100       110       120        
+SQ     VVHLAHEEDKKTADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTG
+       ........   . ::.:. .   ..::      :    .:..:::::::.::.: .. ::
+ngbw|B LAKMTKNDPTVS*DYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCKSRTG
+             90       120       150          180       210         
+
+      130       140       150       160       170       180        
+SQ     GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKI
+       : . ::.:.  :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: :
+ngbw|B GPF-GTMRFDAEQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDI
+     240        270       300       330       360       390        
+
+      190       200       210       220        230       240       
+SQ     PWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLK
+       :.. :: : :.   : .:::::. :  ...:. : :.. ..:.:.::: :::.::. :  
+ngbw|B PFHPGREDKPQ--PPPEGRLPDATKGCDHLRDVFAKQMGLSDKEIVALSGAHTLGRCHKD
+      420         450       480       510       540       570      
+
+       250       260       270       280       290       300       
+SQ     NSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSN
+        ::::: : .   :: : .. .::.               .  .: ..: .: ::..:  
+ngbw|B RSGFEGAWTSNPLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPV
+        600       630       660                      690       720 
+
+       310       320       330       
+SQ     YLKIVKEYAADQDAFFRDFSKAFAALLERG
+       .  .:..::::.:::: :...:   : : :
+ngbw|B FRPLVEKYAADEDAFFADYAEAHMKLSELG
+             750       780       810 
+
+>>ngbw|AK246667|GBHTC|Solanum lycopersicum cDNA, clone:   (1045 aa)
+Frame: f initn: 548 init1: 205 opt: 508  Z-score: 653.7  bits: 131.0 E(): 6.5e-29
+Smith-Waterman score: 600;  38.372% identity (66.279% similar) in 258 aa overlap (80-337:59-769)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . .:::. .   ..::      :    .:...::::::.::.: . .::: . :: :. .
+ngbw|A SEEYQKAVEKCKRKLRGLIAEKN---CAPIMLRLAWHSAGTYDVKTKTGGPF-GTIRHPN
+             80       110          140       170       200         
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       : .  .: ::. :...:::.:.::: .::.:.: :.:::...   :: ::.. :: :  :
+ngbw|A ELKHGANNGLDIAVRLLEPIKEQFPILSYADFYQLAGVVAVEVTGGPDIPFHPGRQDKTE
+      230       260       290       320       350       380        
+
+     200       210       220       230       240       250         
+SQ     DMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAAN
+          : .:::::. : ....:. . .. ..:...::: :.:.::. : . ::::: :    
+ngbw|A --PPPEGRLPDATKGSDHLREVFGHMGLSDKDIVALSGGHTLGRCHKERSGFEGAWTNNP
+        410       440       470       500       530       560      
+
+     260       270       280       290       300       310         
+SQ     NIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQ
+        :: : .. .::.               .  .: ..::.: ::..:  .  .:..::::.
+ngbw|A LIFDNSYFKELLS---------------GEKEGLLQLPSDKALLEDPVFRPLVEKYAADE
+        590                      620       650       680       710 
+
+     320       330       
+SQ     DAFFRDFSKAFAALLERG
+       :::: :...:   : : :
+ngbw|A DAFFADYAEAHLKLSELG
+             740         
+
+>>ngbw|AY104492|GBHTC|Zea mays PCO104002 mRNA sequence    (1052 aa)
+Frame: f initn: 509 init1: 225 opt: 508  Z-score: 653.7  bits: 131.0 E(): 6.6e-29
+Smith-Waterman score: 594;  37.456% identity (63.958% similar) in 283 aa overlap (56-337:50-823)
+
+          60        70        80        90       100       110     
+SQ     SGFKAGALAAAAGVVHLAHEEDKKTADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAW
+       .:  :: .:.::    ...     . :: :. .   ..::      :    .:...::::
+ngbw|A TGPAAGRIASAA----MVKAYPTVNEDYLKAVDKAKRKLRGLIAEKN---CAPLMLRLAW
+      50        80           110       140       170          200  
+
+         120       130       140       150       160       170     
+SQ     HSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLG
+       ::.::.:   .::: . ::..   :.   .::::: : ..:::.:.::: .::.:.: :.
+ngbw|A HSAGTFDVATKTGGPF-GTMKNPAEQAHGANAGLEIAIRLLEPIKEQFPILSYADFYQLA
+            230        260       290       320       350       380 
+
+         180       190       200       210       220        230    
+SQ     GVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVA
+       :::...   :: .:.. :: : ::   : .:::::. . ....:. :  .. ..:...::
+ngbw|A GVVAVEVTGGPDVPFHPGRQDKPE--PPPEGRLPDATQGSDHLRQVFSTQMGLSDQDIVA
+             410       440         470       500       530         
+
+          240       250       260       270       280       290    
+SQ     LLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYM
+       : :.:.::. :   ::::: : .   :: : .. .::.               .  .: .
+ngbw|A LSGGHTLGRCHKDRSGFEGAWTSNPLIFDNSYFKELLS---------------GEKEGLL
+     560       590       620       650                      680    
+
+          300       310       320       330       
+SQ     MLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+       .::.: ::..: ..  .: .::::.:::: :...:   : : :
+ngbw|A QLPSDKALLSDPSFRPLVDKYAADEDAFFADYAEAHLKLSELG
+          710       740       770       800       
+
+>>ngbw|BX841772|GBHTC|Arabidopsis thaliana Full-length c  (975 aa)
+Frame: f initn: 398 init1: 130 opt: 507  Z-score: 652.9  bits: 130.8 E(): 7.3e-29
+Smith-Waterman score: 566;  37.452% identity (65.251% similar) in 259 aa overlap (80-337:39-752)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SKDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+             60        90          120       150       180         
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+      210       240       270       300       330       360        
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:: : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRNVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+        390       420       450       480       510       540      
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: : .. .::.               .  .: ..: .  ::..:  .  .:.. :::
+ngbw|B PLIFDNSYFKELLS---------------GEKEGLLQLVS*KALLDDPVFRPLVEKNAAD
+        570       600                      630       660       690 
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+             720       750
+
+>>ngbw|BX827441|GBHTC|Arabidopsis thaliana Full-length c  (1300 aa)
+Frame: f initn: 379 init1: 158 opt: 508  Z-score: 652.2  bits: 131.1 E(): 8e-29
+Smith-Waterman score: 508;  36.327% identity (69.796% similar) in 245 aa overlap (108-340:304-1023)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::..:: .     :. .:. :.  : .  .:::: :: .... .:... 
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELKHAANAGLVNALNLIKDIKEKYS
+       310       340       370       400       430       460       
+
+          170       180       190         200       210         220
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRN
+        :::.::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :...:.
+ngbw|B GISYADLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPATHLRE
+       490       520       550       580        610       640      
+
+              230       240       250       260       270          
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----
+        . :. ..:...::: :::.::... . ::    ::  .. .:.:      ...:     
+ngbw|B VFYRMGLDDKDIVALSGAHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPEWL
+        670       700       730           760       790       820  
+
+         280       290       300       310       320       330     
+SQ     KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+       :....   ... .  .  ..:::: :...::..   ...:::::::::.:.. : : : .
+ngbw|B KFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKLSN
+            850       880       910       940       970      1000  
+
+         340
+SQ     RGIDF
+        : .:
+ngbw|B LGAEF
+            
+
+>>ngbw|BX828016|GBHTC|Arabidopsis thaliana Full-length c  (1325 aa)
+Frame: f initn: 427 init1: 158 opt: 508  Z-score: 652.0  bits: 131.1 E(): 8.1e-29
+Smith-Waterman score: 508;  36.327% identity (69.796% similar) in 245 aa overlap (108-340:357-1076)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::..:: .     :. .:. :.  : .  .:::: :: .... .:... 
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELKHAANAGLVNALNLIKDIKEKYS
+      360       390       420       450       480       510        
+
+          170       180       190         200       210         220
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRN
+        :::.::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :...:.
+ngbw|B GISYADLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPATHLRE
+      540       570       600       630        660       690       
+
+              230       240       250       260       270          
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----
+        . :. ..:...::: :::.::... . ::    ::  .. .:.:      ...:     
+ngbw|B VFYRMGLDDKDIVALSGAHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPEWL
+       720       750       780           810       840       870   
+
+         280       290       300       310       320       330     
+SQ     KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+       :....   ... .  .  ..:::: :...::..   ...:::::::::.:.. : : : .
+ngbw|B KFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKLSN
+           900       930       960       990      1020      1050   
+
+         340
+SQ     RGIDF
+        : .:
+ngbw|B LGAEF
+            
+
+>>ngbw|BX827392|GBHTC|Arabidopsis thaliana Full-length c  (1363 aa)
+Frame: f initn: 427 init1: 158 opt: 508  Z-score: 651.8  bits: 131.1 E(): 8.3e-29
+Smith-Waterman score: 508;  36.327% identity (69.796% similar) in 245 aa overlap (108-340:383-1102)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::..:: .     :. .:. :.  : .  .:::: :: .... .:... 
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELKHAANAGLVNALNLIKDIKEKYS
+              410       440       470       500       530       560
+
+          170       180       190         200       210         220
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRN
+        :::.::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :...:.
+ngbw|B GISYADLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPATHLRE
+              590       620       650        680       710         
+
+              230       240       250       260       270          
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----
+        . :. ..:...::: :::.::... . ::    ::  .. .:.:      ...:     
+ngbw|B VFYRMGLDDKDIVALSGAHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPEWL
+     740       770       800           830       860       890     
+
+         280       290       300       310       320       330     
+SQ     KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+       :....   ... .  .  ..:::: :...::..   ...:::::::::.:.. : : : .
+ngbw|B KFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKLSN
+         920       950       980      1010      1040      1070     
+
+         340
+SQ     RGIDF
+        : .:
+ngbw|B LGAEF
+        1100
+
+>>ngbw|BX813944|GBHTC|Arabidopsis thaliana Full-length c  (1009 aa)
+Frame: f initn: 386 init1: 130 opt: 503  Z-score: 647.5  bits: 129.8 E(): 1.5e-28
+Smith-Waterman score: 580;  37.838% identity (66.023% similar) in 259 aa overlap (80-337:63-776)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+               90       120          150       180        210      
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+        240       270       300       330       360       390      
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:. : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+          420       450       480       510       540       570    
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: : .. .::.               .  .: ..: .: ::..:  .  .:..::::
+ngbw|B PLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYAAD
+          600                      630       660       690         
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+     720       750        
+
+>>ngbw|BX816429|GBHTC|Arabidopsis thaliana Full-length c  (1032 aa)
+Frame: f initn: 386 init1: 130 opt: 503  Z-score: 647.3  bits: 129.8 E(): 1.5e-28
+Smith-Waterman score: 580;  37.838% identity (66.023% similar) in 259 aa overlap (80-337:92-805)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+           110       140          170       200       230          
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+     260       290       320       350       380       410         
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:. : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+       440       470       500       530       560       590       
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: : .. .::.               .  .: ..: .: ::..:  .  .:..::::
+ngbw|B PLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYAAD
+       620       650                      680       710       740  
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+            770       800 
+
+>>ngbw|BX813948|GBHTC|Arabidopsis thaliana Full-length c  (1045 aa)
+Frame: f initn: 386 init1: 130 opt: 503  Z-score: 647.2  bits: 129.8 E(): 1.5e-28
+Smith-Waterman score: 580;  37.838% identity (66.023% similar) in 259 aa overlap (80-337:99-812)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+            120       150          180       210       240         
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+      270       300       330       360       390       420        
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:. : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+        450       480       510       540       570       600      
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: : .. .::.               .  .: ..: .: ::..:  .  .:..::::
+ngbw|B PLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYAAD
+        630       660                      690       720       750 
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+             780       810
+
+>>ngbw|BX829289|GBHTC|Arabidopsis thaliana Full-length c  (1260 aa)
+Frame: f initn: 372 init1: 156 opt: 500  Z-score: 642.0  bits: 129.2 E(): 2.9e-28
+Smith-Waterman score: 500;  35.918% identity (69.388% similar) in 245 aa overlap (108-340:299-1018)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::..:: .     :. .:. :.  : .  .:::: :: .... .:... 
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELKHAANAGLVNALNLIKDIKEKYS
+            320       350       380       410       440       470  
+
+          170       180       190         200       210         220
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRN
+        :::.::. :.. ..:.:  ::::: . ::.:   :::  :..:::::.   . :...:.
+ngbw|B GISYADLFQLASSTAIEEAGGPKIPMKYGRVDASCPED-CPEEGRLPDAGPPSPATHLRE
+            500       530       560       590        620       650 
+
+              230       240       250       260       270          
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----
+        . :. ..:...::: :.:.::... . ::    ::  .. .:.:     . ..:     
+ngbw|B VFYRMGLDDKDIVALSGVHTLGRSRPERSG----WGNLETKYTKEGPGAPVVHSWTPELL
+             680       710       740           770       800       
+
+         280       290       300       310       320       330     
+SQ     KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+       :....   ... .  .  ..:::: :...::..   ...:::::::::.:.. : : : .
+ngbw|B KFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKLSN
+       830       860       890       920       950       980       
+
+         340
+SQ     RGIDF
+        : .:
+ngbw|B LGAEF
+      1010  
+
+>>ngbw|BX816810|GBHTC|Arabidopsis thaliana Full-length c  (972 aa)
+Frame: f initn: 386 init1: 130 opt: 497  Z-score: 640.0  bits: 128.4 E(): 3.8e-28
+Smith-Waterman score: 580;  37.838% identity (66.023% similar) in 259 aa overlap (80-337:91-804)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+        100       130          160       190       220        250  
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+            280       310       340       370       400       430  
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:. : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+              460       490       520       550       580       610
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: : .. .::.               .  .: ..: .: ::..:  .  .:..::::
+ngbw|B PLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYAAD
+              640                      670       700       730     
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+         760       790    
+
+>>ngbw|BX815009|GBHTC|Arabidopsis thaliana Full-length c  (1023 aa)
+Frame: f initn: 386 init1: 130 opt: 497  Z-score: 639.6  bits: 128.4 E(): 4e-28
+Smith-Waterman score: 580;  37.838% identity (66.023% similar) in 259 aa overlap (80-337:91-804)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+        100       130          160       190       220        250  
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+            280       310       340       370       400       430  
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:. : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+              460       490       520       550       580       610
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: : .. .::.               .  .: ..: .: ::..:  .  .:..::::
+ngbw|B PLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYAAD
+              640                      670       700       730     
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+         760       790    
+
+>>ngbw|BX815850|GBHTC|Arabidopsis thaliana Full-length c  (907 aa)
+Frame: f initn: 386 init1: 130 opt: 494  Z-score: 636.6  bits: 127.7 E(): 5.9e-28
+Smith-Waterman score: 577;  39.827% identity (68.398% similar) in 231 aa overlap (108-337:34-672)
+
+       110       120       130       140       150       160       
+SQ     PVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWIS
+       :..:::::::.::.: .. ::: . ::.:.  :.   .:.:.. : ..:.:...::: ::
+ngbw|B PIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDAEQAHGANSGIHIALRLLDPIREQFPTIS
+        40        70       100        130       160       190      
+
+       170       180       190       200       210       220       
+SQ     YGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLD
+       ..:.. :.:::...   :: ::.. :: : :.   : .:::::. :  ...:. : :.. 
+ngbw|B FADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ--PPPEGRLPDATKGCDHLRDVFAKQMG
+        220       250       280         310       340       370    
+
+        230       240       250       260       270       280      
+SQ     FNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQ
+       ..:...::: :::.::. :   ::::: : .   :: : .. .::.              
+ngbw|B LSDKDIVALSGAHTLGRCHKDRSGFEGAWTSNPLIFDNSYFKELLS--------------
+          400       430       460       490       520              
+
+        290       300       310       320       330       
+SQ     YNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+        .  .: ..: .: ::..:  .  .:..::::.:::: :...:   : : :
+ngbw|B -GEKEGLLQLVSDKALLDDPVFRPLVEKYAADEDAFFADYAEAHMKLSELG
+               550       580       610       640       670
+
+>>ngbw|BX815448|GBHTC|Arabidopsis thaliana Full-length c  (929 aa)
+Frame: f initn: 386 init1: 130 opt: 494  Z-score: 636.4  bits: 127.7 E(): 6e-28
+Smith-Waterman score: 577;  39.827% identity (68.398% similar) in 231 aa overlap (108-337:58-696)
+
+       110       120       130       140       150       160       
+SQ     PVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWIS
+       :..:::::::.::.: .. ::: . ::.:.  :.   .:.:.. : ..:.:...::: ::
+ngbw|B PIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDAEQAHGANSGIHIALRLLDPIREQFPTIS
+          70       100        130       160       190       220    
+
+       170       180       190       200       210       220       
+SQ     YGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLD
+       ..:.. :.:::...   :: ::.. :: : :.   : .:::::. :  ...:. : :.. 
+ngbw|B FADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ--PPPEGRLPDATKGCDHLRDVFAKQMG
+          250       280       310         340       370       400  
+
+        230       240       250       260       270       280      
+SQ     FNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQ
+       ..:...::: :::.::. :   ::::: : .   :: : .. .::.              
+ngbw|B LSDKDIVALSGAHTLGRCHKDRSGFEGAWTSNPLIFDNSYFKELLS--------------
+            430       460       490       520                      
+
+        290       300       310       320       330       
+SQ     YNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+        .  .: ..: .: ::..:  .  .:..::::.:::: :...:   : : :
+ngbw|B -GEKEGLLQLVSDKALLDDPVFRPLVEKYAADEDAFFADYAEAHMKLSELG
+       550       580       610       640       670        
+
+>>ngbw|BX828456|GBHTC|Arabidopsis thaliana Full-length c  (1259 aa)
+Frame: f initn: 374 init1: 158 opt: 492  Z-score: 631.6  bits: 127.2 E(): 1.1e-27
+Smith-Waterman score: 492;  35.102% identity (69.796% similar) in 245 aa overlap (108-340:302-1021)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::..:: .     :. .:. :.  : .  .:::: :: .... .:... 
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELKHAANAGLVNALNLIKDIKEKYS
+           320       350       380       410       440       470   
+
+          170       180       190         200       210         220
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRN
+        :::.::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :.....
+ngbw|B GISYADLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPATHLKK
+           500       530       560       590        620       650  
+
+              230       240       250       260       270          
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----
+        . :. ..:...::: :.:.::... . ::    ::  .. .:.:      ...:     
+ngbw|B VFYRMGLDDKDIVALSGVHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPEWL
+            680       710       740           770       800        
+
+         280       290       300       310       320       330     
+SQ     KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+       :....   ... .  .  ..:::: :...::..   ...:::::::::.:.. : : : .
+ngbw|B KFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKLSN
+      830       860       890       920       950       980        
+
+         340
+SQ     RGIDF
+        : ..
+ngbw|B LGAEL
+     1010   
+
+>>ngbw|BX827243|GBHTC|Arabidopsis thaliana Full-length c  (1366 aa)
+Frame: f initn: 416 init1: 158 opt: 491  Z-score: 629.8  bits: 127.0 E(): 1.4e-27
+Smith-Waterman score: 491;  35.510% identity (69.388% similar) in 245 aa overlap (108-340:357-1076)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::..:: .     :. .:. :.  : .  .:::: :: .... .:... 
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELKHAANAGLVNALNLIKDIKEKYS
+      360       390       420       450       480       510        
+
+          170       180       190         200       210         220
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRN
+        :::.::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :...:.
+ngbw|B GISYADLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPATHLRE
+      540       570       600       630        660       690       
+
+              230       240       250       260       270          
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----
+        . :. ..:...::: :::.::... . ::    ::  .. .:.:      ...:     
+ngbw|B VFYRMGLDDKDIVALSGAHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPEWL
+       720       750       780           810       840       870   
+
+         280       290       300       310       320       330     
+SQ     KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+       :....   ... .  .  ..:::: :...::.    ...::::::::..:.. : : : .
+ngbw|B KFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSLTVYAEKYAADQDAFLKDYAVAHAKLSN
+           900       930       960       990      1020      1050   
+
+         340
+SQ     RGIDF
+        : ..
+ngbw|B LGAEL
+            
+
+>>ngbw|BX814227|GBHTC|Arabidopsis thaliana Full-length c  (998 aa)
+Frame: f initn: 377 init1: 121 opt: 488  Z-score: 628.1  bits: 126.2 E(): 1.7e-27
+Smith-Waterman score: 571;  37.838% identity (65.637% similar) in 259 aa overlap (80-337:91-804)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCESRTGGPF-GTMRFDA
+        100       130          160       190       220        250  
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+            280       310       340       370       400       430  
+
+     200       210       220        230       240       250        
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA
+          : .:::::. :  ...:. : :.. ..:...::: :::.::. :   ::::: : . 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSDKDIVALSGAHTLGRCHKDRSGFEGAWTSN
+              460       490       520       550       580       610
+
+      260       270       280       290       300       310        
+SQ     NNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAAD
+         :: :  . .::.               .  .: ..: .: ::..:  .  .:..::::
+ngbw|B PLIFDNSDFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYAAD
+              640                      670       700       730     
+
+      320       330       
+SQ     QDAFFRDFSKAFAALLERG
+       .:::: :...:   : : :
+ngbw|B EDAFFADYAEAHMKLSELG
+         760       790    
+
+>>ngbw|BX828385|GBHTC|Arabidopsis thaliana Full-length c  (1439 aa)
+Frame: f initn: 414 init1: 150 opt: 485  Z-score: 621.6  bits: 125.6 E(): 4e-27
+Smith-Waterman score: 485;  37.143% identity (69.388% similar) in 245 aa overlap (108-340:441-1162)
+
+       110       120          130       140        150       160   
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQ-DPSNAGLENAAKFLEPVKKQF
+       :.::::.::..::..:: .     :. .:. :.  : . : .:::: :: .... .:...
+ngbw|B PILVRLGWHDAGTYNKNIKEWPQRGGANGSLRFDIELK\DAANAGLVNALNLIKDIKEKY
+        450       480       510       540        570       600     
+
+           170       180       190         200       210           
+SQ     PWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDAN-YV
+         :::.::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :: :.
+ngbw|B SGISYADLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPAN\YL
+         630       660       690       720        750       780    
+
+      220       230       240       250       260       270        
+SQ     RNFYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW---
+       :. . :. ..:...::: :.:.::... . ::    ::  .. .:.:      ...:   
+ngbw|B REVFYRMGLDDKDIVALSGVHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPE
+           810       840       870           900       930         
+
+           280       290       300       310       320       330   
+SQ     --KLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAAL
+         :....   ... .  .  ..:::: :...::..   ...:::::::::.:.. : : :
+ngbw|B WLKFDNSYFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKL
+     960       990      1020      1050      1080      1110         
+
+           340
+SQ     LERGIDF
+        . : .:
+ngbw|B SNLGAEF
+    1140      
+
+>>ngbw|AY105926|GBHTC|Zea mays PCO133636 mRNA sequence    (1132 aa)
+Frame: f initn: 327 init1: 172 opt: 465  Z-score: 597.4  bits: 120.7 E(): 9e-26
+Smith-Waterman score: 465;  36.293% identity (64.865% similar) in 259 aa overlap (108-356:348-1101)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :.::::.::..::.::: .     :. .:. :.  : .  .:::: :: :...:.: ..:
+ngbw|A PILVRLGWHDAGTYDKNIEEWPQRGGANGSLRFDVELKHGANAGLINALKLIQPIKDKYP
+         360       390       420       450       480       510     
+
+          170       180       190        200       210         220 
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLP-EDMTPDNGRLPDG--DKDANYVRNF
+        :.:.::. :.....:.:  ::::: . ::.:.   .. : .:.:::.  .. :...:. 
+ngbw|A SITYADLFQLASATAIEEAGGPKIPMKYGRVDVTGPEQCPPEGKLPDAGPSSPADHLREV
+         540       570       600       630       660       690     
+
+             230       240       250       260        270          
+SQ     YKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTN-EFYLNLL-NEDWKLEK
+       . :. .::.:.::: :::.::... . :     ::  .. .:. .  ..:. :.:  . .
+ngbw|A FYRMGLNDKEIVALSGAHTLGRSRPERS----XWGKPETKYTK\KVLVHLVGNQDS*MAE
+         720       750       780           810        840       870
+
+     280       290          300       310       320       330      
+SQ     NDAGNLQYNSPK---GYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLER
+            ::  . :     ..:::: ::..: .  ..  :     ::::::.. : : : : 
+ngbw|A V**QLLQDIKEKRDQDLLVLPTDAALFEDPSS-SLCGEICRGPDAFFRDYAXAHAKLSEL
+              900       930       960        990      1020         
+
+        340       350      
+SQ     GIDFPKNQPVHIFKTLDEQG
+       :    ..:: . :   :  :
+ngbw|A G---ASSQPPQGFPLDD*CG
+    1050         1080      
+
+>>ngbw|BX817157|GBHTC|Arabidopsis thaliana Full-length c  (1033 aa)
+Frame: f initn: 351 init1: 116 opt: 463  Z-score: 595.4  bits: 120.2 E(): 1.2e-25
+Smith-Waterman score: 540;  37.838% identity (65.251% similar) in 259 aa overlap (80-337:98-813)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       . ::.:. .   ..::      :    .:..:::::::.::.: .. ::: . ::.:.  
+ngbw|B SEDYKKAVEKCRRKLRGLIAEKN---CAPIMVRLAWHSAGTFDCQSRTGGPF-GTMRFDA
+         110       140          170       200       230        260 
+
+     140       150       160       170       180       190         
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE
+       :.   .:.:.. : ..:.:...::: ::..:.. :.:::...   :: ::.. :: : :.
+ngbw|B EQAHGANSGIHIALRLLDPIREQFPTISFADFHQLAGVVAVEVTGGPDIPFHPGREDKPQ
+             290       320       350       380       410       440 
+
+     200       210       220         230        240       250      
+SQ     DMTPDNGRLPDGDKDANYVRN-FYKRLDFND-REVVALLGA-HALGKTHLKNSGFEGPWG
+          : .:::::. :  ...:. : :.. ..: ...::: :: :.::. :   ::::: : 
+ngbw|B --PPPEGRLPDATKGCDHLRDVFAKQMGLSD\KDIVALSGA\HTLGRCHKDRSGFEGAWT
+               470       500       530         560       590       
+
+        260       270       280       290       300       310      
+SQ     AANNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYA
+       .   :: : .. .::.               .  .: ..: .: ::..:  .  .:..::
+ngbw|B SNPLIFDNSYFKELLS---------------GEKEGLLQLVSDKALLDDPVFRPLVEKYA
+       620       650                      680       710       740  
+
+        320       330       
+SQ     ADQDAFFRDFSKAFAALLERG
+       ::.:::: :...:   : : :
+ngbw|B ADEDAFFADYAEAHMKLSELG
+            770       800   
+
+>>ngbw|BX813996|GBHTC|Arabidopsis thaliana Full-length c  (1279 aa)
+Frame: f initn: 342 init1: 154 opt: 461  Z-score: 591.3  bits: 119.8 E(): 2e-25
+Smith-Waterman score: 461;  34.677% identity (67.742% similar) in 248 aa overlap (108-348:340-1086)
+
+       110       120          130       140        150       160   
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAG-LENAAKFLEPVKKQF
+       :.::::.::..::..:: .     :. .:. :.. : .  .::: : :: :...:.: ..
+ngbw|B PILVRLGWHDAGTYNKNIEEWPLRGGANGSLRFEAELKHAANAG\LLNALKLIQPLKDKY
+     340       370       400       430       460        490        
+
+           170       180       190         200       210           
+SQ     PWISYGDLYTLGGVVGIQELQGPKIPWRSGRTD-LPE-DMTPDNGRLPDGD--KDANYVR
+       : :::.::. :.....:.:  :: :: . ::.: : . .. :..:::::.   . :...:
+ngbw|B PNISYADLFQLASATAIEEAGGPDIPMKYGRVD\L*HLEQCPEEGRLPDAGPPSPADHLR
+      520       550       580       610        640       670       
+
+     220       230       240       250       260       270         
+SQ     NFYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNED-W-KL
+       . . :. ..:.:.::: :::.::...   ::.  :    ..   .:   .... . : :.
+ngbw|B DVFYRMGLDDKEIVALSGAHTLGRARPDRSGWGKPETKYTKTGPGEGRRTVMDSE\WLKF
+       700       730       760       790       820       850       
+
+       280       290       300       310       320       330       
+SQ     EKNDAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+       ...   ... .     ..:::: ::..: .. . ...:: :  :::.:...: : : . :
+ngbw|B DNSYFKDIKEKRDDDLLVLPTDAALFEDPSFKNYAEKYAEDVAAFFKDYAEAHAKLSNLG
+        880       910       940       970      1000      1030      
+
+       340        
+SQ     IDFPKNQPVHI
+         :   . . :
+ngbw|B AKFDPPEGIVI
+       1060       
+
+>>ngbw|AY109419|GBHTC|Zea mays CL26634_1 mRNA sequence    (1373 aa)
+Frame: r initn: 501 init1: 212 opt: 456  Z-score: 584.3  bits: 118.6 E(): 4.8e-25
+Smith-Waterman score: 551;  37.344% identity (65.975% similar) in 241 aa overlap (105-345:1188-520)
+
+          110       120       130       140       150       160    
+SQ     GYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       : .:...:::::..::.: .  .::. .:. ::..:    :::::. :  .:::.: . :
+ngbw|A GCAPIMLRLAWHDAGTYDLKXXXGGA-NGSIRYEEEYTHGSNAGLKIAIDLLEPIKAKNP
+      1180      1150      1120       1090      1060      1030      
+
+          170       180       190       200       210       220    
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKR
+        :.:.::: :.:::...    : . .  :: :   ...  .:::::. : : ..:... :
+ngbw|A KITYADLYQLAGVVAVEVTXXPTVEFIPGRRD--SSVXXXEGRLPDAKKGAPHLRDIFYR
+       1000       970       940         910       880       850    
+
+          230       240       250       260       270       280    
+SQ     LDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGN
+       . ..:...:::  .:.::..: . :::.: :      : : ..:.::::.          
+ngbw|A MGLSDKDIVALSXGHTLGRAHPERSGFDGAWTKEPLKFDNSYFLELLNEE----------
+          820       790       760       730       700              
+
+          290       300       310       320       330       340    
+SQ     LQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGIDFPKNQ
+             .: . :::: ::..: .. . :. :: :.::::.:....   : : :.   .. 
+ngbw|A -----SEGLLKLPTDKALLSDPEFRRYVELYAKDEDAFFKDYAESHKKLSELGFTPRSTA
+               670       640       610       580       550         
+
+        
+SQ     P
+       :
+ngbw|A P
+        
+
+>>ngbw|DQ442396|GBHTC|Striga asiatica clone St543 ascorb  (459 aa)
+Frame: f initn: 338 init1: 197 opt: 414  Z-score: 537.6  bits: 108.4 E(): 1.9e-22
+Smith-Waterman score: 414;  43.919% identity (73.649% similar) in 148 aa overlap (118-264:21-455)
+
+       120       130       140       150       160       170       
+SQ     SGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGV
+       .:: :: ..::: . ::.: . :    .: ::. :...:.:.: ::: .::.:.: :.::
+ngbw|D AGTHDKLSKTGGPF-GTMRLEAELAHGANNGLDIAVRLLQPIKDQFPILSYADFYQLAGV
+         30        60         90       120       150       180     
+
+       180       190       200       210       220        230      
+SQ     VGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRN-FYKRLDFNDREVVALL
+       :...   ::.::.. :: :  :  .: .:::::. . ....:. : :.. ..:...::: 
+ngbw|D VAVEVTGGPEIPFHPGRKD--ELEAPVEGRLPDATQGSDHLRDVFIKQMGLTDKDIVALS
+         210       240         270       300       330       360   
+
+        240       250       260    
+SQ     GAHALGKTHLKNSGFEGPWGAANNIFTN
+       :.:.::..: . :::::::     :: :
+ngbw|D GGHTLGRAHKERSGFEGPWTENPLIFDN
+           390       420       450 
+
+>>ngbw|AY108540|GBHTC|Zea mays PCO131924 mRNA sequence    (924 aa)
+Frame: f initn: 303 init1: 173 opt: 408  Z-score: 524.9  bits: 107.0 E(): 9.8e-22
+Smith-Waterman score: 408;  40.854% identity (73.171% similar) in 164 aa overlap (108-265:351-830)
+
+       110       120          130       140       150       160    
+SQ     PVLVRLAWHSSGTWDKNDNTG---GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFP
+       :..:::.::.:::.::: .     :. .:. :.  : .  .:::: :: :...:.: ..:
+ngbw|A PIMVRLGWHDSGTYDKNIKDWPQRGGANGSLRFDAELSHGANAGLINALKLIQPIKDKYP
+        360       390       420       450       480       510      
+
+          170       180       190        200       210         220 
+SQ     WISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPE-DMTPDNGRLPD-GDKD-ANYVRNF
+        :.:.::. :.....:.:  ::::: . ::.:.   .. : .::::: : .: :...:. 
+ngbw|A GITYADLFQLASATAIEEAGGPKIPMKYGRVDVTAAEQCPPEGRLPDAGPRDPAEHLREV
+        540       570       600       630       660       690      
+
+             230       240       250       260     
+SQ     YKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNE
+       . :. ..:.:.::: :::.::...   ::    ::  .. .:..
+ngbw|A FYRMGLDDKEIVALSGAHTLGRARPDRSG----WGXLETKYTKD
+        720       750       780           810      
+
+>>ngbw|BX829108|GBHTC|Arabidopsis thaliana Full-length c  (840 aa)
+Frame: f initn: 240 init1: 110 opt: 352  Z-score: 452.9  bits: 93.6 E(): 1e-17
+Smith-Waterman score: 352;  35.556% identity (68.889% similar) in 180 aa overlap (170-340:3-527)
+
+     170       180       190         200       210         220     
+SQ     DLYTLGGVVGIQELQGPKIPWRSGRTDL--PEDMTPDNGRLPDGD--KDANYVRNFYKRL
+       ::. :.....:.:  ::::: . ::.:   :::  :..:::::.   . :...:. . :.
+ngbw|B DLFQLASATAIEEAGGPKIPMKYGRVDASGPED-CPEEGRLPDAGPPSPATHLREVFYRM
+               30        60        90        120       150         
+
+         230       240       250       260       270            280
+SQ     DFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----KLEKN
+        ..:...::: :::.::... . ::    ::  .. .:.:      ...:     :....
+ngbw|B GLDDKDIVALSGAHTLGRSRPERSG----WGKPETKYTKEGPGAPGGQSWTPEWLKFDNS
+     180       210       240           270       300       330     
+
+              290       300       310       320       330       340
+SQ     DAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGIDF
+          ... .  .  ..:::: :...::..   ...:::::::::.:.. : : : . : .:
+ngbw|B YFKEIKEKRDEDLLVLPTDAAIFEDSSFKVYAEKYAADQDAFFKDYAVAHAKLSNLGAEF
+         360       390       420       450       480       510     
+
+>>ngbw|EF483875|GBHTC|Schizochytrium sp. FJU-512 putativ  (655 aa)
+Frame: f initn: 291 init1: 291 opt: 349  Z-score: 450.8  bits: 92.8 E(): 1.3e-17
+Smith-Waterman score: 349;  42.105% identity (72.180% similar) in 133 aa overlap (79-211:269-649)
+
+       80        90       100       110       120       130        
+SQ     KTADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYK
+       :..::.:. . .:. :... . :.  ..::::: :.::::::.::. : ::: :. .:. 
+ngbw|E KSVDYKKISEEVADALENETHDDG--SFGPVLVXLGWHSSGTFDKEKNDGGSDGAGMRFA
+            290       320         350       380       410       440
+
+      140       150       160       170       180       190        
+SQ     KESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLP
+        ::.  .::::..:   .  .: . : :.:.::. :.. ..:.:. ::.  .: ::.:  
+ngbw|E PESKWGANAGLDKARAVV*AIKAKHPEITYSDLWILAANTAIEEMGGPHCAFRPGRSDKA
+              470       500       530       560       590       620
+
+      200       210 
+SQ     EDMTPDNGRLPDG
+       :: .:    ::::
+ngbw|E EDCSP----LPDG
+                    
+
+>>ngbw|BX827318|GBHTC|Arabidopsis thaliana Full-length c  (895 aa)
+Frame: f initn: 398 init1: 193 opt: 339  Z-score: 435.6  bits: 90.5 E(): 9.2e-17
+Smith-Waterman score: 431;  33.649% identity (63.033% similar) in 211 aa overlap (129-339:18-599)
+
+      130       140       150       160       170       180        
+SQ     GSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKI
+       :. .:. : ..:     ..::. :  . : :: . : :.:.::: :.:::...   ::.:
+ngbw|B GGPNGSIRNEEEHTHGPHSGLKIALDLCEGVKAKHPKITYADLYQLAGVVAVEVTGGPHI
+          30        60        90       120       150       180     
+
+      190       200       210       220       230       240        
+SQ     PWRSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKTHLKN
+        .  :: :   .. : .:::::. .  ...:. . :. .. ...::: :.: ::..: . 
+ngbw|B VFVPGRKD--SNVCPKEGRLPDAKQGFQHLRDVFYRMGLSHKDIVALSGGHNLGRAHPER
+         210         240       270       300       330       360   
+
+      250       260       270       280       290       300        
+SQ     SGFEGPWGAANNIFTNEFYLNLLNEDWKLEKNDAGNLQYNSPKGYMMLPTDYALIQDSNY
+       :::.:::      : : ....::.               .  .: . :::: .:..: ..
+ngbw|B SGFDGPWTQEPLKFDNSYFVELLK---------------GESEGLLKLPTDKTLLEDPEF
+           390       420                      450       480        
+
+      310       320       330         
+SQ     LKIVKEYAADQDAFFRDFSKAFAALLERGID
+        ..:. :: :.::::::....   :   :..
+ngbw|B RRLVELYAKDEDAFFRDYAESHKKLSALGFN
+      510       540       570         
+
+>>ngbw|DQ122791|GBHTC|Medicago sativa clone P7 L-ascorba  (498 aa)
+Frame: f initn: 250 init1: 142 opt: 251  Z-score: 325.6  bits: 69.3 E(): 1.2e-10
+Smith-Waterman score: 251;  41.584% identity (72.277% similar) in 101 aa overlap (80-180:133-423)
+
+      80        90       100       110       120       130         
+SQ     TADYQKVYNLIAERLRDDDEYDNYIGYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKK
+       .:::::. .   ..::    .      .:...::::::.::.:.. .::: . :: ... 
+ngbw|D SADYQKAVEKAKRKLRG---FIAEKKCAPLMLRLAWHSAGTFDSKTKTGGPF-GTIKHQA
+              160          190       220       250        280      
+
+     140       150       160       170       180
+SQ     ESQDPSNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGI
+       :    .: ::. :...:::.:.::: :::.:.: :. ::..
+ngbw|D ELAHGANNGLDIAVRLLEPLKEQFPIISYADFYQLAEVVAV
+        310       340       370       400       
+
+>>ngbw|BX828485|GBHTC|Arabidopsis thaliana Full-length c  (2260 aa)
+Frame: f initn: 338 init1: 193 opt: 254  Z-score: 318.7  bits: 70.2 E(): 3e-10
+Smith-Waterman score: 254;  36.735% identity (68.367% similar) in 98 aa overlap (171-268:1051-1338)
+
+              180       190       200       210       220       230
+SQ     LYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDR
+       :. :.:::...   :: : .  :: :   .. : .:::::. .  ...:. . :. ..:.
+ngbw|B LFQLAGVVAVEVTGGPDIVFVPGRKD--SNVCPKEGRLPDAKQGFQHLRDVFYRMGLSDK
+       1060      1090      1120        1150      1180      1210    
+
+              240       250       260        
+SQ     EVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYL
+       ..::: :.:.::..: . :::.:::      : : ...
+ngbw|B DIVALSGGHTLGRAHPERSGFDGPWTQEPLKFDNSYFV
+         1240      1270      1300      1330  
+
+>>ngbw|DQ124021|GBHTC|Coffea arabica clone MN-SSH3-B11 m  (221 aa)
+Frame: f initn: 164 init1: 144 opt: 187  Z-score: 248.3  bits: 53.8 E(): 2.5e-06
+Smith-Waterman score: 187;  44.928% identity (72.464% similar) in 69 aa overlap (145-213:14-214)
+
+          150       160       170       180       190       200    
+SQ     SNAGLENAAKFLEPVKKQFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPD
+       .:.::. : .: : ::.. : :.:.::: :.:::...   :: : . .:: :    ..: 
+ngbw|D ANSGLRIALNFCEEVKSRHPKITYADLYQLAGVVAVEVTGGPTIDFVAGRKD--SMISPK
+        20        50        80       110       140         170     
+
+          210   
+SQ     NGRLPDGDK
+       .:::::..:
+ngbw|D EGRLPDANK
+         200    
+
+>>ngbw|DQ218230|GBHTC|Gibberella moniliformis putative c  (755 aa)
+Frame: f initn:  95 init1:  95 opt: 177  Z-score: 226.6  bits: 51.6 E(): 4e-05
+Smith-Waterman score: 177;  27.536% identity (63.043% similar) in 138 aa overlap (74-206:304-718)
+
+            80        90       100         110       120       130 
+SQ     HEEDKKTADYQKVYNLIAERLRDDDEY--DNYIGYGPVLVRLAWHSSGTWDKNDNTGGSY
+       . :  :. :.  . . .   : :....   .. .:: ...:..:::.::.   :. ::. 
+ngbw|D YTEAFKSLDFAALKKDLNALLTDSQDWWPADHGNYGGLFIRMSWHSAGTYRAMDGRGGAG
+       310       340       370       400       430       460       
+
+             140       150       160        170       180       190
+SQ     GGTYRYKKESQDPSNAGLENAAKFLEPVKKQF-PWISYGDLYTLGGVVGIQELQGPKIPW
+        :  :.   .. :.: .:..: ..: :.:...   ::.: : ... ... .   : . : 
+ngbw|D MGQQRFAPLDSWPDNQNLDKARRLLWPIKQKYGSKISWG*LXSFSPATSPSSHXGLRDPR
+       490       520       550       580       610       640       
+
+                 200      
+SQ     R--SGRTDLPE-DMTPDNG
+          .::.:  :  :.:..:
+ngbw|D VXPGGRADTWE\PMSPSTG
+       670        700     
+
+>>ngbw|BX828738|GBHTC|Arabidopsis thaliana Full-length c  (1114 aa)
+Frame: f initn: 263 init1: 135 opt: 167  Z-score: 210.9  bits: 49.2 E(): 0.0003
+Smith-Waterman score: 355;  32.489% identity (62.447% similar) in 237 aa overlap (105-337:390-1025)
+
+          110       120       130       140       150       160    
+SQ     GYGPVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVK---K
+       : .  ..::..:..::.. .:..::  .:.  :  : . : : ::... : :  .:    
+ngbw|B GKAAGVLRLVFHDAGTFELDDHSGG-INGSIAY--ELERPENIGLKKSLKVLAKAKVKVD
+     390       420       450        480         510       540      
+
+             170       180       190       200        210       220
+SQ     QFPWISYGDLYTLGGVVGIQELQGPKIPWRSGRTDLPEDMTPD-NGRLPDGDKDANYVRN
+       ..  .:..:. ...:  ...   :: ::   :: :   .  :: .:.::    .:. ...
+ngbw|B EIQPVSWADMISVAGSEAVSICGGPTIPVVLGRLD---SAQPDPEGKLPPETLSASGLKE
+        570       600       630       660          690       720   
+
+              230       240       250       260       270       280
+SQ     FYKRLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDWKLEKN
+        .::  :. .:.::: :::..:     ..::  :     ..: : .:  ::.. :     
+ngbw|B CFKRKGFSTQELVALSGAHTIG-----SKGFGDP-----TVFDNAYYKILLEKPW-----
+           750       780            810            840             
+
+              290       300       310       320       330       
+SQ     DAGNLQYNSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+            . ..  ... ::.:.::.::.. :. ::.:: ::: ::.::..:.  :.. :
+ngbw|B ----TSTSKMTSMVGLPSDHALVQDDECLRWVKRYAEDQDKFFEDFTNAYIKLVNSG
+          870       900       930       960       990      1020 
+
+>>ngbw|BX829197|GBHTC|Arabidopsis thaliana Full-length c  (1327 aa)
+Frame: f initn: 192 init1:  94 opt: 157  Z-score: 196.7  bits: 46.8 E(): 0.0019
+Smith-Waterman score: 179;  27.679% identity (56.250% similar) in 224 aa overlap (134-335:286-951)
+
+           140       150       160            170       180        
+SQ     TYRYKKESQDPSNAGLENAAKFLEPVKKQFPW-----ISYGDLYTLGGVVGIQELQGPKI
+       : :   :..   . ::.:  ...: .:. .       .: .:. .:..  ::. . :: :
+ngbw|B TRRELGEKEHDRSFGLRN-FRYIEEIKEALERECPGVVSCSDILVLSAREGIEAVGGPYI
+             310        340       370       400       430       460
+
+      190        200       210       220       230       240       
+SQ     PWRSGRTD-LPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKT-HL
+       : ..:: : :       .. ::: ... . : . .: . ..   .:::::.:..:.: ::
+ngbw|B PLKTGRRDGLKSRTDMLESYLPDHNESISVVLEKFKSIGIDTPGLVALLGSHSVGRT/HL
+              490       520       550       580       610          
+
+        250                 260       270        280          290  
+SQ     KNSG---------FEGP-WGAANNIFTNEFYLNLLN-EDWKLEKNDAGN---LQYNSPKG
+        ..:            : : .. . .:. .  .: . :  .  ..: :.   :. :. ..
+ngbw|B CQAGPSFVP*GGPVLKP/WTTSLTCYTSVLTRSLTQ/EAVQYVRDDRGTPMVLDNNDYRN
+     640       670        700       730        760       790       
+
+                300       310       320       330     
+SQ     YM----MLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+        .    .: .:. : .:.    :::..: ::  ::..:..:.  : :
+ngbw|B ILDDKGLLLVDHRLAHDKRTRPIVKKMAKDQAYFFKEFTRAIQILSE
+       820       850       880       910       940    
+
+>>ngbw|EF051293|GBHTC|Gymnadenia conopsea cationic perox  (1230 aa)
+Frame: f initn: 156 init1:  91 opt: 140  Z-score: 175.2  bits: 42.7 E(): 0.03
+Smith-Waterman score: 161;  27.354% identity (56.054% similar) in 223 aa overlap (134-335:285-950)
+
+           140       150       160            170       180        
+SQ     TYRYKKESQDPSNAGLENAAKFLEPVK----KQFPWI-SYGDLYTLGGVVGIQELQGPKI
+       : .  .:..   . :..:  ..:: .:    .. : . : .:. .:..  ::  . ::.:
+ngbw|E TRKTISEKETDRSFGMRN-FRYLEDIKDAVERECPGVVSCSDILVLSARDGIVSVGGPHI
+          300       330        360       390       420       450   
+
+      190       200        210       220       230       240       
+SQ     PWRSGRTDLPEDMTPDNGR-LPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKT-HL
+       : ..:: :  .. .    . ::: ... . : . .. . ..   .:::::::..:.: ::
+ngbw|E PLKTGRRDGRRSRADVVEKFLPDHNESISSVLEKFSAMGIDTPGLVALLGAHSVGRT/HL
+           480       510       540       570       600       630   
+
+        250              260        270        280       290       
+SQ     KNSGFE-------GPWGAANNIFTNEF-YLNLLN-EDWKLEKNDAGNLQYNSPKGYM---
+       ...: .       ::  ..    ..:  :  : . .  .  .:: :. .  . : :.   
+ngbw|E REAGAQAVPGGRPGPEPGSRAAHAEEV\YDPLPDPKAVQYVRNDRGTPMKLDNKYYVNIL
+            660       690        720       750       780       810 
+
+              300       310       320       330     
+SQ     ----MLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLE
+           .: .:  :  :      :.... .:: ::. ::.:.: : :
+ngbw|E ENKGLLMVDPELAPDPRTRPYVRKMGKSQDYFFQHFSRAIAFLSE
+             840       870       900       930      
+
+>>ngbw|EF483876|GBHTC|Schizochytrium sp. FJU-512 putativ  (452 aa)
+Frame: f initn: 129 init1: 129 opt: 130  Z-score: 169.3  bits: 40.2 E(): 0.063
+Smith-Waterman score: 130;  38.000% identity (68.000% similar) in 50 aa overlap (296-345:2-151)
+
+         300       310       320       330       340     
+SQ     LPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGIDFPKNQP
+       .::: .:..:...   :..:: :.. ::.::. :.. : : :      ::
+ngbw|E FPTDLSLVEDKEFRPWVEKYAKDEELFFKDFAAAWTKLTENGCKNLAAQP
+            20        50        80       110       140   
+
+>>ngbw|AY110822|GBHTC|Zea mays CL43760_1 mRNA sequence    (638 aa)
+Frame: r initn: 110 init1:  79 opt: 130  Z-score: 166.9  bits: 40.3 E(): 0.086
+Smith-Waterman score: 130;  24.786% identity (55.556% similar) in 117 aa overlap (237-348:638-300)
+
+        240       250       260       270            280       290 
+SQ     GAHALGKTHLKNSGFEGPWGAANNIFTNEFYLNLLNEDW-----KLEKNDAGNLQYNSPK
+       :::.::... . ::    :: ...   ..       ..:     :....    ..     
+ngbw|A GAHTLGRARPERSG----WGKSETKSPKDGPGAPXXQSWTSHWLKFDNSYFKAIEERRDD
+       630       600           570       540       510       480   
+
+             300       310       320       330       340        
+SQ     GYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGIDFPKNQPVHI
+         ..:::: .:..::..   . .:: :::.  .:...: : : . :  :   . . .
+ngbw|A PLLVLPTDAVLFEDSSFKIYATKYAKDQDTXXEDYAEAHAKLSNLGAKFDPPKGISL
+           450       420       390       360       330          
+
+>>ngbw|BX814542|GBHTC|Arabidopsis thaliana Full-length c  (376 aa)
+Frame: f initn:  82 init1:  82 opt: 122  Z-score: 160.2  bits: 38.3 E():  0.2
+Smith-Waterman score: 122;  43.182% identity (72.727% similar) in 44 aa overlap (294-337:6-137)
+
+           300       310       320       330       
+SQ     MMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERG
+       ..: .: ::..:  .  .:..::::.:::: :...:   : : :
+ngbw|B LQLVSDKALLDDPVFRPLVEKYAADEDAFFADYAEAHMKLSELG
+              30        60        90       120     
+
+>>ngbw|BX828399|GBHTC|Arabidopsis thaliana Full-length c  (1002 aa)
+Frame: f initn: 117 init1:  89 opt: 127  Z-score: 159.8  bits: 39.6 E(): 0.21
+Smith-Waterman score: 127;  24.020% identity (53.922% similar) in 204 aa overlap (140-329:302-907)
+
+     140          150       160        170       180       190     
+SQ     ESQDPSNA---GLENAAKFLEPVKKQFPWI-SYGDLYTLGGVVGIQELQGPKIPWRSGRT
+       :...:.:    : :      : .... : . : .:. ....  ..    ::     .:: 
+ngbw|B EKDSPANLSLRGYEIIDDAKEKIENRCPGVVSCADIVAMAARYAVFWAGGPYYDIPKGRF
+           320       350       380       410       440       470   
+
+         200       210       220       230       240       250     
+SQ     DLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKTHLKNSGFEG--
+       :  ..   :.  ::.   .:. . . . .  :. ..:::. :::.:: .  . :.:..  
+ngbw|B DGKRSKIEDTRNLPSPFLNASQLIQTFGQRGFTPQDVVAFSGAHTLGVA--RCSSFKARL
+           500       530       560       590       620         650 
+
+             260       270            280       290        300     
+SQ     --PWGAANNIFTNEFYLNLLNED-----WKLEKNDAGNLQYNSPKGYM-MLPTDYALIQD
+         : .. .. :.: .  .    :     .   .::  :  .:. .    .: .: .:.. 
+ngbw|B TVPDSSLDSTFANTLSKTCSAGDNAEQPFYATRNDFDNAYFNALQMKSGVLFSDQTLFNT
+             680       710       740       770       800       830 
+
+         310       320         
+SQ     SNYLKIVKEYAADQDAFFRDFSKA
+           ..:. :: .:  :: ::..:
+ngbw|B PRTRNLVNGYALNQAKFFFDFQQA
+             860       890     
+
+>>ngbw|BX829004|GBHTC|Arabidopsis thaliana Full-length c  (972 aa)
+Frame: f initn:  70 init1:  44 opt: 123  Z-score: 154.8  bits: 38.6 E():  0.4
+Smith-Waterman score: 123;  30.986% identity (67.606% similar) in 71 aa overlap (108-178:235-444)
+
+       110       120       130       140       150       160       
+SQ     PVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWIS
+       : :..:: ... :.::  ..::. .:. :...: .   : :: .. ...: :::..  ::
+ngbw|B PSLLKLALNDAMTYDKATKSGGA-NGSIRFSSELSRAENEGLSDGLSLIEEVKKEIDSIS
+          250       280        310       340       370       400   
+
+       170        
+SQ     YGDLYTLGGVV
+        :   . . ..
+ngbw|B KGGPISYADII
+           430    
+
+>>ngbw|BX827063|GBHTC|Arabidopsis thaliana Full-length c  (1125 aa)
+Frame: f initn:  70 init1:  44 opt: 123  Z-score: 153.8  bits: 38.6 E(): 0.46
+Smith-Waterman score: 123;  30.986% identity (67.606% similar) in 71 aa overlap (108-178:393-602)
+
+       110       120       130       140       150       160       
+SQ     PVLVRLAWHSSGTWDKNDNTGGSYGGTYRYKKESQDPSNAGLENAAKFLEPVKKQFPWIS
+       : :..:: ... :.::  ..::. .:. :...: .   : :: .. ...: :::..  ::
+ngbw|B PSLLKLALNDAMTYDKATKSGGA-NGSIRFSSELSRAENEGLSDGLSLIEEVKKEIDSIS
+              420       450        480       510       540         
+
+       170        
+SQ     YGDLYTLGGVV
+        :   . . ..
+ngbw|B KGGPISYADII
+     570       600
+
+>>ngbw|AY105230|GBHTC|Zea mays PCO072956 mRNA sequence    (832 aa)
+Frame: f initn:  65 init1:  65 opt: 121  Z-score: 153.3  bits: 38.1 E(): 0.49
+Smith-Waterman score: 121;  32.530% identity (60.241% similar) in 83 aa overlap (166-247:435-683)
+
+         170       180       190        200       210       220    
+SQ     ISYGDLYTLGGVVGIQELQGPKIPWRSGRTD-LPEDMTPDNGRLPDGDKDANYVRNFYKR
+       .: .:. .:.. : :    ::. :   :: : :  . :  . .:: ..  .. . ...  
+ngbw|A VSCADILALASGVLITMTGGPRYPVPLGRRDSLSSSPTAPDVELPHANFTVDRLIQMFGA
+          450       480       510       540       570       600    
+
+          230       240       
+SQ     LDFNDREVVALLGAHALGKTHLK
+         :. .:.::: :::.:: .: :
+ngbw|A KGFTVQELVALSGAHTLGFSHCK
+          630       660       
+
+>>ngbw|BX828807|GBHTC|Arabidopsis thaliana Full-length c  (1078 aa)
+Frame: f initn: 121 init1:  93 opt: 122  Z-score: 152.8  bits: 38.4 E(): 0.52
+Smith-Waterman score: 122;  26.452% identity (53.548% similar) in 155 aa overlap (185-329:452-910)
+
+          190       200       210       220       230       240    
+SQ     GPKIPWRSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKT
+       ::     .:: :  ..   :.  ::.   .:. . . . .  :. ..:::: :::.:: .
+ngbw|B GPYYDIPKGRFDGKRSKIEDTRNLPSPFLNASQLIQTFGQRGFTPQDVVALSGAHTLGVA
+           470       500       530       560       590       620   
+
+          250           260       270            280       290     
+SQ     HLKNSGFEG----PWGAANNIFTNEFYLNLLNED-----WKLEKNDAGNLQYNSPKGYM-
+         . :.:.     : .. .. :.: .  .    :     .   .::  :  .:. .    
+ngbw|B --RCSSFKDRLTVPDSSLDSTFANTLSKTCSAGDNAEQPFDATRNDFDNAYFNALQMKSG
+             650       680       710       740       770       800 
+
+          300       310       320         
+SQ     MLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKA
+       .: .: .:..     ..:. :: .:  :: ::..:
+ngbw|B VLFSDQTLFNTPRTRNLVNGYALNQAKFFFDFQQA
+             830       860       890      
+
+>>ngbw|BX824254|GBHTC|Arabidopsis thaliana Full-length c  (1002 aa)
+Frame: f initn: 144 init1: 114 opt: 121  Z-score: 152.0  bits: 38.2 E(): 0.58
+Smith-Waterman score: 155;  30.247% identity (54.321% similar) in 162 aa overlap (191-338:386-847)
+
+              200       210       220       230       240       250
+SQ     RSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKTHLKNSG
+       :.....:  :. :    :: .   .. ...: ..  :. .:.::: :::..: .: :.  
+ngbw|B RTSKSSLLTDLLP----LP-STPISKIIQQFESK-GFTVQEMVALSGAHSIGFSHCKE--
+             410            440       470        500       530     
+
+              260       270                    280        290      
+SQ     FEGPWGAANNIFTNEFYLNLLNEDWKLEK-------------NDAGNLQY-NSPKGYMML
+       : :  :  :. .. .: . : .   .  :             :   :. : :  ::  .:
+ngbw|B FVGRVGRNNTGYNPRFAVALKKACANYPKDPTISVFNDIMTPNKFDNMYYQNLKKGLGLL
+           560       590       620       650       680       710   
+
+        300       310       320       330        
+SQ     PTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGI
+        .:..: .:     .:  :: .:: ::.::.::.  :   ::
+ngbw|B ESDHGLYSDPRTRYFVDLYAKNQDLFFKDFAKAMQKLSLFGI
+           740       770       800       830     
+
+>>ngbw|BX824486|GBHTC|Arabidopsis thaliana Full-length c  (1043 aa)
+Frame: f initn: 144 init1: 114 opt: 121  Z-score: 151.7  bits: 38.2 E():  0.6
+Smith-Waterman score: 155;  30.247% identity (54.321% similar) in 162 aa overlap (191-338:434-895)
+
+              200       210       220       230       240       250
+SQ     RSGRTDLPEDMTPDNGRLPDGDKDANYVRNFYKRLDFNDREVVALLGAHALGKTHLKNSG
+       :.....:  :. :    :: .   .. ...: ..  :. .:.::: :::..: .: :.  
+ngbw|B RTSKSSLLTDLLP----LP-STPISKIIQQFESK-GFTVQEMVALSGAHSIGFSHCKE--
+       440       470            500        530       560           
+
+              260       270                    280        290      
+SQ     FEGPWGAANNIFTNEFYLNLLNEDWKLEK-------------NDAGNLQY-NSPKGYMML
+       : :  :  :. .. .: . : .   .  :             :   :. : :  ::  .:
+ngbw|B FVGRVGRNNTGYNPRFAVALKKACANYPKDPTISVFNDIMTPNKFDNMYYQNLKKGLGLL
+     590       620       650       680       710       740         
+
+        300       310       320       330        
+SQ     PTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGI
+        .:..: .:     .:  :: .:: ::.::.::.  :   ::
+ngbw|B ESDHGLYSDPRTRYFVDLYAKNQDLFFKDFAKAMQKLSLFGI
+     770       800       830       860       890 
+
+>>ngbw|BX821022|GBHTC|Arabidopsis thaliana Full-length c  (1084 aa)
+Frame: f initn:  89 init1:  44 opt: 121  Z-score: 151.4  bits: 38.2 E(): 0.62
+Smith-Waterman score: 121;  31.765% identity (63.529% similar) in 85 aa overlap (166-248:397-651)
+
+         170       180       190        200        210       220   
+SQ     ISYGDLYTLGGVVGIQELQGPKIPW-RSGRTDLPEDMTPDNGRL-PDGDKDANYVRNFYK
+       .: .:. .:..  ::  :.::::   ..:: :   ..  :   : :. . . . : . ..
+ngbw|B VSCADIVALSARDGIVMLKGPKIEMIKTGRRDSRGSYLGDVETLIPNHNDSLSSVISTFN
+      400       430       460       490       520       550        
+
+           230       240        
+SQ     RLDFNDREVVALLGAHALGKTHLKN
+        . .. . .:::::::..:..:  :
+ngbw|B SIGIDVEATVALLGAHSVGRVHCVN
+      580       610       640   
+
+>>ngbw|BX820489|GBHTC|Arabidopsis thaliana Full-length c  (1095 aa)
+Frame: f initn:  89 init1:  44 opt: 121  Z-score: 151.4  bits: 38.2 E(): 0.63
+Smith-Waterman score: 121;  31.765% identity (63.529% similar) in 85 aa overlap (166-248:399-653)
+
+         170       180       190        200        210       220   
+SQ     ISYGDLYTLGGVVGIQELQGPKIPW-RSGRTDLPEDMTPDNGRL-PDGDKDANYVRNFYK
+       .: .:. .:..  ::  :.::::   ..:: :   ..  :   : :. . . . : . ..
+ngbw|B VSCADIVALSARDGIVMLKGPKIEMIKTGRRDSRGSYLGDVETLIPNHNDSLSSVISTFN
+            420       450       480       510       540       570  
+
+           230       240        
+SQ     RLDFNDREVVALLGAHALGKTHLKN
+        . .. . .:::::::..:..:  :
+ngbw|B SIGIDVEATVALLGAHSVGRVHCVN
+            600       630       
+
+>>ngbw|DQ267251|GBHTC|Tragopogon pratensis clone TPRAT13  (238 aa)
+Frame: f initn:  91 init1:  91 opt: 112  Z-score: 150.5  bits: 35.8 E():  0.7
+Smith-Waterman score: 112;  41.304% identity (63.043% similar) in 46 aa overlap (288-333:92-229)
+
+       290       300       310       320       330   
+SQ     NSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAAL
+       : :::  .: .: ::..:      :. :: :: .::. :..:.  :
+ngbw|D NLPKGLGVLKSDRALVMDPRTRPYVELYARDQKVFFEAFGRAMEKL
+           110       140       170       200         
+
+>>ngbw|DQ267250|GBHTC|Tragopogon dubius clone TDUB13 put  (238 aa)
+Frame: f initn:  91 init1:  91 opt: 112  Z-score: 150.5  bits: 35.8 E():  0.7
+Smith-Waterman score: 112;  41.304% identity (63.043% similar) in 46 aa overlap (288-333:92-229)
+
+       290       300       310       320       330   
+SQ     NSPKGYMMLPTDYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAAL
+       : :::  .: .: ::..:      :. :: :: .::. :..:.  :
+ngbw|D NLPKGLGVLKSDRALVMDPRTRPYVELYARDQKVFFEAFGRAMEKL
+           110       140       170       200         
+
+>>ngbw|BX826669|GBHTC|Arabidopsis thaliana Full-length c  (1083 aa)
+Frame: f initn: 131 init1:  78 opt: 119  Z-score: 148.8  bits: 37.7 E(): 0.87
+Smith-Waterman score: 131;  25.532% identity (56.383% similar) in 188 aa overlap (166-333:467-1027)
+
+         170       180       190         200       210       220   
+SQ     ISYGDLYTLGGVVGIQELQGPKIPWRSGRTD--LPEDMTPDNGRLPDGDKDANYVRNFYK
+       .: .:. ....  ..    ::.   . :: :      ..  :: ::. .. .. . . ..
+ngbw|B VSCADILAMAARDSVVVSGGPRWEVEVGRKDSRTASKQAATNG-LPSPNSTVSTLISTFQ
+      470       500       530       560       590        620       
+
+           230       240        250         260       270       280
+SQ     RLDFNDREVVALLGAHALGKTHLKN-SGFEGPW--GAANNIFTNEFYLNLLNEDWKLEKN
+        : ... ..::: :.:.:::..  . ..   :   :   :   :  .:. :..  .    
+ngbw|B NLGLSQTDMVALSGGHTLGKARCTSFTARLQPLQTGQPANHGDNLEFLESLQQLCSTVGP
+       650       680       710       740       770       800       
+
+                290                   300        310       320     
+SQ     DAGNLQYN--SPK------------GYMMLPTDYAL-IQDSNYLKIVKEYAADQDAFFRD
+       ..:  : .  .:.            :  .::.: :: .:: .   ::. ::.::..::.:
+ngbw|B SVGITQLDLVTPSTFDNQYYVNLLSGEGLLPSDQALAVQDPGTRAIVETYATDQSVFFED
+       830       860       890       920       950       980       
+
+         330   
+SQ     FSKAFAAL
+       :..:.. .
+ngbw|B FKNAMVKM
+      1010     
+
+>>ngbw|BX826801|GBHTC|Arabidopsis thaliana Full-length c  (1135 aa)
+Frame: f initn: 131 init1:  78 opt: 119  Z-score: 148.5  bits: 37.7 E():  0.9
+Smith-Waterman score: 133;  25.532% identity (56.383% similar) in 188 aa overlap (166-333:478-1038)
+
+         170       180       190         200       210       220   
+SQ     ISYGDLYTLGGVVGIQELQGPKIPWRSGRTD--LPEDMTPDNGRLPDGDKDANYVRNFYK
+       .: .:. ....  ..    ::.   . :: :      ..  :: ::. .. .. . . ..
+ngbw|B VSCADILAMAARDSVVVSGGPRWEVEVGRKDSRTASKQAATNG-LPSPNSTVSTLISTFQ
+         490       520       550       580        610       640    
+
+           230       240       250        260                      
+SQ     RLDFNDREVVALLGAHALGKTHLKNSGFEGPWGAA-NNIFTNEFYLN-------------
+        : ... ..::: :.:.:::..  .   .     . .: .:.:  :.             
+ngbw|B NLGLSQTDMVALSGGHTLGKARCTSFTARLQQLQT\DNQLTTETTLSSSSHCNSYAQLLG
+          670       700       730        760       790       820   
+
+         270       280        290       300        310       320   
+SQ     ----LLNEDWKLEKNDAGNLQ-YNSPKGYMMLPTDYAL-IQDSNYLKIVKEYAADQDAFF
+            :.  : :... . . . ::  .:  .::.: :: .:: .   ::. ::.::..::
+ngbw|B PV*V*LSLTW*LHQHLTTSTM/YNLLSGEGLLPSDQALAVQDPGTRAIVETYATDQSVFF
+           850       880        910       940       970      1000  
+
+           330   
+SQ     RDFSKAFAAL
+       .::..:.. .
+ngbw|B EDFKNAMVKM
+           1030  
+
+>>ngbw|AY107243|GBHTC|Zea mays PCO111578 mRNA sequence    (791 aa)
+Frame: f initn:  69 init1:  69 opt: 114  Z-score: 144.6  bits: 36.4 E():  1.5
+Smith-Waterman score: 114;  40.476% identity (71.429% similar) in 42 aa overlap (299-340:4-129)
+
+      300       310       320       330       340
+SQ     DYALIQDSNYLKIVKEYAADQDAFFRDFSKAFAALLERGIDF
+       : ::..: ..   ...:: ::.:::.:...: : : . :  :
+ngbw|A DAALFEDPSFKVYAEKYAEDQEAFFKDYGEAHAKLSDLGAKF
+        10        40        70       100         
+
+
+
+357 residues in 1 query   sequences
+567156411 residues in 493474 library sequences
+ Scomplib [34.26]
+ start: Mon Jan 21 12:15:20 2008 done: Mon Jan 21 12:18:08 2008
+ Total Scan time: 135.810 Total Display time:  0.620
+
+Function used was TFASTY [version 34.26.5 April 26, 2007]

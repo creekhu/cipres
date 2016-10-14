@@ -1,0 +1,61 @@
+<h2>PROTDIST</h2>
+<p>
+	<strong>PROTDIST</strong> computes  a distance measure for protein sequences,
+	using maximum likelihood estimates  based on the Dayhoff PAM matrix, the JTT
+	matrix model, the PBM model, Kimura's  1983 approximation to these, or a model
+	based on the genetic code plus a  constraint on changing to a different category
+	of amino acid. The distances can  also be corrected for gamma-distributed and
+	gamma-plus-invariant-sites-distributed rates of change in different sites.
+	Rates of evolution can vary among sites in a prespecified way, and also according
+	to a Hidden Markov model. The program can also make a table of  percentage similarity
+	among sequences. The distances can then be used in the  distance matrix programs.
+	Part of Phylip.
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/protdist.html">
+		http://evolution.genetics.washington.edu/phylip/doc/protdist.html
+	</a>
+</h3>
+	   <h3>TEST DATA SET</h3>
+	   <p>(Note that although these may look like DNA sequences, they are being  treated as protein sequences consisting entirely of alanine, cystine, glycine,  and threonine). </p>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp; 5&nbsp;&nbsp; 13</pre>
+               <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AACGTGGCCACAT</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AAGGTCGCCACAC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; CAGTTCGCCACAA</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; GAGATTTCCGCCT</pre>
+             <pre>Epsilon&nbsp;&nbsp; GAGATCTCCGCCC</pre></td>
+         </tr>
+       </table>
+	   <div align="center">
+         <hr size="2" width="100%" align="center" />
+       </div>
+	   <h3>CONTENTS OF OUTPUT FILE (with all numerical options on )</h3>
+	   <p>(Note that when the numerical options are not on, the output file produced  is in the correct format to be used as an input file in the distance matrix  programs). </p>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>&nbsp; Jones-Taylor-Thornton model distance</pre>
+             <pre>&nbsp;</pre>
+             <pre>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequences</pre>
+             <pre>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---------</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACGTGGCCA CAT</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..G..C.... ..C</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C.GT.C.... ..A</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G.GA.TT..G .C.</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G.GA.CT..G .CC</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000000&nbsp; 0.330447&nbsp; 0.625670&nbsp; 1.032032&nbsp; 1.354086</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.330447&nbsp; 0.000000&nbsp; 0.375578&nbsp; 1.096290&nbsp; 0.677616</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.625670&nbsp; 0.375578&nbsp; 0.000000&nbsp; 0.975798&nbsp; 0.861634</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.032032&nbsp; 1.096290&nbsp; 0.975798&nbsp; 0.000000&nbsp; 0.226703</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp; 1.354086&nbsp; 0.677616&nbsp; 0.861634&nbsp; 0.226703&nbsp; 0.000000</pre></td>
+         </tr>
+       </table>
+	   <h3>&nbsp;</h3>
+	   <p><br />
+        </p>

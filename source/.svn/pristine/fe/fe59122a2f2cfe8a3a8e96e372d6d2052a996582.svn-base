@@ -1,0 +1,204 @@
+MRBAYES_XSEDE
+infile_ - Primary Input File
+ALL_FILES_ - Results -
+mrbayesblockquery_ - Switch - My Data Contains a MrBayes Data Block (CHECK THIS OR MrBayes BLOCK ENTRIES WILL BE OVERWRITTEN!!!)
+nruns_specified_ - Integer - My MrBayes Block specifies nruns=
+nchains_specified_ - Integer - My MrBayes Block specifies nchains=
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+flagdatatype_ - Excl - My Data Type Is (only one data type can be used through the web form, see help below)
+seed_ - Integer - Set the Seed Number Set seed=
+swapseed_ - Integer - Set the Swapseed=
+scientific_ - Switch - Use scientific notation
+precision_ - Integer - How many decimals should we print?
+set_beagle_params_ - Switch - Run BEAGLE
+set_outgroup_ - String - Specify (only) one outgroup
+Section: ****************************************************************************
+lsetopts
+*************************************************************************************
+nstopts_ - Excl - Set the number of substitution types (Nst=)
+nucmodelopts_ - Excl - Set the nucleotide substitution model (Nucmodel=)
+codonopts_ - Excl - Set the Codon translation table (Codon=)
+omegavaropts_ - Excl - Allow the nonsynonymous/synonymous rate ratio (omega) (Omegavar=)
+ploidyopts_ - Excl - Set the ploidy (Ploidy=)
+rateopts_ - Excl - Set the model for among-site rate variation (Rates=)
+Ngammacatopts_ - Integer - Set number of rate categories for gamma distribution (Ngammacat=)
+Nbetacatopts_ - Integer - Set number of rate categories for beta distribution (Nbetacat=)
+Covarionopts_ - Switch - Force the use of covarion-like model (4X4 dna model, or protein) (Covarion=)
+codingopts_ - Excl - Specify how characters were sampled (Coding=)
+Parsmodelopts_ - Switch - Force calculation under a Parsimony model (Parmodel=)
+Section: ****************************************************************************
+prsetparams
+*************************************************************************************
+tratioopts_ - Excl - Transition/Transversion Rate Ratio; DNA only (Tratiopr=)
+betameanx_ - Float - Beta mean x
+betavary_ - Float - Beta variance y
+tratiofixed_ - Float - Fixed Transition/Transversion Ratio
+revmatpropts_ - Excl - Substitution Rates of the GTR Model; Nucleic Data only (Revmatpr=)
+atocrate_ - Float - A/C rate
+atograte_ - Float - A/G rate
+atotrate_ - Float - A/T rate
+ctograte_ - Float - C/G rate
+ctotrate_ - Float - C/T rate
+gtotrate_ - Float - G/T Rate
+fixedatocrate_ - Float - A/C rate
+fixedatograte_ - Float - A/G rate
+fixedatotrate_ - Float - A/T rate
+fixedctograte_ - Float - C/G rate
+fixedctotrate_ - Float - C/T rate
+fixedgtotrate_ - Float - G/T Rate
+aamodelpropts_ - Excl - Set the Rate Matrix for Amino Acids (Aamodelpr=)
+omegapropts_ - Excl - Nonsynonymous/Synonymous Rate Ratio (Omegapr=)
+omegaprdir1_ - Float - Uniform Omega Rate1
+omegaprdir2_ - Float - Uniform Omega Rate2
+omegaprexponential_ - Float - Exponential Omega Rate
+omegafixed_ - Float - Fixed Omega Rate
+ny98omega1propts_ - Excl - Nonsynonymous/Synonymous Rate Ratio for sites under purifying selection (Ny98omega1pr=)
+ny98omega1prbeta1_ - Float - Ny98omega1 Beta Rate 1
+ny98omega1prbeta2_ - Float - Ny98omega1 Beta Rate 2
+ny98omega1prfix1_ - Float - Fixed Ny98Omega1 Rate
+ny98omega3propts_ - Excl - Nonsynonymous/Synonymous Rate Ratio for sites under positive selection (Ny98omega3pr=)
+ny98omega3pruni1_ - Float - Ny98 Uniform Omega Rate 1 for Positive Selection
+ny98omega3pruni2_ - Float - Ny98 Uniform Omega Rate 2 for Positive Selection
+ny98omega3prexp1_ - Float - Ny98 Exponential Omega Rate for Positive Selection
+ny98omega3prfix1_ - Float - Ny98 Fixed Omega Rate for Positive Selection
+M3omega3propts_ - Excl - Nonsynonymous/Synonymous Rate Ratio for sites under the M3 model (M3omega1pr=)
+M3omega3prfix1_ - Float - M3 Fixed Omega Rate 1 for M3 Model
+M3omega3prfix2_ - Float - M3 Fixed Omega Rate 2 for M3 Model
+M3omega3prfix3_ - Float - M3 Fixed Omega Rate 3 for M3 Model
+codoncatfreqsopts_ - Excl - Frequencies of sites under Purifying, Neutral, and Positive Selection (Codoncatfreqs=)
+codoncatfreqsdir1_ - Float - Codoncatfreqs Dirichlet Parameter 1
+codoncatfreqsdir2_ - Float - Codoncatfreqs Dirichlet Parameter 2
+codoncatfreqsdir3_ - Float - Codoncatfreqs Dirichlet Parameter 3
+codoncatfreqsfix1_ - Float - Codoncatfreqs Fixed Parameter 1
+codoncatfreqsfix2_ - Float - Codoncatfreqs Fixed Parameter 2
+codoncatfreqsfix3_ - Float - Codoncatfreqs Fixed Parameter 3
+statewfreqpropts_ - Excl - State Frequencies (Statefreqpr=); Assigning frequencies to each state is not supported
+statewfreqprdir1_ - Float - Statefreqs Dirichlet Parameter (A single number)
+shapepropts_ - Excl - Gamma Shape Parameter (Shapepr=)
+shapepruni1_ - Float - Gamma Shape Uniform Parameter 1
+shapeprdir2_ - Float - Gamma Shape Dirichlet Parameter 2
+shapeprexp1_ - Float - Gamma Shape Exponential Parameter
+shapeprfix1_ - Float - Gamma Shape Fixed Parameter
+pinvarpropts_ - Excl - Proportion of Invariable Sites (Pinvarpr=)
+pinvarpruni1_ - Float - Invariable Sites, Uniform Parameter 1
+pinvarpruni2_ - Float - Invariable Sites, Uniform Parameter 2
+pinvarprfix1_ - Float - Invariable Sites, Fixed Parameter
+ratecorrpropts_ - Excl - Autocorrelation Parameter for Gamma Distribution for Among SIte Variation (Ratecorrpr=)
+ratecorrpruni1_ - Float - Autocorrelation Uniform Parameter 1
+ratecorrpruni2_ - Float - Autocorrelation Uniform Parameter 2
+ratecorrprfix1_ - Float - Autocorrelation Fixed Parameter
+covswitchpropts_ - Excl - Covrion Switching Rates (Covswitchpr=)
+covswitchuni1_ - Float - Covarion Model Off to On Rate (Uniform)
+covswitchuni2_ - Float - Covarion Model On to Off Rate (Uniform)
+covswitchexp1_ - Float - Covarion Model Exponential Parameter
+covswitchfix1_ - Float - Covarion Model Off to On Rate (Fixed)
+covswitchfix2_ - Float - Covarion Model On to Off Rate (Fixed)
+symdirihyperpropts_ - Excl - Stationary frequencies for states in standard data sets (Symdirihyperpr=)
+symdiruni1_ - Float - Stationary Frequency Uniform Param 1
+symdiruni2_ - Float - Stationary Frequency Uniform Param 2
+symdirexp1_ - Float - Stationary Frequency Exponential Param 1
+symdirfix1_ - Float - Stationary Frequency Fixed Param 1
+topologypropts_ - Excl - Specify Topological Constraint Types (Topologypr=)
+constraintnames1_ - String - Enter the names or numbers of the constraints to be used, separated by commas
+brlenspropts_ - Excl - Probability distribution on branch lengths (Brlenspr=)
+brlenspruni2_ - Float - Unconstrained Uniform Param 2
+brlensprexp1_ - Float - Unconstrained Exponential Param
+treeheightpropts_ - Excl - Distribution on Tree Height (for Clock Models) (Treeagepr=)
+treeheightsprgamma1_ - Float - Gamma Param 1
+treeheightsprgamma2_ - Float - Unconstrained Uniform Param 2
+treeheightsprexp1_ - Float - Unconstrained Exponential Param
+treeheightsprfx1_ - Float - Treeagepr Fixed Param
+ratepropts_ - Excl - Site Specific Rates Models (Ratepr=)
+speciationpropts_ - Excl - Speciation Rate (for Birth:Death Clock Models) (Speciationpr=)
+speciationpruni1_ - Float - Speciationpr Uniform Param 1
+speciationpruni2_ - Float - Speciationpr Uniform Param 2
+speciationprexp1_ - Float - Speciationpr Exponential Param
+speciationprfix1_ - Float - Speciationpr Fixed Param
+extinctionpropts_ - Excl - Extinction Rate (for Birth:Death Clock Models) (Extinctionpr=)
+extinctionpruni1_ - Float - Extinctionpr Beta Param 1
+extinctionpruni2_ - Float - Extinctionpr Beta Param 2
+extinctionprfix1_ - Float - Extinctionpr Fixed Param
+sampleprobopts_ - Float - Fraction of Species Samples in Birth Death Analysis (SampleprobExtinctionpr=)
+thetapropts_ - Excl - Prior on the coalescence parameter (nucleic acid data) (Thetapr=)
+thetapruni1_ - Float - Thetapr Uniform Param 1
+thetapruni2_ - Float - Thetapr Uniform Param 2
+thetaprexp1_ - Float - Thetapr Exponential Param
+thetaprfix1_ - Float - Thetapr Fixed Param
+Section: ****************************************************************************
+datamodifications
+*************************************************************************************
+databreaksopts_ - String - Specify Breaks in Sequence Data (Protein and Nucleic Acid Data only)
+pairsopts_ - String - Specify nucleotide pairs involved in Watson-Crick pairing (pairs nucmodel=doublet only)
+Section: ****************************************************************************
+Charset
+*************************************************************************************
+nocharsets_ - Excl - How many character sets would you like to define? See the note below.
+charset1_ - String - Name for character set 1
+charset1range_ - String - Character set 1 range
+charset2_ - String - Name for character set 2
+charset2range_ - String - Character set 2 range
+charset3_ - String - Name for character set 3
+charset3range_ - String - Character set 3 range
+charset4_ - String - Name for character set 4
+charset4range_ - String - Character set 4 range
+charset5_ - String - Name for character set 5
+charset5range_ - String - Character set 5 range
+charset6_ - String - Name for character set 6
+charset6range_ - String - Character set 6 range
+charset7_ - String - Name for character set 7
+charset7range_ - String - Character set 7 range
+charset8_ - String - Name for character set 8
+charset8range_ - String - Character set 8 range
+excludeopts_ - String - Exclude these characters from the analysis
+Section: ****************************************************************************
+mcmcparams
+*************************************************************************************
+ngenval_ - Integer - Number of Generations (Ngen=)
+nrunsval_ - Integer - Number of Runs (nruns=)
+nchainsval_ - Integer - Number of Chains to Run (nchains=)
+tempval_ - Float - Temperature parameter (temp=)
+swapfreqval_ - Integer - How often should swap of states be attempted
+nswapsval_ - Integer - How many swaps should be tried per generation
+samplefreqval_ - Integer - How often should the Markov chain be sampled?
+mcmcdiagnval_ - Excl - Write acceptance ratios of moves and swaps to file?
+minpartfreqval_ - Float - Minimum frequency for a partition to be included (minpartfreq)
+allchainsval_ - Excl - Record acceptance ratios for all chains?
+relburninval_ - Excl - Discard a proportion of the sampled values as burnin when calculating the convergence diagnostic?
+burninfracval_ - Float - Specify the fraction of the sampled values discarded as burnin
+burninval_ - Integer - Specify the number of sampled values discarded as burnin
+stopruleval_ - Excl - Stop early if the convergence diagnostic falls below the stop value?
+stopval_ - Float - Stop early if the convergence diagnostic falls below the stop value?
+npertsval_ - Integer - Number of random perturbations to apply to user starting tree.
+sbrlensval_ - Excl - Save branch length information?
+ordertaxaval_ - Excl - Should taxa be ordered before trees are printed to file?
+Section: ****************************************************************************
+outputopts
+*************************************************************************************
+Section: ****************************************************************************
+sumtintro
+*************************************************************************************
+tratioval_ - Excl - Report format for the transition and transversion rates of a nucleotide substitution model with nst=2
+revmatopts_ - Excl - Report format for substitution rates of a GTR substitution model for nucleotide or amino acid data
+reportancstateopts_ - Switch - Report the probability of ancestral states at all constrained nodes
+reportsiterateopts_ - Switch - Report mean site rate in the posterior
+reportposselopts_ - Switch - Write Mean Omega Values
+Section: ****************************************************************************
+sumtintro
+*************************************************************************************
+sumtburnin_ - Integer - Sumt Burnin Value
+sumt_relburnin_ - Excl - Discard a specified proportion of samples instead of a specific number(Relburnin=Yes)
+sumt_burninfrac_ - Float - Specify the fraction of samples to be discarded (Burninfrac=)
+sumtnruns_ - Integer - How many .t files should be summarized (Sumt nruns=)
+sumtntrees_ - Integer - How many trees should be in the Sumt model
+sumtdisplaygeq_ - Float - Minimum probability of partitions to display in Sumt (0.05 = 95%)
+sumtcontype_ - Excl - Type of consensus tree
+sumt_conformat_ - Excl - Choose the output format for your consensus tree (Conformat=)
+sumtshowtreeprobs_ - Excl - Show Tree Probabilities
+Section: ****************************************************************************
+sumpintro
+*************************************************************************************
+sumpburnin_ - Integer - Sump Burnin Value
+sump_relburnin_ - Excl - Discard a specified proportion of samples instead of a specific number(Relburnin=Yes)
+sump_burninfrac_ - Float - Specify the fraction of samples to be discarded (Burninfrac=)
+sumpnruns_ - Integer - How many '.p' files from independent analyses will be summarized (sump Nruns=)
+

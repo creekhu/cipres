@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>sig</title>
+    <version>1.0</version>
+    <description>Multiple Prosite motifs searching</description>
+    <authors>Eric Deveaud</authors>
+    <category>protein:motifs</category>
+    <category>motifs</category>
+  </head>
+
+  <command>sig</command>
+
+  <parameters>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+
+	<prompt>Protein Sequences</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>100</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>patterns</name>
+      <attributes>
+	<prompt>Pattern File (-f)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -f $value" : ""</code>
+	</format>
+	<group>2</group>
+	<comment>
+	  <value>File format : one pattern per line.</value>
+	  <value>A pattern consists in motifs definition separated by distance constraints.</value>
+	  <value>The format is stricly the following: motif_1 (min,max) motif_2 ... (min,max) motif_n, and so on.</value>
+	  <value>.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>overlapping</name>
+      <attributes>
+	<prompt>Allows motifs from pattern to be overlapping (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -i" : ""</code>
+	</format>
+	<group>2</group>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>reverse</name>
+      <attributes>
+	<prompt>Searches motifs in ordered and reverse search order, conserving the distance constraints (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -r" : ""</code>
+	</format>
+	<group>2</group>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

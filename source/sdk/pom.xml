@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ngbw</groupId>
+	<artifactId>sdk</artifactId>
+	<name>Cipres SDK</name>
+	<version>2.0</version>
+	<parent>
+		<groupId>org.ngbw</groupId>
+		<artifactId>cipres</artifactId>
+		<version>2.0</version>
+		<relativePath>../build</relativePath>
+	</parent>
+
+	<properties>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
+
+	<prerequisites>
+		<maven>3.0.5</maven>
+	</prerequisites>
+
+	<build>
+		<sourceDirectory>${build.dir}/sdk/src/main/java</sourceDirectory>
+		<testSourceDirectory>${build.dir}/sdk/src/test/java</testSourceDirectory>
+		<directory>${build.dir}/sdk/target</directory>
+		<plugins>
+			<!-- This builds a sdk jar (sdk-jar-with-dependencies.jar )that includes all dependencies-->
+			<!-- This execution must appear before "copy files" execution so that jar is created before copied -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>jar-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Some Files in script directory need resource filtering. -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>copy-scripts</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${build.dir}/sdk/target/scripts</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${build.dir}/sdk/scripts</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+
+
+					<!--
+						Generate code from pisexml.  Note that clean does not remove the generated code  
+						but rebuilding does via the build.xml file.
+					-->
+					<execution>
+						<id>code-generation</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<!--
+						<phase>process-resources</phase>
+						-->
+						<phase>generate-resources</phase>
+						<configuration>
+							<executable>ant</executable>
+							<arguments>
+								<argument>-f</argument>
+								<argument>${build.dir}/sdk/src/main/codeGeneration/build.xml</argument>
+								<argument>generate</argument>
+								<argument>Test</argument>
+							</arguments>
+						</configuration>
+					</execution>
+
+
+
+					<!-- install python modules needed by some of the scripts -->
+					<execution>
+						<id>setuptools ${python.install}</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>python</executable>
+							<workingDirectory>pycipressdk</workingDirectory>
+							<arguments>
+								<argument>setup.py</argument>
+								<argument>${python.install}</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>${build.dir}/sdk/src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<filters>
+			<filter>${filter.file.path}</filter>
+		</filters>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											exec-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2.1,)
+										</versionRange>
+										<goals>
+											<goal>exec</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<!-- To support sending email using Lucie's emailbean -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.cipres.utils</groupId>
+			<artifactId>mailservice</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.2</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- End Test dependencies -->
+		<!-- SSH and SCP functionality -->
+		<dependency>
+			<groupId>com.trilead</groupId>
+			<artifactId>trilead-ssh2</artifactId>
+			<version>1.0.0-build219</version>
+		</dependency>
+		<!-- Lucene search via Indexer DataResource -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<!-- Commons and logging -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<!-- End Commons and logging -->
+		<!-- database dependencies -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.24</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1208</version>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-juli</artifactId>
+			<version>7.0.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>7.0.42</version>
+		</dependency>
+		<!-- START this is for log4jdbc -->
+		<dependency>
+			<groupId>org.lazyluke</groupId>
+			<artifactId>log4jdbc-remix</artifactId>
+			<version>0.2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<!-- END this is for log4jdbc -->
+		<dependency>
+			<groupId>org.jglobus</groupId>
+			<artifactId>gridftp</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jglobus</groupId>
+			<artifactId>myproxy</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+	</dependencies>
+
+</project>

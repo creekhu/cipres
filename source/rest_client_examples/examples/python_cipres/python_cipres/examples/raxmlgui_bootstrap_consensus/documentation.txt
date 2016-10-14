@@ -1,0 +1,62 @@
+<!-- Bootstrap + Consensus: Two Steps
+raxmlHPC-PTHREADS.exe -T 2 -m GTRGAMMA   -n infile.tre -s  infile.txt -O   -x 4 -N 100  -p 368 
+&& raxmlHPC-PTHREADS.exe -T 2 -m GTRGAMMA -n con.infile.tre -J MR -z infile.tre  -->
+
+raxmlHPC-HYBRID  -m GTRGAMMA -n boot.tre  -s infile.txt  -O  -x 12345 -N 100  -p 12345    
+&& raxmlHPC-PTHREADS -m GTRGAMMA   -n con.tre.tre -J MR -z RAxML_bootstrap.boot.tre '
+
+this workflow succeeds.
+NGBW-JOB-RAXMLHPC2_WORKFLOW-A7B707F88071411B809DB951E76236FC (saved)
+
+raxmlHPC-HYBRID -s infile.txt -N 100 -m GTRGAMMA -p 12345  -O -n boot.tre -x 12345   
+&& raxmlHPC-PTHREADS -m GTRGAMMA   -n con.tre.tre -J MR -z RAxML_bootstrap.boot.tre
+~
+
+
+RAXMLHPC2_WORKFLOW
+This test:
+toolId=RAXMLHPC2_WORKFLOW_DRAFT
+runtime_=0.50
+select_workflow_=BOOTCON	       (no default)
+choose_bootstop_=specify		   (this is default, can be "bootstop")
+choose_bootstrap_=x                (set rapid bootstrapping, otherwise "b")
+bootstrap_value=100			   (default = 100)
+datatype_=dna                  (default, can be others)
+dna_gtrcat_=GTRGAMMA           (no default, a value for the model must be set)
+outgroup_=					   (default)
+provide_parsimony_seed_=1	   (default)
+parsimony_seed_val_=12345	   (default)
+disable_seqcheck_=1            (sets the -O value, default is off)
+outsuffix_BOOTCON_=boot		   (sets file name using -n, default = boot)
+rapidbootstrap_seed_val=12345  (default)
+outsuffix_BOOTCON2_=con. tre		   (sets output file name using -n step 2, default = con.tre)
+rapidbootstrap_seed_val_=12345     (set the bootstrap seed, default 12345, so it isnt required to set it)
+
+raxmlHPC-HYBRID (-T 16) -m GTRGAMMA   -n boot.tre -s infile.txt  -O  -x 12345  -N 100 -p 12345 
+&& raxmlHPC-PTHREADS (-T 8) -m GTRGAMMA -n con.tre.tre -J MR -z RAxML_bootstrap.boot.tre'
+
+test passed
+
+
+other model options:
+If not DNA , set datatype_=(protein/rna/binary/multi) then set this parameter
+(GTRCAT default;  prot_sub_model_=PROTGAMMA/PROTCAT; rna_model_ ;bin_model_=BINCAT/BINGAMMA; multi_model_=MULTICAT/MULTIGAMMA)
+Then set sub_parameters for protein:
+prot_matrix_spec_= (DAYHOFF is default)
+
+other modifiers can be set:
+invariable_= - switch - Estimate proportion of invariable sites (GTRGAMMA + I)
+ascertainment_= switch -
+ascertainment_corr_= excl - sets the kind of correction used
+use_emp_freqs_= to use empirical frequencies, protein only 
+
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+
+upload modifying files
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+
+printbrlength_ - Switch - Print branch lengths (-k)
+

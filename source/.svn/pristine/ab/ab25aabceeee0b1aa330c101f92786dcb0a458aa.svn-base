@@ -1,0 +1,4 @@
+# Here's the command to dump the database schema
+mysqldump --no-data=true --add-drop-table=false --user=cipresprod --password=<password_goes_here> -h mysql.sdsc.edu  --port=3312 ngbw >ngbwprod.sql
+
+mysqldump --no-data=true --add-drop-table=false --user=cipresprod --password=<password_goes_here> -h mysql.sdsc.edu  --port=3312 ngbwtest > ngbwtest.sql

@@ -1,0 +1,35 @@
+# Database properties for the Biology Workbench SDK
+
+# If you change to this driver you must also change database url in cipres-*.properties
+# database.driverClass=com.mysql.jdbc.Driver
+database.driverClass=net.sf.log4jdbc.DriverSpy
+
+database.useConnectionPool=true
+database.fileRoot=${database.fileRoot}
+
+# These variable's values come from the build profile via ~/.m2/settings.xml
+database.username=${database.username}
+database.password=${database.password}
+
+database.url=${database.url}
+
+database.tomcatPool.removeAbandonedTimeout = 60
+database.tomcatPool.suspectTimeout = 30
+database.tomcatPool.logAbandoned=true
+# database.tomcatPool.removeAbandoned=true
+
+#tomcat jdbc connection pool 
+database.tomcatPool.jmxEnabled=true
+database.tomcatPool.testWhileIdle=false
+database.tomcatPool.testOnBorrow=true
+database.tomcatPool.validationQuery = /* ping */ SELECT 1
+database.tomcatPool.testOnReturn=false
+database.tomcatPool.validationInterval = 30000
+database.tomcatPool.timeBetweenEvictionRunsMillis = 30000
+database.tomcatPool.maxActive = ${database.maxPoolSize} 
+database.tomcatPool.maxIdle=${database.maxPoolSize}
+database.tomcatPool.minIdle=${database.minPoolSize}
+database.tomcatPool.initialSize = ${database.minPoolSize}
+database.tomcatPool.maxWait = 90000
+database.tomcatPool.minEvictableIdleTimeMillis = 30000
+database.tomcatPool.jdbcInterceptors = org.apache.tomcat.jdbc.pool.interceptor.ConnectionState; org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer

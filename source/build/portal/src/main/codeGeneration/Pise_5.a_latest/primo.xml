@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PRIMO</title>
+    <description>A primer design tool</description>
+    <authors>Kupfer, Li</authors>
+    <reference>P. Li, K. C. Kupfer, C. J. Davies, D. Burbee, G. A. Evans, and H. R. Garner. PRIMO: A primer design program that applies base quality statistics for automated large-scale DNA sequencing. Genomics 40:476-485 (1997).</reference>
+  </head>
+
+
+  <command>primo</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>primo</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"primo"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>input_file_name</name>
+      <attributes>
+	
+	<prompt>Sequence data</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<group>1</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>all</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -all"</code>
+	</format>
+	<group>10</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>cover</name>
+      <attributes>
+	<prompt>cover template with walking-primers on both strands (-cover)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -cover" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>print</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>! $cover</code>
+	</precond>
+	<prompt>print formatted/annotated sequence to log file (-print)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -print" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="InFile">
+      <name>regions_file</name>
+      <attributes>
+	
+	<prompt>Regions file (-read)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -read $input_file_name" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+    
+    <parameter type="InFile">
+      <name>qual_file</name>
+      <attributes>
+	<prompt>Quality datafile file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? "" : " -noqual"</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+    
+    <parameter type="InFile">
+      <name>repeats_file</name>
+      <attributes>
+	
+	<prompt>Repeats file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)? "ln -s $value human.rep; " : ""</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>See the file http://bioweb.pasteur.fr/docs/doc-gensoft/primo/example//human.rep.bac for an example.</value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+    <parameter type="InFile">
+      <name>oligo_file</name>
+      <attributes>
+	<prompt>Oligo file</prompt>
+	<vdef><value>Name    Oligo\noligo1  GAGGCAGGAGAATGGCAC
+	</value></vdef>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)? "ln -s $value oligo.screen; " : ""</code>
+	</format>
+	<group>-10</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>rf</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$regions_file</code>
+	</precond>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $regions_file $input_file_name.regions; "</code>
+	</format>
+	<group>-10</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>qf</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$qual_file</code>
+	</precond>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $qual_file $input_file_name.qual; "</code>
+	</format>
+	<group>-10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>results_files</name>
+      <attributes>
+	<filenames>*.log *.primers oligo.cri</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+  
+
+</pise>

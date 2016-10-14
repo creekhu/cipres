@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <description>modelfromalign - use an existing multiple alignment to create an initial model</description>
+    <authors>R. Hughey, A. Krogh</authors>
+  </head>
+
+
+<command>modelfromalign</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>modelfromalign</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>modelfromalign</code>
+		<language>perl</language>
+		<code>"modelfromalign"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="String">
+<name>run</name>
+<attributes>
+
+	<prompt>Run name</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>test</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>alignfile</name>
+<attributes>
+
+	<prompt>Aligned sequences (-alignfile)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -alignfile $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>sam_model_file</name>
+<attributes>
+
+	<filenames>$run.mod</filenames>
+	<pipe>
+		<pipetype>sam_model</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+<prompt>Input options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="InFile">
+	<name>alignment_weights</name>
+	<attributes>
+
+		<prompt>Sequence weights for alignments used to form initial models (-alignment_weights)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -alignment_weights $value" : ""</code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control</name>
+<prompt>Control options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>align_fim</name>
+	<attributes>
+
+		<prompt>Add FIMs to the ends of the initial model (-align_fim)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -align_fim 1":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>regul</name>
+	<prompt>Regularizers and mixtures parameters</prompt>
+	<group>2</group>
+	<parameters>
+
+		<parameter type="Excl">
+		<name>regularizerfile</name>
+		<attributes>
+
+			<prompt>Regularizer (-regularizerfile)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value)? " -regularizerfile /local/gensoft/lib/sam/$value":""</code>
+			</format>
+			<group>2</group>
+			<vlist>
+				<value>long_match.regularizer</value>
+				<label>long_match.regularizer</label>
+				<value>trained.regularizer</value>
+				<label>trained.regularizer</label>
+				<value>weak-gap.regularizer</value>
+				<label>weak-gap.regularizer</label>
+				<value>sam1.3.regularizer</value>
+				<label>sam1.3.regularizer</label>
+			</vlist>
+			<comment>
+				<value>trained.regularizer: Regularizer optimized for unweighted transition counts on some set of re-estimated HSSP alignments </value>
+				<value>cheap_gap.regularizer: Makes gap opening and closing very cheap allowing exploration of many different alignments, but giving too high a cost to long matches</value>
+				<value>long_match.regularizer: Assigns somewhat reasonable gap costs for unweighted data, useful for sweeping away 'chatter' into big matches and big gaps, by making gap opening expensive but gap extension fairly cheap.</value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>reglength</name>
+		<attributes>
+
+			<prompt>Length of the regularizer (-reglength)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value)? " -reglength $value" : "" </code>
+			</format>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		<name>priorlibrary</name>
+		<attributes>
+
+			<prompt>Dirichlet mixture prior (-priorlibrary)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -priorlibrary /local/gensoft/lib/sam/$value":""</code>
+			</format>
+			<vdef><value>recode1.20comp</value></vdef>
+			<group>2</group>
+			<vlist>
+				<value>mall-opt.9comp</value>
+				<label>mall-opt.9comp</label>
+				<value>opt-weight1.9comp</value>
+				<label>opt-weight1.9comp</label>
+				<value>uprior.9comp</value>
+				<label>uprior.9comp</label>
+				<value>null.1comp</value>
+				<label>null.1comp</label>
+				<value>recode1.20comp</value>
+				<label>recode1.20comp</label>
+			</vlist>
+			<comment>
+				<value>uprior9.plib: The 9-component library discussed in the aforementioned paper. Optimized for unweighted blocks data.</value>
+				<value>mall-opt.9comp: Library re-optimized for unweighted data from an HSSP subset.</value>
+				<value>opt-weight1.9comp: Library reoptimized for weighted version of same HSSP subset.</value>
+				<value>recode1.20comp: A 20-component Dirichlet mixture trained on (realigned) HSSP alignments that have a diverse set of sequences. Intended for use in recoding inputs to neural net, but also useful as a standard regularizer.</value>
+				<value>null.1comp: A one-component regularizer with tiny alpha, to get effectively no regularization.</value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>prior_weight</name>
+		<attributes>
+
+			<prompt>Weight of the prior library (-prior_weight)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -prior_weight $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+		<precond>
+			<language>perl</language>
+			<code>$priorlibrary</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>del_jump_conf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for transitions leaving a delete state. The regularizer's transition values are multiplied by this number (-del_jump_conf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -del_jump_conf $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>ins_jump_conf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for transitions leaving an insert state (-ins_jump_conf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -ins_jump_conf $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>insconf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for character probabilities in an insert state (-insconf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -insconf $value" : "" </code>
+			</format>
+			<vdef><value>10000</value></vdef>
+			<group>2</group>
+			<comment>
+				<value>The high default means that the regularizer will overpower the actual counts determined by aligning sequences to the model. The regularizer's character insert values are multiplied by this number. </value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>match_jump_conf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for transitions leaving a match state (-match_jump_conf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -match_jump_conf $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>matchconf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for character probabilities in a match state (-matchconf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -matchconf $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>mainline_cutoff</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for transitions leaving a match state (-mainline_cutoff)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -mainline_cutoff $value" : "" </code>
+			</format>
+			<vdef><value>0.5</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>binary_output</name>
+	<attributes>
+
+		<prompt>Write models in binary format (-binary_output)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -binary_output 1":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

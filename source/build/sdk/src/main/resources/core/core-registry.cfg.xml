@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CoreRegistry>
+	<RecordFields>
+		<RecordField id="PRIMARY_ID" fieldType="STRING"/>
+		<RecordField id="ALTERNATIVE_ID" fieldType="STRING"/>
+		<RecordField id="NAME" fieldType="STRING"/>
+		<RecordField id="ORGANISM" fieldType="STRING"/>
+		<RecordField id="VERSION" fieldType="STRING"/>
+		<RecordField id="TYPE" fieldType="STRING"/>
+		<RecordField id="RESOLUTION" fieldType="FLOAT"/>
+		<RecordField id="AUTHOR" fieldType="STRING"/>
+		<RecordField id="MOLECULE" fieldType="STRING"/>
+		<RecordField id="DEPOSITION_DATE" fieldType="DATE"/>
+		<RecordField id="MODIFICATION_DATE" fieldType="STRING"/>
+		<RecordField id="E_VALUE" fieldType="DOUBLE"/>
+		<RecordField id="SCORE" fieldType="FLOAT"/>
+		<RecordField id="DATASET" fieldType="DATASET"/>
+		<RecordField id="PROGRAM" fieldType="STRING"/>
+		<RecordField id="SCORING_MATRIX" fieldType="STRING"/>
+		<RecordField id="PROGRAM_VERSION" fieldType="STRING"/>
+		<RecordField id="LENGTH" fieldType="INTEGER"/>
+		<RecordField id="NUMBER_OF_ALIGNED_SEQUENCES" fieldType="INTEGER"/>
+		<RecordField id="NUMBER_OF_HITS" fieldType="INTEGER"/>
+		<RecordField id="NUMBER_OF_BYTES" fieldType="INTEGER"/>
+		<RecordField id="NUMBER_OF_LETTERS" fieldType="LONG"/>
+		<RecordField id="NUMBER_OF_SEQUENCES" fieldType="LONG"/>
+		<RecordField id="GAP_PENALTY" fieldType="FLOAT"/>
+		<RecordField id="GAP_EXTENSION_PENALTY" fieldType="FLOAT"/>
+		<RecordField id="QUERY" fieldType="STRING"/>
+		<RecordField id="CHAIN" fieldType="STRING"/>
+	</RecordFields>
+	<RecordTypes>
+		<RecordType id="UNKNOWN" entityType="UNKNOWN" dataType="UNKNOWN" >
+			<RecordField name="NUMBER_OF_BYTES"/>
+		</RecordType>
+		<RecordType id="SERIALIZED_APPLICATION_DATA" entityType="APPLICATION_DATA" dataType="SERIALIZED_BINARY" >
+			<RecordField name="NUMBER_OF_BYTES"/>
+		</RecordType>
+		<RecordType id="DISCRETE_CHARACTER_MATRIX" entityType="DISCRETE_CHARACTER" dataType="MATRIX" >
+			<RecordField name="NUMBER_OF_BYTES"/>
+		</RecordType>
+		<RecordType id="CONTINUOUS_CHARACTER_MATRIX" entityType="CONTINUOUS_CHARACTER" dataType="MATRIX" >
+			<RecordField name="NUMBER_OF_BYTES"/>
+		</RecordType>
+		<RecordType id="TAXON_PHYLOGENETIC_TREE" entityType="TAXON" dataType="PHYLOGENETIC_TREE" >
+			<RecordField name="NUMBER_OF_BYTES"/>
+		</RecordType>
+		<RecordType id="MACROMOLECULE_SEQUENCE" entityType="MACROMOLECULE"
+			dataType="SEQUENCE" abstract="true">
+			<RecordField name="PRIMARY_ID"/>
+			<RecordField name="ALTERNATIVE_ID"/>
+			<RecordField name="NAME"/>
+			<RecordField name="ORGANISM"/>
+			<RecordField name="VERSION"/>
+		</RecordType>
+		<RecordType id="NUCLEIC_ACID_SEQUENCE" entityType="NUCLEIC_ACID"
+			dataType="SEQUENCE" extends="MACROMOLECULE_SEQUENCE"/>
+		<RecordType id="PROTEIN_SEQUENCE" entityType="PROTEIN" dataType="SEQUENCE"
+			extends="MACROMOLECULE_SEQUENCE"/>
+		<RecordType id="COMPOUND_STRUCTURE" entityType="COMPOUND"
+			dataType="STRUCTURE">
+			<RecordField name="PRIMARY_ID"/>
+			<RecordField name="TYPE"/>
+			<RecordField name="RESOLUTION"/>
+			<RecordField name="NAME"/>
+			<RecordField name="AUTHOR"/>
+			<RecordField name="MOLECULE"/>
+			<RecordField name="ORGANISM"/>
+			<RecordField name="DEPOSITION_DATE"/>
+			<RecordField name="MODIFICATION_DATE"/>
+		</RecordType>
+		<RecordType id="PROTEIN_STRUCTURE" entityType="PROTEIN"
+			dataType="STRUCTURE" extends="COMPOUND_STRUCTURE"/>
+		<RecordType id="NUCLEIC_ACID_STRUCTURE" entityType="NUCLEIC_ACID"
+			dataType="STRUCTURE" extends="COMPOUND_STRUCTURE"/>
+		<RecordType id="MACROMOLECULE_BLAST_OUTPUT" entityType="MACROMOLECULE" 
+			dataType="BLAST_OUTPUT" abstract="true">
+			<RecordField name="DATASET"/>
+			<RecordField name="PROGRAM"/>
+			<RecordField name="SCORING_MATRIX"/>
+			<RecordField name="PROGRAM_VERSION"/>
+			<RecordField name="NUMBER_OF_HITS"/>
+			<RecordField name="NUMBER_OF_LETTERS"/>
+			<RecordField name="NUMBER_OF_SEQUENCES"/>
+			<RecordField name="GAP_PENALTY"/>
+			<RecordField name="GAP_EXTENSION_PENALTY"/>
+			<RecordField name="QUERY"/>
+		</RecordType>
+		<RecordType id="NUCLEIC_ACID_BLAST_OUTPUT" entityType="NUCLEIC_ACID" 
+			dataType="BLAST_OUTPUT" extends="MACROMOLECULE_BLAST_OUTPUT"/>
+		<RecordType id="PROTEIN_BLAST_OUTPUT" entityType="PROTEIN" 
+			dataType="BLAST_OUTPUT" extends="MACROMOLECULE_BLAST_OUTPUT"/>
+		<RecordType id="MACROMOLECULE_FASTA_OUTPUT" entityType="MACROMOLECULE" 
+			dataType="FASTA_OUTPUT" abstract="true">
+			<RecordField name="DATASET"/>
+			<RecordField name="PROGRAM"/>
+			<RecordField name="PROGRAM_VERSION"/>
+			<RecordField name="NUMBER_OF_HITS"/>
+			<RecordField name="NUMBER_OF_LETTERS"/>
+			<RecordField name="NUMBER_OF_SEQUENCES"/>
+			<RecordField name="QUERY"/>
+		</RecordType>
+		<RecordType id="NUCLEIC_ACID_FASTA_OUTPUT" entityType="NUCLEIC_ACID" 
+			dataType="FASTA_OUTPUT" extends="MACROMOLECULE_FASTA_OUTPUT"/>
+		<RecordType id="PROTEIN_FASTA_OUTPUT" entityType="PROTEIN" 
+			dataType="FASTA_OUTPUT" extends="MACROMOLECULE_FASTA_OUTPUT"/>
+		<RecordType id="NUCLEIC_ACID_SIMILARITY_SEARCH_HIT" entityType="NUCLEIC_ACID"
+			dataType="SIMILARITY_SEARCH_HIT" extends="NUCLEIC_ACID_SEQUENCE">
+			<RecordField name="DATASET"/>
+			<RecordField name="E_VALUE"/>
+			<RecordField name="SCORE"/>
+			<RecordField name="QUERY"/>
+		</RecordType>
+		<RecordType id="PROTEIN_SIMILARITY_SEARCH_HIT" entityType="PROTEIN" 
+			dataType="SIMILARITY_SEARCH_HIT"  extends="PROTEIN_SEQUENCE">
+			<RecordField name="DATASET"/>
+			<RecordField name="E_VALUE"/>
+			<RecordField name="SCORE"/>
+			<RecordField name="QUERY"/>
+		</RecordType>
+		<RecordType id="PROTEIN_STRUCTURE_CHAIN_SIMILARITY_SEARCH_HIT" entityType="COMPOUND" 
+			dataType="SIMILARITY_SEARCH_HIT"  extends="COMPOUND_STRUCTURE">
+			<RecordField name="DATASET"/>
+			<RecordField name="E_VALUE"/>
+			<RecordField name="SCORE"/>
+			<RecordField name="CHAIN"/>
+			<RecordField name="QUERY"/>
+		</RecordType>
+		<RecordType id="MACROMOLECULE_SEQUENCE_ALIGNMENT" entityType="MACROMOLECULE"
+			dataType="SEQUENCE_ALIGNMENT" abstract="true">
+			<RecordField name="NUMBER_OF_ALIGNED_SEQUENCES"/>
+			<RecordField name="LENGTH"/>
+		</RecordType>
+		<RecordType id="PROTEIN_SEQUENCE_ALIGNMENT" entityType="PROTEIN"
+			dataType="SEQUENCE_ALIGNMENT"  extends="MACROMOLECULE_SEQUENCE_ALIGNMENT"/>
+		<RecordType id="NUCLEIC_ACID_SEQUENCE_ALIGNMENT" entityType="NUCLEIC_ACID"
+			dataType="SEQUENCE_ALIGNMENT"  extends="MACROMOLECULE_SEQUENCE_ALIGNMENT"/>
+	</RecordTypes>
+	<Transformations>
+		<Transformation sourceRecordType="NUCLEIC_ACID_BLAST_OUTPUT" 
+			dataFormat="BLAST_TEXT"  targetRecordType="NUCLEIC_ACID_SIMILARITY_SEARCH_HIT" 
+			class="org.ngbw.sdk.core.transformation.BlastOutput2SequenceBlastHitTransformer"/>
+		<Transformation sourceRecordType="PROTEIN_BLAST_OUTPUT" 
+			dataFormat="BLAST_TEXT" targetRecordType="PROTEIN_SIMILARITY_SEARCH_HIT" 
+			class="org.ngbw.sdk.core.transformation.BlastOutput2SequenceBlastHitTransformer"/>
+		<Transformation sourceRecordType="PROTEIN_BLAST_OUTPUT" 
+			dataFormat="BLAST_TEXT" targetRecordType="PROTEIN_STRUCTURE_CHAIN_SIMILARITY_SEARCH_HIT" 
+			class="org.ngbw.sdk.core.transformation.BlastOutput2StructureBlastHitTransformer"/>
+		<Transformation sourceRecordType="NUCLEIC_ACID_FASTA_OUTPUT" 
+			dataFormat="FASTOUT"  targetRecordType="NUCLEIC_ACID_SIMILARITY_SEARCH_HIT" 
+			class="org.ngbw.sdk.core.transformation.FastaOutput2SequenceFastaHitTransformer"/>
+		<Transformation sourceRecordType="PROTEIN_FASTA_OUTPUT" 
+			dataFormat="FASTOUT" targetRecordType="PROTEIN_SIMILARITY_SEARCH_HIT" 
+			class="org.ngbw.sdk.core.transformation.FastaOutput2SequenceFastaHitTransformer"/>
+		<Transformation sourceRecordType="PROTEIN_FASTA_OUTPUT" 
+			dataFormat="FASTOUT" targetRecordType="PROTEIN_STRUCTURE_CHAIN_SIMILARITY_SEARCH_HIT" 
+			class="org.ngbw.sdk.core.transformation.FastaOutput2StructureFastaHitTransformer"/>
+	</Transformations>
+</CoreRegistry>

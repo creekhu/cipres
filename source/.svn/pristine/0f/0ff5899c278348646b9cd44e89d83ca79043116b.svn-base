@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  
+  <head>
+    <title>Glimmer</title>
+    <version>2.0</version>
+    <description>build-icm - build a model</description>
+    <authors>S. Salzberg</authors>
+    <reference>A.L. Delcher, D. Harmon, S. Kasif, O. White, and S.L. Salzberg. Improved microbial gene identification with GLIMMER. Nucleic Acids Research, 27:23, 4636-4641. </reference>
+    <reference>S. Salzberg, A. Delcher, S. Kasif, and O. White. Microbial gene identification using interpolated Markov models. Nucleic Acids Research 26:2 (1998), 544-548.</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#GLIMMER</doclink>
+  </head>
+
+
+  <command>build_icm</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>build_icm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"build-icm"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>list_orfs</name>
+      <attributes>
+	<prompt>ORFs list file (as produced by glimmer-extract)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"&lt; $value"</code>
+	</format>
+	<group>10</group>
+	<pipe>
+	  <pipetype>orfs</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<comment>
+	  <value>Format should be one string per line.  Each line has an ID string followed by white space followed by the sequence itself. Use the 'glimmer_extract' program to generate this file.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>icm</name>
+      <attributes>
+	<vdef><value>model.out</value></vdef>
+	<group>20</group>
+	<pipe>
+	  <pipetype>model</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<precond>
+	  <language>perl</language>
+	  <code>! $text_out</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+     <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>icm_text</name>
+      <attributes>
+	<vdef><value>model.txt</value></vdef>
+	<group>20</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$text_out</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>text_out</name>
+      <attributes>
+	<prompt>Print model in text format (-t) instead of binary format (-b)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -t" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+</parameters>
+</pise>

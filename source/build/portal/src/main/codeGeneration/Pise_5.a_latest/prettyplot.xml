@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>PRETTYPLOT</title>
+<description>Displays aligned sequences, with colouring and boxing (EMBOSS)</description>
+<category>alignment:multiple</category>
+<category>display</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/prettyplot.html</doclink>
+</head>
+
+<command>prettyplot</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequences</name>
+	<attributes>
+		<prompt>sequences -- gapany [set of sequences] (-sequences)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequences=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>File containing a sequence alignment</value>
+		</comment>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>residuesperline</name>
+	<attributes>
+		<prompt>Number of residues to be displayed on each line (-residuesperline)</prompt>
+		<vdef>
+			<value>50</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -residuesperline=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>The number of residues to be displayed on each line</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>resbreak</name>
+	<attributes>
+		<prompt>Residues before a space (-resbreak)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>$residuesperline</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -resbreak=$value" : ""</code>
+		</format>
+		<group>3</group>
+		<scalemin><value>1</value></scalemin>
+		<scalemax>
+			<language>acd</language>
+			<code>$residuesperline</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>ccolours</name>
+	<attributes>
+		<prompt>Colour residues by their consensus value. (-ccolours)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noccolours"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>cidentity</name>
+	<attributes>
+		<prompt>Colour to display identical residues (RED) (-cidentity)</prompt>
+		<vdef>
+			<value>RED</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -cidentity=$value" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>csimilarity</name>
+	<attributes>
+		<prompt>Colour to display similar residues (GREEN) (-csimilarity)</prompt>
+		<vdef>
+			<value>GREEN</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -csimilarity=$value" : ""</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>cother</name>
+	<attributes>
+		<prompt>Colour to display other residues (BLACK) (-cother)</prompt>
+		<vdef>
+			<value>BLACK</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -cother=$value" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>docolour</name>
+	<attributes>
+		<prompt>Colour residues by table oily, amide etc. (-docolour)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -docolour" : ""</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>title</name>
+	<attributes>
+		<prompt>Do not display the title (-title)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -notitle"</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>shade</name>
+	<attributes>
+		<prompt>shading (-shade)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -shade=$value" : ""</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>Set to BPLW for normal shading &lt;BR&gt; so for pair = 1.5,1.0,0.5 and shade = BPLW &lt;BR&gt; Residues score Colour &lt;BR&gt; 1.5 or over....... BLACK (B) &lt;BR&gt; 1.0 to 1.5 ....... BROWN (P) &lt;BR&gt; 0.5 to 1.0 ....... WHEAT (L) &lt;BR&gt; under 0.5 ....... WHITE (W) &lt;BR&gt; The only four letters allowed are BPLW, in any order.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>pair</name>
+	<attributes>
+		<prompt>Values to represent identical similar related (-pair)</prompt>
+		<vdef>
+			<value>1.5,1.0,0.5</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -pair=$value" : ""</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>identity</name>
+	<attributes>
+		<prompt>Only match those which are identical in all sequences. (-identity)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -identity=$value" : ""</code>
+		</format>
+		<group>12</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>box</name>
+	<attributes>
+		<prompt>Display prettyboxes (-box)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nobox"</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>boxcol</name>
+	<attributes>
+		<prompt>Colour the background in the boxes (-boxcol)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -boxcol" : ""</code>
+		</format>
+		<group>14</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>boxcolval</name>
+	<attributes>
+		<prompt>Colour to be used for background. (GREY) (-boxcolval)</prompt>
+		<vdef>
+			<value>GREY</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -boxcolval=$value" : ""</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Display the sequence names (-name)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noname"</code>
+		</format>
+		<group>16</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>maxnamelen</name>
+	<attributes>
+		<prompt>Margin size for the sequence name. (-maxnamelen)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -maxnamelen=$value" : ""</code>
+		</format>
+		<group>17</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>number</name>
+	<attributes>
+		<prompt>Display the residue number (-number)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nonumber"</code>
+		</format>
+		<group>18</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>listoptions</name>
+	<attributes>
+		<prompt>Display the date and options used (-listoptions)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nolistoptions"</code>
+		</format>
+		<group>19</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>plurality</name>
+	<attributes>
+		<prompt>Plurality check value (totweight/2) (-plurality)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@( $(sequences.totweight) / 2)</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -plurality=$value" : ""</code>
+		</format>
+		<group>20</group>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>consensussection</name>
+		<prompt>Consensus section</prompt>
+
+	<parameters>
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>consensus</name>
+		<attributes>
+			<prompt>Display the consensus (-consensus)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -consensus" : ""</code>
+			</format>
+			<group>21</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>collision</name>
+		<attributes>
+			<prompt>Allow collisions in calculating consensus (-collision)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -nocollision"</code>
+			</format>
+			<group>22</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>alternative</name>
+		<attributes>
+			<prompt>Use alternative collisions routine (-alternative)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -alternative=$value" : ""</code>
+			</format>
+			<group>23</group>
+			<comment>
+				<value>Use alternative collisions routine &lt;BR&gt; 0) Normal collision check. (default) &lt;BR&gt; 1) checks identical scores with the max score found. So if any other residue matches the identical score then a collision has occurred. &lt;BR&gt; 2) If another residue has a greater than or equal to matching score and these do not match then a collision has occurred. &lt;BR&gt; 3) Checks all those not in the current consensus.If any of these give a top score for matching or identical scores then a collision has occured.</value>
+			</comment>
+			<scalemax><value>3</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+		<name>matrixfile</name>
+		<attributes>
+			<prompt>Matrix file (-matrixfile)</prompt>
+				<vlist>
+					<value>EPAM60</value>
+					<label>EPAM60</label>
+					<value>EPAM290</value>
+					<label>EPAM290</label>
+					<value>EPAM470</value>
+					<label>EPAM470</label>
+					<value>EPAM110</value>
+					<label>EPAM110</label>
+					<value>EBLOSUM50</value>
+					<label>EBLOSUM50</label>
+					<value>EPAM220</value>
+					<label>EPAM220</label>
+					<value>EBLOSUM62-12</value>
+					<label>EBLOSUM62-12</label>
+					<value>EPAM400</value>
+					<label>EPAM400</label>
+					<value>EPAM150</value>
+					<label>EPAM150</label>
+					<value>EPAM330</value>
+					<label>EPAM330</label>
+					<value>EBLOSUM55</value>
+					<label>EBLOSUM55</label>
+					<value>EPAM30</value>
+					<label>EPAM30</label>
+					<value>EPAM260</value>
+					<label>EPAM260</label>
+					<value>EBLOSUM90</value>
+					<label>EBLOSUM90</label>
+					<value>EPAM440</value>
+					<label>EPAM440</label>
+					<value>EPAM190</value>
+					<label>EPAM190</label>
+					<value>EPAM370</value>
+					<label>EPAM370</label>
+					<value>EPAM70</value>
+					<label>EPAM70</label>
+					<value>EPAM480</value>
+					<label>EPAM480</label>
+					<value>EPAM120</value>
+					<label>EPAM120</label>
+					<value>EDNAMAT</value>
+					<label>EDNAMAT</label>
+					<value>EPAM300</value>
+					<label>EPAM300</label>
+					<value>EBLOSUM60</value>
+					<label>EBLOSUM60</label>
+					<value>EPAM230</value>
+					<label>EPAM230</label>
+					<value>EBLOSUM62</value>
+					<label>EBLOSUM62</label>
+					<value>EPAM410</value>
+					<label>EPAM410</label>
+					<value>EPAM160</value>
+					<label>EPAM160</label>
+					<value>EPAM340</value>
+					<label>EPAM340</label>
+					<value>EBLOSUM65</value>
+					<label>EBLOSUM65</label>
+					<value>EPAM40</value>
+					<label>EPAM40</label>
+					<value>EPAM270</value>
+					<label>EPAM270</label>
+					<value>EPAM450</value>
+					<label>EPAM450</label>
+					<value>EPAM380</value>
+					<label>EPAM380</label>
+					<value>EPAM80</value>
+					<label>EPAM80</label>
+					<value>EPAM490</value>
+					<label>EPAM490</label>
+					<value>EBLOSUM30</value>
+					<label>EBLOSUM30</label>
+					<value>EBLOSUMN</value>
+					<label>EBLOSUMN</label>
+					<value>EPAM200</value>
+					<label>EPAM200</label>
+					<value>EPAM130</value>
+					<label>EPAM130</label>
+					<value>EBLOSUM35</value>
+					<label>EBLOSUM35</label>
+					<value>EPAM310</value>
+					<label>EPAM310</label>
+					<value>EBLOSUM70</value>
+					<label>EBLOSUM70</label>
+					<value>EPAM10</value>
+					<label>EPAM10</label>
+					<value>EPAM240</value>
+					<label>EPAM240</label>
+					<value>EPAM420</value>
+					<label>EPAM420</label>
+					<value>EPAM170</value>
+					<label>EPAM170</label>
+					<value>EBLOSUM75</value>
+					<label>EBLOSUM75</label>
+					<value>EPAM350</value>
+					<label>EPAM350</label>
+					<value>EPAM280</value>
+					<label>EPAM280</label>
+					<value>EPAM50</value>
+					<label>EPAM50</label>
+					<value>EPAM460</value>
+					<label>EPAM460</label>
+					<value>EPAM390</value>
+					<label>EPAM390</label>
+					<value>EPAM90</value>
+					<label>EPAM90</label>
+					<value>EPAM100</value>
+					<label>EPAM100</label>
+					<value>EBLOSUM40</value>
+					<label>EBLOSUM40</label>
+					<value>EPAM210</value>
+					<label>EPAM210</label>
+					<value>EPAM140</value>
+					<label>EPAM140</label>
+					<value>EBLOSUM45</value>
+					<label>EBLOSUM45</label>
+					<value>EPAM320</value>
+					<label>EPAM320</label>
+					<value>EBLOSUM80</value>
+					<label>EBLOSUM80</label>
+					<value>EPAM500</value>
+					<label>EPAM500</label>
+					<value>EPAM20</value>
+					<label>EPAM20</label>
+					<value>EPAM250</value>
+					<label>EPAM250</label>
+					<value>EPAM430</value>
+					<label>EPAM430</label>
+					<value>EPAM180</value>
+					<label>EPAM180</label>
+					<value>EBLOSUM85</value>
+					<label>EBLOSUM85</label>
+					<value>EPAM360</value>
+					<label>EPAM360</label>
+				</vlist>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -matrixfile=$value" : ""</code>
+			</format>
+			<group>24</group>
+			<comment>
+				<value>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>showscore</name>
+	<attributes>
+		<prompt>Print residue scores (-showscore)</prompt>
+		<vdef>
+			<value>-1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -showscore=$value" : ""</code>
+		</format>
+		<group>25</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>portrait</name>
+	<attributes>
+		<prompt>Set page to Portrait (-portrait)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -portrait" : ""</code>
+		</format>
+		<group>26</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>graph</name>
+	<attributes>
+		<prompt>graph [device to be displayed on] (-graph)</prompt>
+			<vlist>
+				<value>colourps</value>
+				<label>colourps</label>
+				<value>tek4107t</value>
+				<label>tek4107t</label>
+				<value>tekt</value>
+				<label>tekt</label>
+				<value>hpgl</value>
+				<label>hpgl</label>
+				<value>x11</value>
+				<label>x11</label>
+				<value>cps</value>
+				<label>cps</label>
+				<value>none</value>
+				<label>none</label>
+				<value>xwindows</value>
+				<label>xwindows</label>
+				<value>tek</value>
+				<label>tek</label>
+				<value>null</value>
+				<label>null</label>
+				<value>text</value>
+				<label>text</label>
+				<value>meta</value>
+				<label>meta</label>
+				<value>xterm</value>
+				<label>xterm</label>
+				<value>ps</value>
+				<label>ps</label>
+				<value>png</value>
+				<label>png</label>
+				<value>hp7470</value>
+				<label>hp7470</label>
+				<value>postscript</value>
+				<label>postscript</label>
+				<value>data</value>
+				<label>data</label>
+				<value>hp7580</value>
+				<label>hp7580</label>
+				<value>tektronics</value>
+				<label>tektronics</label>
+			</vlist>
+		<vdef><value>postscript</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -graph=$value" : ""</code>
+		</format>
+		<group>27</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>28</group>
+</attributes>
+</parameter>
+<parameter type="String" ishidden="1">
+<name>psouput</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps"  || $graph eq "cps" || $graph eq "png"</code>
+	</precond>
+	<format>
+		<language>perl</language>
+		<code>" -goutfile=prettyplot"</code>
+	</format>
+	<group>100</group>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>psresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps" || $graph eq "cps"</code>
+	</precond>
+	<filenames>*.ps</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>metaresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "meta"</code>
+	</precond>
+	<filenames>*.meta</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>dataresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "data"</code>
+	</precond>
+	<filenames>*.dat</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>pngresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "png"</code>
+	</precond>
+	<filenames>*.png *.2 *.3</filenames>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

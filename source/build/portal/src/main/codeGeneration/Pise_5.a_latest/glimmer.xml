@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Glimmer</title>
+    <version>2.0</version>
+    <description>Search for genes</description>
+    <authors>S. Salzberg</authors>
+    <reference>A.L. Delcher, D. Harmon, S. Kasif, O. White, and S.L. Salzberg. Improved microbial gene identification with GLIMMER. Nucleic Acids Research, 27:23, 4636-4641. </reference>
+    <reference>S. Salzberg, A. Delcher, S. Kasif, and O. White. Microbial gene identification using interpolated Markov models. Nucleic Acids Research 26:2 (1998), 544-548.</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#GLIMMER</doclink>
+  </head>
+
+  <command>glimmer</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>glimmer</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>glimmer</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>genome_sequence</name>
+      <attributes>
+	<prompt>Genome sequence file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>models</name>
+      <attributes>
+	<prompt>Markov models for genes as produced by the program build-icm.</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>model</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>min_length</name>
+      <attributes>
+	<prompt> minimum gene length (-g)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -g $value " : ""</code>
+	</format>
+	<vdef><value>90</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value> Minimum gene length is the length of the smallest fragmentconsidered to be a gene. The length is measured from the first base of the start codon to the last base *before* the stop codon. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>circular</name>
+      <attributes>
+	<prompt>Regard genome as circular (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? "" : " -l"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>min_olap</name>
+      <attributes>
+	<prompt> minimum overlap length (-o)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -o $value " : ""</code>
+	</format>
+	<vdef><value>30</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value>Minimum overlap length is a lower bound on the number of bases overlap between 2 genes that is considered a problem. Overlaps shorter that this are ignored. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>min_olap_percent</name>
+      <attributes>
+	<prompt> minimum overlap percent (-p)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -p $value " : ""</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value> Minimum overlap percent is another lower bound on the number of bases overlap that is considered a problem. Overlaps shorter than this percentage of *both* strings are ignored.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>threshold</name>
+      <attributes>
+	<prompt> threshold score for calling as gene (-t) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -t $value " : ""</code>
+	</format>
+	<vdef><value>90</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value>Threshold score is the minimum in-frame score for a fragment to be considered a potential gene.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>start_choice</name>
+      <attributes>
+	<prompt> use first codon in orf as start codon (default, +f) or use ribosome-binding energy to choose start codon (-f) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? "" : " -f"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value> Use first start codon indicates whether the first possible start codon is used or not. If not, the function Choose_Start is called to choose the start codon. Currently it computes hybridization energy between the string Ribosome_Pattern and the region in front of the start codon, and if this is above a threshold, that start site is chosen. The ribosome pattern string can be set by the -s option. Presumably function Choose_Start should be modified to do something cleverer. Currently used start codons are atg, gtg &amp; ttg . These can be changed in the function Is_Start , but corresponding changes should be made in Choose_Start . </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="String">
+      <name>rbs</name>
+      <attributes>
+	<prompt> Use this string as the ribosome binding pattern to find start codons. (-s) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value ne $vdef)? " -s $value" : "" </code>
+	</format>
+	<vdef><value>tcctcca</value></vdef>
+	<size>15</size>
+	<group>3</group>
+	<comment>
+	  <value> Use first start codon indicates whether the first possible start codon is used or not. If not, the function Choose_Start is called to choose the start codon. Currently it computes hybridization energy between the string Ribosome_Pattern and the region in front of the start codon, and if this is above a threshold, that start site is chosen. The ribosome pattern string can be set by the -s option. Presumably function Choose_Start should be modified to do something cleverer. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>indep_scores</name>
+      <attributes>
+	<prompt> Use independent probability score column (default, +r), or don't use it (-r) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? "" : " -r " </code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value> Use independent scores indicates whether the last column that scores each fragment using independent base probabilities is present. </value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Integer">
+      <name>weak</name>
+      <attributes>
+	<prompt>Use 'weak' scores on potential genes at least n bases long (-w)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -w $value" : ""</code>
+	</format>
+	<comment>
+	  <value>Weak scores ignore the independent model.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

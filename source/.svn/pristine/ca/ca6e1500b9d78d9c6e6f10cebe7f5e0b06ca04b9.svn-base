@@ -1,0 +1,1499 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Clustalw</title>
+    <version>1.82</version>
+    <description>Multiple Alignments</description>
+    <authors>Des Higgins</authors>
+    <reference>Thompson, J.D., Higgins, D.G. and Gibson, T.J. (1994) CLUSTAL W: improving the sensitivity of progressive multiple sequence alignment through sequence weighting, positions-specific gap penalties and weight matrix choice. Nucleic Acids Research, 22:4673-4680.</reference>
+    <category>alignment:multiple</category>
+  </head>
+  
+
+  <command>clustalw</command>
+  
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>clustalw</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"clustalw"</code>
+	</format>
+	<group>0</group>
+	
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>infile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$actions ne "-profile" and $actions ne "-sequences"</code>
+	</precond>
+
+	<prompt>Sequences File  (or Alignment File for Bootstrap and Tree actions) (-infile)</prompt>
+	<format>
+		<language>perl</language>
+		<code>  " -infile=$value"</code>
+		<language>seqlab</language>
+		<code>  " -infile=value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+		<value>3</value>
+		<value>4</value>
+		<value>15</value>
+		<value>100</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>actions</name>
+      <attributes>
+	
+	<prompt>Actions</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " $value" </code>
+	</format>
+	<vdef><value>-align</value></vdef>
+	<group>2</group>
+	<vlist>
+	  <value>-align</value>
+	  <label>-align: do full multiple alignment</label>
+	  <value>-profile</value>
+	  <label>-profile: merge two alignments (PROFILE1 and 2) by profile or structure alignment</label>
+	  <value>-sequences</value>
+	  <label>-sequences: sequentially add PROFILE2 sequences to PROFILE1 alignment</label>
+	  <value>-tree</value>
+	  <label>-tree: calculate NJ tree</label>
+	  <value>-bootstrap</value>
+	  <label>-bootstrap: bootstrap a NJ tree</label>
+	</vlist>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter issimple="1" type="Switch">
+      <name>phylip_alig</name>
+      <attributes>
+	<prompt>Phylip alignment output format (-output)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)?" -output=PHYLIP":""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>multalign</name>
+	<prompt>Multiple Alignments parameters</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>($actions =~ /align/ )</code>
+	</precond>
+	<group>2</group>
+	<comment>
+	<value>Multiple alignments are carried out in 3 stages :</value>
+	<value>1) all sequences are compared to each other (pairwise alignments);</value>
+	<value>2) a dendrogram (like a phylogenetic tree) is constructed, describing the approximate groupings of the sequences by similarity (stored in a file).</value>
+	<value>3) the final multiple alignment is carried out, using the dendrogram as a guide.</value>
+	<value>Pairwise alignment parameters control the speed/sensitivity of the initial alignments.</value>
+	<value>Multiple alignment parameters control the gaps in the final multiple alignments.</value>
+</comment>
+<parameters>
+
+	<parameter ismandatory="1" issimple="1" type="Excl">
+	<name>quicktree</name>
+	    <attributes>
+
+	      <prompt>Toggle Slow/Fast pairwise alignments (-quicktree)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value eq "fast")? " -quicktree" : "" </code>
+	      </format>
+	      <vdef><value>slow</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>slow</value>
+		<label>Slow</label>
+		<value>fast</value>
+		<label>Fast</label>
+	      </vlist>
+	      <comment>
+		<value>slow: by dynamic programming (slow but accurate)</value>
+		<value>fast: method of Wilbur and Lipman (extremely fast but approximate)</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>typeseq</name>
+	    <attributes>
+	      
+	      <prompt>Protein or DNA (-type)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -type=$value":""</code>
+	      </format>
+	      <group>2</group>
+	      <vlist>
+		<value>protein</value>
+		<label>protein</label>
+		<value>dna</value>
+		<label>DNA</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>matrix</name>
+	    <attributes>
+
+	      <prompt>Protein weight matrix (-matrix)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef) ? " -matrix=$value" : ""</code>
+	      </format>
+	      <vdef><value>gonnet</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>gonnet</value>
+		<label>Gonnet series</label>
+		<value>blosum</value>
+		<label>BLOSUM series</label>
+		<value>pam</value>
+		<label>PAM series</label>
+		<value>id</value>
+		<label>Identity matrix</label>
+	      </vlist>
+	      <comment>
+		<value>There are three 'in-built' series of weight matrices offered. Each consists of several matrices which work differently at different evolutionary distances. To see the exact details, read the documentation. Crudely, we store several matrices in memory, spanning the full range of amino acid distance (from almost identical sequences to highly divergent ones). For very similar sequences, it is best to use a strict weight matrix which only gives a high score to identities and the most favoured conservative substitutions. For more divergent sequences, it is appropriate to use 'softer' matrices which give a high score to many other frequent substitutions.</value>
+		<value>BLOSUM (Henikoff). These matrices appear to be the best available for carrying out data base similarity (homology searches). The matrices used are: Blosum80, 62, 40 and 30.</value>
+		<value>The Gonnet Pam 250 matrix has been reported as the best single matrix for alignment, if you only choose one matrix. Our experience with profile database searches is that the Gonnet series is unambiguously superior to the Blosum series at high divergence. However, we did not get the series to perform systematically better than the Blosum series in Clustal W (communication of the authors).</value>
+		<value>PAM (Dayhoff). These have been extremely widely used since the late '70s. We use the PAM 120, 160, 250 and 350 matrices.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>dnamatrix</name>
+	    <attributes>
+	      
+	      <prompt>DNA weight matrix (-dnamatrix)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef) ? " -dnamatrix=$value" : ""</code>
+	      </format>
+	      <vdef><value>iub</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>iub</value>
+		<label>IUB</label>
+		<value>clustalw</value>
+		<label>CLUSTALW</label>
+	      </vlist>
+	      <comment>
+		<value>1) IUB. This is the default scoring matrix used by BESTFIT for the comparison of nucleic acid sequences. X's and N's are treated as matches to any IUB ambiguity symbol. All matches score 1.9; all mismatches for IUB symbols score 0.</value>
+			<value>2) CLUSTALW(1.6). The previous system used by ClustalW, in which matches score 1.0 and mismatches score 0. All matches for IUB symbols also score 0.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>gapopen</name>
+	    <attributes>
+	      
+	      <prompt>Gap opening penalty (-gapopen)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef) ? " -gapopen=$value" : ""</code>
+	      </format>
+	      <vdef><value>10.00</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value></value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+
+	<parameter type="Float">
+	    <name>gapext</name>
+	    <attributes>
+	      
+	      <prompt>Gap extension penalty (-gapext)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef) ? " -gapext=$value" : ""</code>
+	      </format>
+	      <vdef><value>0.20</value></vdef>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>endgaps</name>
+	    <attributes>
+	      
+	      <prompt>End gap separation penalty (-endgaps)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (! $value )?" -endgaps":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>End gap separation treats end gaps just like internal gaps for the purposes of avoiding gaps that are too close (set by GAP SEPARATION DISTANCE above). If you turn this off, end gaps will be ignored for this purpose. This is useful when you wish to align fragments where the end gaps are not biologically meaningful.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>gapdist</name>
+	    <attributes>
+	      
+	      <prompt>Gap separation pen. range (-gapdist)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -gapdist=$value" : ""</code>
+	      </format>
+	      <vdef><value>8</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>Gap separation distance tries to decrease the chances of gaps being too close to each other. Gaps that are less than this distance apart are penalised more than other gaps. This does not prevent close gaps; it makes them less frequent, promoting a block-like appearance of the alignment.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>pgap</name>
+	    <attributes>
+	      
+	      <prompt>Residue specific penalties (Pascarella gaps) (-nopgap)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (! $value)?" -nopgap":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>Residue specific penalties are amino acid specific gap penalties that reduce or increase the gap opening penalties at each position in the alignment or sequence. As an example, positions that are rich in glycine are more likely to have an adjacent gap than positions that are rich in valine.</value>
+		<value>Table of residue specific gap modification factors:</value>
+		<value>A 1.13 M 1.29</value>
+		<value>C 1.13 N 0.63</value>
+		<value>D 0.96 P 0.74</value>
+		<value>E 1.31 Q 1.07</value>
+		<value>F 1.20 R 0.72</value>
+		<value>G 0.61 S 0.76</value>
+		<value>H 1.00 T 0.89</value>
+		<value>I 1.32 V 1.25</value>
+		<value>K 0.96 Y 1.00</value>
+		<value>L 1.21 W 1.23</value>
+		<value>The values are normalised around a mean value of 1.0 for H. The lower the value, the greater the chance of having an adjacent gap. These are derived from the original table of relative frequencies of gaps adjacent to each residue (12) by subtraction from 2.0.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>hgap</name>
+	    <attributes>
+	      
+	      <prompt>Hydrophilic gaps (-nohgap)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (! $value)?" -nohgap":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>Hydrophilic gap penalties are used to increase the chances of a gap within a run (5 or more residues) of hydrophilic amino acids; these are likely to be loop or random coil regions where gaps are more common. The residues that are 'considered' to be hydrophilic are set by menu item 3.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="List">
+	    <name>hgapresidues</name>
+	    <attributes>
+	      
+	      <prompt>Hydrophilic residues list (-hgapresidues)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and ($value ne $vdef)) ? " -hgapresidues=\\"$value\\"" : ""</code>
+	      </format>
+	      <vdef>
+		<value>G</value>
+		<value>P</value>
+		<value>S</value>
+		<value>N</value>
+		<value>D</value>
+		<value>Q</value>
+		<value>E</value>
+		<value>K</value>
+		<value>R</value>
+		
+	      </vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>A</value>
+		<label>A</label>
+		<value>R</value>
+		<label>R</label>
+		<value>N</value>
+		<label>N</label>
+		<value>D</value>
+		<label>D</label>
+		<value>C</value>
+		<label>C</label>
+		<value>Q</value>
+		<label>Q</label>
+		<value>E</value>
+		<label>E</label>
+		<value>G</value>
+		<label>G</label>
+		<value>H</value>
+		<label>H</label>
+		<value>I</value>
+		<label>I</label>
+		<value>L</value>
+		<label>L</label>
+		<value>K</value>
+		<label>K</label>
+		<value>M</value>
+		<label>M</label>
+		<value>F</value>
+		<label>F</label>
+		<value>P</value>
+		<label>P</label>
+		<value>S</value>
+		<label>S</label>
+		<value>T</value>
+		<label>T</label>
+		<value>W</value>
+		<label>W</label>
+		<value>Y</value>
+		<label>Y</label>
+		<value>V</value>
+		<label>V</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/) and $hgap</code>
+	      </precond>
+	      <separator>''</separator>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>maxdiv</name>
+	    <attributes>
+	      
+	      <prompt>Delay divergent sequences : % ident. for delay (-maxdiv)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value and $value != $vdef)? " -maxdiv=$value" : ""</code>
+	      </format>
+	      <vdef><value>30</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>Delays the alignment of the most distantly related sequences until after the most closely related sequences have been aligned. The setting shows the percent identity level required to delay the addition of a sequence; sequences that are less identical than this level to any other sequences will be aligned later.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>negative</name>
+	    <attributes>
+	      
+	      <prompt>Negative values in matrix ? (-negative)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -negative":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>transweight</name>
+	    <attributes>
+	      
+	      <prompt>Transitions weight (between 0 and 1) (-transweight)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value and $value != $vdef)?" -transweight=$value":""</code>
+	      </format>
+	      <vdef><value>0.5</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>The transition weight option for aligning nucleotide sequences has been changed in version 1.7 from an on/off toggle to a weight between 0 and 1. A weight of zero means that the transitions are scored as mismatches; a weight of 1 gives transitions the full match score. For distantly related DNA sequences, the weight should be near to zero; for closely related sequences it can be useful to assign a higher score.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="OutFile">
+	    <name>newtree</name>
+	    <attributes>
+	      
+	      <prompt>File for new guide tree (-newtree)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -newtree=$value" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	<parameter type="InFile">
+	<name>usetree</name>
+	<attributes>
+
+		<prompt>File for old guide tree (-usetree)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)?" -usetree=$value":""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>You can give a previously computed tree (.dnd file) - on the same data</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($actions =~ /align/ )</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>fastpw</name>
+<prompt>Fast Pairwise Alignments parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code>($quicktree eq "fast")</code>
+</precond>
+<group>2</group>
+<comment>
+	<value>These similarity scores are calculated from fast, approximate, global alignments, which are controlled by 4 parameters. 2 techniques are used to make these alignments very fast: 1) only exactly matching fragments (k-tuples) are considered; 2) only the 'best' diagonals (the ones with most k-tuple matches) are used.</value>
+</comment>
+<parameters>
+
+	<parameter type="Integer">
+	<name>ktuple</name>
+	<attributes>
+
+		<prompt>Word size (-ktuple)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value and $value ne $vdef)?" -ktuple=$value":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>K-TUPLE SIZE: This is the size of exactly matching fragment that is used. INCREASE for speed (max= 2 for proteins; 4 for DNA), DECREASE for sensitivity. For longer sequences (e.g. &gt;1000 residues) you may need to increase the default.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "fast") and ($quicktree eq "fast")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>topdiags</name>
+	<attributes>
+
+		<prompt>Number of best diagonals (-topdiags)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value and $value ne $vdef)?" -topdiags=$value":""</code>
+		</format>
+		<vdef><value>5</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>The number of k-tuple matches on each diagonal (in an imaginary dot-matrix plot) is calculated. Only the best ones (with most matches) are used in the alignment. This parameter specifies how many. Decrease for speed; increase for sensitivity.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "fast") and ($quicktree eq "fast")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>window</name>
+	<attributes>
+
+		<prompt>Window around best diags (-window)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value and $value ne $vdef)?" -window=$value":""</code>
+		</format>
+		<vdef><value>5</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>WINDOW SIZE: This is the number of diagonals around each of the 'best' diagonals that will be used. Decrease for speed; increase for sensitivity</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "fast") and ($quicktree eq "fast")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>pairgap</name>
+	<attributes>
+
+		<prompt>Gap penalty (-pairgap)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value and $value ne $vdef)?" -pairgap=$value":""</code>
+		</format>
+		<vdef><value>3</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>This is a penalty for each gap in the fast alignments. It has little affect on the speed or sensitivity except for extreme values.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "fast") and ($quicktree eq "fast")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>score</name>
+	<attributes>
+
+		<prompt>Percent or absolute score ? (-score)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)?" -score=$value":""</code>
+		</format>
+		<group>2</group>
+		<vlist>
+			<value>percent</value>
+			<label>percent</label>
+			<value>absolute</value>
+			<label>absolute</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "fast") and ($quicktree eq "fast")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>slowpw</name>
+<prompt>Slow Pairwise Alignments parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code>($quicktree eq "slow")</code>
+</precond>
+<group>2</group>
+<comment>
+	<value>These parameters do not have any affect on the speed of the alignments. They are used to give initial alignments which are then rescored to give percent identity scores. These % scores are the ones which are displayed on the screen. The scores are converted to distances for the trees.</value>
+</comment>
+<parameters>
+
+	<parameter type="Excl">
+	<name>pwmatrix</name>
+	<attributes>
+
+		<prompt>Protein weight matrix (-pwmatrix)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value and $value ne $vdef)?" -pwmatrix=$value":""</code>
+		</format>
+		<vdef><value>gonnet</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>blosum</value>
+			<label>BLOSUM30 (Henikoff)</label>
+			<value>gonnet</value>
+			<label>Gonnet 250</label>
+			<value>pam</value>
+			<label>PAM350 (Dayhoff)</label>
+			<value>id</value>
+			<label>Identity matrix</label>
+		</vlist>
+		<comment>
+			<value>The scoring table which describes the similarity of each amino acid to each other. For DNA, an identity matrix is used.</value>
+			<value>BLOSUM (Henikoff). These matrices appear to be the best available for carrying out data base similarity (homology searches). The matrices used are: Blosum80, 62, 40 and 30.</value>
+			<value>The Gonnet Pam 250 matrix has been reported as the best single matrix for alignment, if you only choose one matrix. Our experience with profile database searches is that the Gonnet series is unambiguously superior to the Blosum series at high divergence. However, we did not get the series to perform systematically better than the Blosum series in Clustal W (communication of the authors).</value>
+			<value>PAM (Dayhoff). These have been extremely widely used since the late '70s. We use the PAM 120, 160, 250 and 350 matrices.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "slow") and ($quicktree eq "slow")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>pwdnamatrix</name>
+	<attributes>
+
+		<prompt>DNA weight matrix (-pwdnamatrix)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value and $value ne $vdef)?" -pwdnamatrix=$value":""</code>
+		</format>
+		<vdef><value>iub</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>iub</value>
+			<label>IUB</label>
+			<value>clustalw</value>
+			<label>CLUSTALW</label>
+		</vlist>
+		<comment>
+			<value>For DNA, a single matrix (not a series) is used. Two hard-coded matrices are available:</value>
+			<value>1) IUB. This is the default scoring matrix used by BESTFIT for the comparison of nucleic acid sequences. X's and N's are treated as matches to any IUB ambiguity symbol. All matches score 1.9; all mismatches for IUB symbols score 0.</value>
+			<value>2) CLUSTALW(1.6). The previous system used by ClustalW, in which matches score 1.0 and mismatches score 0. All matches for IUB symbols also score 0.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "slow") and ($quicktree eq "slow")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>pwgapopen</name>
+	<attributes>
+
+		<prompt>Gap opening penalty (-pwgapopen)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value and $value ne $vdef)? " -pwgapopen=$value" : "" </code>
+		</format>
+		<vdef><value>10.00</value></vdef>
+		<group>2</group>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "slow") and ($quicktree eq "slow")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>pwgapext</name>
+	<attributes>
+
+		<prompt>Gap extension penalty (-pwgapext)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value and $value ne $vdef)? " -pwgapext=$value" : "" </code>
+		</format>
+		<vdef><value>0.10</value></vdef>
+		<group>2</group>
+	<precond>
+		<language>perl</language>
+		<code>($quicktree eq "slow") and ($quicktree eq "slow")</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>trees</name>
+<prompt>Tree parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code> ($actions =~ /tree/) </code>
+</precond>
+<group>2</group>
+<comment>
+	<value>If you ask for an alignment, the program automatic computes the tree as well; but you can also ask for a tree, given an alignment (file .aln), with specific options.</value>
+	<value>The method used is the NJ (Neighbour Joining) method of Saitou and Nei. First you calculate distances (percent divergence) between all pairs of sequence from a multiple alignment; second you apply the NJ method to the distance matrix.</value>
+</comment>
+<parameters>
+
+	<parameter type="Switch">
+	<name>kimura</name>
+	<attributes>
+
+		<prompt>Use Kimura's correction (multiple substitutions) ? (-kimura)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)?" -kimura":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>For small divergence (say &lt;10%) this option makes no difference. For greater divergence, this option corrects for the fact that observed distances underestimate actual evolutionary distances. This is because, as sequences diverge, more than one substitution will happen at many sites. However, you only see one difference when you look at the present day sequences. Therefore, this option has the effect of stretching (for DNA or proteins) are both due to Motoo Kimura. See the documentation for details. </value>
+			<value>For VERY divergent sequences, the distances cannot be reliably corrected. You will be warned if this happens. Even if none of the distances in a data set exceed the reliable threshold, if you bootstrap the data, some of the bootstrap distances may randomly exceed the safe limit.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($actions =~ /tree/) </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>tossgaps</name>
+	<attributes>
+
+		<prompt>Ignore positions with gaps ? (-tossgaps)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)?" -tossgaps":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>With this option, any alignment positions where ANY of the sequences have a gap will be ignored. This means that 'like' will be compared to 'like' in all distances. It also, automatically throws away the most ambiguous parts of the alignment, which are concentrated around gaps (usually). The disadvantage is that you may throw away much of the data if there are many gaps. </value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($actions =~ /tree/) </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>bootstrap</name>
+	<attributes>
+
+		<prompt>Bootstrap a NJ tree (give the number of bootstraps, 0 for none) (-bootstrap)</prompt>
+		<format>
+			<language>perl</language>
+			<code>  ($value &gt; 0 and $value != $vdef)? " -bootstrap=$value":"" </code>
+		</format>
+		<vdef><value>1000</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>BOOTSTRAPPING is a method for deriving confidence values for the groupings in a tree (first adapted for trees by Joe Felsenstein). It involves making N random samples of sites from the alignment (N should be LARGE, e.g. 500 - 1000); drawing N trees (1 from each sample) and counting how many times each grouping from the original tree occurs in the sample trees. You must supply a seed number for the random number generator. Different runs with the same seed will give the same answer. See the documentation for details.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($actions =~ /tree/) </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>bootlabels</name>
+	<attributes>
+
+		<prompt>Phylip bootstrap positions (-bootlabels)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value and $value ne $vdef )? " -bootlabels=$value":""</code>
+		</format>
+		<vdef><value>node</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>node</value>
+			<label>NODE labels</label>
+			<value>branch</value>
+			<label>BRANCH labels</label>
+		</vlist>
+		<comment>
+			<value>The bootstrap values written in the phylip tree file format can be assigned either to branches or nodes. The default is to write the values on the nodes, as this can be read by several commonly-used tree display programs. But note that this can lead to confusion if the tree is rooted and the bootstraps may be better attached to the internal branches: Software developers should ensure they can read the branch label format.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($actions =~ /tree/) </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>seed</name>
+	<attributes>
+
+		<prompt>Seed number for bootstraps (-seed)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value)?" -seed=$value":""</code>
+		</format>
+		<group>2</group>
+	<precond>
+		<language>perl</language>
+		<code> ($actions =~ /tree/) </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>outputtree</name>
+	<attributes>
+
+		<prompt>Output tree/distance format (-outputtree)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value and $value ne $vdef)?" -outputtree=$value":""</code>
+		</format>
+		<vdef><value>PHYLIP</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>NJ</value>
+			<label>Clustal format</label>
+			<value>PHYLIP</value>
+			<label>Phylip format tree</label>
+			<value>DIST</value>
+			<label>Phylip format distance matrix</label>
+			<value>NEXUS</value>
+			<label>NEXUS format tree</label>
+		</vlist>
+		<comment>
+		<value>Clustal format output: This format is verbose and lists all of the distances between the sequences and the number of alignment positions used for each. The tree is described at the end of the file. It lists the sequences that are joined at each alignment step and the branch lengths. After two sequences are joined, it is referred to later as a NODE. The number of a NODE is the number of the lowest sequence in that NODE. </value>
+		<value>Phylip format tree output: This format is the New Hampshire format, used by many phylogenetic analysis packages. It consists of a series of nested parentheses, describing the branching order, with the sequence names and branch lengths. It can be used by the RETREE, DRAWGRAM and DRAWTREE programs of the PHYLIP package to see the trees graphically. This is the same format used during multiple alignment for the guide trees. </value>
+		<value>The distance matrix only: This format just outputs a matrix of all the pairwise distances in a format that can be used by the Phylip package. It used to be useful when one could not produce distances from protein sequences in the Phylip package but is now redundant (Protdist of Phylip 3.5 now does this). </value>
+		<value>NEXUS format tree:  This format is used by several popular phylogeny programs, including PAUP and MacClade. </value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($actions =~ /tree/) </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>outputparam</name>
+	<prompt>Output parameters</prompt>
+	<group>2</group>
+	<parameters>
+	  
+	  <parameter type="OutFile">
+	    <name>outfile</name>
+	    <attributes>
+	      
+	      <prompt>Alignment File (-outfile)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value and $value ne "$infile.aln")?" -outfile=$value":""</code>
+	      </format>
+	      <group>2</group>
+	      <pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>output</name>
+	    <attributes>
+	      <prompt>Output format (-output)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -output=$value" : ""</code>
+	      </format>
+	      <vdef><value>""</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value></value>
+		<label>CLUSTALW</label>
+		<value>GCG</value>
+		<label>GCG</label>
+		<value>GDE</value>
+		<label>GDE</label>
+		<value>PHYLIP</value>
+		<label>PHYLIP</label>
+		<value>PIR</value>
+		<label>PIR</label>
+		<value>NEXUS</value>
+		<label>NEXUS</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>gde_lower</name>
+	    <attributes>
+	      <prompt>Upper case GDE output (-case)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$output eq "GDE"</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>($value) ?" -case=upper":""</code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>outorder</name>
+	    <attributes>
+	      
+	      <prompt>Result order (-outorder)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value and $value ne $vdef)?" -outorder=$value":""</code>
+		</format>
+	      <vdef><value>aligned</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>input</value>
+		<label>input</label>
+		<value>aligned</value>
+		<label>aligned</label>
+	      </vlist>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>seqnos</name>
+	    <attributes>
+	      
+	      <prompt>Output sequence numbers in the output file (clustalw format) (-seqnos)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value) ?" -seqnos=on":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$output eq ""</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Results">
+      <name>aligfile</name>
+      <attributes>
+	<filenames>*.aln *.msf *.gde *.phy *.pir *.nxs</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>readseq_ok_aligfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$output eq "GCG" || $output eq "PIR" || $output eq "PHYLIP" || $phylip_alig</code>
+	</precond>
+	<filenames>*.phy *.msf *.pir</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>newtreefile</name>
+      <attributes>
+	<filenames>*.nj *.dst</filenames>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>phylipnewtreefile</name>
+      <attributes>
+	<filenames>*.dnd *.ph *.phb</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>profile</name>
+	<prompt>Profile Alignments parameters</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>($actions =~ /profile|sequence/ )</code>
+	</precond>
+	<group>2</group>
+	<comment>
+	  <value>By PROFILE ALIGNMENT, we mean alignment using existing alignments. Profile alignments allow you to store alignments of your favourite sequences and add new sequences to them in small bunches at a time. A profile is simply an alignment of one or more sequences (e.g. an alignment output file from CLUSTAL W). Each input can be a single sequence. One or both sets of input sequences may include secondary structure assignments or gap penalty masks to guide the alignment.</value>
+	  <value>Give 2 profiles to align the 2 profiles to each other</value>
+	</comment>
+	<parameters>
+	  
+	  <parameter type="InFile" ismandatory="1" >
+	    <name>profile1</name>
+	    <attributes>
+	      
+		<precond>
+	  	<language>perl</language>
+	  	<code>$actions eq "-profile" || $actions eq "-sequences"</code>
+		</precond>
+
+	      <prompt>Profile 1 (-profile1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -profile1=$value":""</code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /profile|sequence/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="InFile" ismandatory="1">
+	    <name>profile2</name>
+	    <attributes>
+	      
+		<precond>
+	  	<language>perl</language>
+	  	<code>$actions eq "-profile" || $actions eq "-sequences"</code>
+		</precond>
+
+	      <prompt>Profile 2 (-profile2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -profile2=$value":""</code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /profile|sequence/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="InFile">
+	    <name>usetree1</name>
+	    <attributes>
+	      
+	      <prompt>File for old guide tree for profile1 (-usetree1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -usetree1=$value":""</code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /profile|sequence/ )</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="InFile">
+	    <name>usetree2</name>
+	    <attributes>
+	      
+	      <prompt>File for old guide tree for profile2 (-usetree2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -usetree2=$value":""</code>
+		</format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /profile|sequence/ ) and (! $actions =~ /sequence/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="OutFile">
+	    <name>newtree1</name>
+	    <attributes>
+	      
+	      <prompt>File for new guide tree for profile1 (-newtree1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -newtree1=$value" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /profile|sequence/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="OutFile">
+	    <name>newtree2</name>
+	    <attributes>
+	      
+	      <prompt>File for new guide tree for profile2 (-newtree2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -newtree2=$value" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>($actions =~ /profile|sequence/ ) and (! $actions =~ /sequence/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	
+	<name>structure</name>
+	<prompt>Structure Alignments parameters</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>($actions =~ /profile|sequence/ )</code>
+	</precond>
+	<group>2</group>
+	<comment>
+	  <value>These options, when doing a profile alignment, allow you to set 2D structure parameters. If a solved structure is available, it can be used to guide the alignment by raising gap penalties within secondary structure elements, so that gaps will preferentially be inserted into unstructured surface loops. Alternatively, a user-specified gap penalty mask can be supplied directly.</value> 
+	  <value>A gap penalty mask is a series of numbers between 1 and 9, one per position in the alignment. Each number specifies how much the gap opening penalty is to be raised at that position (raised by multiplying the basic gap opening penalty by the number) i.e. a mask figure of 1 at a position means no change in gap opening penalty; a figure of 4 means that the gap opening penalty is four times greater at that position, making gaps 4 times harder to open.</value>
+	  <value>Gap penalty masks is to be supplied with the input sequences. The masks work by raising gap penalties in specified regions (typically secondary structure elements) so that gaps are preferentially opened in the less well conserved regions (typically surface loops).</value>
+	  <value>CLUSTAL W can read the masks from SWISS-PROT, CLUSTAL or GDE format input files. For many 3-D protein structures, secondary structure information is recorded in the feature tables of SWISS-PROT database entries. You should always check that the assignments are correct - some are quite inaccurate. CLUSTAL W looks for SWISS-PROT HELIX and STRAND assignments e.g.</value>
+	  <value>FT   HELIX       100    115</value>
+	  <value>FT   HELIX       100    115</value>
+	  <value>The structure and penalty masks can also be read from CLUSTAL alignment format as comment lines beginning !SS_ or GM_ e.g.</value>
+	  <value>!SS_HBA_HUMA    ..aaaAAAAAAAAAAaaa.aaaAAAAAAAAAAaaaaaaAaaa.........aaaAAAAAA</value>
+	  <value>!GM_HBA_HUMA    112224444444444222122244444444442222224222111111111222444444</value>
+	  <value>HBA_HUMA        VLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGK</value>
+	  <value>Note that the mask itself is a set of numbers between 1 and 9 each of which is assigned to the residue(s) in the same column below. In GDE flat file format, the masks are specified as text and the names must begin with SS_ or GM_. Either a structure or penalty mask or both may be used. If both are included in an alignment, the user will be asked which is to be used.</value>
+	</comment>
+
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>nosecstr1</name>
+	    <attributes>
+	      <prompt>Use profile 1 secondary structure / penalty mask (-nosecstr1)</prompt>
+	      <vdef>
+		<value>1</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>(! $value)? " -nosecstr1" : ""</code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>This option controls whether the input secondary structure information or gap penalty masks will be used.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>nosecstr2</name>
+	    <attributes>
+	      <prompt>Use profile 2 secondary structure / penalty mask (-nosecstr2)</prompt>
+	      <vdef>
+		<value>1</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>(! $value)? " -nosecstr2" : ""</code>
+	      </format>
+	      <comment>
+		<value>This option controls whether the input secondary structure information or gap penalty masks will be used.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>helixgap</name>
+	    <attributes>
+	      <prompt>Helix gap penalty (-helixgap)</prompt>
+	      <vdef><value>4</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -helixgap=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option provides the value for raising the gap penalty at core Alpha Helical (A) residues. In CLUSTAL format, capital residues denote the A and B core structure notation. The basic gap penalties are multiplied by the amount specified.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>strandgap</name>
+	    <attributes>
+	      <prompt>Strand gap penalty (-strandgap)</prompt>
+	      <vdef><value>4</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -strandgap=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option provides the value for raising the gap penalty at Beta Strand (B) residues. In CLUSTAL format, capital residues denote the A and B core structure notation. The basic gap penalties are multiplied by the amount specified.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>loopgap</name>
+	    <attributes>
+	      <prompt>Loop gap penalty (-loopgap)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value  and $value != $vdef)? " -loopgap=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option provides the value for the gap penalty in Loops. By default this penalty is not raised. In CLUSTAL format, loops are specified by . in the secondary structure notation.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>terminalgap</name>
+	    <attributes>
+	      <prompt>Secondary structure terminal penalty (-terminalgap)</prompt>
+	      <vdef><value>2</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -terminalgap=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option provides the value for setting the gap penalty at the ends of secondary structures. Ends of secondary structures are observed to grow and-or shrink in related structures. Therefore by default these are given intermediate values, lower than the core penalties. All secondary structure read in as lower case in CLUSTAL format gets the reduced terminal penalty.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>helixendin</name>
+	    <attributes>
+	      <prompt>Helix terminal positions:  number of residues inside helix to be treated as terminal (-helixendin)</prompt>
+	      <vdef><value>3</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -helixendin=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option (together with the -helixendin) specify the range of structure termini for the intermediate penalties. In the alignment output, these are indicated as lower case. For Alpha Helices, by default, the range spans the end helical turn.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>helixendout</name>
+	    <attributes>
+	      <prompt>Helix terminal positions: number of residues outside helix to be treated as terminal (-helixendout)</prompt>
+	      <vdef><value>0</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -helixendout=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option (together with the -helixendin) specify the range of structure termini for the intermediate penalties. In the alignment output, these are indicated as lower case. For Alpha Helices, by default, the range spans the end helical turn.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>strandendin</name>
+	    <attributes>
+	      <prompt>Strand terminal positions: number of residues inside strand to be treated as terminal (-strandendin)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -strandendin=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option (together with the -strandendout option) specify the range of structure termini for the intermediate penalties. In the alignment output, these are indicated as lower case. For Beta Strands, the default range spans the end residue and the adjacent loop residue, since sequence conservation often extends beyond the actual H-bonded Beta Strand.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>strandendout</name>
+	    <attributes>
+	      <prompt>Strand terminal positions: number of residues outside strand to be treated as terminal (-strandendout)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>  (defined $value and $value != $vdef)? " -strandendout=$value":"" </code>
+	      </format>
+	      <comment>
+		<value>This option (together with the -strandendin option) specify the range of structure termini for the intermediate penalties. In the alignment output, these are indicated as lower case. For Beta Strands, the default range spans the end residue and the adjacent loop residue, since sequence conservation often extends beyond the actual H-bonded Beta Strand.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>secstrout</name>
+	    <attributes>
+	      <prompt>Output in alignment (-secstrout)</prompt>
+	      <vdef>
+		<value>STRUCTURE</value>
+	      </vdef>
+	      <vlist>
+		<value>STRUCTURE</value>
+		<label>Secondary Structure</label>
+		<value>MASK</value>
+		<label>Gap Penalty Mask</label>
+		<value>BOTH</value>
+		<label>Structure and Penalty Mask</label>
+		<value>NONE</value>
+		<label>None</label>
+	      </vlist>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)?" -secstrout=$value":""</code>
+	      </format>
+	      <comment>
+		<value>This option lets you choose whether or not to include the masks in the CLUSTAL W output alignments. Showing both is useful for understanding how the masks work. The secondary structure information is itself very useful in judging the alignment quality and in seeing how residue conservation patterns vary with secondary structure.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+
+  </parameters>
+</pise>

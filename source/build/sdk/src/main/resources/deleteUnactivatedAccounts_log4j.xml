@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- BEGIN APPENDER: DAILY ROLLING FILE APPENDER (sdk_file) -->
+	<!-- Note that including the %L for location info (line numbers) is supposedly very slow, but I think we need it at this point. -->
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${logs}/deleteUnactivatedAccounts.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-20.20d{MMM dd yyyy HH:mm:ss} [%-6.6t] %-5.5p - %25.25c{1}:%-5.5L %x | %m%n"/>
+		</layout>
+	</appender>
+
+	<!-- BEGIN APPENDER: NULL -->
+	<appender name="null" class="org.apache.log4j.FileAppender">
+		<param name="File" value="/dev/null"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m%n"/>
+		</layout>
+	</appender>
+
+
+	<!-- START SECTION: I don't want logging for these sdk classes -->
+	<logger name="org.ngbw.sdk.core.io.SSLConnectionPool" additivity="false">
+		<level value="info"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.core.DefaultCoreRegistryBuilder" additivity="false">
+		<level value="info"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.core.DefaultCoreRegistry" additivity="false">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.data.DefaultDatasetRegistryBuilder" additivity="false">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.conversion" additivity="false">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.dataresources.lucene.LuceneDataResourceConfig" additivity="false">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+
+	<!-- END  SECTION: I don't want DEBUG level logging for these sdk classes -->
+
+	<!-- debug level for our sdk and utils code -->
+	<logger name="org.ngbw.sdk" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="file"/>
+	</logger>
+	<logger name="org.ngbw.utils" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="file"/>
+	</logger>
+	<!-- END: debug level for our sdk and utils code -->
+	
+	<!-- unless specified otherwise, the level for all loggers is error, and the following appenders are used. -->
+	<root>
+		<level value="error"/>
+		<appender-ref ref="file"/>
+	</root>
+
+</log4j:configuration>

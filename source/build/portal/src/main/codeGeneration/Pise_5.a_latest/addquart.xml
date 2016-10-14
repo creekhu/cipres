@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PHYLOQUART</title>
+    <version>1.3</version>
+    <description>addquart - phylogeny reconstruction from a set of quartets and a partially resolved tree</description>
+    <authors>Berry</authors>
+    <category>phylogeny</category>
+  </head>
+
+  <command>addquart</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>addquart</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"addquart"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>bipfile</name>
+      <attributes>
+	<prompt>bipfile: contains the edges of the tree T to complete</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $bipfile bipfile; "</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>Contains the number of taxa, the association of a number to each taxa, then the edges of the tree T to complete, coded as the bipartitions (splits) they induce on the taxa, eg: 1 2 3 | 4 5 6 corresponds to the edge separating taxa 1, 2 and 3 from taxa 4,5 and 6.</value>
+	  <value>This file can be computed by qstar program of the same package.</value>
+	</comment>
+	<pipe>
+	  <pipetype>bipfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<withpipe>
+	  <pipetype>bipfile</pipetype>
+	  <parametername>quartfile_left</parametername>
+	  <parametername>quartfile_res</parametername>
+	</withpipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>quartfile_left</name>
+      <attributes>
+	<prompt>quartfile.left: contains the set of quartets unresolved by the tree T</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $quartfile_left quartfile.left; "</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>Contains the set Q' of quartets unresolved by the tree T and which are to be respected as much as possible when extending the tree T.</value>
+	  <value>This file is computed by the qstar program of the same package in a previous step.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="InFile">
+      <name>quartfile_res</name>
+      <attributes>
+	<prompt>quartfile.res: contains the set of satisfied quartets</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? "ln -s $quartfile_res quartfile.res; " : ""</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>If present, this file is used to add the number of quartets of Q* to the number of quartets satisfied by the tree inferred by AddQuart. Otherwise, AddQuart only indicates the number of quartets of Q' satisfied by the output tree.</value>
+	  <value>This file is computed by the qstar program of the same package in a previous step.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outbipfile</name>
+      <attributes>
+	<filenames>bipfile</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Switch">
+      <name>tree_pop</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" ;tree-pop"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	<filenames>treefile</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: 1.5.0 (Sun Microsystems Inc.)
+
+Name: org/ngbw/restclient/
+Sealed: true
+Implementation-Vendor: Cipres 
+Implementation-Title: org.ngbw.restclient
+Specification-Title: Cipres Rest Client 
+Implementation-Version: 1.0

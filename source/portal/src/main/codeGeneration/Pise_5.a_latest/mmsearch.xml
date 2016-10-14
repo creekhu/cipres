@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>mmsearch</title>
+    <version>0.1</version>
+    <description>motif arrangment search</description>
+    <authors>T. Junier, M. Pagni and P. Bucher</authors>
+    <doclink>T. Junier, M. Pagni and P. Bucher (2001), mmsearch: a
+    motif arrangement language and search program, Bioinformatics
+    17:1234-1235.</doclink>
+  </head>
+
+  <command>mmsearch</command>
+
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>mmsearch</name>
+      <attributes>
+        <format>
+	  <language>perl</language>
+	  <code>mmsearch</code>
+        </format>
+        <group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="String">
+      <name>metamotif</name>
+      <attributes>
+	<prompt>Metamotif</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<paramfile>motif</paramfile>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Sequence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$lt; $seqfile</code>
+	</format>
+	<group>11</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="String">
+      <name>in_format</name>
+      <attributes>
+	<prompt>Ordinal number of each field in a line of input
+	(-i)</prompt>
+	<format>
+	  <language></language>
+	  <code>(defined $value &amp;&amp; $value ne $vdef) ? " -i
+	  $value" : ""</code>
+	</format>
+	<vdef><value>s1b2e3f4</value></vdef>
+	<group>1</group>
+	<comment>
+	  <value>Default format is 's1b2e3f4', which means:</value>
+	  <value>sequence (s) is field 1,</value>
+	  <value>begin of match (b) is field 2,</value>
+	  <value>end of match (e) is field 3 and</value>
+	  <value>feature (f) is field 4.</value>
+	  <value>The letters ca appear in any order, but must all be present.</value>
+	  <value>Somme frequently used formats have aliases, thes are
+	  'pff' (the default) and 'gff'.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>search_opt</name>
+	<prompt>Search options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>overlap</name>
+	    <attributes>
+	      <prompt>Allow matches to overlap (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -O" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>all_feats</name>
+	    <attributes>
+	      <prompt>Take into account all features (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -X" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>If you have a protein which has domains A, B and A,
+	  in that order. By default, the protein will not match the
+	  metamotif 'A = A' because there are match data about B
+	  between the two A domains. Turn on this option make the
+	  protein matching the metamotif 'A = A'.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_opt</name>
+	<prompt>Output options</prompt>
+	<group>3</group>
+	<parameters>
+	 
+	  <parameter type="Excl">
+	    <name>out_format</name>
+	    <attributes>
+	      <prompt>Output format (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef) ? " -o $value" : ""</code>
+	      </format>
+	      <vlist>
+		<value>nat</value>
+		<label>nat: 'nativ' - string representation of the
+	  sequence</label>
+		<value>pff</value>
+		<label>pff: each match on a different line, no indivudal
+	  component motifs</label>
+		<value>det</value>
+		<label>det: 'detailed' - each component motif of each
+	  match</label>
+		<value>spc</value>
+		<label>spc: 'spacer' - show spacers (each per line)</label>
+		<value>sep</value>
+		<label>sep: 'hash marks'</label>
+		<value>nat pff det spc sep</value>
+		<label>all: report all formats</label>
+	      </vlist>
+	      <vdef><value>nat pff det spc sep</value></vdef>
+	    </attributes>
+	  </parameter>
+    
+	  <parameter type="String">
+	    <name>name</name>
+	    <attributes>
+	      <prompt>Use this as metamotif name , only with 'pff'
+	output (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef) ? " -n
+	  $value" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$out_format =~ /pff/</code>
+	      </precond>
+	      <vdef><value>METAMOTIF</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+  </parameters>
+</pise>

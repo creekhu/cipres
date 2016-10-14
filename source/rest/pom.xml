@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ngbw</groupId>
+	<artifactId>cipresrestservice</artifactId>
+	<packaging>pom</packaging>
+	<version>2.0</version>
+	<name>Cipres Rest Service</name>
+
+	<parent>
+		<groupId>org.ngbw</groupId>
+		<artifactId>cipres</artifactId>
+		<version>2.0</version>
+		<relativePath>../build</relativePath>
+	</parent>
+
+	<properties>
+		<testdata>${build.sdk.versionsDir}/testdata</testdata>
+	</properties>
+
+	<modules>
+		<module>datatypes</module>
+		<module>cipres_java_client</module>
+		<module>pycipres</module>
+		<module>cipresrest</module>
+	</modules>
+</project>

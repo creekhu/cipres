@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmpfam - search sequences against an HMM database</description>
+    <authors>S. Eddy</authors>
+    <category>hmm</category>
+  </head>
+
+  <command>hmmpfam</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmpfam</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmpfam"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>Description of hmmpfam</prompt>
+	<comment>
+	  <value>hmmpfam reads a single sequence from seqfile and compares it against all the HMMs in hmmfile looking for significantly similar sequence matches.</value>
+	  <value>The output consists of three sections: a ranked list of the best scoring HMMs, a list of the best scoring domains in order of their occurrence in the sequence, and alignments for all the best scoring domains. A sequence score may be higher than a domain score for the same sequence if there is more than one domain in the sequence; the sequence score takes into account all the domains. All sequences scoring above the -E and -T cutoffs are shown in the first list, then every domain found in this list is shown in the second list of domain hits. If desired, E-value and score thresholds may also be applied to the domain list using the --domE and --domT options.</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ismandatory="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Sequence file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>HMMDB</name>
+      <attributes>
+	<prompt>HMM database</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>Pfam</value></vdef>
+	<group>2</group>
+	<vlist>
+	  <value>Pfam</value>
+	  <label>Pfam</label>
+	  <value>PfamFrag</value>
+	  <label>PfamFrag</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>nucleic_acid</name>
+      <attributes>
+	<prompt>Force nucleic acid models and sequences (-n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -n" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>n_best</name>
+      <attributes>
+	<prompt>number of reported alignments (-A n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -A $value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Limits the alignment output to the n best scoring domains. -A0 shuts off the alignment output and can be used to reduce the size of output files.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Float">
+      <name>E_value_cutoff</name>
+      <attributes>
+	<prompt>E_value cutoff (-E x)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -E $value" : ""</code>
+	</format>
+	<vdef><value>10.0</value></vdef>
+	<group>1</group>
+	<comment>
+	  <value>Set the E-value cutoff for the per-sequence ranked hit list to x, where x is a positive real number. The default is 10.0. Hits with E-values better than (less than) this threshold will be shown.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Float">
+      <name>Bit_cutoff</name>
+      <attributes>
+	<prompt>Bit score cutoff (-T x)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -T $value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Set the bit score cutoff for the per-sequence ranked hit list to x, where x is a real number. The default is negative infinity; by default, the threshold is controlled by E-value and not by bit score. Hits with bit scores better than (greater than) this threshold will be shown.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>E_value_calculation</name>
+      <attributes>
+	<prompt>Control of E_value calculation (-Z n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -Z $value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Calculate the E-value scores as if we had seen a sequence database of n sequences. The default is arbitrarily set to 59021, the size of Swissprot 34.</value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>expert_options</name>
+	<prompt>Expert Options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>acc</name>
+	    <attributes>
+	      <prompt>Report accessions instead of names in the output reports (--acc)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --acc" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>compat</name>
+	    <attributes>
+	      <prompt>Use the output format of HMMER 2.1.1 (--compat)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --compat" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>domE</name>
+	    <attributes>
+	      <prompt>E-value cutoff for the per-domain ranked hit list (--domE x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --domE $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the E-value cutoff for the per-domain ranked hit list to x, where x is a positive real number. The default is infinity; by default, all domains in the sequences that passed the first threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>domT</name>
+	    <attributes>
+	      <prompt>bit score cutoff for the per-domain ranked hit list (--domT x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --domT $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the bit score cutoff for the per-domain ranked hit list to x, where x is a real number. The default is negative infinity; by default, all domains in the sequences that passed the first threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list. Important note: only one domain in a sequence is absolutely controlled by this parameter, or by --domT. The second and subsequent domains in a sequence have a de facto bit score threshold of 0 because of the details of how HMMER works. HMMER requires at east one pass through the main model per sequence; to do more than one pass (more than one domain) the multidomain alignment must have a better score than the single domain alignment, and hence the extra domains must contribute positive score. See the Users' Guide for more detail. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>forward</name>
+	    <attributes>
+	      <prompt>forward algorithm (--forward)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --forward" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Use the Forward algorithm instead of the Viterbi algorithm to determine the per-sequence scores. Per-domain scores are still determined by the Viterbi algorithm. Some have argued that Forward is a more sensitive algorithm for detecting remote sequence homologues; my experiments with HMMER have not confirmed this, however.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>null2</name>
+	    <attributes>
+	      <prompt>turns off the second post processing step (--null2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " --null2" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Turn off the post hoc second null model. By default, each alignment is rescored by a postprocessing step that takes into account possible biased composition in either the HMM or the target sequence. This is almost essential in database searches, especially with local alignment models. There is a very small chance that this postprocessing might remove real matches, and in these cases --null2 may improve sensitivity at the expense of reducing specificity by letting biased composition hits through.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>xnu</name>
+	    <attributes>
+	      <prompt>turns on XNU filtering (--xnu)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --xnu" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Turn on XNU filtering of target protein sequences. Has no effect on nucleic acid sequences. In trial experiments, --xnu appears to perform less well than the default post hoc null2 model.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+  </parameters>
+</pise>

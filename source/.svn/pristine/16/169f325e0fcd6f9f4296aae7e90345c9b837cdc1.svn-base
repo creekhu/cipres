@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> CIPRES Perl Demo</title>
+	<style type="text/css">
+		 html {
+			width: 1000px ; 
+		}
+	</style>
+</head>
+
+<body>
+	<h1> CIPRES Perl Demo </h1>
+	<p>
+	This is a perl script that shows how to use the CIPRES REST API to submit jobs and retrieve results.
+	</p>
+	<a href = "#Installation">I. Installation</a><br>
+	<a href = "#HowToUse">II. How to Use</a><br>
+	</b><br>
+	<hr></hr>
+	<font color = "red"> IMPORTANT </font><hr></hr><b><p>
+	Before starting the demo, follow the registration instructions in the 
+	<a href="https://www.phylo.org/restusers/docs/guide.html#Register" >CIPRES REST API User Guide</a> to create an account for yourself, 
+	login and register an application.  Make note of the application ID that is assigned.</p></b>
+	<hr></hr>
+	<a name = "Installation"><h1> I. Installation </h1></a>
+	<ol>
+	<li>The demo requires libwww-perl.  Please make sure it's installed.
+	<li>If you're reading this on your computer, you have probably already downloaded the demo code and documentation, but if not,
+	get it now by following the instructions in the <a href="https://www.phylo.org/restusers/docs/guide.html#SampleCode" >Sample Code</a> section
+	of the User Guide.  Once you've retrieved all the examples, you'll find this perl example in the "perl_demo"
+	directory.
+	<li>Put your username, password, application name and application ID in the supplied pycipres.conf file.
+	<li>Copy pycipres.conf to your home directory.  (Alternatively, put pycipres.conf anywhere you want and
+	set the environment variable PYCIPRES to the full, absolute pathname of the file).
+	</ol>
+	Platform specific notes follow:
+	<h2>Windows:</h2>
+	<p>
+		The demo runs on windows under Cygwin.  If using Windows, install <a href="https://cygwin.com/install.html">Cygwin</a>.  
+		Run the appropriate installer, and choose the packages to install. 
+		The package that this demo uses is called
+		<b> LWP (Library for WWW in Perl). </b>
+		Thus, you should make sure
+		that along with all the other Perl packages (which are necesary for compilation and execution of Perl scripts), 
+		these three LWP packages are installed as well:  perl-LWP: Perl WWW Modules, perl-LWP-Media Types: MME type
+		detection module for Perl, and perl-LWP-Protocol-https: :UserAgent.
+	</p>
+	<h2>Mac:</h2>
+	<p>
+		You may encounter difficulties with certificate authority validation. To fix this, you can use the LWP library version 6.00 or above. 
+		Or look into Net::SSL and how to set the environment variables HTTPS_CA_DIR and HTPPS_CA_FILE. 
+		<i>Otherwise, you can take the simple but insecure route that we have used in the demo</i> by putting the following bit of code:
+
+		<font color = "green"> $browser->ssl_opts(verify_hostname => 0); </font> prior to the code that sets the user's credentials: <font color = "green"> $browser->credentials(..) </font>
+
+	</p>
+	<h2>Linux:</h2>
+	<p>
+		Use apt-get or cpan to install libwww-perl if it isn't already installed. 
+	</p>
+	<br>
+	<hr></hr>
+	<a name="HowToUse"><h1>II. How to Use</h1></a>
+	<p>
+		Go to the "Code" directory containing "cipres_perl.pl" and run "perl cipres_perl.pl" 
+	</p>
+	<p>
+		The output should look like:
+		<pre>
+Now checking the directory /Users/anthony/cipres_data/sdk_versions/testdata/pycipres.conf for pycipres.conf 
+Now checking the directory /Users/anthony/pycipres.conf for pycipres.conf 
+Now checking the directory  for pycipres.conf 
+Hostname: www.phylo.org
+What would you like to do? Valid commands are: 
+List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR); 
+Download Results (DR); Get Tools (GT); Exit (E) 
+		</pre>
+
+If the login credentials or application ID you supplied in pycipres.conf aren't correct, then when you
+issue a command that authenticates with the REST API (for example, if you type "LJ" to list your jobs), 
+the demo will prompt you to enter valid credentials.
+
+<ul>
+
+	<li>
+		<font color = "black"><b>List Jobs (LJ)</b></font>: List all jobs you have submitted (minus those you've deleted) along with their status information. 
+	<li>
+		<font color= "black"><b>Submit Job(S)</b></font>: Builds and submits a job.  You will first be prompted to enter the name of the tool, the input file, etc.
+		An example for the <font color = "black"> Submit Job (SJ)</font> command can be found 
+		<a href = "./submit_job_output.html" style = "color:red"> here</a>.
+	<li>
+		<font color = "black"><b>Delete Job (D)</b></font>: Deletes a specified job whether completed or not. Some example output is
+		<a href = "./delete_job_output.html" style = "color:red"> here</a>.
+	<li>
+		<font color = "black"><b>List Results (LR)</b></font>: Shows results for a specific job. Some example output is 
+		<a href = "./list_results_output.html" style = "color:red"> here</a>.  
+	<li>
+		<font color = "black"><b>Download Results (DR)</b></font>: Downloads a result file from a specific job. Some example output is
+		<a href = "./download_results_output.html" style = " color:red"> here</a>. 
+	<li>
+		<font color = "black"><b>Get Tools (GT)</b></font>: Retrieves a list of the tools that can be run and stores the list in a file in the current directory. Some example output is:
+	<li>
+		<a href = "./get_tools_output.html" style = " color:red"> here</a>.
+	<li>
+		<font color = "black"><b>Exit(E)</b></font> will simply exit the program normally. 
+		 Otherwise the user can use Ctrl+C or Ctrl+D.
+</ul>	 
+	<hr></hr>
+	<i>
+	Author</i>:<br>
+	Anthony Lopez <br>
+	CIPRES REST Services
+	 
+</body>
+</html>

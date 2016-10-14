@@ -1,0 +1,30 @@
+#!/bin/sh
+# This lets you run sdk classes from the command line.  For example
+#	sdkrun org.ngbw.examples.ToolTest RAXML GARLI
+# Uses classes in the target build directory.
+#
+# You can set system properties or other java options by passing them prior
+# to the classname.
+#
+
+# Figure out which directory this script is in.
+whereami()
+{
+	program="$0"
+	while [ -h "$program" ]; do
+		link=`ls -ld "$program"`
+		link=`expr "$link" : '.*-> \(.*\)'`
+		if [ "`expr "$link" : '/.*'`" = 0 ]; then
+			dir=`dirname "$program"`
+			program="$dir/$link"
+		else
+			program="$link"
+		fi
+	done
+	dir=`dirname $program`
+	echo `cd $dir && /bin/pwd`
+}
+
+dir=`whereami`
+cd $dir
+java -cp sdk*depend* -Dlog4j.configuration=sdk_log4j.xml "$@"

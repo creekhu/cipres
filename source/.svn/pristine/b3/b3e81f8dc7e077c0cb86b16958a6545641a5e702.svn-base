@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SILENT</title>
+<description>Silent mutation restriction enzyme scan (EMBOSS)</description>
+<category>nucleic:restriction</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/silent.html</doclink>
+</head>
+
+<command>silent</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>enzymes</name>
+	<attributes>
+		<prompt>Comma separated enzyme list (-enzymes)</prompt>
+		<vdef>
+			<value>all</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -enzymes=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>sshow</name>
+	<attributes>
+		<prompt>Display untranslated sequence (-sshow)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -sshow" : ""</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>tshow</name>
+	<attributes>
+		<prompt>Display translated sequence (-tshow)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -tshow" : ""</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>allmut</name>
+	<attributes>
+		<prompt>Display all mutations (-allmut)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -allmut" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+		<name>rscore</name>
+		<attributes>
+			<prompt>Display score (-rscore)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -rscore" : "" </code>
+			</format>
+			<group>7</group>
+			</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>8</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

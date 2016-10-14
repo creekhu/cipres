@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>VIENNARNA</title>
+    <version>1.4</version>
+    <description>RNAheat - calculate specific heat of RNAs</description>
+    <authors>Hofacker, Stadler</authors>
+    <reference>I.L. Hofacker, W. Fontana, P.F. Stadler, S. Bonhoeffer, M. Tacker, P. Schuster (1994) Fast Folding and Comparison of RNA Secondary Structures. Monatshefte f. Chemie 125: 167-188</reference>
+    <reference>J.S. McCaskill (1990) The equilibrium partition function and base pair binding probabilities for RNA secondary structures, Biopolymers 29: 11051119 D. Adams (1979) The hitchhiker's guide to the galaxy, Pan Books, London</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#VIENNARNA</doclink>
+  </head>
+
+
+<command>rnaheat</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>rnaheat</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"RNAheat"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>RNA Sequences File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" &lt; $value" </code>
+	</format>
+	<group>1000</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control</name>
+<prompt>Control options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>temp_min</name>
+	<attributes>
+
+		<prompt>Lowest temperature, default is 0C (-Tmin)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -Tmin $value" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>temp_max</name>
+	<attributes>
+
+		<prompt>Highest temperature, default is 100C (-Tmax)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -Tmax $value" : ""</code>
+		</format>
+		<vdef><value>100</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>stepsize</name>
+	<attributes>
+
+		<prompt>Calculate partition function every stepsize degrees C. Default is 1C (-h)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -h $value" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ipoints</name>
+	<attributes>
+
+		<prompt>Produces a smoother curve by increasing ipoints (-m)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -m $value" : ""</code>
+		</format>
+		<vdef><value>2</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>The program fits a parabola to 2*ipoints+1 data points to calculate 2nd derivatives. Increasing this parameter produces a smoother curve. Default is 2.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>tetraloops</name>
+	<attributes>
+
+		<prompt>Do not include special stabilizing energies for certain tetraloops (-4)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -4" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>dangling</name>
+	<attributes>
+
+		<prompt>How to treat dangling end energies for bases adjacent to helices in free ends and multiloops (-d)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " $value" : ""</code>
+		</format>
+		<vdef><value>""</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value></value>
+			<label>only unpaired bases can participate in at most one dangling end</label>
+			<value>-d</value>
+			<label>-d: ignores dangling ends altogether</label>
+			<value>-d2</value>
+			<label>-d2: the check is ignored, this is the default for partition function folding.</label>
+		</vlist>
+		<comment>
+			<value>How to treat 'dangling end' energies for bases adjacent to helices in free ends and multiloops: Normally only unpaired bases can participate in at most one dangling end. With -d2 this check is ignored, this is the default for partition function folding (-p). -d ignores dangling ends altogether. Note that by default pf and mfe folding treat dangling ends differently, use -d2 (or -d) in addition to -p to ensure that both algorithms use the same energy model. The -d2 options is available for RNAfold, RNAeval, and RNAinverse only.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>(! (defined $rnafold || defined $rnaeval || defined $rnainverse) &amp;&amp;   ($dangling eq "-d2")  &amp;&amp; ($dangling = "") &amp;&amp; 0)</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+<prompt>Input parameters</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>noGU</name>
+	<attributes>
+
+		<prompt>Do not allow GU pairs (-noGU)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -noGU" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>noCloseGU</name>
+	<attributes>
+
+		<prompt>Do not allow GU pairs at the end of helices (-noCloseGU)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -noCloseGU" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>nsp</name>
+	<attributes>
+
+		<prompt>Non standard pairs (comma seperated list) (-nsp)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -nsp $value" : "" </code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Allow other pairs in addition to the usual AU,GC,and GU pairs. pairs is a comma seperated list of additionally allowed pairs. If a the first character is a '-' then AB will imply that AB and BA are allowed pairs. e.g. RNAfold -nsp -GA will allow GA and AG pairs. Nonstandard pairs are given 0 stacking energy.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>parameter</name>
+	<attributes>
+
+		<prompt>Parameter file (-P)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -P $value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Read energy parameters from paramfile, instead of using the default parameter set. A sample parameterfile should accompany your distribution. See the RNAlib documentation for details on the file format.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>energy</name>
+	<attributes>
+
+		<prompt>Energy parameters for the artificial ABCD... alphabet (-e)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -e $value" : ""</code>
+		</format>
+		<group>2</group>
+		<vlist>
+			<value>1</value>
+			<label>1: use energy parameters for GC pairs</label>
+			<value>2</value>
+			<label>2: use energy parameters for AU pairs</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>readseq</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"/local/gensoft/lib/ViennaRNA/readseq  -f=19 -a $seq &gt; $seq.tmp &amp;&amp; (cp $seq $seq.orig &amp;&amp; mv $seq.tmp $seq) ; "</code>
+	</format>
+	<group>-10</group>
+<precond>
+	<language>perl</language>
+	<code>defined $rnafold || defined $rnasubopt</code>
+</precond>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,27 @@
+#this tries rna sec structure and auto bootstopping
+curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER/validate \
+-F metadata.statusEmail=true \
+-F tool=RAXMLHPC2_TGB \
+-F input.infile_=@infile.phy \
+-F input.partition_=@comet \
+-F input.sec_str_file_=@comet \
+-F vparam.convergence_criterion_=1 \
+-F vparam.datatype_=rna \
+-F vparam.disable_seqcheck_=1 \
+-F vparam.dna_gtrcat_=GTRCAT \
+-F vparam.estimate_perpartbrlen_=0 \
+-F vparam.intermediate_treefiles_=1 \
+-F vparam.mesquite_output_=1 \
+-F vparam.mr_bootstopping_=1 \
+-F vparam.mrbootstopping_type_=autoMRE \
+-F vparam.mulparambootstrap_seed_=1 \
+-F vparam.mulparambootstrap_seed_val_=12345 \
+-F vparam.no_bfgs_=1 \
+-F vparam.outsuffix_=result \
+-F vparam.parsimony_seed_val_=12345 \
+-F vparam.printbrlength_=0 \
+-F vparam.provide_parsimony_seed_=1 \
+-F vparam.rearrangement_yes_=0 \
+-F vparam.rna_model_=S7F \
+-F vparam.runtime_=0.25 \
+-F vparam.use_bootstopping_=1 

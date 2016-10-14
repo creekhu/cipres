@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<project name="Code Generation" default="generate" basedir=".">
+
+<!-- ================================================================== 
+C O D E		G E N E R A T I O N																								
+================================================================== -->
+
+<target name="clean" description="Remove files and directories that the generate target creates">
+	<delete quiet="true"><fileset dir="../java/org/ngbw/sdk/tool/validation" /></delete>
+</target>
+
+
+<target name="makedirs" description="Create directories for generated files">
+	<mkdir dir="../java/org/ngbw/sdk/tool/validation"/>
+</target>
+
+<target name="generate" description="generate sdk.tool.validation classes" depends="clean, makedirs">
+	<taskdef name="freemarker"
+		classname="freemarker.ext.ant.FreemarkerXmlTask">
+		<classpath>
+			<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+			<pathelement location="lib/jar/resolver.jar"/>
+			<pathelement location="lib/jar/serializer.jar"/>
+			<pathelement location="lib/jar/xalan.jar"/>
+			<pathelement location="lib/jar/xercesImpl.jar"/>
+			<pathelement location="lib/jar/xml-apis.jar"/>
+		</classpath>
+	</taskdef>
+
+	<freemarker
+
+		basedir="../../../src/main/resources/pisexml"
+		destdir="../java/org/ngbw/sdk/tool/validation"
+		includes="*.xml"
+		template="FreemarkerTemplate/pise2validationJava.ftl"
+		extension="Validator.java"
+	/>
+
+
+</target>
+
+<!--
+	Creates a subdir for each tool in the registry.	 In each subdir, there are two properties files,
+	one just has toolId=name, the other has the param=file, where param is the name of the tool's
+	primary input file parameter, and file is hardcoded to infile_.txt.	 We also create an empty
+	infile_.txt in the subdirs.	 
+
+	This lets us run 'tooltest <dir> validate' on each of the directories to submit the job with
+	a no parameters from the user and see if it passes validation.	The rest service fills in
+	default values for all params not supplied by the user, that have vdefs in the pise, 
+	just like the cipres portal does, when you don't open the tool gui, so these should be valid invocations.
+-->
+<target name="Test" description="" depends="generateInfiles">
+				 <taskdef name="freemarker"
+							classname="freemarker.ext.ant.FreemarkerXmlTask">
+							<classpath>
+								<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+								<pathelement location="lib/jar/resolver.jar"/>
+								<pathelement location="lib/jar/serializer.jar"/>
+								<pathelement location="lib/jar/xalan.jar"/>
+								<pathelement location="lib/jar/xercesImpl.jar"/>
+								<pathelement location="lib/jar/xml-apis.jar"/>
+							</classpath>
+				</taskdef>
+
+		<freemarker
+				 basedir="../../../src/main/resources/tool"
+				 destdir="AUTO-GENERATED/testdir"
+				 includes="tool-registry.cfg.xml"
+				 template="FreemarkerTemplate/tool_registry2list.ftl"
+				 extension=".list"
+				/>
+		<!-- Strip the pathname part of each filename, leaving just the filename -->
+				<replaceregexp
+						file="AUTO-GENERATED/testdir/tool-registry.cfg.list"
+						match=".*/(.*)\.xml"
+						replace="\1"
+						byline="true"
+				/>
+				<replaceregexp
+						file="AUTO-GENERATED/testdir/tool-registry.cfg.list"
+						match="\r?\n|\r\n"
+						replace=","
+			flags="g"
+				/>
+				<replaceregexp
+						file="AUTO-GENERATED/testdir/tool-registry.cfg.list"
+						match=","
+						replace="_in.properties,"
+			flags="g"
+				/>
+		<loadfile property="tool" srcFile="AUTO-GENERATED/testdir/tool-registry.cfg.list"/>
+		<echo message="tool is: ${tool}"/>
+
+				<replaceregexp
+						file="AUTO-GENERATED/testdir/tool-registry.cfg.list"
+						match="_in.properties"
+						replace=".properties,"
+			flags="g"
+				/>
+		<loadfile property="tool.in" srcFile="AUTO-GENERATED/testdir/tool-registry.cfg.list"/>
+		<echo message="tool.in is: ${tool.in}"/>
+
+				<replaceregexp
+						file="AUTO-GENERATED/testdir/tool-registry.cfg.list"
+						match=".properties"
+						replace=".txt,"
+			flags="g"
+				/>
+		<loadfile property="tool.txt" srcFile="AUTO-GENERATED/testdir/tool-registry.cfg.list"/>
+		<echo message="tool.txt is: ${tool.txt}"/>
+
+		<!-- touch is just to make the tool subdirs, move won't do it -->
+		<touch mkdirs="true">
+			<fileset dir="AUTO-GENERATED/testdir" includes="${tool}" />
+			<mapper type="glob" from="*_in.properties" to="AUTO-GENERATED/testdir/*/infile_.txt" />
+		</touch>
+		<move todir="AUTO-GENERATED/testdir" overwrite="true">
+			<fileset dir="AUTO-GENERATED/testdir" includes="${tool}" />
+			<mapper type="glob" from="*_in.properties" to="*/testInput.properties" />
+		</move>
+		<move todir="AUTO-GENERATED/testdir" overwrite="true">
+			<fileset dir="AUTO-GENERATED/testdir" includes="${tool.in}" />
+			<mapper type="glob" from="*.properties" to="*/testParam.properties" />
+		</move>
+		<move todir="AUTO-GENERATED/testdir" overwrite="true">
+			<fileset dir="AUTO-GENERATED/testdir" includes="${tool.txt}" />
+			<mapper type="glob" from="*.txt" to="*/documentation.txt" />
+		</move>
+
+		<!-- create dummy input files for each tool, since tooltest requires that file exist, even when
+		just validating the parameters -->
+
+		<!-- delete all the leftover files for tools that aren't in the registry -->
+				<delete> 
+			<fileset dir="AUTO-GENERATED/testdir" includes="*.properties"/>
+				</delete> 
+				<delete> 
+			<fileset dir="AUTO-GENERATED/testdir" includes="*.txt"/>
+				</delete> 
+
+
+
+
+</target>
+
+<target name="generateInfiles" description="">
+				 <taskdef name="freemarker"
+							classname="freemarker.ext.ant.FreemarkerXmlTask">
+							<classpath>
+								<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+								<pathelement location="lib/jar/resolver.jar"/>
+								<pathelement location="lib/jar/serializer.jar"/>
+								<pathelement location="lib/jar/xalan.jar"/>
+								<pathelement location="lib/jar/xercesImpl.jar"/>
+								<pathelement location="lib/jar/xml-apis.jar"/>
+							</classpath>
+				</taskdef>
+
+				<delete dir="AUTO-GENERATED/testdir"/>
+
+				<freemarker
+				 basedir="../../../src/main/resources/pisexml"
+				 destdir="AUTO-GENERATED/testdir"
+				 includes="*.xml"
+				 template="FreemarkerTemplate/pise2param.ftl"
+				 extension=".properties"
+				/>
+
+
+				<freemarker
+				 basedir="../../../src/main/resources/pisexml"
+				 destdir="AUTO-GENERATED/testdir"
+				 includes="*.xml"
+				 template="FreemarkerTemplate/pise2infile.ftl"
+				 extension="_in.properties"
+				/>
+
+				<freemarker
+				 basedir="../../../src/main/resources/pisexml"
+				 destdir="AUTO-GENERATED/testdir"
+				 includes="*.xml"
+				 template="FreemarkerTemplate/pise2doc.ftl"
+				 extension=".txt"
+				/>
+
+</target>
+
+</project>

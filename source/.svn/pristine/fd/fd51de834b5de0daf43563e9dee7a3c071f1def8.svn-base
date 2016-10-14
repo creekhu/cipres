@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>DSSP</title>
+    <description>Definition of secondary structure of proteins given a set of 3D coordinates</description>
+    <authors>W.Kabsch, C. Sander</authors>
+    <reference>Kabsch,W. and Sander,C. (1983) Biopolymers 22, 2577-2637.</reference>
+    <category>protein:2d structure</category>
+  </head>
+
+  <command>dssp</command>
+  
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>dssp</name>
+      <attributes>
+	
+	<format>
+	  <language>seqlab</language>
+	  <code>dssp</code>
+	  <language>perl</language>
+	  <code>"dssp"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="InFile">
+      <name>pdbfile</name>
+      <attributes>
+	
+	<prompt>PDB File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($pdbid)? " -- " : " $value"</code>
+	</format>
+	<group>10</group>
+	<ctrls>
+	  <ctrl>
+	    <message>You must enter either the PDB data or the PDB id</message>
+	    <language>perl</language>
+	    <code>! ($pdbid || $pdbfile)</code>
+	  </ctrl>
+	</ctrls>
+	<pipe>
+	  <pipetype>pdbfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter issimple="1" type="String">
+      <name>pdbid</name>
+      <attributes>
+	
+	<prompt>or you can instead enter a PDB id.</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(($value =~ tr/A-Z/a-z/) || $value)? "pdbloc $value | xargs cat | " : "" </code>
+	</format>
+	<group>-10</group>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>surface</name>
+	    <attributes>
+	      
+	      <prompt>Disables the calculation of accessible surface (-na)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -na" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>classic</name>
+	    <attributes>
+	      
+	      <prompt>Classic (pre-July 1995) format (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -c" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	
+	<filenames>*.out</filenames>
+	<pipe>
+	  <pipetype>dssp_outfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+    
+    
+  </parameters>
+</pise>

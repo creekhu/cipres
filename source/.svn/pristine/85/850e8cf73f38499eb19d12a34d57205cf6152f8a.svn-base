@@ -1,0 +1,1204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>EPRIMER3</title>
+<description>Picks PCR primers and hybridization oligos (EMBOSS)</description>
+<category>nucleic:primers</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/eprimer3.html</doclink>
+</head>
+
+<command>eprimer3</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>The sequence from which to choose primers. The sequence must be presented 5' to 3'</value>
+		</comment>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>programsection</name>
+		<prompt>Program options</prompt>
+
+	<parameters>
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>explainflag</name>
+		<attributes>
+			<prompt>Explain flag (-explainflag)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -explainflag" : ""</code>
+			</format>
+			<group>2</group>
+			<comment>
+				<value>If this flag is non-0, produce LEFT-EXPLAIN, RIGHT-EXPLAIN, and INTERNAL-OLIGO-EXPLAIN output tags, which are intended to provide information on the number of oligos and primer pairs that EPrimer3 examined, and statistics on the number discarded for various reasons.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>fileflag</name>
+		<attributes>
+			<prompt>Create results files for each sequence (-fileflag)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -fileflag" : ""</code>
+			</format>
+			<group>3</group>
+			<comment>
+				<value>If the associated value is non-0, then EPrimer3 creates two output files for each input SEQUENCE. File (sequence-id).for lists all acceptable forward primers for (sequence-id), and (sequence-id).rev lists all acceptable reverse primers for (sequence-id), where (sequence-id) is the value of the SEQUENCE-ID tag (which must be supplied). In addition, if the input tag TASK is 1 or 4, EPrimer3 produces a file (sequence-id).int, which lists all acceptable internal oligos.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>task</name>
+		<attributes>
+			<prompt>Select task -- Task (-task)</prompt>
+				<vlist>
+					<value>0</value>
+					<label>Pick PCR primers</label>
+					<value>1</value>
+					<label>Pick PCR primers and hybridization probe</label>
+					<value>2</value>
+					<label>Pick forward primer only</label>
+					<value>3</value>
+					<label>Pick reverse primer only</label>
+					<value>4</value>
+					<label>Pick hybridization probe only</label>
+				</vlist>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -task=$value"</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>Tell EPrimer3 what task to perform. Legal values are 0: 'Pick PCR primers', 1: 'Pick PCR primers and hybridization probe', 2: 'Pick forward primer only', 3: 'Pick reverse primer only', 4: 'Pick hybridization probe only'. &lt;BR&gt; The tasks should be self explanatory. &lt;BR&gt; Briefly, an 'internal oligo' is intended to be used as a hybridization probe (hyb probe) to detect the PCR product after amplification.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>numreturn</name>
+		<attributes>
+			<prompt>Number of results to return (-numreturn)</prompt>
+			<vdef>
+				<value>5</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -numreturn=$value" : ""</code>
+			</format>
+			<group>5</group>
+			<comment>
+				<value>The maximum number of primer pairs to return. Primer pairs returned are sorted by their 'quality', in other words by the value of the objective function (where a lower number indicates a better primer pair). Caution: setting this parameter to a large value will increase running time.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>firstbaseindex</name>
+		<attributes>
+			<prompt>First base index (-firstbaseindex)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -firstbaseindex=$value" : ""</code>
+			</format>
+			<group>6</group>
+			<comment>
+				<value>This parameter is the index of the first base in the input sequence. For input and output using 1-based indexing (such as that used in GenBank and to which many users are accustomed) set this parameter to 1. For input and output using 0-based indexing set this parameter to 0. (This parameter also affects the indexes in the contents of the files produced when the primer file flag is set.)</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>seqoptsection</name>
+		<prompt>Sequence options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>includedregion</name>
+		<attributes>
+			<prompt>Included region(s) (-includedregion)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -includedregion=$value" : ""</code>
+			</format>
+			<group>7</group>
+			<comment>
+				<value>A sub-region of the given sequence in which to pick primers. For example, often the first dozen or so bases of a sequence are vector, and should be excluded from consideration. The value for this parameter has the form &lt;BR&gt; (start),(end) &lt;BR&gt; where (start) is the index of the first base to consider, and (end) is the last in the primer-picking region.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>target</name>
+		<attributes>
+			<prompt>Target region(s) (-target)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -target=$value" : ""</code>
+			</format>
+			<group>8</group>
+			<comment>
+				<value>If one or more Targets is specified then a legal primer pair must flank at least one of them. A Target might be a simple sequence repeat site (for example a CA repeat) or a single-base-pair polymorphism. The value should be a space-separated list of &lt;BR&gt; (start),(end) &lt;BR&gt; pairs where (start) is the index of the first base of a Target, and (end) is the last &lt;BR&gt; E.g. 50,51 requires primers to surround the 2 bases at positions 50 and 51.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>excludedregion</name>
+		<attributes>
+			<prompt>Excluded region(s) (-excludedregion)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -excludedregion=$value" : ""</code>
+			</format>
+			<group>9</group>
+			<comment>
+				<value>Primer oligos may not overlap any region specified in this tag. The associated value must be a space-separated list of &lt;BR&gt; (start),(end) &lt;BR&gt; pairs where (start) is the index of the first base of the excluded region, and and (end) is the last. This tag is useful for tasks such as excluding regions of low sequence quality or for excluding regions containing repetitive elements such as ALUs or LINEs. &lt;BR&gt; E.g. 401,407 68,70 forbids selection of primers in the 7 bases starting at 401 and the 3 bases at 68.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>forwardinput</name>
+		<attributes>
+			<prompt>Forward input primer sequence to check (-forwardinput)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -forwardinput=$value" : ""</code>
+			</format>
+			<group>10</group>
+			<comment>
+				<value>The sequence of a forward primer to check and around which to design reverse primers and optional internal oligos. Must be a substring of SEQUENCE.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>reverseinput</name>
+		<attributes>
+			<prompt>Reverse input primer sequence to check (-reverseinput)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -reverseinput=$value" : ""</code>
+			</format>
+			<group>11</group>
+			<comment>
+				<value>The sequence of a reverse primer to check and around which to design forward primers and optional internal oligos. Must be a substring of the reverse strand of SEQUENCE.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>primersection</name>
+		<prompt>Primer options</prompt>
+
+	<parameters>
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>pickanyway</name>
+		<attributes>
+			<prompt>Pick anyway (-pickanyway)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -pickanyway" : ""</code>
+			</format>
+			<group>12</group>
+			<comment>
+				<value>If true pick a primer pair even if LEFT-INPUT, RIGHT-INPUT, or INTERNAL-OLIGO-INPUT violates specific constraints.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="InFile" ismandatory="0" issimple="0" ishidden="0">
+		<name>mispriminglibrary</name>
+		<attributes>
+			<prompt>Mispriming library (-mispriminglibrary)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -mispriminglibrary=$value" : ""</code>
+			</format>
+			<group>13</group>
+			<comment>
+				<value>The name of a file containing a nucleotide sequence library of sequences to avoid amplifying (for example repetitive sequences, or possibly the sequences of genes in a gene family that should not be amplified.) The file must be in (a slightly restricted) FASTA format (W. B. Pearson and D.J. Lipman, PNAS 85:8 pp 2444-2448 [1988]); we briefly discuss the organization of this file below. If this parameter is specified then EPrimer3 locally aligns each candidate primer against each library sequence and rejects those primers for which the local alignment score times a specified weight (see below) exceeds MAX-MISPRIMING. (The maximum value of the weight is arbitrarily set to 100.0.) &lt;BR&gt; Each sequence entry in the FASTA-format file must begin with an 'id line' that starts with '&gt;'. The contents of the id line is 'slightly restricted' in that EPrimer3 parses everything after any optional asterisk ('*') as a floating point number to use as the weight mentioned above. If the id line contains no asterisk then the weight defaults to 1.0. The alignment scoring system used is the same as for calculating complementarity among oligos (e.g. SELF-ANY). The remainder of an entry contains the sequence as lines following the id line up until a line starting with '&gt;' or the end of the file. Whitespace and newlines are ignored. Characters 'A', 'T', 'G', 'C', 'a', 't', 'g', 'c' are retained and any other character is converted to 'N' (with the consequence that any IUB / IUPAC codes for ambiguous bases are converted to 'N'). There are no restrictions on line length. &lt;BR&gt; An empty value for this parameter indicates that no repeat library should be used.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxmispriming</name>
+		<attributes>
+			<prompt>Primer maximum mispriming (-maxmispriming)</prompt>
+			<vdef>
+				<value>12.00</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxmispriming=$value" : ""</code>
+			</format>
+			<group>14</group>
+			<comment>
+				<value>The maximum allowed weighted similarity with any sequence in MISPRIMING-LIBRARY.</value>
+			</comment>
+			<scalemax><value>9999.99</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>pairmaxmispriming</name>
+		<attributes>
+			<prompt>Primer pair maximum mispriming (-pairmaxmispriming)</prompt>
+			<vdef>
+				<value>24.00</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -pairmaxmispriming=$value" : ""</code>
+			</format>
+			<group>15</group>
+			<comment>
+				<value>The maximum allowed sum of weighted similarities of a primer pair (one similarity for each primer) with any single sequence in MISPRIMING-LIBRARY.</value>
+			</comment>
+			<scalemax><value>9999.99</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>gcclamp</name>
+		<attributes>
+			<prompt>GC clamp (-gcclamp)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -gcclamp=$value" : ""</code>
+			</format>
+			<group>16</group>
+			<comment>
+				<value>Require the specified number of consecutive Gs and Cs at the 3' end of both the forward and reverse primer. (This parameter has no effect on the internal oligo if one is requested.)</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>osize</name>
+		<attributes>
+			<prompt>Primer optimum size (-osize)</prompt>
+			<vdef>
+				<value>20</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -osize=$value" : ""</code>
+			</format>
+			<group>17</group>
+			<comment>
+				<value>Optimum length (in bases) of a primer oligo. EPrimer3 will attempt to pick primers close to this length.</value>
+			</comment>
+			<scalemin><value>1</value></scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>minsize</name>
+		<attributes>
+			<prompt>Primer minimum size (-minsize)</prompt>
+			<vdef>
+				<value>18</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minsize=$value" : ""</code>
+			</format>
+			<group>18</group>
+			<comment>
+				<value>Minimum acceptable length of a primer. Must be greater than 0 and less than or equal to MAX-SIZE.</value>
+			</comment>
+			<scalemin><value>1</value></scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxsize</name>
+		<attributes>
+			<prompt>Primer maximum size (-maxsize)</prompt>
+			<vdef>
+				<value>27</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxsize=$value" : ""</code>
+			</format>
+			<group>19</group>
+			<comment>
+				<value>Maximum acceptable length (in bases) of a primer. Currently this parameter cannot be larger than 35. This limit is governed by the maximum oligo size for which EPrimer3's melting-temperature is valid.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$minsize</code>
+			</scalemin>
+			<scalemax><value>35</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>otm</name>
+		<attributes>
+			<prompt>Primer optimum Tm (-otm)</prompt>
+			<vdef>
+				<value>60.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -otm=$value" : ""</code>
+			</format>
+			<group>20</group>
+			<comment>
+				<value>Optimum melting temperature(Celsius) for a primer oligo. EPrimer3 will try to pick primers with melting temperatures are close to this temperature. The oligo melting temperature formula in EPrimer3 is that given in Rychlik, Spencer and Rhoads, Nucleic Acids Research, vol 18, num 12, pp 6409-6412 and Breslauer, Frank, Bloeker and Marky, Proc. Natl. Acad. Sci. USA, vol 83, pp 3746-3750. Please refer to the former paper for background discussion.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>mintm</name>
+		<attributes>
+			<prompt>Primer minimum Tm (-mintm)</prompt>
+			<vdef>
+				<value>57.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -mintm=$value" : ""</code>
+			</format>
+			<group>21</group>
+			<comment>
+				<value>Minimum acceptable melting temperature(Celsius) for a primer oligo.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxtm</name>
+		<attributes>
+			<prompt>Primer maximum Tm (-maxtm)</prompt>
+			<vdef>
+				<value>63.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxtm=$value" : ""</code>
+			</format>
+			<group>22</group>
+			<comment>
+				<value>Maximum acceptable melting temperature(Celsius) for a primer oligo.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$mintm</code>
+			</scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxdifftm</name>
+		<attributes>
+			<prompt>Maximum difference in Tm of primers (-maxdifftm)</prompt>
+			<vdef>
+				<value>100.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxdifftm=$value" : ""</code>
+			</format>
+			<group>23</group>
+			<comment>
+				<value>Maximum acceptable (unsigned) difference between the melting temperatures of the forward and reverse primers.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>ogcpercent</name>
+		<attributes>
+			<prompt>Primer optimum GC percent (-ogcpercent)</prompt>
+			<vdef>
+				<value>50.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -ogcpercent=$value" : ""</code>
+			</format>
+			<group>24</group>
+			<comment>
+				<value>Primer optimum GC percent.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>mingc</name>
+		<attributes>
+			<prompt>Primer minimum GC percent (-mingc)</prompt>
+			<vdef>
+				<value>20.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -mingc=$value" : ""</code>
+			</format>
+			<group>25</group>
+			<comment>
+				<value>Minimum allowable percentage of Gs and Cs in any primer.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxgc</name>
+		<attributes>
+			<prompt>Primer maximum GC percent (-maxgc)</prompt>
+			<vdef>
+				<value>80.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxgc=$value" : ""</code>
+			</format>
+			<group>26</group>
+			<comment>
+				<value>Maximum allowable percentage of Gs and Cs in any primer generated by Primer.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$mingc</code>
+			</scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>saltconc</name>
+		<attributes>
+			<prompt>Salt concentration (mM) (-saltconc)</prompt>
+			<vdef>
+				<value>50.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -saltconc=$value" : ""</code>
+			</format>
+			<group>27</group>
+			<comment>
+				<value>The millimolar concentration of salt (usually KCl) in the PCR. EPrimer3 uses this argument to calculate oligo melting temperatures.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>dnaconc</name>
+		<attributes>
+			<prompt>DNA concentration (nM) (-dnaconc)</prompt>
+			<vdef>
+				<value>50.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -dnaconc=$value" : ""</code>
+			</format>
+			<group>28</group>
+			<comment>
+				<value>The nanomolar concentration of annealing oligos in the PCR. EPrimer3 uses this argument to calculate oligo melting temperatures. The default (50nM) works well with the standard protocol used at the Whitehead/MIT Center for Genome Research--0.5 microliters of 20 micromolar concentration for each primer oligo in a 20 microliter reaction with 10 nanograms template, 0.025 units/microliter Taq polymerase in 0.1 mM each dNTP, 1.5mM MgCl2, 50mM KCl, 10mM Tris-HCL (pH 9.3) using 35 cycles with an annealing temperature of 56 degrees Celsius. This parameter corresponds to 'c' in Rychlik, Spencer and Rhoads' equation (ii) (Nucleic Acids Research, vol 18, num 12) where a suitable value (for a lower initial concentration of template) is 'empirically determined'. The value of this parameter is less than the actual concentration of oligos in the reaction because it is the concentration of annealing oligos, which in turn depends on the amount of template (including PCR product) in a given cycle. This concentration increases a great deal during a PCR; fortunately PCR seems quite robust for a variety of oligo melting temperatures. &lt;BR&gt; See ADVICE FOR PICKING PRIMERS.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>numnsaccepted</name>
+		<attributes>
+			<prompt>Maximum Ns accepted in a primer (-numnsaccepted)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -numnsaccepted=$value" : ""</code>
+			</format>
+			<group>29</group>
+			<comment>
+				<value>Maximum number of unknown bases (N) allowable in any primer.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>selfany</name>
+		<attributes>
+			<prompt>Maximum self complementarity (-selfany)</prompt>
+			<vdef>
+				<value>8.00</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -selfany=$value" : ""</code>
+			</format>
+			<group>30</group>
+			<comment>
+				<value>The maximum allowable local alignment score when testing a single primer for (local) self-complementarity and the maximum allowable local alignment score when testing for complementarity between forward and reverse primers. Local self-complementarity is taken to predict the tendency of primers to anneal to each other without necessarily causing self-priming in the PCR. The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed. For example, the alignment &lt;BR&gt; 5' ATCGNA 3' &lt;BR&gt; ...|| | | &lt;BR&gt; 3' TA-CGT 5' &lt;BR&gt; is allowed (and yields a score of 1.75), but the alignment &lt;BR&gt; 5' ATCCGNA 3' &lt;BR&gt; ...|| | | &lt;BR&gt; 3' TA--CGT 5' &lt;BR&gt; is not considered. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable local alignment between two oligos.</value>
+			</comment>
+			<scalemin><value>0.00</value></scalemin>
+			<scalemax><value>9999.99</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>selfend</name>
+		<attributes>
+			<prompt>Maximum 3' self complementarity (-selfend)</prompt>
+			<vdef>
+				<value>3.00</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -selfend=$value" : ""</code>
+			</format>
+			<group>31</group>
+			<comment>
+				<value>The maximum allowable 3'-anchored global alignment score when testing a single primer for self-complementarity, and the maximum allowable 3'-anchored global alignment score when testing for complementarity between forward and reverse primers. The 3'-anchored global alignment score is taken to predict the likelihood of PCR-priming primer-dimers, for example &lt;BR&gt; 5' ATGCCCTAGCTTCCGGATG 3' &lt;BR&gt; .............||| ||||| &lt;BR&gt; ..........3' AAGTCCTACATTTAGCCTAGT 5' &lt;BR&gt; or &lt;BR&gt; 5' AGGCTATGGGCCTCGCGA 3' &lt;BR&gt; ...............|||||| &lt;BR&gt; ............3' AGCGCTCCGGGTATCGGA 5' &lt;BR&gt; The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate primers and primer pairs, Primer assumes that the sequence from which to choose primers is presented 5' to 3'. It is nonsensical to provide a larger value for this parameter than for the Maximum (local) Complementarity parameter because the score of a local alignment will always be at least as great as the score of a global alignment.</value>
+			</comment>
+			<scalemin><value>0.00</value></scalemin>
+			<scalemax>
+				<language>acd</language>
+				<code>$selfany</code>
+			</scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxpolyx</name>
+		<attributes>
+			<prompt>Maximum polynucleotide repeat (-maxpolyx)</prompt>
+			<vdef>
+				<value>5</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxpolyx=$value" : ""</code>
+			</format>
+			<group>32</group>
+			<comment>
+				<value>The maximum allowable length of a mononucleotide repeat in a primer, for example AAAAAA.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>productsection</name>
+		<prompt>Product options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>productosize</name>
+		<attributes>
+			<prompt>Product optimum size (-productosize)</prompt>
+			<vdef>
+				<value>200</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -productosize=$value" : ""</code>
+			</format>
+			<group>33</group>
+			<comment>
+				<value>The optimum size for the PCR product. 0 indicates that there is no optimum product size.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>productsizerange</name>
+		<attributes>
+			<prompt>Product size range (-productsizerange)</prompt>
+			<vdef>
+				<value>100-300</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -productsizerange=$value" : ""</code>
+			</format>
+			<group>34</group>
+			<comment>
+				<value>The associated values specify the lengths of the product that the user wants the primers to create, and is a space separated list of elements of the form &lt;BR&gt; (x)-(y) &lt;BR&gt; where an (x)-(y) pair is a legal range of lengths for the product. For example, if one wants PCR products to be between 100 to 150 bases (inclusive) then one would set this parameter to 100-150. If one desires PCR products in either the range from 100 to 150 bases or in the range from 200 to 250 bases then one would set this parameter to 100-150 200-250. &lt;BR&gt; EPrimer3 favors ranges to the left side of the parameter string. EPrimer3 will return legal primers pairs in the first range regardless the value of the objective function for these pairs. Only if there are an insufficient number of primers in the first range will EPrimer3 return primers in a subsequent range.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>productotm</name>
+		<attributes>
+			<prompt>Product optimum Tm (-productotm)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -productotm=$value" : ""</code>
+			</format>
+			<group>35</group>
+			<comment>
+				<value>The optimum melting temperature for the PCR product. 0 indicates that there is no optimum temperature.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>productmintm</name>
+		<attributes>
+			<prompt>Product minimum Tm (-productmintm)</prompt>
+			<vdef>
+				<value>-1000000.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -productmintm=$value" : ""</code>
+			</format>
+			<group>36</group>
+			<comment>
+				<value>The minimum allowed melting temperature of the amplicon. Please see the documentation on the maximum melting temperature of the product for details.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>productmaxtm</name>
+		<attributes>
+			<prompt>Product maximum Tm (-productmaxtm)</prompt>
+			<vdef>
+				<value>1000000.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -productmaxtm=$value" : ""</code>
+			</format>
+			<group>37</group>
+			<comment>
+				<value>The maximum allowed melting temperature of the amplicon. Product Tm is calculated using the formula from Bolton and McCarthy, PNAS 84:1390 (1962) as presented in Sambrook, Fritsch and Maniatis, Molecular Cloning, p 11.46 (1989, CSHL Press). &lt;BR&gt; Tm = 81.5 + 16.6(log10([Na+])) + .41*(%GC) - 600/length &lt;BR&gt; Where [Na+} is the molar sodium concentration, (%GC) is the percent of Gs and Cs in the sequence, and length is the length of the sequence. &lt;BR&gt; A similar formula is used by the prime primer selection program in GCG http://www.gcg.com), which instead uses 675.0/length in the last term (after F. Baldino, Jr, M.-F. Chesselet, and M.E. Lewis, Methods in Enzymology 168:766 (1989) eqn (1) on page 766 without the mismatch and formamide terms). The formulas here and in Baldino et al. assume Na+ rather than K+. According to J.G. Wetmur, Critical Reviews in BioChem. and Mol. Bio. 26:227 (1991) 50 mM K+ should be equivalent in these formulae to .2 M Na+. EPrimer3 uses the same salt concentration value for calculating both the primer melting temperature and the oligo melting temperature. If you are planning to use the PCR product for hybridization later this behavior will not give you the Tm under hybridization conditions.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$productmintm</code>
+			</scalemin>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>primerweights</name>
+		<prompt>Primer penalty weights</prompt>
+
+	<parameters>
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxendstability</name>
+		<attributes>
+			<prompt>Maximum 3' end stability (-maxendstability)</prompt>
+			<vdef>
+				<value>9.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxendstability=$value" : ""</code>
+			</format>
+			<group>38</group>
+			<comment>
+				<value>The maximum stability for the five 3' bases of a forward or reverse primer. Bigger numbers mean more stable 3' ends. The value is the maximum delta G for duplex disruption for the five 3' bases as calculated using the nearest neighbor parameters published in Breslauer, Frank, Bloeker and Marky, Proc. Natl. Acad. Sci. USA, vol 83, pp 3746-3750. EPrimer3 uses a completely permissive default value for backward compatibility (which we may change in the next release). Rychlik recommends a maximum value of 9 (Wojciech Rychlik, 'Selection of Primers for Polymerase Chain Reaction' in BA White, Ed., 'Methods in Molecular Biology, Vol. 15: PCR Protocols: Current Methods and Applications', 1993, pp 31-40, Humana Press, Totowa NJ).</value>
+			</comment>
+			<scalemax><value>999.9999</value></scalemax>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>oligosinput</name>
+		<prompt>Internal oligo input</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligoexcludedregion</name>
+		<attributes>
+			<prompt>Internal oligo excluded region (-oligoexcludedregion)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -oligoexcludedregion=$value" : ""</code>
+			</format>
+			<group>39</group>
+			<comment>
+				<value>Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of &lt;BR&gt; (start),(end) &lt;BR&gt; pairs, where (start) is the index of the first base of an excluded region, and (end) is the last. Often one would make Target regions excluded regions for internal oligos.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligoinput</name>
+		<attributes>
+			<prompt>Internal oligo input sequence (if any) (-oligoinput)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -oligoinput=$value" : ""</code>
+			</format>
+			<group>40</group>
+			<comment>
+				<value>The sequence of an internal oligo to check and around which to design forward and reverse primers. Must be a substring of SEQUENCE.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>oligosection</name>
+		<prompt>Internal oligo options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligoosize</name>
+		<attributes>
+			<prompt>Internal oligo optimum size (-oligoosize)</prompt>
+			<vdef>
+				<value>20</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligoosize=$value" : ""</code>
+			</format>
+			<group>41</group>
+			<comment>
+				<value>Optimum length (in bases) of an internal oligo. EPrimer3 will attempt to pick primers close to this length.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligominsize</name>
+		<attributes>
+			<prompt>Internal oligo minimum size (-oligominsize)</prompt>
+			<vdef>
+				<value>18</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligominsize=$value" : ""</code>
+			</format>
+			<group>42</group>
+			<comment>
+				<value>Minimum acceptable length of an internal oligo. Must be greater than 0 and less than or equal to INTERNAL-OLIGO-MAX-SIZE.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomaxsize</name>
+		<attributes>
+			<prompt>Internal oligo maximum size (-oligomaxsize)</prompt>
+			<vdef>
+				<value>27</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomaxsize=$value" : ""</code>
+			</format>
+			<group>43</group>
+			<comment>
+				<value>Maximum acceptable length (in bases) of an internal oligo. Currently this parameter cannot be larger than 35. This limit is governed by maximum oligo size for which EPrimer3's melting-temperature is valid.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$oligominsize</code>
+			</scalemin>
+			<scalemax><value>35</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligootm</name>
+		<attributes>
+			<prompt>Internal oligo optimum Tm (-oligootm)</prompt>
+			<vdef>
+				<value>60.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligootm=$value" : ""</code>
+			</format>
+			<group>44</group>
+			<comment>
+				<value>Optimum melting temperature (Celsius) for an internal oligo. EPrimer3 will try to pick oligos with melting temperatures that are close to this temperature. The oligo melting temperature formula in EPrimer3 is that given in Rychlik, Spencer and Rhoads, Nucleic Acids Research, vol 18, num 12, pp 6409-6412 and Breslauer, Frank, Bloeker and Marky, Proc. Natl. Acad. Sci. USA, vol 83, pp 3746-3750. Please refer to the former paper for background discussion.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomintm</name>
+		<attributes>
+			<prompt>Internal oligo minimum Tm (-oligomintm)</prompt>
+			<vdef>
+				<value>57.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomintm=$value" : ""</code>
+			</format>
+			<group>45</group>
+			<comment>
+				<value>Minimum acceptable melting temperature(Celsius) for an internal oligo.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomaxtm</name>
+		<attributes>
+			<prompt>Internal oligo maximum Tm (-oligomaxtm)</prompt>
+			<vdef>
+				<value>63.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomaxtm=$value" : ""</code>
+			</format>
+			<group>46</group>
+			<comment>
+				<value>Maximum acceptable melting temperature (Celsius) for an internal oligo.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$oligomintm</code>
+			</scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligoogcpercent</name>
+		<attributes>
+			<prompt>Internal oligo optimum GC percent (-oligoogcpercent)</prompt>
+			<vdef>
+				<value>50.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligoogcpercent=$value" : ""</code>
+			</format>
+			<group>47</group>
+			<comment>
+				<value>Internal oligo optimum GC percent.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomingc</name>
+		<attributes>
+			<prompt>Internal oligo minimum GC (-oligomingc)</prompt>
+			<vdef>
+				<value>20.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomingc=$value" : ""</code>
+			</format>
+			<group>48</group>
+			<comment>
+				<value>Minimum allowable percentage of Gs and Cs in an internal oligo.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomaxgc</name>
+		<attributes>
+			<prompt>Internal oligo maximum GC (-oligomaxgc)</prompt>
+			<vdef>
+				<value>80.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomaxgc=$value" : ""</code>
+			</format>
+			<group>49</group>
+			<comment>
+				<value>Maximum allowable percentage of Gs and Cs in any internal oligo generated by Primer.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$oligomingc</code>
+			</scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligosaltconc</name>
+		<attributes>
+			<prompt>Internal oligo salt concentration (mM) (-oligosaltconc)</prompt>
+			<vdef>
+				<value>50.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligosaltconc=$value" : ""</code>
+			</format>
+			<group>50</group>
+			<comment>
+				<value>The millimolar concentration of salt (usually KCl) in the hybridization. EPrimer3 uses this argument to calculate internal oligo melting temperatures.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligodnaconc</name>
+		<attributes>
+			<prompt>Internal oligo DNA concentration (nM) (-oligodnaconc)</prompt>
+			<vdef>
+				<value>50.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligodnaconc=$value" : ""</code>
+			</format>
+			<group>51</group>
+			<comment>
+				<value>The nanomolar concentration of annealing internal oligo in the hybridization.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligoselfany</name>
+		<attributes>
+			<prompt>Internal oligo maximum self complementarity (-oligoselfany)</prompt>
+			<vdef>
+				<value>12.00</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligoselfany=$value" : ""</code>
+			</format>
+			<group>52</group>
+			<comment>
+				<value>The maximum allowable local alignment score when testing an internal oligo for (local) self-complementarity. Local self-complementarity is taken to predict the tendency of oligos to anneal to themselves The scoring system gives 1.00 for complementary bases, -0.25 for a match of any base (or N) with an N, -1.00 for a mismatch, and -2.00 for a gap. Only single-base-pair gaps are allowed. For example, the alignment &lt;BR&gt; 5' ATCGNA 3' &lt;BR&gt; || | | &lt;BR&gt; 3' TA-CGT 5' &lt;BR&gt; is allowed (and yields a score of 1.75), but the alignment &lt;BR&gt; 5' ATCCGNA 3' &lt;BR&gt; || | | &lt;BR&gt; 3' TA--CGT 5' &lt;BR&gt; is not considered. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable local alignment between two oligos.</value>
+			</comment>
+			<scalemax><value>9999.99</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligoselfend</name>
+		<attributes>
+			<prompt>Internal oligo maximum 3' self complementarity (-oligoselfend)</prompt>
+			<vdef>
+				<value>12.00</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligoselfend=$value" : ""</code>
+			</format>
+			<group>53</group>
+			<comment>
+				<value>The maximum allowable 3'-anchored global alignment score when testing a single oligo for self-complementarity. &lt;BR&gt; The scoring system is as for the Maximum Complementarity argument. In the examples above the scores are 7.00 and 6.00 respectively. Scores are non-negative, and a score of 0.00 indicates that there is no reasonable 3'-anchored global alignment between two oligos. In order to estimate 3'-anchored global alignments for candidate oligos, Primer assumes that the sequence from which to choose oligos is presented 5' to 3'. &lt;BR&gt; INTERNAL-OLIGO-SELF-END is meaningless when applied to internal oligos used for hybridization-based detection, since primer-dimer will not occur. We recommend that INTERNAL-OLIGO-SELF-END be set at least as high as INTERNAL-OLIGO-SELF-ANY.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$oligoselfany</code>
+			</scalemin>
+			<scalemax><value>9999.99</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomaxpolyx</name>
+		<attributes>
+			<prompt>Internal oligo maximum polynucleotide repeat (-oligomaxpolyx)</prompt>
+			<vdef>
+				<value>5</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomaxpolyx=$value" : ""</code>
+			</format>
+			<group>54</group>
+			<comment>
+				<value>The maximum allowable length of an internal oligo mononucleotide repeat, for example AAAAAA.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="InFile" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomishyblibrary</name>
+		<attributes>
+			<prompt>Internal oligo mishybridizing library (-oligomishyblibrary)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -oligomishyblibrary=$value" : ""</code>
+			</format>
+			<group>55</group>
+			<comment>
+				<value>Similar to MISPRIMING-LIBRARY, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them. &lt;BR&gt; The file must be in (a slightly restricted) FASTA format (W. B. Pearson and D.J. Lipman, PNAS 85:8 pp 2444-2448 [1988]); we briefly discuss the organization of this file below. If this parameter is specified then EPrimer3 locally aligns each candidate oligo against each library sequence and rejects those primers for which the local alignment score times a specified weight (see below) exceeds INTERNAL-OLIGO-MAX-MISHYB. (The maximum value of the weight is arbitrarily set to 12.0.) &lt;BR&gt; Each sequence entry in the FASTA-format file must begin with an 'id line' that starts with '&gt;'. The contents of the id line is 'slightly restricted' in that EPrimer3 parses everything after any optional asterisk ('*') as a floating point number to use as the weight mentioned above. If the id line contains no asterisk then the weight defaults to 1.0. The alignment scoring system used is the same as for calculating complementarity among oligos (e.g. SELF-ANY). The remainder of an entry contains the sequence as lines following the id line up until a line starting with '&gt;' or the end of the file. Whitespace and newlines are ignored. Characters 'A', 'T', 'G', 'C', 'a', 't', 'g', 'c' are retained and any other character is converted to 'N' (with the consequence that any IUB / IUPAC codes for ambiguous bases are converted to 'N'). There are no restrictions on line length. &lt;BR&gt; An empty value for this parameter indicates that no library should be used.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>oligomaxmishyb</name>
+		<attributes>
+			<prompt>Internal oligo maximum mishybridization (-oligomaxmishyb)</prompt>
+			<vdef>
+				<value>12.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -oligomaxmishyb=$value" : ""</code>
+			</format>
+			<group>56</group>
+			<comment>
+				<value>Similar to MAX-MISPRIMING except that this parameter applies to the similarity of candidate internal oligos to the library specified in INTERNAL-OLIGO-MISHYB-LIBRARY.</value>
+			</comment>
+			<scalemax><value>9999.99</value></scalemax>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>57</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>58</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

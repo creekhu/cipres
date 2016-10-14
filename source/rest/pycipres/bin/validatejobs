@@ -1,0 +1,94 @@
+#!/bin/bash
+
+config()
+{
+	set -a
+	source $SDK_VERSIONS/testdata/pycipres.conf
+	set +a
+}
+
+config
+export NUMBER=1
+export TT=${TESTDATA}/tooltests
+
+
+test1()
+{
+runtemplate \
+	-u $USER\
+	-p test \
+	-a $APPID \
+	-t  $TT/CLUSTALW/ \
+	-s $URL/job/ \
+	-n $NUMBER \
+	-v \
+	> t1.txt 2>&1 &
+}
+
+test2()
+{
+runtemplate\
+	-u $USER \
+	-p test \
+	-a $APPID \
+	-t  $TT/READSEQ/ \
+	-s $URL/job/ \
+	-n $NUMBER \
+	-v \
+	> t2.txt 2>&1 &
+}
+
+test3()
+{
+runtemplate\
+	-u $USER \
+	-p test \
+	-a $APPID \
+	-t  $TT/CLUSTALW/ \
+	-s $URL/job/ \
+	-n $NUMBER \
+	-v \
+	> t3.txt 2>&1 &
+}
+
+test4()
+{
+runtemplate\
+	-u $USER \
+	-p test \
+	-a $APPID \
+	-t  $TT/BEAST_TG/ \
+	-s $URL/job/ \
+	-n $NUMBER \
+	-v \
+	> t4.txt 2>&1 &
+}
+
+test5()
+{
+runtemplate\
+	-u $USER \
+	-p test \
+	-a $APPID \
+	-t  $TT/SLEEP/ \
+	-s $URL/job/ \
+	-n $NUMBER \
+	-v \
+	> t5.txt 2>&1 &
+}
+
+test6()
+{
+runtemplate\
+	-u $USER \
+	-p test \
+	-a $APPID \
+	-t  $TT/RAXMLHPC2BB/ \
+	-s $URL/job/ \
+	-n $NUMBER \
+	-v \
+	> t6.txt 2>&1 &
+}
+
+test1
+test2

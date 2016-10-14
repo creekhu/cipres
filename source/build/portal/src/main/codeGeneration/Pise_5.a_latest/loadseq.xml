@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>loadseq</title>
+    <description>load several sequences into a file</description>
+    <category>edit</category>
+    <category>format</category>
+  </head>
+
+
+<command>loadseq</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>loadseq</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+<!--		<code>($seq eq "")? "efetch -f " : "fmtseq -all -p -f9 -->
+<!--		&lt; "</code> -->
+	  <code>($seq eq "")? "golden " : "fmtseq -all -p -f9 &lt; " </code>
+	</format>
+	<group>0</group>
+	<ctrls>
+		<ctrl>
+		<message>you must either enter a sequence or an accession number</message>
+			<language>perl</language>
+			<code>(! $seq) &amp;&amp; (! $query)</code>
+		</ctrl>
+	</ctrls>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>explanation</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"cp /local/gensoft/doc/loadseq/howto.html .; "</code>
+	</format>
+	<group>-10</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>howto</name>
+<attributes>
+
+	<filenames>howto.html</filenames>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence to load</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $seq" </code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>This form allows you to progressively load your sequences into a file, one by one. It's purpose is to help users who do not have a concatenate utility on their computer to build a multiple sequence file. The sequence is automatically converted in FASTA format.</value>
+		<value>Load your first sequence, and wait for the output. You will be able to choose loadseq in the menu to go on with additional sequences.</value>
+		<value>You may also provide an accession number or entry name, which will be fetched and loaded in the sequences file (advanced form).</value>
+		<value>You may also load more than one sequence at a time.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>name</name>
+<attributes>
+
+	<prompt>You may give a name to your sequence</prompt>
+	<format>
+		<language>perl</language>
+		<code>($seq ne "" &amp;&amp; $name ne "")? "; mv load_result tmp; sed \\"s/&gt;,*/&gt; $name/\\" tmp &gt; load_result" : ""</code>
+	</format>
+	<group>30</group>
+	<comment>
+		<value>If you load not more than one sequence...</value>
+	</comment>
+	<ctrls>
+		<ctrl>
+		<message>no message</message>
+			<language>perl</language>
+			<code>($name eq "" &amp;&amp; $seq ne "seq.data" &amp;&amp; ($name=$seq) &amp;&amp; 0)</code>
+		</ctrl>
+	</ctrls>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>loadresult</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" &gt; load_result"</code>
+	</format>
+	<group>20</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>efetch_params</name>
+<prompt>Efetch parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code>! $seq</code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>db</name>
+	<attributes>
+
+		<prompt>Database</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $db:$query | flat2fasta - "</code>
+		</format>
+		<vdef><value>genbank</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>uniprot</value>
+			<label>uniprot</label>
+			<value>genpept</value>
+			<label>genpept</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>nrl3d</value>
+			<label>nrl3d</label>
+			<value>prosite</value>
+			<label>prosite</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>! $seq</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="String">
+	<name>query</name>
+	<attributes>
+
+		<prompt>query (Entry name or AC)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>! $seq</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>ac</name>
+	<attributes>
+
+		<prompt>Search with Accession number (except nrl3d)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -a":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+		<ctrls>
+			<ctrl>
+			<message>No Accesion number for Nrl3d</message>
+				<language>perl</language>
+				<code>$ac &amp;&amp; $db eq "nrl3d"</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>! $seq</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" isstandout="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"loadseq.out"</value></vdef>
+	<pipe>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>other_options</name>
+<prompt>Other parameters</prompt>
+<parameters>
+
+	<parameter type="Sequence">
+	<name>seqfile</name>
+	<attributes>
+
+		<prompt>Already loaded sequences file</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "; cat $seqfile load_result" : "; cat load_result" </code>
+		</format>
+		<group>40</group>
+		<comment>
+			<value>You don't need to enter this parameter, normally. You should enter your sequences above (Sequence to load).</value>
+			<value>This is the intermediate file containing already loaded sequences.</value>
+		</comment>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

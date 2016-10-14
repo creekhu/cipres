@@ -1,0 +1,170 @@
+<h2>CLUSTALW</h2>
+<p>
+	<strong>CLUSTALW</strong> is a  fully automatic program for global multiple alignment
+	of DNA and protein  sequences. The alignment is progressive and considers the sequence
+	redundancy.  Trees can also be calculated from multiple alignments. The program has some
+	adjustable parameters with reasonable defaults.<br />
+	INPUT = dna sequence files; protein  sequence files; profiles
+</p>
+<h3>Manual:
+	<a href="http://www.ebi.ac.uk/2can/tutorials/nucleotide/clustalw1.html">
+		http://www.ebi.ac.uk/2can/tutorials/nucleotide/clustalw1.html
+	</a>
+</h3>
+       <h3>TEST INPUT FILE</h3>
+       <pre>&gt;embl:BF056441 BF056441; 7k05a04.x1 NCI_CGAP_GC6 Homo sapiens cDNA clone IMAGE:3443238 3' similar to SW:TPM4_HUMAN P07226 TROPOMYOSIN, FIBROBLAST NON-MUSCLE TYPE ;, mRNA sequence. </pre>
+       <pre>acagttgcaagaatctaaagtgtggattttattccattgcacaatttgctagtgtatttc</pre>
+       <pre>ctgggtagtgtggtgctgaataaataggaataaatgctacttaaggaaaaaataagagag</pre>
+       <pre>ctgaaaaagctggtgccatttgaaaaaaaaaagggaaggaatgagatttaactggtgctc</pre>
+       <pre>aaagcttctccgatacaaaatatttggtcatgtattcataatttgcttgacatttccagc</pre>
+       <pre>aaagcgaagatggcaataacaaaaggaacttcttacaagagaagagaaagacccacggag</pre>
+       <pre>ctccagagtttctgttggaacaagactcttctgttttgcttatatacagttaagttcgtt</pre>
+       <pre>tagtgtctgatccagtgtctgatgtaagcccacgttctcttctttggcctgggcaagttt</pre>
+       <pre>ctcttccaggtcatcaattgtcttttccagttttgcaaccgttctctctgcaaattcagc</pre>
+       <pre>acgggtctcagcctctttcagtttgtcagacagaagtttaatttcttcttcatatttgtc</pre>
+       <pre>ctccttttcagaatacttttcagatgcagcctccagagatttcagattgtagttacaatt</pre>
+       <pre>ctgagttcttctccaggtcaccacattttattcagacacctccgcacgcttctctgccct</pre>
+       <pre>ctcagctaacccttc</pre>
+       <pre>&gt;embl:BE848719 BE848719; uw40c07.y1 Soares_thymus_2NbMT Mus musculus cDNA clone IMAGE:3419148 5' similar to SW:TPM4_HUMAN P07226 TROPOMYOSIN, FIBROBLAST NON-MUSCLE TYPE ;, mRNA sequence. </pre>
+       <pre>tgttaccaatctgcttggcatttcctgcaaggtggaaacctggtaataagcggaacttct</pre>
+       <pre>tacaaaagaggaagacagggcacactctctggagtggagttggtgttaaaacagtactct</pre>
+       <pre>tctggtttagtttatatacagttaagttcgtttagtgtctggtccagtgtctgatgtaag</pre>
+       <pre>cccacattctcttctttggcctgggcaagtttttcttccaggtcatcgattgtcttctcc</pre>
+       <pre>agtttagaaactgtcctttctgcaaactcagctcgggtctcagcctccttcagcttgtca</pre>
+       <pre>gacagaagcttgatttcttcttcatatttatcctccttttcagaatacttttcagaagca</pre>
+       <pre>gcctccagtgatttcagattgttagttacattcttgagctcttcttccaggtcaccacac</pre>
+       <pre>tttagttcagatacctccgccctctcctctgctctcttcagctcaccctccaggatgacc</pre>
+       <pre>aacttacgagcaacctcctcatacttgcggtcggctacgtcagtgatgtgcttggctgct</pre>
+       <pre>ttgagctgcatctccaggatctacatcttttgctcatctttcatggcttcgttctctatt</pre>
+       <pre>accttcatgcctctctcactctcatcagcagccctctctgcctctttcagattctgcaag</pre>
+       <pre>gctgtggccagctgcttctgaccctgtccaattccttc</pre>
+       <pre>&gt;embl:BF022813 BF022813; uw40c07.x1 Soares_thymus_2NbMT Mus musculus cDNA clone IMAGE:3419148 3' similar to SW:TPM4_RAT P09495 TROPOMYOSIN 4, EMBRYONIC FIBROBLAST ISOFORM ;, mRNA sequence. </pre>
+       <pre>ccggatcccagcagaacgattgagctatggccggcctcaactcactggaggcagtgaagc</pre>
+       <pre>gcaagatccaggccctgcagcagcaggcagacgacgcagaggatcgcgcgcaaggcctgc</pre>
+       <pre>agcgcgaactggatggcgagcgcgagcggcgcgagaaagctgaaggagatgcagccgctc</pre>
+       <pre>tcaaccgccgcatccaactgctggaggaggaactggaccgggctcaggagcagctggcca</pre>
+       <pre>cagccctgcagaatctggaagaggcagagaaggctgctgatgagagtgagagaggcatga</pre>
+       <pre>aggtaatagagaaccgagccatgaaagatgaggaaaagatggagatcctggagatgcagc</pre>
+       <pre>tcaaagaagccaagcacatcactgacgaagccgaccgcaagtttgaggaggttgctcgt</pre>
+       <pre>&gt;embl:BF452255 BF452255; uz86d11.y1 NCI_CGAP_Lu29 Mus musculus cDNA clone IMAGE:3675957 5' similar to SW:TPM4_RAT P09495 TROPOMYOSIN 4, EMBRYONIC FIBROBLAST ISOFORM ;, mRNA sequence. </pre>
+       <pre>gagcccagcagaacgattgagctatggccggcctcaactcactggaggcagtgaagcgca</pre>
+       <pre>agatccaggccctgcagcagcaggcagacgacgcagaggatcgcgcgcaaggcctgcagc</pre>
+       <pre>gcgaactggatggcgagcgcgagcggcgcgagaaagctgaaggagatgcagccgctctca</pre>
+       <pre>accgccgcatccaactgctggaggaggaactggaccgggctcaggagcagctggccacag</pre>
+       <pre>ccctgcagaatctggaagaggcagagaaggctgctgatgagagtgagagaggcatgaagg</pre>
+       <pre>taatagagaaccgagccatgaaagatgaggaaaagatggagatcctggagatgcagctca</pre>
+       <pre>aagaagccaagcacatcactgacgaagccgaccgcaagtantgagaggttgctcgtaagt</pre>
+       <pre>tggtcatcctggagggtgagctgaagagagcagaggagagggcgaggtatctgaactaaa</pre>
+       <pre>gttggtgacctggagaagagctcaagaatgtaactaac</pre>
+       <pre>&gt;embl:BG089808 BG089808; mab82b11.x1 NCI_CGAP_BC3 Mus musculus cDNA clone IMAGE:3976676 3' similar to SW:TPM4_HUMAN P07226 TROPOMYOSIN, FIBROBLAST NON-MUSCLE TYPE ;, mRNA sequence. </pre>
+       <pre>agctgtcgccggagcccagcagaacgagtgagctatggccggcctcaactcactggaggc</pre>
+       <pre>agtgaagcgcaagatccaggccctgcagcagcaggcagacgacgcagaggatcgcgcgca</pre>
+       <pre>aggcctgcagcgcgaactggatggcgagcgcgagcggcgcgagaaagctgaaggagatgc</pre>
+       <pre>agccgctctcaaccgccgcatccaactgctggaggaggaactggaccgggctcaggagca</pre>
+       <pre>gctggccacagccctgcagaatctggaagaggcagagaaggctgctgatgagagtgagag</pre>
+       <pre>acgcatgaaggtaatagagaaccgagccatgaaagatgaggaaaagatggagatcctgga</pre>
+       <pre>gatgcagctcagagaagccaagcacatcactgatgaagccgaccgcaagtatgatgaggt</pre>
+       <pre>tgctcgtaagttggtcatcctggagggtgagctgaagagagcagatgagcgggcggaggt</pre>
+       <pre>atctgaactaaagtgtggtgacctgtaataagagctcatgaatgtaactaacaatctgaa</pre>
+       <pre>atgactggaggctgtatttgagaagtattctgaataggaggattagtatgaagaagaaga</pre>
+       <pre>taagcttatgcctgataagctgaaggtaggtggaaaccagtctggatttgcagacaga</pre>
+       <pre>&gt;embl:BG147728 BG147728; mab53f06.x1 Soares_NMEBA_branchial_arch Mus musculus cDNA clone IMAGE:3974147 3' similar to SW:TPM4_HUMAN P07226 TROPOMYOSIN, FIBROBLAST NON-MUSCLE TYPE ;, mRNA sequence. </pre>
+       <pre>caactcactggaggcagtgaagcgcaagatccaggccctgcagcagcaggcagacgacgc</pre>
+       <pre>anaggatcgcgcgcaaggcctgcagcgcgaactggatggcgagctctagcggcgcgagaa</pre>
+       <pre>agctgagggagaggggggcgctctcaaccgccgcatccaactgctggaggaggaactgga</pre>
+       <pre>ccgggctcatgagcagctggccacagccctgcagaatctggaagaggcagagaaggctgc</pre>
+       <pre>tgatgagagtgagagaggcatgaaggtaatagagaaccgagccatgaaagatgaggaaaa</pre>
+       <pre>gatggagatcctggagatgcagctcaaagaagccaagcacatcactgatgaagccgaccg</pre>
+       <pre>caagtatgaggaggttgctcgtaagttggtcatcctggagggtgagctgaagagagcata</pre>
+       <pre>ggagcgggcggaggtatctgaactaaagtgtggtgaccctgaagaagagctcaagaatgt</pre>
+       <pre>aactaacaatctgaaatcactggaggctgcttctgaaaagtattctgaaaaggag</pre>
+       <pre>&gt;embl:BI817778 BI817778; G3-F20 Axolotl Lambda Zap Library Ambystoma mexicanum cDNA similar to Homo sapiens gb|AAG17014.1|AF186109_1 (2.0e-40), TPM4-ALK fusion oncoprotein type 2, mRNA sequence. </pre>
+       <pre>ccggggtaccctaagccttctcggatccgagactcttcttcccgttgaggcccccccccc</pre>
+       <pre>gccccccagcagggaagatgtcgggtggcagttccatcgatgcggtgaagaagaagatcc</pre>
+       <pre>agagccttcagcaggtggcggacgaggccgaagagcgggccgagatcctgcagagggagg</pre>
+       <pre>tggacgccgagaggcagtgcagggagcgggccgaggcagacgtgggatcgctcaaccgcc</pre>
+       <pre>gcatccagctggtagaggaggagctggaccgtgcccaggagcgccttgccactgccctgc</pre>
+       <pre>tgaagttggaggaggcggagaaagctgcagacgagagtgaacgaggcatgaaggtcattg</pre>
+       <pre>aaaaccgagccaccaaggacgaggagaagatggagatccaggagatgcagttgaaagagg</pre>
+       <pre>ccaaacacatagcagaggaggccgaccgcaaa</pre>
+       <pre>&gt;embl:AF186109 AF186109; Homo sapiens TPM4-ALK fusion oncoprotein type 2 (TPM4-ALK fusion) mRNA, partial cds. </pre>
+       <pre>gccatggccggcctcaactccctggaggcggtgaaacgcaagatccaggccctgcagcag</pre>
+       <pre>caggcggacgaggcggaagaccgcgcgcagggcctgcagcgggagctggacggcgagcgc</pre>
+       <pre>gagcggcgcgagaaagctgaaggtgatgtggccgccctcaaccgacgcatccagctcgtt</pre>
+       <pre>gaggaggagttggacagggctcaggaacgactggccacggccctgcagaagctggaggag</pre>
+       <pre>gcagaaaaagctgcagatgagagtgagagaggaatgaaggtgatagaaaaccgggccatg</pre>
+       <pre>aaggatgaggagaagatggagattcaggagatgcagctcaaagaggccaagcacattgcg</pre>
+       <pre>gaagaggctgaccgcaaatacgaggaggtagctcgtaagctggtcatcctggagggtgag</pre>
+       <pre>ctggagagggcagaggagcgtgcggaggtgtctgaactaaaatgtggtgacctggaagaa</pre>
+       <pre>gaactcaagaatgttactaacaatctgaaatctctggaggctgcatctgaaaagtattct</pre>
+       <pre>gaaaaggaggacaaatatgaagaagaaattaaacttctgtctgacaaactgaaagaggct</pre>
+       <pre>gagacccgtgctgaatttgcagagagaacggttgcaaaactggaaaagacaattgatgac</pre>
+       <pre>ctggaagtgtaccgccggaagcaccaggagctgcaagccatgcagatggagctgca</pre>
+       <pre>&gt;embl:AF186110 AF186110; Homo sapiens TPM4-ALK fusion oncoprotein type 1 (TPM4-ALK fusion) mRNA, partial cds. </pre>
+       <pre>ctctcagccaggcggattgaaggatggaattccaacgaggctcccccgcctcgtcccacc</pre>
+       <pre>ttggctgaaggtgatgtggccgccctcaaccgacgcatccagctcgttgaggaggagttg</pre>
+       <pre>gacagggctcaggaacgactggccacggccctgcagaagctggaggaggcagaaaaagct</pre>
+       <pre>gcagatgagagtgagagaggaatgaaggtgatagaaaaccgggccatgaaggatgaggag</pre>
+       <pre>aagatggagattcaggagatgcagctcaaagaggccaagcacattgcggaagaggctgac</pre>
+       <pre>cgcaaatacgaggaggtagctcgtaagctggtcatcctggagggtgagctggagagggca</pre>
+       <pre>gaggagcgtgcggaggtgtctgaactaaaatgtggtgacctggaagaagaactcaagaat</pre>
+       <pre>gttactaacaatctgaaatctctggaggctgcatctgaaaagtattctgaaaaggaggac</pre>
+       <pre>aaatatgaagaagaaattaaacttctgtctgacaaactgaaagaggctgagacccgtgct</pre>
+       <pre>gaatttgcagagagaacggttgcaaaactggaaaagacaattgatgacctggaagtgtac</pre>
+       <pre>cgccggaagcaccaggagctgcaagccatgcagatggagctgcagagccctgagtacaag</pre>
+       <pre>ctgagcaagctccgcacctcgaccatcatgaccgactacaaccccaactactgctttgct</pre>
+       <pre>ggcaagacctcctccatcagtgacctgaaggaggtgccgcggaaaaacatcaccctcatt</pre>
+       <pre>cggggtctgggccatggcgcctttggggaggtgtatgaaggccaggtgtccggaatgccc</pre>
+       <pre>aacgacccaagccccctgcaagtggctgtgaagacgctgcctg</pre>
+       <pre>&gt;embl:AF310722 AF310722; Homo sapiens tropomyosin 4-anaplastic lymphoma kinase fusion protein (TPM4-ALK) mRNA, partial cds. </pre>
+       <pre>cgcgccatggccggcctcaactccctggaggcggtgaaacgcaagatccaggccctgcag</pre>
+       <pre>cagcaggcggacgaggcggaagaccgcgcgcagggcctgcagcgggagctggacggcgag</pre>
+       <pre>cgcgagcggcgcgagaaagctgaaggtgatgtggccgccctcaaccgacgcatccagctc</pre>
+       <pre>gttgaggaggagttggacagggctcaggaacgactggccacggccctgcagaagctggag</pre>
+       <pre>gaggcagaaaaagctgcagatgagagtgagagaggaatgaaggtgatagaaaaccgggcc</pre>
+       <pre>atgaaggatgaggagaagatggagattcaggagatgcagctcaaagaggccaagcacatt</pre>
+       <pre>gcggaagaggctgaccgcaaatacgaggaggtagctcgtaagctggtcatcctggagggt</pre>
+       <pre>gagctggagagggcagaggagcgtgcggaggtgtctgaactaaaatgtggtgacctggaa</pre>
+       <pre>gaagaactcaagaatgttactaacaatctgaaatctctggaggctgcatctgaaaagtat</pre>
+       <pre>tctgaaaaggaggacaaatatgaagaagaaattaaacttctgtctgacaaactgaaagag</pre>
+       <pre>gctgagacccgtgctgaatttgcagagagaacggttgcaaaactggaaaagacaattgat</pre>
+       <pre>gacctggaagtgtaccgccggaagcaccaggagctgcaagccatgcagatggagctgcag</pre>
+       <pre>agccctgagtacaagctgagcaagctccgcacctcgaccatcatgaccgactacaacccc</pre>
+       <pre>aactactgctttgctggcaagacctcctccatcagtgacctgaaggaggtgccgcggaaa</pre>
+       <pre>aacatcaccctcattcggggtctgggccatggcgcctttggggaggtgtatgaaggccag</pre>
+       <pre>gtgtccggaatgcccaacgacccaagccccctgcaagtggctgtgaagacgctgcctgaa</pre>
+       <pre>gtgtgc</pre>
+       <pre>&gt;embl:AF362886 AF362886; Homo sapiens tropomyosin 4-anaplastic lymphoma kinase fusion protein major isoform mRNA, partial cds. </pre>
+       <pre>ctggcagagtcccgttgccgagagatggatgagcagattagactgatggaccagaacctg</pre>
+       <pre>aagtgtctgagtgctgctgaagaaaagtactctcaaaaagaagataaatatgaggaagaa</pre>
+       <pre>atcaagattcttactgataaactcaaggaggcagagacccgtgctgaatttgcagagaga</pre>
+       <pre>acggttgcaaaactggaaaagacaattgatgacctggaagtgtaccgccggaagcaccag</pre>
+       <pre>gagctgcaagccatgcagatggagctgcagagccctgagtacaagctgagcaagctccgc</pre>
+       <pre>acctcgac</pre>
+       <pre>&gt;embl:AF362887 AF362887; Homo sapiens tropomyosin 4-anaplastic lymphoma kinase fusion protein minor isoform mRNA, partial cds. </pre>
+       <pre>cgagaagttgagggagaaaggcgggcccgggaacaggctgaggctgaggtggcctccttg</pre>
+       <pre>aaccgtaggatccagctggttgaagaagagctggaccgtgctcaggagcgtgcggaggtg</pre>
+       <pre>tctgaactaaaatgtggtgacctggaagaagaactcaagaatgttactaacaatctgaaa</pre>
+       <pre>tctctggaggctgcatctgaaaagtattctgaaaaggaggacaaatatgaagaagaaatt</pre>
+       <pre>aaacttctgtctgacaaactgaaagaggctgagacccgtgctgaatttgcagagagaacg</pre>
+       <pre>gttgcaaaactggaaaagacaattgatgacctggaagtgtacctccggaagcaccaagag</pre>
+       <pre>ctgcaagccatgcagatggagctgcagagccctgagtacaagctgagcaagctccgcacc</pre>
+       <pre>ctcgac</pre>
+       <pre>&gt;embl:AF087679 AF087679; Sus scrofa tropomyosin 4 (TPM4) mRNA, complete cds. </pre>
+       <pre>atggccggcctcaactccctggaggcggtgaaacgcaagatccaggccctgcagcagcag</pre>
+       <pre>gcggacgaggcagaggatcgcgcgcagggcctgcagcgggagctggacggcgagcgcgag</pre>
+       <pre>cggcgggagaaagccgaaggggatgtagcagctctcaatcggcgcatccaactcgttgag</pre>
+       <pre>gaggagttggacagggctcaggaacgactggccacagccctgcagaagcttgaggaggca</pre>
+       <pre>gaaaaggctgcagatgagagcgagagaggaatgaaggtgatagaaaaccgggccatgaaa</pre>
+       <pre>gatgaggagaagatggagattcaggagatgcagctcaaagaggccaagcacattgccgag</pre>
+       <pre>gaggccgaccgcaaatacgaggaggtagctcgtaagttggtcatcctggagggcgagctg</pre>
+       <pre>gagagggcagaggagcgtgccgaggtgtctgaactaaaatgtggtgacctggaagaagaa</pre>
+       <pre>ctcaagaatgtcaccaacaacctgaagtcgctagaggctgcatctgaaaagtattctgaa</pre>
+       <pre>aaggaggataaatatgaagaagagattaaacttctgtctgacaaactgaaagaggctgag</pre>
+       <pre>acccgtgctgaatttgcagagagaacagttgcaaaactggaaaagaccatcgatgacctg</pre>
+       <pre>gaagaaaaacttgcccaggccaaagaagagaacgtgggcttacatcagacactggatcag</pre>
+       <pre>acactaaacgaactaaactgtatataaccaaaacagaagagtctcgttccatcagaaact</pre>
+       <pre>ccagagctacgtgtttttctcttctcttgtaagaagtttcttttgttattgcctctttgc</pre>
+       <pre>tttgctggaaatg</pre>
+       <h3>&nbsp;</h3>
+       <p><br />

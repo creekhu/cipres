@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PREDATOR</title>
+    <version>2.1.2</version>
+    <description>Protein secondary structure prediction from a single sequence or a set of sequences</description>
+    <authors>D. Frishman &amp; P. Argos</authors>
+    <reference>Frishman, D. and Argos, P. (1996) Incorporation  of  long-distance interactions  into  a  secondary structure prediction algorithm. Protein Engineering,  9, 133-142.</reference>
+    <reference>Frishman,  D. and Argos,  P.  (1997)  75%  accuracy  in  protein secondary structure prediction.  Proteins,  27, 329-335.</reference>
+    <reference>Frishman,D and Argos,P. (1995) Knowledge-based secondary structure assignment. Proteins:  structure,  function  and genetics, 23, 566-579.</reference>
+    <reference>Kabsch,W. and Sander,C. (1983)  Dictionary  of  protein  secondary structure: pattern    recognition   of hydrogen-bonded and geometrical features. Biopolymers, 22: 2577-2637.</reference>
+    <category>protein:2d structure</category>
+  </head>
+
+  <command>predator</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>predator</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"predator"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+	<prompt>Protein sequence(s) File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>100</group>
+	<seqfmt>
+	  <value>8</value>
+	  <value>100</value>
+	  <value>15</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>prediction</name>
+	<prompt>Prediction options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>single</name>
+	    <attributes>
+
+	      <prompt>Perform  single  sequence  prediction. Ignore  other sequences in the set for computing the prediction (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -s" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>!$all</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>dont_copy</name>
+	    <attributes>
+
+	      <prompt>Do not copy assignment directly from the PDB database (-u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -u" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Do not copy assignment directly from the PDB database if query sequence is found in PDB. By default, the known conformation of 7-residue segments will be used if they are identical to a 7-residue fragment in the query sequence.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>dssp</name>
+	    <attributes>
+
+	      <prompt>Use DSSP target assignment (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -d" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Use DSSP target assignment (default is STRIDE). The predictions made with DSSP and STRIDE target assignments are optimized to reproduce these assignments as well as possible.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$dssp_file</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>percentid</name>
+	    <attributes>
+
+	      <prompt>Find a subset of sequences with no more than this identity between any pair of sequences (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)? " -n$value" : "" </code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input</name>
+	<prompt>Input parameters</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>all</name>
+	    <attributes>
+
+	      <prompt>Make prediction for All sequences in the input file (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -a" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>!$seqid</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>seqid</name>
+	    <attributes>
+
+	      <prompt>Make prediction for this sequence (give its id) (-i)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -i$value" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>This option is case sensitive!</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>stride_file</name>
+	    <attributes>
+
+	      <prompt>STRIDE file (-x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -x$value" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <pipe>
+		<pipetype>stride_outfile</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>dssp_file</name>
+	    <attributes>
+
+	      <prompt>DSSP file (-y)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -y$value" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <pipe>
+		<pipetype>dssp_outfile</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>pdb_chain</name>
+	    <attributes>
+
+	      <prompt>PDB Chain (-z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -z$value" : " -z-" </code>
+	      </format>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$dssp_file || $stride_file </code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>long</name>
+	    <attributes>
+
+	      <prompt>Long output form (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -l" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Every output line contains residue number, three-letter residue name, one-letter residue name, predicted secondary structural state and reliability estimate. If a STRIDE or DSSP secondary structure assignment has been read (see other options), the known assignment will also be shown in the output for comparison. By default the short output form is used.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>other_info</name>
+	    <attributes>
+
+	      <prompt>Output  other  additional information if available (-h)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -h" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+
+  </parameters>
+</pise>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>RNAGA</title>
+    <description>Prediction of common secondary structures of RNAs by genetic algorithm</description>
+    <authors>Chen, Le, Maizel</authors>
+    <reference>Jih-H Chen, Shu-Yun Le and Jacob Maize. Prediction of Common Secondary Structures of RNAs: A genetic Algorithm Approach, Nucleic Acids Res.,2000, Vol.28, No. 4 (991 - 999).</reference>
+  </head>
+  
+  <command>rnaga</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>rnaga</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "rnaga &lt; params" </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>mv_files</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" ; mv fort.2 $seqfile.scr; mv fort.4 $seqfile.cm"</code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>result_files</name>
+      <attributes>
+	<filenames>*.scr *.cm params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Sequence">
+
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Sequence(s)</prompt>
+	<seqfmt>
+	  <value>1</value>
+	  <value>2</value>
+	  <value>3</value>
+	  <value>4</value>
+	  <value>9</value>
+	</seqfmt>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\n"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Float">
+      <name>hcrtval</name>
+      <attributes>
+	<prompt>Hcrtval: a structure is considered as a candidate of common structure during a GA iteration if the conservation score for the structure is no less than Hcrtval</prompt>
+	<vdef>
+	  <value>0.8</value>
+	</vdef>
+	<comment>
+	  <value>If the program produces too many possible common secondary structures, such as 10**5, the computation cost for the second stage maybe huge. In this case, to reduce the computation time, you may want to increase the value of Hcrtval and/or decrease the value of beta. Also, in our experience the default value of beta can be 0.5.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Float">
+      <name>hcrtval2</name>
+      <attributes>
+	<prompt>Hcrtval2: a structure is taken as a common secondary structure by the program if the adjusted conservation score for the structure is no less than Hcrtval2 (Normally, Hcrtval2 &lt; Hcrtval)</prompt>
+	<vdef>
+	  <value>0.7</value>
+	</vdef>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>",$value"</code>
+	</format>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Float">
+      <name>pns</name>
+      <attributes>
+	<prompt>pns: a criterion to make sure that the structure feature in a common structure is shared by majority of the sequences (pns = 0.6 means shared by at least 60% of the sequences)</prompt>
+	<vdef>
+	  <value>0.6</value>
+	</vdef>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>",$value\n"</code>
+	</format>
+	<group>4</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Integer">
+      <name>structures_nb</name>
+      <attributes>
+	<prompt>Number of structures in a population</prompt>
+	<paramfile>params</paramfile>
+	<vdef>
+	  <value>200</value>
+	</vdef>
+	<comment>
+	  <value>A value of 100 is suggested for sequences of less than 100 nucleotides.</value>
+	</comment>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>5</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Integer">
+      <name>iterations_nb</name>
+      <attributes>
+	<prompt>Number of GA iterations</prompt>
+	<vdef>
+	  <value>100</value>
+	</vdef>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>",$value\n"</code>
+	</format>
+	<group>6</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Float">
+      <name>beta</name>
+      <attributes>
+	<prompt>beta: a structure is considered as a candidate during a GA iteration if the free energy of the structure is no greater than (average random energy + beta * standard deviation)</prompt>
+	<vdef>
+	  <value>-1.5</value>
+	</vdef>
+	<comment>
+	  <value>increase this value by 0.5 each time if the program  terminate with the message:  No structure is sufficiently stable</value>
+	  <value>If the program produces too many possible common secondary structures, such as 10**5, the computation cost for the second stage maybe huge. In this case, to reduce the computation time, you may want to increase the value of Hcrtval and/or decrease the value of beta. Also, in our experience the default value of beta can be 0.5.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>7</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Float">
+      <name>zeta</name>
+      <attributes>
+	<prompt>zeta: a structure is taken as a common structure if the free energy of the structure is no greater than (average random energy + zeta * standard deviation)</prompt>
+	<vdef>
+	  <value>-1.5</value>
+	</vdef>
+	<comment>
+	  <value>increase this value by 0.5 each time if the program  terminate with the message:  No structure is sufficiently stable</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>",$value\n"</code>
+	</format>
+	<group>8</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+
+	<name>equivalency</name>
+	<prompt>Parameters to determine the equivalency of two stems</prompt>
+	<parameters>
+ 
+	  <parameter ismandatory="1" type="Integer">
+	    <name>mxdp</name>
+	    <attributes>
+	      <prompt>Stem position</prompt>
+	      <vdef>
+		<value>3</value>
+	      </vdef>
+	      <paramfile>params</paramfile>
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <group>9</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>mxdr</name>
+	    <attributes>
+	      <prompt>Region size</prompt>
+	      <vdef>
+		<value>3</value>
+	      </vdef>
+	      <paramfile>params</paramfile>
+	      <format>
+		<language>perl</language>
+		<code>",$value"</code>
+	      </format>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>mxdL</name>
+	    <attributes>
+	      <prompt>Loop size</prompt>
+	      <vdef>
+		<value>3</value>
+	      </vdef>
+	      <paramfile>params</paramfile>
+	      <format>
+		<language>perl</language>
+		<code>",$value"</code>
+	      </format>
+	      <group>11</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>mxdrp</name>
+	    <attributes>
+	      <prompt>Branches distance</prompt>
+	      <vdef>
+		<value>3</value>
+	      </vdef>
+	      <paramfile>params</paramfile>
+	      <format>
+		<language>perl</language>
+		<code>",$value\n\n"</code>
+	      </format>
+	      <group>12</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+  </parameters>
+
+</pise>

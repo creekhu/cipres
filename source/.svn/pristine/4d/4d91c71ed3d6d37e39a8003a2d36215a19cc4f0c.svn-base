@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STRIDE</title>
+    <description>Protein secondary structure assignment from atomic coordinates</description>
+    <authors>D. Frishman &amp; P. Argos</authors>
+    <reference>Frishman D, Argos P. Knowledge-based protein secondary structure assignment. Proteins. 1995 Dec;23(4):566-79.</reference>
+    <category>protein:2d structure</category>
+  </head>
+
+  <command>stride</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>stride</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"stride"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="InFile">
+      <name>pdbfile</name>
+      <attributes>
+	<prompt>PDB File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($pdbid) ? " $pdbid.pdb" : " $value"</code>
+	</format>
+	<group>10</group>
+	<ctrls>
+	  <ctrl>
+	    <message>You must enter either the PDB data or the PDB id</message>
+	    <language>perl</language>
+	    <code>! ($pdbid || $pdbfile)</code>
+	  </ctrl>
+	</ctrls>
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="String">
+      <name>pdbid</name>
+      <attributes>
+	<prompt>or you can instead enter a PDB id.</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(($pdbid =~ tr/A-Z/a-z/) || $value)? "cat `pdbloc $pdbid` &gt; $pdbid.pdb ; " : "" </code>
+	</format>
+	<group>-10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control parameters</prompt>
+	<parameters>
+
+	  <parameter type="String">
+	    <name>read_chain</name>
+	    <attributes>
+	      <prompt>Read only these chains (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -r$value" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Example: AB</value>
+		<value>=&gt; calculate secondary structure assignment for chains A and B only.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>process_chain</name>
+	    <attributes>
+	      <prompt>Process only these chains (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c$value" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Process only chains Id1, Id2 ...etc. Secondary structure assignment will be produced only for these chains, but other chains that are present will be taken into account while calculating residue accessible surface and detecting inter-chain hydrogen bonds and, possibly, interchain beta-sheets. By default all protein chains read are processed.</value>
+		<value>Examples: </value>
+		<value>Process only = ABC and Read only = C</value>
+		<value>=&gt; calculate secondary structure assignment for chain C in the presence of chains A and B.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>molscript</name>
+	    <attributes>
+	      <prompt>Generate a Molscript file (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -m$pdbfile.mol" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>ss_only</name>
+	    <attributes>
+	      <prompt>Report secondary structure summary Only (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -o":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>hydrogen</name>
+	    <attributes>
+	      <prompt>Report Hydrogen bonds (-h)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -h" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>fasta</name>
+	    <attributes>
+	      <prompt>Generate SeQuence file in FASTA format (-q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -q" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Results">
+      <name>molscript_file</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$molscript</code>
+	</precond>
+	<filenames>*.mol</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	<filenames>*.out</filenames>
+	<pipe>
+	  <pipetype>stride_outfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

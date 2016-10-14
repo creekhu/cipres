@@ -1,0 +1,388 @@
+<?xml version="1.0"?>
+<project name="Code Generation" default="generate" basedir=".">
+
+<!-- Pise XML files are given in the current version 5a
+	 with .xml.in extension, this will set the extension to .xml-->	
+<target name="SetPiseXMLfiles">
+	 <move todir="PiseXML" includeemptydirs="false">
+    <fileset dir="PiseXML"/>
+    <mapper type="glob" from="*.xml.in" to="*.xml"/>
+  </move>
+	<delete file="PiseXML/*.xml.in"/>
+</target>
+
+	<!-- ================================================================== 
+	         C O D E   G E N E R A T I O N                                               
+	 ================================================================== -->
+	
+<!--Here starts the code genreration with freemarker
+	it includes 6 types of files to be generated
+	each is using different freemarker temaplate -->	
+
+<target name="clean" description="Remove files and directories that the generate target creates">
+	<delete dir="AUTO-GENERATED/"/>
+	<delete><fileset dir="../java/org/ngbw/web/actions/tool"/></delete>
+	<delete><fileset dir="../java/org/ngbw/web/model/impl/tool"/></delete>
+	<delete><fileset dir="../webapp/pages/tool"/></delete>
+	<delete file="../resources/struts-tools.xml"/>
+	<delete file="../resources/tools.properties"/>
+</target>
+	
+<target name="generate" description="Call Freemarker to generate Web Artifacts (JSP, actions classes.Java, validation.XML, struts.xml">
+   	 <taskdef name="freemarker"
+		  classname="freemarker.ext.ant.FreemarkerXmlTask">
+		  <classpath>
+			<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+			<pathelement location="lib/jar/resolver.jar"/>
+			<pathelement location="lib/jar/serializer.jar"/>
+			<pathelement location="lib/jar/xalan.jar"/>
+			<pathelement location="lib/jar/xercesImpl.jar"/>
+			<pathelement location="lib/jar/xml-apis.jar"/>
+		  </classpath>
+    </taskdef>
+
+	<delete dir="AUTO-GENERATED/"/>
+	<delete><fileset dir="../java/org/ngbw/web/actions/tool"/></delete>
+	<delete><fileset dir="../java/org/ngbw/web/model/impl/tool"/></delete>
+	<delete><fileset dir="../webapp/pages/tool"/></delete>
+	<delete file="../resources/struts-tools.xml"/>
+	<delete file="../resources/tools.properties"/>
+	
+    <freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="../java/org/ngbw/web/actions/tool"
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2action.ftl"
+     extension=".java"
+    />
+<!--	  	
+	<freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="AUTO-GENERATED/org/ngbw/web/actions/tool" 
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2validationXML.ftl"
+     extension="-validation.xml"
+    />
+-->
+	
+	<freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="../java/org/ngbw/web/model/impl/tool"
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2validationJava.ftl"
+     extension="Validator.java"
+    />
+	
+
+
+	 <freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="../webapp/pages/tool"
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2JSP.ftl"
+     extension=".jsp"
+    />
+	  
+	<freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="AUTO-GENERATED/tempStruts"
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2strutsXML.ftl"
+     extension="-struts.xml"
+    />
+   
+	<concat destfile="AUTO-GENERATED/tmpStruts.xml" force="yes">
+        <fileset dir="AUTO-GENERATED/tempStruts/">
+            <include name="*.xml"/>
+        </fileset>
+    </concat>
+	<delete dir="AUTO-GENERATED/tempStruts"/>
+	
+		<taskdef name="xmltask" 
+		  classname="com.oopsconsultancy.xmltask.ant.XmlTask">
+		  <classpath>
+			<pathelement location="lib/jar/xmltask-v1.14.jar"/>
+			<pathelement location="lib/jar/resolver.jar"/>
+			<pathelement location="lib/jar/serializer.jar"/>
+			<pathelement location="lib/jar/xalan.jar"/>
+			<pathelement location="lib/jar/xercesImpl.jar"/>
+			<pathelement location="lib/jar/xml-apis.jar"/>
+		  </classpath>
+		</taskdef>
+
+    	
+	<xmltask public="-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+			 system="${build.portal.staticUrl}/struts-2.0.dtd"
+	   		 source="lib/struts-tools.xml" dest="../resources/struts-tools.xml">	
+     <insert path="/struts/package" position="under" 
+		 file="AUTO-GENERATED/tmpStruts.xml"> 
+	   </insert> 
+	</xmltask>
+	
+    <freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="AUTO-GENERATED/PropertyDir"
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2property.ftl"
+     extension=".ppts"
+    />
+	
+	<concat destfile="../resources/tools.properties" append="true">
+		<fileset dir="AUTO-GENERATED/PropertyDir" includes="*.ppts"/>
+	</concat>
+	
+	<delete dir="AUTO-GENERATED/PropertyDir"/>
+	<delete dir="AUTO-GENERATED/"/>
+	 
+  </target>
+
+<!-- This task copies 2 files CreateTask.java and ToolParameters.java into
+    the folders of AUTO-GENERATED dirctory, these files helps removing java dependency
+    errors since their methods are called inside the auto-generted classes -->
+<!--
+<target name="copyfiles" description="copyfiles">
+	<copy todir="AUTO-GENERATED/org/ngbw/web/actions/tool" file="lib/dependency/ToolParameters.java"/>		
+	<copy todir="AUTO-GENERATED/org/ngbw/web/actions" file="lib/dependency/CreateTask.java"/>	
+</target>	
+-->
+	
+<target name="testJavaScript" description="">
+   	 <taskdef name="freemarker"
+		  classname="freemarker.ext.ant.FreemarkerXmlTask">
+		  <classpath>
+			<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+			<pathelement location="lib/jar/resolver.jar"/>
+			<pathelement location="lib/jar/serializer.jar"/>
+			<pathelement location="lib/jar/xalan.jar"/>
+			<pathelement location="lib/jar/xercesImpl.jar"/>
+			<pathelement location="lib/jar/xml-apis.jar"/>
+		  </classpath>
+    </taskdef>
+
+	
+    <freemarker
+     basedir="../../../../sdk/src/main/resources/pisexml"
+     destdir="AUTO-GENERATED/javascript"
+     includes="*.xml"
+     template="FreemarkerTemplate/pise2JavaScript.ftl"
+     extension=".js"
+    />
+	</target>
+
+	<target name="registry" description="">
+	   	 <taskdef name="freemarker"
+			  classname="freemarker.ext.ant.FreemarkerXmlTask">
+			  <classpath>
+				<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+				<pathelement location="lib/jar/resolver.jar"/>
+				<pathelement location="lib/jar/serializer.jar"/>
+				<pathelement location="lib/jar/xalan.jar"/>
+				<pathelement location="lib/jar/xercesImpl.jar"/>
+				<pathelement location="lib/jar/xml-apis.jar"/>
+			  </classpath>
+	    </taskdef>
+
+		
+	    <freemarker
+	     basedir="../../../../sdk/src/main/resources/pisexml"
+	     destdir="AUTO-GENERATED/registryDir"
+	     includes="*.xml"
+	     template="FreemarkerTemplate/pise2registry.ftl"
+	     extension=".xml"
+	    />
+		
+		<concat destfile="AUTO-GENERATED/tool-registry.cfg.xml" append="true">
+			<fileset dir="AUTO-GENERATED/registryDir" includes="*.xml"/>
+		</concat>
+		
+		<delete dir="AUTO-GENERATED/registryDir"/>
+		
+	</target>
+
+	<target name="registryEntry" description="Create a registry entry for a single tool. Run
+	'ant -Dtool=name registryEntry' where name is the name of the pise xml file.'">
+	   	 <taskdef name="freemarker"
+			  classname="freemarker.ext.ant.FreemarkerXmlTask">
+			  <classpath>
+				<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+				<pathelement location="lib/jar/resolver.jar"/>
+				<pathelement location="lib/jar/serializer.jar"/>
+				<pathelement location="lib/jar/xalan.jar"/>
+				<pathelement location="lib/jar/xercesImpl.jar"/>
+				<pathelement location="lib/jar/xml-apis.jar"/>
+			  </classpath>
+	    </taskdef>
+		
+	    <freemarker
+	     basedir="../../../../sdk/src/main/resources/pisexml"
+	     destdir="../resources/tool"
+	     includes="${tool}"
+	     template="FreemarkerTemplate/pise2registry.ftl"
+	     extension="-reg.xml"
+	    />
+
+	</target>
+
+	<target name="registryEntryClean" description="Remove individual registry entry files." >
+		<delete verbose="true" failonerror="false">
+			<fileset dir="../resources/tool" includes="*-reg.xml"/>
+		</delete>
+	</target>
+
+	<!-- The reason we use registryEntryClean rather than syncing the resources/tool 
+	with the reference_copy version is that the reference_copy may be a newer svn revision 
+	than what the user has in his build directory.  RegistryEntryClean removes all registry
+	entry files that may have been created in the user's web/src/main/resources/tool 
+	directory.
+	-->
+	<target name="webToolDevRestore" depends="registryEntryClean" description=
+		"Used by the web_tool_dev web site to get rid of any changes user has made.
+		This makes the contents of the user's pisexml directory in his sdk heiracrhy the
+		same as his pristine, never modified, copy of the pisexml.">
+		<sync
+			todir="../../../../sdk/src/main/resources/pisexml"
+			overwrite="true" >
+				<fileset dir="../../../../pisexml"/>
+		</sync>
+	</target>
+
+	<!-- Used by WebToolDev/bin/update_source.sh, which checks out a reference_copy of the
+	sdk and web source, and uses this target to add a list of tools.
+
+	TL 10/3/4/2008.  We now have 2 registries, one for cipres and one for ngbw.  For the
+	time being web_tool_dev builds ngbw (using the ngbw registry) as the user's test app
+	so we'll generate a list from the ngbw registry.
+	-->
+	<target name="registryList" description="Create a list of tools that are in the registry." >
+	   	 <taskdef name="freemarker"
+			  classname="freemarker.ext.ant.FreemarkerXmlTask">
+			  <classpath>
+				<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+				<pathelement location="lib/jar/resolver.jar"/>
+				<pathelement location="lib/jar/serializer.jar"/>
+				<pathelement location="lib/jar/xalan.jar"/>
+				<pathelement location="lib/jar/xercesImpl.jar"/>
+				<pathelement location="lib/jar/xml-apis.jar"/>
+			  </classpath>
+	    </taskdef>
+		
+	    <freemarker
+	     basedir="../../../../sdk/src/main/resources/tool/ngbw"
+	     destdir="../../../../sdk/src/main/resources/tool"
+	     includes="tool-registry.cfg.xml"
+	     template="FreemarkerTemplate/tool_registry2list.ftl"
+	     extension=".list"
+	    />
+
+		<!-- Strip the pathname part of each filename, leaving just the filename -->
+		<replaceregexp 
+			file="../../../../sdk/src/main/resources/tool/tool-registry.cfg.list"
+			match=".*/(.*)"
+			replace="\1"
+			byline="true"
+	    />
+	</target>
+	
+	
+	<target name="Test" description="">
+	   	 <taskdef name="freemarker"
+			  classname="freemarker.ext.ant.FreemarkerXmlTask">
+			  <classpath>
+				<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+				<pathelement location="lib/jar/resolver.jar"/>
+				<pathelement location="lib/jar/serializer.jar"/>
+				<pathelement location="lib/jar/xalan.jar"/>
+				<pathelement location="lib/jar/xercesImpl.jar"/>
+				<pathelement location="lib/jar/xml-apis.jar"/>
+			  </classpath>
+	    </taskdef>
+
+		
+	    <freemarker
+	     basedir="../../../../sdk/src/main/resources/pisexml"
+	     destdir="AUTO-GENERATED/testDir"
+	     includes="*.xml"
+	     template="FreemarkerTemplate/pise2valueDefaultTest.ftl"
+	     extension=".properties"
+	    />
+		
+		<concat destfile="AUTO-GENERATED/test.properties" append="true">
+			<fileset dir="AUTO-GENERATED/testDir" includes="*.properties"/>
+		</concat>
+		
+		<delete dir="AUTO-GENERATED/testDir"/>
+	
+	    <freemarker
+	     basedir="../../../../sdk/src/main/resources/pisexml"
+	     destdir="AUTO-GENERATED/testDir"
+	     includes="*.xml"
+	     template="FreemarkerTemplate/pise2valueDefaultTestInfile.ftl"
+	     extension=".properties"
+	    />
+		
+		<concat destfile="AUTO-GENERATED/testInputFiles.properties" append="true">
+			<fileset dir="AUTO-GENERATED/testDir" includes="*.properties"/>
+		</concat>
+		
+		<delete dir="AUTO-GENERATED/testDir"/>
+		
+		
+	</target>
+	
+	<target name="generateOutputProperties" description="Generates filename extensions and content types for tool output parameters">
+	   	 <taskdef name="freemarker"
+			  classname="freemarker.ext.ant.FreemarkerXmlTask">
+			  <classpath>
+				<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+				<pathelement location="lib/jar/resolver.jar"/>
+				<pathelement location="lib/jar/serializer.jar"/>
+				<pathelement location="lib/jar/xalan.jar"/>
+				<pathelement location="lib/jar/xercesImpl.jar"/>
+				<pathelement location="lib/jar/xml-apis.jar"/>
+			  </classpath>
+	    </taskdef>
+		
+		<freemarker
+	     basedir="../../../../sdk/src/main/resources/pisexml"
+	     destdir="AUTO-GENERATED/testDir"
+	     includes="*.xml"
+	     template="FreemarkerTemplate/pise2outputProperties.ftl"
+	     extension=".properties"
+	    />
+		
+		<concat destfile="AUTO-GENERATED/output.properties" append="true">
+			<fileset dir="AUTO-GENERATED/testDir" includes="*.properties"/>
+		</concat>
+		
+		<delete dir="AUTO-GENERATED/testDir"/>
+	</target>
+	
+	<target name="pise2Logic" description="">
+	   	 <taskdef name="freemarker"
+			  classname="freemarker.ext.ant.FreemarkerXmlTask">
+			  <classpath>
+				<pathelement location="lib/jar/freemarker-2.3.8.jar"/>
+				<pathelement location="lib/jar/resolver.jar"/>
+				<pathelement location="lib/jar/serializer.jar"/>
+				<pathelement location="lib/jar/xalan.jar"/>
+				<pathelement location="lib/jar/xercesImpl.jar"/>
+				<pathelement location="lib/jar/xml-apis.jar"/>
+			  </classpath>
+	    </taskdef>
+		
+		<freemarker
+	     basedir="../../../../sdk/src/main/resources/pisexml"
+	     destdir="AUTO-GENERATED/testDir"
+	     includes="*.xml"
+	     template="FreemarkerTemplate/pise2Logic.ftl"
+	     extension=".properties"
+	    />
+		
+		<concat destfile="AUTO-GENERATED/controlAndPrecondition" append="true">
+			<fileset dir="AUTO-GENERATED/testDir" includes="*.properties"/>
+		</concat>
+		
+		<delete dir="AUTO-GENERATED/testDir"/>
+	</target>
+	
+</project>

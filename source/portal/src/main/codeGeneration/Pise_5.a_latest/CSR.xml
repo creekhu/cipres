@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+      <title>CSR</title>
+      <description>Maximal Common 3D Substructure Searching</description>
+      <authors>M.Petitjean</authors>
+      <reference>M.Petitjean, Interactive Maximal Common 3D Substructure Searching with the Combined SDM/RMS Algorithm. Comput.Chem.1998,22[6],pp.463-465. </reference>
+    <category>protein:3d structure</category>
+  </head>
+
+
+  <command>CSR</command>
+
+  <parameters>
+
+  <parameter iscommand="1" ishidden="1" type="String">
+   <name>CSR</name>
+   <attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "CSR &lt; params" </code>
+	</format>
+	<group>0</group>
+
+    </attributes>
+   </parameter>
+
+<parameter type="Results">
+<name>param</name>
+<attributes>
+
+	<filenames>params</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>endparams</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"\\n\\n"</code>
+	</format>
+	<group>10</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>pdbfile</name>
+<attributes>
+
+	<prompt>File containing both molecules</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>This file must contain BOTH molecules.</value>
+		<value>See below the position parameters of each molecules.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<pipe>
+		<pipetype>pdbfile</pipetype>
+			<language>perl</language>
+			<code>$file_format eq "PDB"</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>file_format</name>
+<attributes>
+
+	<prompt>Input file format</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>PDB</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>HIN</value>
+		<label>HIN: alchemy-type</label>
+		<value>MDL</value>
+		<label>MDL: Cambridge Crystallographic Model</label>
+		<value>ML2</value>
+		<label>ML2: Mol2 SYBYL</label>
+		<value>PDB</value>
+		<label>PDB: Protein Data Bank or Nucleic Acid Data Bank</label>
+		<value>BIO</value>
+		<label>BIO: Biosym (MSI)</label>
+	</vlist>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>imol1</name>
+<attributes>
+
+	<prompt>Position of the 1st molecule in the file (IMOL1)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>4</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>imol2</name>
+<attributes>
+
+	<prompt>Position of the 2d molecule in the file (IMOL2)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>2</value></vdef>
+	<group>5</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>itermx</name>
+<attributes>
+
+	<prompt>How many iterations (ITERMX)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>200</value></vdef>
+	<group>6</group>
+	<comment>
+		<value>About 200 for a small molecule of less than 100 atoms, about 2000 for less than 1000 atoms, 20000 for more than 1000 atoms</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Excl">
+<name>cutoff</name>
+<attributes>
+
+	<prompt>Cutoff distance (CUT-OFF DIST)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value\\n"</code>
+	</format>
+	<vdef><value>1.2</value></vdef>
+	<group>7</group>
+	<vlist>
+		<value>1.2</value>
+		<label>1.2: for a protein</label>
+		<value>2</value>
+		<label>2: for an inorganic molecule</label>
+		<value>5</value>
+		<label>5: for a C-alpha backbone.</label>
+	</vlist>
+	<comment>
+		<value>This parameter does not change the results, it just saves memory and space.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" ismandatory="1" type="OutFile">
+<name>substructure</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"new_mol2.coord\\n"</code>
+	</format>
+	<vdef><value>new_mol2.coord</value></vdef>
+	<group>3</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+    <parameter type="Results">
+      <name>pdb_outfile</name>
+      <attributes>
+	<filenames>new_mol2.coord</filenames>
+	      <pipe>
+		<pipetype>pdbfile</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+      </attributes>
+    </parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,151 @@
+/**
+ *  Copyright (c) 2007-2009 CyberInfrastructure and Geospatial
+ *  Information Laboratory (CIGI), University of Illinois at
+ *  Urbana-Champaign, All Rights Reserved.
+ */
+
+package org.ngbw.sdk.tool;
+
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class CipresRSL
+{
+	private static final Log log = LogFactory.getLog(CipresRSL.class.getName());
+	protected String commandline;
+	protected String workingDir;
+	protected String wrapper;
+	protected String project;
+	//private String jobHandle;
+	protected Properties schedulerConf;
+	protected String stdoutFilename;
+	protected String stderrFilename;
+
+	/*
+		These are the properties we expect to find in schedulerConf - the pise xml
+		file should put them in a parmfile named "scheduler.conf". 
+		-- see PiseCommandRenderer.java. 
+	*/
+	private static final String S_runhours = "runhours";
+	private static final String S_jobtype= "jobtype";
+	private static final String S_mpicount = "mpi_processes";
+	private static final String S_threadcount = "threads_per_process";
+	private static final String S_nodecount = "nodes";
+
+	protected static final String MPI = "mpi";
+	protected static final String SINGLE = "single";
+
+	protected  int runMinutes;
+	protected  int mpiCount; 
+	protected  int threadCount; 
+	protected  int nodeCount; 
+	protected  String jobType;
+
+	private int getIntProperty(String property)
+	{
+		int i;
+		String tmp = schedulerConf.getProperty(property);
+		try
+		{
+			i = new Integer(tmp);
+		}
+		catch (Throwable t)
+		{
+			i = 0;
+			log.debug("", t);
+		}
+		return i;
+	}
+
+	public CipresRSL(String commandline, String workingDir, String wrapper, String jobHandle, Properties schedulerConf,
+		String project)
+	{
+		this.commandline = commandline;
+		this.workingDir = workingDir;
+		this.wrapper = wrapper;
+		//this.jobHandle = jobHandle;
+		this.schedulerConf = schedulerConf;
+		this.stdoutFilename = "stdout.txt";
+		this.stderrFilename = "stderr.txt";
+		this.project = project;
+
+		String tmp = schedulerConf.getProperty(S_runhours);
+		try
+		{
+			runMinutes = (int)((new Float(tmp)) * 60);
+			
+		}
+		catch(Throwable t)
+		{
+			runMinutes = 0;
+			log.debug("", t);
+		}
+
+		mpiCount = getIntProperty(S_mpicount);
+		threadCount = getIntProperty(S_threadcount); 
+		nodeCount = getIntProperty(S_nodecount); 
+
+		tmp = schedulerConf.getProperty(S_jobtype);
+		jobType = (tmp == null) ? "" : tmp.trim();
+		log.debug("read jobtype of:" + tmp);
+		if (!(jobType.equals(SINGLE) || jobType.equals(MPI)))
+		{
+			jobType = SINGLE;
+		} 
+	}
+
+
+	protected String getBasicGT2String()
+	{
+		String rsl = "& " +
+			"(executable ="  + this.wrapper + ")\n" +
+			"(directory = " + "\"" + this.workingDir + "\"" + ")\n" +
+			"(arguments ="  + this.commandline + ")\n" +
+			"(project = " + this.project + ")\n" +
+			
+			
+			"(stdout = " + "\"" + stdoutFilename + "\" )\n" + 
+			"(stderr = " + "\"" + stderrFilename + "\" )\n" ; 
+
+
+		return rsl;
+	}
+
+
+
+	/**
+		Note that when we specify jobtype=mpi some sort of script is invoked on the teragrid host
+		to run the job and that script can't parse a complicated command line that includes
+		shell redirection etc so we need to the keep the command line in the pise.xml 
+		files very simple and not complicate it here with any shell stuff either.  EG, no
+		io redirection, no source'ing files, no using ; && or ||, etc.
+
+		Override this method.
+	*/
+	public String getGT2String()
+	{
+		String rsl = getBasicGT2String(); 
+		if (jobType.equals(SINGLE))
+		{
+			rsl += "(jobType = " + SINGLE + ")\n"; 
+		} else
+		{
+			rsl +=	"(jobType = " + MPI + ")\n" +
+					"(count = 4)\n" ;
+		}
+
+		return rsl;
+	}
+
+	String getStdErrFilename()
+	{
+		return workingDir + "/" + stderrFilename;
+	}
+
+	String getStdOutFilename()
+	{
+		return workingDir + "/" + stdoutFilename;
+	}
+}

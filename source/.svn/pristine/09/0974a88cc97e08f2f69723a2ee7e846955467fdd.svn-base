@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>seqboot - Bootstrap, Jackknife, or Permutation Resampling</description>
+    &phylip_header;
+  </head>
+
+  <command>seqboot</command>
+
+  <parameters>
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>seqboot</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "seqboot &lt; params" </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+	<name>infile</name>
+	<attributes>
+	  
+	  <prompt>Alignement File</prompt>
+	  <format>
+	    <language>perl</language>
+	    <code>"ln -s $infile infile; "</code>
+	  </format>
+	  <group>-5</group>
+	  <seqfmt>
+	    <value>12</value>
+	  </seqfmt>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter ismandatory="1" issimple="1" type="Excl">
+	<name>data_type</name>
+	<attributes>
+	  
+	  <prompt>Data type (D)</prompt>
+	  <vdef><value>sequence</value></vdef>
+	  <group>1</group>
+	  <vlist>
+	    <value>sequence</value>
+	    <label>Molecular sequences</label>
+	    <value>morph</value>
+	    <label>Discrete Morphology</label>
+	    <value>rest</value>
+	    <label>Restriction Sites</label>
+	    <value>freq</value>
+	    <label>Gene Frequencies</label>
+	  </vlist>
+	  <flist>
+	    <value>sequence</value>
+	    <code>""</code>
+	    <value>morph</value>
+	    <code>"D\\n"</code>
+	    <value>rest</value>
+	    <code>"D\\nD\\n"</code>
+	    <value>freq</value>
+	    <code>"D\\nD\\nD\\n"</code>
+	  </flist>
+	  <paramfile>params</paramfile>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter ismandatory="1" issimple="1" type="Excl">
+	<name>method</name>
+	<attributes>
+	  
+	  <prompt>Resampling methods (J)</prompt>
+	  <format>
+	    <language>perl</language>
+	    <code>$format</code>
+	  </format>
+	  <vdef><value>bootstrap</value></vdef>
+	  <group>1</group>
+	  <vlist>
+	    <value>bootstrap</value>
+	    <label>Bootstrap</label>
+	    <value>jackknife</value>
+	    <label>Delete-half jackknife</label>
+	    <value>permute</value>
+	    <label>Permute species for each character</label>
+	  </vlist>
+	  <flist>
+	    <value>permute</value>
+	    <code>"J\\nJ\\n"</code>
+	    <value>bootstrap</value>
+	    <code>""</code>
+	    <value>jackknife</value>
+	    <code>"J\\n"</code>
+	  </flist>
+	  <comment>
+	    <value>1. The bootstrap. Bootstrapping was invented by Bradley Efron in 1979, and its use in phylogeny estimation was introduced by me (Felsenstein, 1985b). It involves creating a new data set by sampling N characters randomly with replacement, so that the resulting data set has the same size as the original, but some characters have been left out and others are duplicated. The random variation of the results from analyzing these bootstrapped data sets can be shown statistically to be typical of the variation that you would get from collecting new data sets. The method assumes that the characters evolve independently, an assumption that may not be realistic for many kinds of data.</value>
+	    <value>2. Delete-half-jackknifing. This alternative to the bootstrap involves sampling a random half of the characters, and including them in the data but dropping the others. The resulting data sets are half the size of the original, and no characters are duplicated. The random variation from doing this should be very similar to that obtained from the bootstrap. The method is advocated by Wu (1986).</value>
+	    <value>3. Permuting species within characters. This method of resampling (well, OK, it may not be best to call it resampling) was introduced by Archie (1989) and Faith (1990; see also Faith and Cranston, 1991). It involves permuting the columns of the data matrix separately. This produces data matrices that have the same number and kinds of characters but no taxonomic structure. It is used for different purposes than the bootstrap, as it tests not the variation around an estimated tree but the hypothesis that there is no taxonomic structure in the data: if a statistic such as number of steps is significantly smaller in the actual data than it is in replicates that are permuted, then we can argue that there is some taxonomic structure in the data (though perhaps it might be just a pair of sibling species).</value>
+	  </comment>
+	  <paramfile>params</paramfile>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter ismandatory="1" issimple="1" type="Integer">
+	<name>seed</name>
+	<attributes>
+	  
+	  <prompt>Random number seed (must be odd)</prompt>
+	  <format>
+	    <language>perl</language>
+	    <code>"$value\\n"</code>
+	  </format>
+	  <group>1010</group>
+	<paramfile>params</paramfile>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter type="Integer">
+	<name>replicates</name>
+	<attributes>
+
+	  <prompt>How many replicates (R)</prompt>
+	  <format>
+	    <language>perl</language>
+	    <code>($value &amp;&amp; $value != $vdef)? "R\\n$value\\n" : ""</code>
+	  </format>
+	  <vdef><value>100</value></vdef>
+	  <group>1</group>
+	  <ctrls>
+	    <ctrl>
+	      <message>this server allows no more than 1000 replicates</message>
+	      <language>perl</language>
+	      <code>$replicates &gt; 1000</code>
+	    </ctrl>
+	  </ctrls>
+	  <paramfile>params</paramfile>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter type="Paragraph">
+	<paragraph>
+	  <name>freq_opt</name>
+	  <prompt>Genes Frequencies options</prompt>
+	  <precond>
+	    <language>perl</language>
+	    <code>$data_type eq "freq"</code>
+	  </precond>
+	  <parameters>
+	    
+	    <parameter type="Switch">
+	      <name>alleles</name>
+	      <attributes>
+		
+		<prompt>All alleles present at each locus (default: no, one absent at each locus) (A)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? "A\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+		<precond>
+		  <language>perl</language>
+		  <code>$data_type eq "freq"</code>
+		</precond>
+		<paramfile>params</paramfile>
+		
+	      </attributes>
+	    </parameter>
+	    
+	  </parameters>
+	</paragraph>
+	
+      </parameter>
+
+      <parameter type="Paragraph">
+	<paragraph>
+	  <name>rest_opt</name>
+	  <prompt>Restriction enzymes options</prompt>
+	  <precond>
+	    <language>perl</language>
+	    <code>$data_type eq "rest"</code>
+	  </precond>
+	  <parameters>
+	    
+	    <parameter type="Switch">
+	      <name>enzymes_nb</name>
+	      <attributes>
+		
+		<prompt>Number of enzymes: not present in input file (E)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>(! $value)? "E\\n" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+		<precond>
+		  <language>perl</language>
+		  <code>$data_type eq "rest"</code>
+		</precond>
+		<paramfile>params</paramfile>
+		
+	      </attributes>
+	    </parameter>
+	    
+	  </parameters>
+	</paragraph>
+	
+      </parameter>
+
+      <parameter type="Results">
+	<name>outfile</name>
+	<attributes>
+
+	  <filenames>outfile</filenames>
+
+	</attributes>
+      </parameter>
+
+      <parameter type="Results">
+	<name>params</name>
+	<attributes>
+
+	  <filenames>params</filenames>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter ishidden="1" type="String">
+	<name>confirm</name>
+	<attributes>
+
+	  <format>
+	    <language>perl</language>
+	    <code>"y\\n"</code>
+	  </format>
+	  <group>1000</group>
+	  <paramfile>params</paramfile>
+	  
+	</attributes>
+      </parameter>
+
+      <parameter ishidden="1" type="String">
+	<name>terminal_type</name>
+	<attributes>
+	  
+	  <format>
+	    <language>perl</language>
+	    <code>"0\\n"</code>
+	  </format>
+	  <group>-1</group>
+	  <paramfile>params</paramfile>
+	  
+	</attributes>
+      </parameter>
+
+   </parameters>
+</pise>

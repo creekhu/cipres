@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+      <title>Coils2</title>
+      <description>Prediction of Coiled Coil Regions in Proteins</description>
+      <authors>Lupas, A., et al.</authors>
+      <reference>Lupas, A., Van Dyke, M., and Stock, J. (1991) Predicting Coled Coils from Protein Sequences, Science 252:1162-1164.</reference>
+      <doclink>http://www.ch.embnet.org/software/coils/COILS_doc.html</doclink>
+</head>
+
+
+<command>coils2</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>coils2</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "coils2 &lt; params" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>query</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>seqfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" ishidden="1" type="OutFile">
+<name>out_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"coils2.out\\n"</code>
+	</format>
+	<group>2</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>scoring matrix</name>
+<attributes>
+                <prompt>Scoring matrix</prompt>
+		<format>
+			<language>perl</language>
+			<code>"$value\\n"</code>
+		</format>
+		<vdef><value>2</value></vdef>
+		<group>3</group>
+		<vlist>
+			<value>1</value>
+			<label>MTK</label>
+			<value>2</value>
+			<label>MTIDK</label>
+		</vlist>
+		<paramfile>params</paramfile>
+
+	</attributes>
+	</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>Weight for positions a and d</name>
+<attributes>
+                <prompt>2.5 fold weighting for positions a,d</prompt>
+		<format>
+			<language>perl</language>
+			<code>"$value\\n"</code>
+		</format>
+		<vdef><value>N</value></vdef>
+		<group>4</group>
+		<vlist>
+			<value>Y</value>
+			<label>Yes</label>
+			<value>N</value>
+			<label>No</label>
+		</vlist>
+		<paramfile>params</paramfile>
+	</attributes>
+	</parameter>
+
+<parameter  ismandatory="1" ishidden="1" type="Excl">
+<name>output_options</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"p\\n"</code>
+	</format>
+	<group>5</group>
+		<paramfile>params</paramfile>
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>tmp_params</name>
+<attributes>
+
+	<filenames>params</filenames>
+
+</attributes>
+</parameter>
+
+</parameters>
+</pise>
+

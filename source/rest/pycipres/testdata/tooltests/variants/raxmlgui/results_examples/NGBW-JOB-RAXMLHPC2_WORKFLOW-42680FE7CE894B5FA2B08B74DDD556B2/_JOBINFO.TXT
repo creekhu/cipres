@@ -1,0 +1,14 @@
+Task\ label=REST v1
+Task\ ID=459
+Tool=RAXMLHPC2_WORKFLOW
+created\ on=2015-03-15 11:43:05.0
+JobHandle=NGBW-JOB-RAXMLHPC2_WORKFLOW-42680FE7CE894B5FA2B08B74DDD556B2
+resource=trestles
+User\ ID=3
+User\ Name=pycipres_eu
+email=pycipres_eu@yahoo.com
+
+Output=(all_outputfiles,*,UNKNOWN,UNKNOWN,UNKNOWN)
+ChargeFactor=1.000000
+cores=64
+JOBID=2542322.trestles-fe1.local

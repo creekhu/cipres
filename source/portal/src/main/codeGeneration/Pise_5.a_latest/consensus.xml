@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>CONSENSUS</title>
+    <description>Identification of consensus patterns in unaligned DNA and protein sequences</description>
+    <authors>Hertz, Stormo</authors>
+    <reference>G.Z. Hertz and G.D. Stormo.  Identification of consensus patterns in unaligned DNA and protein sequences: a large-deviation statistical basis for penalizing gaps. In: Proceedings of the Third International Conference on Bioinformatics and Genome Research (H.A. Lim, and C.R. Cantor, editors). World Scientific Publishing Co., Ltd. Singapore, 1995. pages 201--216.</reference>
+    <category>alignment:consensus</category>
+  </head>
+
+  <command>consensus</command>
+
+  <parameters>
+
+    <parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+      <name>consensus</name>
+      <attributes>
+	<prompt>Program to run</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"fasta-consensus &lt; $sequence &gt; $sequence.wcons; $consensus "</code>
+	</format>
+	<vdef><value>consensus</value></vdef>
+	<group>0</group>
+	<vlist>
+	  <value>consensus</value>
+	  <label>consensus: search for fixed width patterns</label>
+	  <value>wconsensus</value>
+	  <label>wconsensus: same as consensus, width not fixed</label>
+	</vlist>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence</name>
+      <attributes>
+
+	<prompt>Sequences file (-f)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -f $sequence.wcons"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>width</name>
+      <attributes>
+	<prompt>Width of pattern (consensus only) (-L)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -L$value" : ""</code>
+	</format>
+	<group>2</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$consensus eq "consensus"</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>out</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; $consensus.results"</code>
+	</format>
+	<group>50</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>consensus_matrix</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" ;consensus-matrix $consensus.results"</code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>matrices</name>
+      <attributes>
+
+	<filenames>$consensus.results.matrix.*</filenames>
+	<pipe>
+	  <pipetype>consensus_matrix</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>results_file</name>
+      <attributes>
+
+	<filenames>$consensus.results</filenames>
+	<pipe>
+	  <pipetype>consensus_results</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>sequence_wcons</name>
+      <attributes>
+
+	<filenames>*.wcons</filenames>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input_options</name>
+	<prompt>Input options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>complement</name>
+	    <attributes>
+
+	      <prompt>Complement of nucleic acid sequences (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c$value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>0</value>
+		<label>0: ignore the complement</label>
+		<value>1</value>
+		<label>1: include both strands as separate sequences</label>
+		<value>2</value>
+		<label>2: include both strands as a single sequence</label>
+		<value>3</value>
+		<label>3: Assume that the pattern is symmetrical (consensus)</label>
+	      </vlist>
+	      <ctrls>
+		<ctrl>
+		  <message>3: this choice is for the consensus program only</message>
+		  <language>perl</language>
+		  <code>$value eq "3" &amp;&amp; $consensus eq "wconsensus"</code>
+		</ctrl>
+	      </ctrls>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>alphabet_options</name>
+	      <prompt>Alphabet options</prompt>
+	      <group>2</group>
+	      <parameters>
+
+		<parameter type="InFile">
+		  <name>ascii_alphabet</name>
+		  <attributes>
+		    <precond>
+		      <language>perl</language>
+		      <code>! $dna</code>
+		    </precond>
+		    <prompt>Alphabet and normalization information (if not DNA) (-a)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -a $value" : "" </code>
+		    </format>
+		    <group>2</group>
+		    <comment>
+		      <value>Each line contains a letter (a symbol in the alphabet) followed by an optional normalization number (default: 1.0). The normalization is based on the relative prior probabilities of the letters. For nucleic acids, this might be be the genomic frequency of the bases; however, if the -d option is not used, the frequencies observed in your own sequence data are used. In nucleic acid alphabets, a letter and its complement appear on the same line, separated by a colon (a letter can be its own complement, e.g. when using a dimer alphabet).</value>
+		      <value>Complementary letters may use the same normalization number. Only the standard 26 letters are permissible; however, when the -CS option is used, the alphabet is case sensitive so that a total of 52 different characters are possible.</value>
+		      <value>POSSIBLE LINE FORMATS WITHOUT COMPLEMENTARY LETTERS:</value>
+		      <value>letter</value>
+		      <value>letter normalization</value>
+		      <value>POSSIBLE LINE FORMATS WITH COMPLEMENTARY LETTERS:</value>
+		      <value>letter:complement</value>
+		      <value>letter:complement normalization</value>
+		      <value>letter:complement normalization:complement's_normalization</value>
+		    </comment>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>prior</name>
+		  <attributes>
+
+		    <prompt>Use the designated prior probabilities of the letters to override the observed frequencies (-d)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -d" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>2</group>
+		    <comment>
+		      <value>By default, the program uses the frequencies observed in your own sequence data for the prior probabilities of the letters. However, if the -d option is set, the prior probabilities designated by the alphabet options. If the -d option is not set, they are still used to determine the sequence alphabet, but any prior probability information is ignored.</value>
+		    </comment>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter issimple="1" type="Switch">
+      <name>dna</name>
+      <attributes>
+
+	<prompt>Alphabet and normalization information for DNA</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -A a:t c:g" : ""</code>
+	</format>
+
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Switch">
+      <name>protein</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>! $dna</code>
+	</precond>
+	<prompt>Alphabet and normalization information for protein</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -a /local/gensoft/lib/consensus/prot-alphabet" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>algorithm_options</name>
+	<prompt>Algorithm options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>queue</name>
+	    <attributes>
+
+	      <prompt>Maximum number of matrices to save between cycles of the program -- ie: queue size (-q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -q$value" : ""</code>
+	      </format>
+	      <vdef><value>200</value></vdef>
+	      <group>2</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter  ismandatory="1" type="Float">
+	    <name>standard_deviation</name>
+	    <attributes>
+	      <prompt>Number of standard deviations to lower the information content at each position before identifying information peaks (mandatory for wconsensus) (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>" -s$value"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$consensus eq "wconsensus"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>progeny</name>
+	    <attributes>
+
+	      <prompt>Save the top progeny matrices  (-pr1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " $value" : ""</code>
+	      </format>
+	      <vdef><value>-pr2</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>-pr1</value>
+		<label>-pr1: regardless of parentage</label>
+		<value>-pr2</value>
+		<label>-pr2: for each parental matrix</label>
+	      </vlist>
+	      <comment>
+		<value>-pr2 option prevents a strong pattern found in only a subset of the sequences from overwhelming the algorithm and eliminating other potential patterns. This undesirable situation can occur when a subset of the sequences share an evolutionary relationship not common to the majority of the sequences.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>linearly</name>
+	    <attributes>
+
+	      <prompt>Seed with the first sequence and proceed linearly through the list (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -l" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>This option results in a significant speed up in the program, but the algorithm becomes dependent on the order of the sequence-file names.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>max_cycle_nb</name>
+	    <attributes>
+
+	      <prompt>Maximum repeat of the matrix building cycle (-n or -N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> "" </code>
+	      </format>
+	      <group>2</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>max_cycle</name>
+	    <attributes>
+
+	      <prompt>How many words per matrix for each sequence to contribute (-n or -N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " $max_cycle$max_cycle_nb" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <vlist>
+		<value>-n</value>
+		<label>-n: allow each sequence to contribute zero or more words per matrix</label>
+		<value>-N</value>
+		<label>-N: allow each sequence to contribute one or more words per matrix</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>defined $max_cycle_nb</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>distance</name>
+	    <attributes>
+
+	      <prompt>Minimum distance between the starting points of words within the same matrix pattern (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -m$value " : ""</code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>For wconsensus, the default value is 1.</value>
+		<value>For consensus, this number is indicated by the width (-L).</value>
+	      </comment>
+	      <ctrls>
+		<ctrl>
+		  <message>This number must be positive</message>
+		  <language>perl</language>
+		  <code>$value &lt;= 0</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$max_cycle ne ""</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>terminate</name>
+	    <attributes>
+
+	      <prompt>Terminate the program this number of cycles after the current most significant alignment is identified (-t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -t$value " : "" </code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>default: terminate only when the maximum number of matrix building cycles is completed.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>terminal_gap</name>
+	    <attributes>
+
+	      <prompt>Permit terminal gaps (-pg) (wconsensus only)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " $value" : ""</code>
+	      </format>
+	      <vdef><value>-pg0</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>-pg0</value>
+		<label>-pg0: do NOT permit terminal gaps</label>
+		<value>-pg1</value>
+		<label>-pg1: permit penalized terminal gaps</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$consensus eq "wconsensus"</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>top_matrices</name>
+	    <attributes>
+
+	      <prompt>Number of top matrices to print (-pt)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef) ? " -pt$value" : ""</code>
+	      </format>
+	      <vdef><value>4</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>A negative value means print all the top matrices.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>final_matrices</name>
+	    <attributes>
+
+	      <prompt>Number of final matrices to print (-pf)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef) ? " -pf$value" : ""</code>
+	      </format>
+	      <vdef><value>4</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>Default when NOT using -n or -N option: print 4 matrices; default when using -n or -N option: print no matrices.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,38 @@
+How to setup cipres/teragrid under new web account (portal2test, portal2prod, etc) or use a different teragrid account:
+=======================================================================================================================
+
+	* Put the teragrid username and password in ~/.m2/settings.xml  (this is the username and password you use to log into 
+	the teragrid user portal.  You should be able to log into the desired host from the teragrid user portal if your 
+	credentials are set up as required).
+
+
+	* rm ${grid.myproxyfile}, probably /tmp/x509_cipres, if it already exists, as it may contain info for a different user.  
+	If you're going to login as user "cipres", then this file needs to contain a proxy for "cipres", not "terri" or some other user.
+
+
+	* I think it's easiest to get the ~/.globus dir and ~/.globus/certificates set up from the command line, which requires 
+	access to a subset of the globus tools.  Set up to use "desktop single signon" via the link below.  
+	(i.e download gt4.2.1-x86-rhas_3-installer, or similar, build according to desktop single signon instructions). Run 
+	myproxy-login make sure you specify user "cipres" if that's the account you want to use.  Be sure to remove all the 
+	~/.globus/certificates/*.r0 files.  Also create ~/.globus/cog.properties with the single line 
+	"cacert=<full path to certificates dir>".
+
+
+	* Install cron job to update the certificates dir at least monthly.  Script to do this is sdk/scripts/update_crl.sh.  
+	Try it manually, after getting myproxy-logon to work.
+
+
+	* Edit sdk/cipres-*.properties, modifying teragrid.lonestar.workspace and teragrid.lonestar.wrapper for the teragrid 
+	account you're using, if necessary.
+
+How to run tools on triton 
+=======================================================================================================================
+	* Set up passwordless ssh auth to triton-login.sdsc.edu from the host where tomcat runs.
+	* Put triton user name and location of key file in ~/.m2/settings.xml for user that runs tomcat.
+	* Make sure tool.resource.cluster=TRITON in the cipres-*.properties file you're building with.
+	* Set related triton properties in cipres-*.properties for the triton account you're using (eg.
+	set triton.workspace and triton.rc).
+	* I have the cipres registry configured so that all the non-teragrid tools either run on CIPRES_CLUSTER
+	or TRITON depending on the value of tool.resource.cluster in the cipres-*.properties file. We made need
+	to tweak this so that some run on the cluster and some on triton.
+

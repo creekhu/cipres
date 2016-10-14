@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>CAP3</title>
+    <version>3</version>
+    <description>Contig Assembly Program</description>
+  </head>
+
+
+<command>cap3</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>cap3</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>cap3</code>
+		<language>perl</language>
+		<code>"cap3"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Fragments File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

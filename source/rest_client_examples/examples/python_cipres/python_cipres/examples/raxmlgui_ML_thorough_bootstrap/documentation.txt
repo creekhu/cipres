@@ -1,0 +1,63 @@
+RAXML ML/Thorough Bootstrap
+raxmlgui makes this command line
+example: raxmlHPC-PTHREADS.exe -T 2 -b 631 -m PROTGAMMABLOSUM62F -k -p 223 -N 100 -o 1_Euglena_gracilis -s infile2.txt"  -n testR -O  
+&&raxmlHPC-PTHREADS.exe -T 2 -f d -m PROTGAMMABLOSUM62F -o 1_Euglena_gracilis -s infile2.txt" -N 1 -n testB -p 730 -O 
+&&raxmlHPC-PTHREADS.exe -T 2 -f b -t RAxML_bestTree.testB -z RAxML_bootstrap.testR -m PROTGAMMABLOSUM62F -s infile2.txt"  -n test.tre -O 
+ exit 
+
+NGBW-JOB-RAXMLHPC2_WORKFLOW-42680FE7CE894B5FA2B08B74DDD556B2 (saved)
+
+raxmlHPC-HYBRID -s infile.txt -N 100 -m GTRGAMMA -p 12345 -k -O -b 787 -o mycobac_01 -n testS 
+&& raxmlHPC-HYBRID -f d  -m GTRGAMMA  -s infile.txt -N 10 -n testZ -p 333 -O -o mycobac_01
+&& raxmlHPC-PTHREADS -f b -t  RAxML_bestTree.testZ  -z  RAxML_bootstrap.testS  -m GTRGAMMA  -s infile.txt    -n testout  -O -o mycobac_01
+~
+
+
+RAXMLHPC2_WORKFLOW
+This test:
+toolId=RAXMLHPC2_WORKFLOW		(required)
+runtime_=0.50					(default)
+specify_workflow_=MLTB	       (no default)
+datatype_=dna             (default=dna, can be others)
+dna_gtrcat_=GTRGAMMA           (no default, a value for the model must be set)
+invariable_=				   (default is null)
+ascertainment_=ASC_            (default is null; ASC_ turns on the option; invariable and asc are mutually exclusive)
+ascertainment_corr_=          (default is lewis, felsenstein an dstamatkis are allowed, the latter two require a file via -q) 
+printbrlength_=1                (print branch lengths, default = 0)
+outgroup_=					   (default is no outgroup)
+disable_seqcheck_=1            (default is 0)
+mulparambootstrap_seed_val_=12345 (set a seed for the -b bootstrapping option, default 12345)
+outsuffix_MLTB1_=testR         (name the output files from bootstrapping step, default=testR)
+parsimony_seed_val_MLTB2_=12345 (provide random seed value for MLTB sampling step, default 12345)
+outsuffix_MLTB2_=testB          (name for the output files for -f d ML + thorough bootstrap workflow step 2, default=testB)
+outsuffix_MLTB3_=outfile        (name for the output files of step 3 in the MLTB workflow)
+
+we make this command line
+Commandline is: 
+
+'raxmlHPC-HYBRID -n testS -s infile.txt -o 1_Euglena_gracilis -m ASC_GTRGAMMA -N 100 -k -p 12345  -b 787 -O  --asc-corr lewis
+&& raxmlHPC-HYBRID -f d  -m ASC_GTRGAMMA  -s infile.txt -N 10 -n testZ -p 333 -O -o 1_Euglena_gracilis --asc-corr lewis 
+&& raxmlHPC-PTHREADS -f b -t  RAxML_bestTree.testZ  -z  RAxML_bootstrap.testS  -m ASC_GTRGAMMA  -s infile.txt    -n testout  -O --asc-corr lewis -o 1_Euglena_gracilis'
+Test passed
+
+other model options:
+If not DNA , set datatype_=(protein/rna/binary/multi) then set this parameter
+(GTRCAT default;  prot_sub_model_=PROTGAMMA/PROTCAT; rna_model_ ;bin_model_=BINCAT/BINGAMMA; multi_model_=MULTICAT/MULTIGAMMA)
+Then set sub_parameters for protein:
+prot_matrix_spec_= (DAYHOFF is default)
+
+other modifiers can be set:
+invariable_= - switch - Estimate proportion of invariable sites (GTRGAMMA + I)
+ascertainment_= switch -
+ascertainment_corr_= excl - sets the kind of correction used
+use_emp_freqs_= to use empirical frequencies, protein only 
+
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+
+upload modifying files
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+
+printbrlength_ - Switch - Print branch lengths (-k)

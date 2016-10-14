@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmemit - generate sequences from a profile HMM</description>
+    <authors>S. Eddy</authors>
+    <category>hmm</category>
+  </head>
+
+  <command>hmmemit</command>
+
+  <parameters>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>Description of hmmemit</prompt>
+	<comment>
+	  <value>hmmemit reads an HMM file from hmmfile and generates a number of sequences from it; or, if the -c option is selected, generate a single majority-rule consensus. This can be useful for various applications in which one needs a simulation of sequences consistent with a sequence family consensus.By default, hmmemit generates 10 sequences and outputs them in FASTA (unaligned) format.</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmemit</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmemit"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="InFile">
+      <name>hmmfile</name>
+      <attributes>
+	<prompt>HMM file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $hmmfile"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Results">
+      <name>fasta_output</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -o $hmmfile.seqs"</code>
+	</format>
+	<group>1</group>
+	<precond>
+	  <language>perl</language>
+	  <code>! $output_format</code>
+	</precond>
+	<filenames>"$hmmfile.seqs"</filenames>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Results">
+      <name>selex_output</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -o $hmmfile.seqs"</code>
+	</format>
+	<group>1</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$output_format</code>
+	</precond>
+	<filenames>"$hmmfile.seqs"</filenames>
+	<pipe>
+	  <pipetype>hmmer_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>output_format</name>
+      <attributes>
+	<prompt>Selex output_format (-a)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -a " : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Write the generated sequences in an aligned format (SELEX) rather than FASTA.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>consensus</name>
+      <attributes>
+	<prompt>consensus sequence (-c)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -c" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Predict a single majority-rule consensus sequence instead of sampling sequences from the HMM's probability distribution. Highly conserved residues (p &gt;= 0.9 for DNA, p &gt;= 0.5 for protein) are shown in upper case; others are shown in lower case. Some insert states may become part of the majority rule consensus, because they are used in &gt;= 50% of generated sequences; when this happens, insert-generated residues are simply shown as x.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>number</name>
+      <attributes>
+	<prompt>number of generated sequences (-n n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -n $value " : ""</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>seed</name>
+      <attributes>
+	<prompt>seed number (--seed n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " --seed $value " : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Set the random seed to n, where n is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmemit on the same HMM will give slightly different results. You can use this option to generate reproducible results.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

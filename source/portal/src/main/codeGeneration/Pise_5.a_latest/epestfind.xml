@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>EPESTFIND</title>
+<description>Finds PEST motifs as potential proteolytic cleavage sites (EMBOSS)</description>
+<category>protein:motifs</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/epestfind.html</doclink>
+</head>
+
+<command>epestfind</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- protein [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>Protein sequence USA to be analysed.</value>
+		</comment>
+		<seqtype><value>protein</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>window</name>
+	<attributes>
+		<prompt>Window length (-window)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -window=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Minimal distance between positively charged amino acids.</value>
+		</comment>
+		<scalemin><value>2</value></scalemin>
+		<scalemax>
+			<language>acd</language>
+			<code>$sequence.length</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>order</name>
+	<attributes>
+		<prompt>Sort order of results -- Sort order of results (-order)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>length</label>
+				<value>2</value>
+				<label> position</label>
+				<value>3</value>
+				<label> score</label>
+			</vlist>
+		<vdef>
+			<value>score</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -order=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>Name of the output file which holds the results of the analysis. Results may be sorted by length, position and score.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>potential</name>
+	<attributes>
+		<prompt>Display potential PEST motifs (-potential)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nopotential"</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Decide whether potential PEST motifs should be printed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>poor</name>
+	<attributes>
+		<prompt>Display poor PEST motifs (-poor)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nopoor"</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Decide whether poor PEST motifs should be printed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>invalid</name>
+	<attributes>
+		<prompt>Display invalid PEST motifs (-invalid)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -invalid" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>Decide whether invalid PEST motifs should be printed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>map</name>
+	<attributes>
+		<prompt>Display PEST motifs map (-map)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nomap"</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>Decide whether PEST motifs should be mapped to sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>Name of file to which results will be written.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>graph</name>
+	<attributes>
+		<prompt>graph (-graph)</prompt>
+			<vlist>
+				<value>1</value>
+				<label></label>
+				<value>2</value>
+				<label></label>
+				<value>3</value>
+				<label></label>
+			</vlist>
+		<vdef><value>postscript</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -graph=$value" : ""</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>threshold</name>
+	<attributes>
+		<prompt>Threshold score (-threshold)</prompt>
+		<vdef>
+			<value>+5.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -threshold=$value" : ""</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>Threshold value to discriminate weak from potential PEST motifs. Valid PEST motifs are discriminated into 'poor' and 'potential' motifs depending on this threshold score. By default, the default value is set to +5.0 based on experimental data. Alterations are not recommended since significance is a matter of biology, not mathematics.</value>
+		</comment>
+		<scalemin><value>-55.0</value></scalemin>
+		<scalemax><value>+55.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>aadata</name>
+	<attributes>
+		<prompt>Amino acid data file (-aadata)</prompt>
+		<vdef>
+			<value>Eamino.dat</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -aadata=$value" : ""</code>
+		</format>
+		<group>11</group>
+		<comment>
+			<value>File of amino acid properties and molecular masses.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>12</group>
+</attributes>
+</parameter>
+<parameter type="String" ishidden="1">
+<name>psouput</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps"  || $graph eq "cps" || $graph eq "png"</code>
+	</precond>
+	<format>
+		<language>perl</language>
+		<code>" -goutfile=epestfind"</code>
+	</format>
+	<group>100</group>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>psresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps" || $graph eq "cps"</code>
+	</precond>
+	<filenames>*.ps</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>metaresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "meta"</code>
+	</precond>
+	<filenames>*.meta</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>dataresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "data"</code>
+	</precond>
+	<filenames>*.dat</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>pngresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "png"</code>
+	</precond>
+	<filenames>*.png *.2 *.3</filenames>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

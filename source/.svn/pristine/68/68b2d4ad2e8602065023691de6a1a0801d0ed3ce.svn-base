@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>codonw</title>
+    <version>1.4.2</version>
+    <description>Correspondence Analysis of Codon Usage</description>
+    <authors>J. Peden</authors>
+  </head>
+
+  <command>codonw</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>codonw</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"codonw -silent -nomenu -nowarn"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>outfiles</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" $seqfile.indices $seqfile.bulk"</code>
+	</format>
+	<group>2000</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>results_files</name>
+      <attributes>
+	<filenames>*.indices *.bulk</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Sequences File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>  " $value"</code>
+	</format>
+	<group>1000</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>defaults</name>
+	<prompt>Defaults settings</prompt>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>gc</name>
+	    <attributes>
+	      <prompt>Genetic codes</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -code $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>0</value>
+		<label>(0) Universal Genetic code [TGA=* TAA=* TAG=*]</label>
+		<value>1</value>
+		<label>(1) Vertebrate Mitochondrial code [AGR=* ATA=M TGA=W]</label>
+		<value>2</value>
+		<label>(2) Yeast Mitochondrial code [CTN=* ATA=M TGA=W]</label>
+		<value>3</value>
+		<label>(3) Filamentous fungi Mitochondrial code [TGA=W]</label>
+		<value>4</value>
+		<label>(4) Insects and Plathyhelminthes Mitochondrial co [ATA=M TGA=W AGR=S]</label>
+		<value>5</value>
+		<label>(5) Nuclear code of Cilitia [UAA=Q=Gln UAG=Q]</label>
+		<value>6</value>
+		<label>(6) Nuclear code of Euplotes [UGA=C]</label>
+		<value>7</value>
+		<label>(7) Mitochondrial code of Echinoderms UGA=W AGR=S AAA=N</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>fop_values</name>
+	    <attributes>
+	      <prompt>Fop/CBI values</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -f_type $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>0</value>
+		<label>(0) Escherichia coli</label>
+		<value>1</value>
+		<label>(1) Bacillus subtilis</label>
+		<value>2</value>
+		<label>(2) Dictyostelium discoideum</label>
+		<value>3</value>
+		<label>(3) Aspergillus nidulans</label>
+		<value>4</value>
+		<label>(4) Saccharomyces cerevisiae</label>
+		<value>5</value>
+		<label>(5) Drosophila melanogaster</label>
+		<value>6</value>
+		<label>(6) Caenorhabditis elegans</label>
+		<value>7</value>
+		<label>(7) Neurospora crassa</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>cai_values</name>
+	    <attributes>
+
+	      <prompt>CAI values</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c_type $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>0</value>
+		<label>(0) Escherichia coli</label>
+		<value>1</value>
+		<label>(1) Bacillus subtilis</label>
+		<value>2</value>
+		<label>(2) Saccharomyces cerevisiae</label>
+	      </vlist>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>output_type</name>
+	    <attributes>
+
+	      <prompt>Output Computer readable</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -machine" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>genes</name>
+	    <attributes>
+
+	      <prompt>Concatenate genes (instead of individual genes)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -totals" : "" </code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>CU_options</name>
+	<prompt>Codon usage indices</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>CAI</name>
+	    <attributes>
+
+	      <prompt>Codon Adaptation Index (CAI)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -cai" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>Fop</name>
+	    <attributes>
+
+	      <prompt>Frequency of OPtimal codons (Fop)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -fop" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>CBI</name>
+	    <attributes>
+
+	      <prompt>Codon bias index (CBI)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -cbi" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>cai_file</name>
+	    <attributes>
+
+	      <prompt>User input file of CAI values (may be computed by a previous COA)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -cai_file $value" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$CAI</code>
+	      </precond>
+	      <pipe>
+		<pipetype>codonw_coa_file</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>fop_file</name>
+	    <attributes>
+
+	      <prompt>User input file of Fop values (may be computed by a previous COA)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -fop_file $value" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$Fop</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>cbi_file</name>
+	    <attributes>
+
+	      <prompt>User input file of CBI values (may be computed by a previous COA)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -cbi_file $value" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$CBI</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>ENc</name>
+	    <attributes>
+
+	      <prompt>Effective Number of Codons (ENc)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -enc" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>GC</name>
+	    <attributes>
+
+	      <prompt>GC content of gene (G+C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -gc" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>GC3s</name>
+	    <attributes>
+
+	      <prompt>GC of silent 3rd codon posit. (GC3s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -gc3s" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>silent_bc</name>
+	    <attributes>
+
+	      <prompt>Silent base composition</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -sil_base" : "" </code>
+	      </format>
+	      <group>4</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $all_indices</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>all_indices</name>
+	    <attributes>
+
+	      <prompt>All the above indices</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -all_indices" : "" </code>
+	      </format>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>L_sym</name>
+	    <attributes>
+
+	      <prompt>Number of synonymous codons (L_sym)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -L_sym" : "" </code>
+	      </format>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>L_aa</name>
+	    <attributes>
+	      <prompt>Total Number of synonymous and non-synonymous codons (L_aa)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -L_aa" : "" </code>
+	      </format>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>Hydro</name>
+	    <attributes>
+
+	      <prompt>Hydrophobicity of protein (Hydro)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -hyd" : "" </code>
+	      </format>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>Aromo</name>
+	    <attributes>
+
+	      <prompt>Aromaticity of protein (Aromo)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -aro" : "" </code>
+	      </format>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>bulk_output_option</name>
+	    <attributes>
+
+	      <prompt>Other output option</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " $value" : "" </code>
+	      </format>
+	      <vdef><value>-cu</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>-cu</value>
+		<label>Codon Usage (CU)</label>
+		<value>-aau</value>
+		<label>Amino Acid Usage (AAU)</label>
+		<value>-raau</value>
+		<label>Relative Amino Acid Usage (RAAU)</label>
+		<value>-cutab</value>
+		<label>Tabulation of codon usage</label>
+		<value>-cutot</value>
+		<label>Tabulation of dataset's codon usage</label>
+		<value>-rscu</value>
+		<label>Relative Synonymous Codon Usage (RSCU)</label>
+		<value>-fasta</value>
+		<label>fasta format</label>
+		<value>-reader</value>
+		<label>Reader format (codons are seperated by spaces)</label>
+		<value>-transl</value>
+		<label>Conceptual translation of DNA to amino acid</label>
+		<value>-base</value>
+		<label>Detailed report of codon G+C composition</label>
+		<value>-dinuc</value>
+		<label>Dinucleotide usage of the three codon pos.</label>
+		<value>-noblk</value>
+		<label>No bulk output to be written to file</label>
+	      </vlist>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>COA_options</name>
+	<prompt>Correspondence analysis options (available for several sequences)</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>coa_cu</name>
+	    <attributes>
+
+	      <prompt>COA on codon usage</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -coa_cu" : "" </code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>coa_rscu</name>
+	    <attributes>
+
+	      <prompt>COA on RSCU</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -coa_rscu" : "" </code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>coa_aa</name>
+	    <attributes>
+
+	      <prompt>COA on Amino Acid usage</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -coa_aa" : "" </code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>coa_expert</name>
+	    <attributes>
+
+	      <prompt>Generate detailed(expert) statistics on COA</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -coa_expert" : "" </code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>coa_axes</name>
+	    <attributes>
+
+	      <prompt>Select number of axis to record</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -coa_axes $value" : "" </code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>coa_num</name>
+	    <attributes>
+
+	      <prompt>Select number of genes to use to identify optimal codons</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -coa_num $value" : "" </code>
+	      </format>
+	      <group>3</group>
+	      <comment>
+		<value>Values can be whole numbers or a percentage (5 or 10%).</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>cai_coa</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<vdef><value>"cai.coa"</value></vdef>
+	<group>1</group>
+	<pipe>
+	  <pipetype>codonw_coa_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>coa_files</name>
+      <attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$coa_cu || $coa_rscu || $coa_aa</code>
+	</precond>
+	<filenames>*.coa coa_raw</filenames>
+
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

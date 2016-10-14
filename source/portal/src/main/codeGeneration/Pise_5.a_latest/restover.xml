@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>RESTOVER</title>
+<description>Finds restriction enzymes that produce a specific overhang (EMBOSS)</description>
+<category>nucleic:restriction</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/restover.html</doclink>
+</head>
+
+<command>restover</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- DNA [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>seqcomp</name>
+	<attributes>
+		<prompt>Overlap sequence (-seqcomp)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -seqcomp=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>min</name>
+	<attributes>
+		<prompt>Minimum cuts per RE (-min)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -min=$value" : ""</code>
+		</format>
+		<group>3</group>
+		<scalemin><value>1</value></scalemin>
+		<scalemax><value>1000</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>max</name>
+	<attributes>
+		<prompt>Maximum cuts per RE (-max)</prompt>
+		<vdef>
+			<value>2000000000</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -max=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<scalemin>
+			<language>acd</language>
+			<code>$min</code>
+		</scalemin>
+		<scalemax><value>2000000000</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>single</name>
+	<attributes>
+		<prompt>Force single site only cuts (-single)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -single" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>threeprime</name>
+	<attributes>
+		<prompt>3' overhang? (else 5') e.g. BamHI has CTAG as a 5' overhang, and ApaI has CCGG as 3' overhang. (-threeprime)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -threeprime" : ""</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>blunt</name>
+	<attributes>
+		<prompt>Allow blunt end cutters (-blunt)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noblunt"</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>sticky</name>
+	<attributes>
+		<prompt>Allow sticky end cutters (-sticky)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nosticky"</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>ambiguity</name>
+	<attributes>
+		<prompt>Allow ambiguous matches (-ambiguity)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noambiguity"</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>plasmid</name>
+	<attributes>
+		<prompt>Allow circular DNA (-plasmid)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -plasmid" : ""</code>
+		</format>
+		<group>10</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>commercial</name>
+	<attributes>
+		<prompt>Only enzymes with suppliers (-commercial)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nocommercial"</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>datafile</name>
+	<attributes>
+		<prompt>Alternative RE data file (-datafile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -datafile=$value" : ""</code>
+		</format>
+		<group>12</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Create HTML output (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>limit</name>
+	<attributes>
+		<prompt>Limits reports to one isoschizomer (-limit)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nolimit"</code>
+		</format>
+		<group>14</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>alphabetic</name>
+	<attributes>
+		<prompt>Sort output alphabetically (-alphabetic)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -alphabetic" : ""</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>fragments</name>
+	<attributes>
+		<prompt>Show fragment lengths (-fragments)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -fragments" : ""</code>
+		</format>
+		<group>16</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Show sequence name (-name)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -name" : ""</code>
+		</format>
+		<group>17</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>18</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>19</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

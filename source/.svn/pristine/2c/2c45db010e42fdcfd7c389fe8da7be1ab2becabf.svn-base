@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>PROPHECY</title>
+<description>Creates matrices/profiles from multiple alignments (EMBOSS)</description>
+<category>nucleic:profiles</category>
+<category>protein:profiles</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/prophecy.html</doclink>
+</head>
+
+<command>prophecy</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [set of sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>type</name>
+	<attributes>
+		<prompt>Select type -- Profile type (-type)</prompt>
+			<vlist>
+				<value>F</value>
+				<label>Frequency</label>
+				<value>G</value>
+				<label>Gribskov</label>
+				<value>H</value>
+				<label>Henikoff</label>
+			</vlist>
+		<vdef>
+			<value>F</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -type=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Enter a name for the profile (-name)</prompt>
+		<vdef>
+			<value>mymatrix</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -name=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>profiletypesection</name>
+		<prompt>Profile type specific options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>threshold</name>
+		<attributes>
+			<prompt>Enter threshold reporting percentage (-threshold)</prompt>
+				<precond>
+					<language>acd</language>
+					<code>@($(type)==F)</code>
+				</precond>
+			<vdef>
+				<value>75</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -threshold=$value" : ""</code>
+			</format>
+			<group>4</group>
+			<scalemin><value>1</value></scalemin>
+			<scalemax><value>100</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+		<name>datafile</name>
+		<attributes>
+			<prompt>Scoring matrix (-datafile)</prompt>
+				<vlist>
+					<value>F</value>
+					<label></label>
+					<value>G</value>
+					<label></label>
+					<value>H</value>
+					<label></label>
+				</vlist>
+				<precond>
+					<language>acd</language>
+					<code>@($(type)!=F)</code>
+				</precond>
+			<vdef>
+				<language>acd</language>
+				<code>@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -datafile=$value" : ""</code>
+			</format>
+			<group>5</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>gapsection</name>
+		<prompt>Gap options</prompt>
+
+	<parameters>
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>open</name>
+		<attributes>
+			<prompt>Gap opening penalty (-open)</prompt>
+				<precond>
+					<language>perl</language>
+					<code>$dogap</code>
+					<language>acd</language>
+					<code>$dogap</code>
+				</precond>
+			<vdef>
+				<value>3.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -open=$value" : ""</code>
+			</format>
+			<group>6</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>extension</name>
+		<attributes>
+			<prompt>Gap extension penalty (-extension)</prompt>
+				<precond>
+					<language>perl</language>
+					<code>$dogap</code>
+					<language>acd</language>
+					<code>$dogap</code>
+				</precond>
+			<vdef>
+				<value>0.3</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -extension=$value" : ""</code>
+			</format>
+			<group>7</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>9</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

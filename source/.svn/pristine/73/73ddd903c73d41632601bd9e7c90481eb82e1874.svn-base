@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>EXTRACTCDS</title>
+    <version>1.0</version>
+    <description>Extracts translation(s) from a Genbank or Embl entry</description>
+	<authors>C. Letondal</authors>
+  </head>
+
+
+  <command>extractcds</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>extractcds</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"extractcds"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	
+	<prompt>Entry (Genbank or Embl)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>10</group>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Excl">
+      <name>entry_format</name>
+      <attributes>
+	
+	<prompt>Entry format (-f)</prompt>
+	<vlist>
+	  <value>Genbank</value>
+	  <label>Genbank</label>
+	  <value>Embl</value>
+	  <label>Embl</label>
+	</vlist>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -f $value" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    
+    <parameter type="Switch">
+      <name>show_location</name>
+      <attributes>
+	
+	<prompt>Show location in description (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -l" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>show_product</name>
+      <attributes>
+	
+	<prompt>Show product in description (-p)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -p" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    
+    <parameter type="Switch">
+      <name>show_gene</name>
+      <attributes>
+	
+	<prompt>Show gene in description (-g)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -g" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>seqsfile</name>
+      <attributes>
+	
+	<vdef><value>"extractcds.out"</value></vdef>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    
+  </parameters>
+</pise>

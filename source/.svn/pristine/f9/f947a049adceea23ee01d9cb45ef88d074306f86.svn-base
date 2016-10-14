@@ -1,0 +1,37 @@
+*********************************************************************************************************************
+Disabling Resources. 
+*********************************************************************************************************************
+
+It is possible to disable either an entire remote resource, or a single code, at runtime.
+To do this, one need only create a file with the resource or tool name, and place it in
+the disabled_resources directory. Typically the file will contain a message, and it can be time bounded;
+one can specify the beginning and end times for the disabling.
+
+To make this process fast, we typically create the appropriately named files,
+and give them a .txt extension. Then when we need to disable the resource, one needs only rename the file
+without the .txt extension. In a busy gateway, turning off a resource quickly can prevent a lot of extra 
+emails, so that is why we use extensions in this system.
+
+The format for a disabled resource file is as follows:
+
+# Be sure to use full 4 character year (2009, not 09).
+#
+# If you omit start and end properties, the resource will be disabled until you remove this file.
+#
+# End Date: make it a day after the resource will be back up. 
+# Start Date:
+#
+# Can use <p> in the message.
+#A working example is below:
+start=9/13/2010 
+end=9/14/2010
+message= (all on a single line, no carriage return)
+
+To disable a tool, the name of the file must be the same as the tool id in the tool registry.  For
+example, if the registry has <Tool id="RAXML8">, then the presence of a file named RAXML8 in the
+disabled resource directory will prevent users from submitting RAXML8 jobs.
+
+To disable a specific compute resource, the filename in the disabled resource directory must match 
+the ToolResource id.  For example, if the tool registry has an entry like <ToolResource id="comet">, 
+then a file named "comet" in the disabled resource directory will disable all submissions to comet.
+

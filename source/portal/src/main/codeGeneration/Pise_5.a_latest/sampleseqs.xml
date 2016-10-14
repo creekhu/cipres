@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <description>sampleseqs - generate typical sequences from a model</description>
+    <authors>R. Hughey, A. Krogh</authors>
+  </head>
+
+
+<command>sampleseqs</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>sampleseqs</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>sampleseqs</code>
+		<language>perl</language>
+		<code>"sampleseqs"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="String">
+<name>run</name>
+<attributes>
+
+	<prompt>Run name</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>test</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>model_file</name>
+<attributes>
+
+	<prompt>Model (-i)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -i $value" : ""</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>sam_model</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>nseq</name>
+<attributes>
+
+	<prompt>How many sequences (-nseq)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -nseq $value" : "" </code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>seqfile</name>
+<attributes>
+
+	<filenames>*.seq</filenames>
+	<pipe>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,17 @@
+This document explains what can appear in the user_preferences table, grouped by the associated feature:
+
+Delete Inactive User Accounts
+=============================
+Preference name: "DELETE_USER_DATE", value = the scheduled deletion date if user doesn't log in again.  Used 
+in combination with User.last_login.
+The only code that sets or uses this preference is sdk/scripts/deleteUserData.py, which is run from cron.
+See the script for more documentation.
+
+Data Size
+=============================
+Preference name: "data_size_exceeds_max"
+Values can be one of the following:
+	TRUE - the user data size has exceeded maximum allowed; this can be set by the portal
+	OVERRIDE - allow the user to have data size that exceeds maximum allowed; this is NOT set by the portal but may be manually set for a specific user
+This value is checked in User.canSubmit(); if set to TRUE, user will NOT be able to submit.  If unset or set to OVERRIDE, user WILL be allowed to submit.
+

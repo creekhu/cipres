@@ -1,0 +1,14 @@
+The portal's certifcate file is specified in the source code tree, in the file sdk/properties/cipres-prod.properties.  For production, it's /tmp/x509_cipres_prod.  
+
+You can force the certificate to be renewed by:
+
+1) log in as portal2prod@qball2.sdsc.edu
+2) stop tomcat and the services:
+    tomcat_stop
+	loadResultsD stop
+	checkResultsD stop
+3) Remove the certificate file mentioned above
+4) restart tomcat and the services:
+	tomcat_start
+	loadResultsD start
+	checkResultsD start

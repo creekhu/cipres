@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>pdbseq</description>
+    <authors>Russell, Barton</authors>
+  </head>
+
+  <command>pdbseq</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>pdbseq</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>pdbseq</code>
+		<language>perl</language>
+		<code>"pdbseq"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="InFile">
+<name>domainfile</name>
+<attributes>
+
+	<prompt>Domain file (-d)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -f $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+		<pipetype>stamp_domains_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>min</name>
+<attributes>
+
+	<prompt>Minimum sequence length to be output (-min)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value) ? " -min $value" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>max</name>
+<attributes>
+
+	<prompt>Maximum sequence length to be output (-max)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value) ? " -max $value" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Excl">
+<name>seqformat</name>
+<attributes>
+
+	<prompt>Output format (-format)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value) ? " -format $value" : ""</code>
+	</format>
+	<vdef><value>pir</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>fasta</value>
+		<label>fasta</label>
+		<value>pir</value>
+		<label>Pir/NBRF</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>tl</name>
+<attributes>
+
+	<prompt>Maximum title length (title limit) (-tl)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value) ? " -tl $value" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>separate</name>
+<attributes>
+
+	<prompt>Produce separate files for each domain in the input file (-separate)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value) ? " -separate" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>sep_files</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>$separate</code>
+</precond>
+	<filenames>*.seq</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" isstandout="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"pdbseq.out"</value></vdef>
+	<pipe>
+		<pipetype>amps_seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

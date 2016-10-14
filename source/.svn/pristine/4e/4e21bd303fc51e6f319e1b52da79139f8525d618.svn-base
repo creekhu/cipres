@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Note that including the %L for location info (line numbers) is supposedly very slow, but I think we need it at this point. -->
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${logs}/${build.rest.appName}.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-20.20d{MMM dd yyyy HH:mm:ss} [%-6.6t] %-5.5p - %25.25c{1}:%-5.5L %x | %m%n"/>
+		</layout>
+	</appender>
+
+	<appender name="db_timing" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${logs}/${build.rest.appName}_db_timing.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-20.20d{MMM dd yyyy HH:mm:ss} [%-6.6t] %-5.5p - %25.25c{1}:%-5.5L %x | %m%n"/>
+        </layout>
+    </appender>
+	<appender name="db_audit" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${logs}/${build.rest.appName}_db_audit.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-20.20d{MMM dd yyyy HH:mm:ss} [%-6.6t] %-5.5p - %25.25c{1}:%-5.5L %x | %m%n"/>
+        </layout>
+    </appender>
+
+
+	<!-- BEGIN APPENDER: DAILY ROLLING FILE APPENDER (tools) -->
+	<appender name="tools" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${logs}/tools.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-20.20d{MMM dd yyyy HH:mm:ss} [%-6.6t] %-5.5p - %25.25c{1}:%-5.5L %x | %m%n"/>
+			<!--
+            <param name="ConversionPattern" value="%m%n"/>
+			-->
+		</layout>
+	</appender>
+
+	<appender name="null" class="org.apache.log4j.FileAppender">
+		<param name="File" value="/dev/null"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m%n"/>
+		</layout>
+	</appender>
+
+
+
+	<!-- START SECTION: I don't want DEBUG level logging for these sdk classes -->
+	<logger name="org.ngbw.sdk.conversion">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.core.DefaultCoreRegistryBuilder">
+		<level value="info"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.core.DefaultCoreRegistry">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.data.DefaultDatasetRegistryBuilder">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+		<logger name="org.ngbw.sdk.conversion.FlatfileParser">
+		<level value="warn"/>
+	<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.conversion.DefaultConversionRegistryBuilder">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<logger name="org.ngbw.sdk.dataresources.lucene.LuceneDataResourceConfig">
+		<level value="warn"/>
+		<appender-ref ref="null"/>
+	</logger>
+	<!-- END  SECTION: I don't want DEBUG level logging for these sdk classes -->
+
+	<logger name="org.ngbw.sdk.tool.validation" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="tools"/>
+	</logger>
+	<logger name="org.ngbw.pise" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="tools"/>
+	</logger>
+
+	<logger name="org.ngbw" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="file"/>
+	</logger>
+	<logger name="org.tus" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="file"/>
+	</logger>
+
+	<!-- log4jdbc -->
+	<logger name="jdbc.sqlonly" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="db_audit"/>
+    </logger>
+    <logger name="jdbc.sqltiming" additivity="false">
+        <level value="fatal"/>
+        <appender-ref ref="null"/>
+    </logger>
+    <logger name="jdbc.connection" additivity="false">
+        <level value="fatal"/>
+        <appender-ref ref="null"/>
+    </logger>
+    <logger name="jdbc.audit" additivity="false" >
+        <level value="fatal"/>
+        <appender-ref ref="null"/>
+    </logger>
+    <logger name="jdbc.resultset" additivity="false" >
+        <level value="fatal"/>
+        <appender-ref ref="null"/>
+    </logger>
+
+
+	
+	<!-- unless specified otherwise, the level for all loggers is error, and the following appenders are used. -->
+	<root>
+		<level value="error"/>
+		<appender-ref ref="file"/>
+	</root>
+
+</log4j:configuration>

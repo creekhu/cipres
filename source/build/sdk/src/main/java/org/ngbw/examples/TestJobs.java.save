@@ -1,0 +1,185 @@
+package org.ngbw.examples;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Future;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.ngbw.sdk.UserAuthenticationException;
+import org.ngbw.sdk.Workbench;
+import org.ngbw.sdk.WorkbenchSession;
+import org.ngbw.sdk.common.util.Resource;
+import org.ngbw.sdk.common.util.ResourceNotFoundException;
+import org.ngbw.sdk.common.util.ValidationResult;
+import org.ngbw.sdk.core.shared.TaskRunStage;
+import org.ngbw.sdk.core.shared.UserRole;
+import org.ngbw.sdk.database.Folder;
+import org.ngbw.sdk.database.Task;
+import org.ngbw.sdk.database.TaskInputSourceDocument;
+import org.ngbw.sdk.database.TaskLogMessage;
+import org.ngbw.sdk.database.TaskOutputSourceDocument;
+import org.ngbw.sdk.database.User;
+import org.ngbw.sdk.tool.DisabledResourceException;
+import org.ngbw.sdk.TaskResult;
+import org.ngbw.sdk.jobs.Job;
+import org.ngbw.sdk.jobs.JobMetadata;
+import org.ngbw.sdk.jobs.JobStatus;
+import org.ngbw.sdk.jobs.JobFile;
+import org.ngbw.sdk.common.util.FileUtils;
+
+
+/*
+	Run this with "sdkrun org.ngbw.examples.TestJobs 2>/tmp/testjobs.log"
+	Takes a list of job specification directories, one per line, and submits
+	the jobs.  Prints corresponding list of job handles to stdout, one
+	per line.
+*/
+public class TestJobs 
+{
+	// Lots of hardcoded stuff here
+	private static final String USERNAME = "test1";
+	private static final String PASSWORD = "test1";
+
+	//Workbench object instances
+	private static Workbench workbench = Workbench.getInstance();
+	
+	public static void main(String[] args) throws Exception
+	{
+		WorkbenchSession session = null;
+		for (arg : args)
+		{
+		}
+
+		try 
+		{
+			session = workbench.getSession(USERNAME, PASSWORD);
+		} 
+		catch (UserAuthenticationException e) 
+		{
+			System.err.println(e.toString());
+			session = createAccount(USERNAME, PASSWORD);
+		}
+		User user = session.getUser();
+		if (jobHandle != null)
+		{
+			checkJobStatus(jobHandle, user);
+			return;
+		}
+
+		HashMap<String, String> visibleParameters = new HashMap<String, String>();
+		visibleParameters.put("runtime_", ".15");
+
+		// copy the input data from toolInputResource to a tmp location because 
+		// the submission mechanism may modify the contents of the file (to convert the encoding)
+		byte[] data;
+		data = Resource.getResource(toolInputResource).getBytes();
+		FileUtils.writeFile(tmpFile, data);
+		HashMap<String, File> inputFiles = new HashMap<String, File>();
+		inputFiles.put("infile_", tmpFile);
+
+		// This would be client supplied metadata.
+		JobMetadata md = new JobMetadata();
+
+		JobStatus jobStatus = new JobStatus( Job.submit(user, md, toolId, visibleParameters, inputFiles), user);
+		System.out.println("Submitted job " + jobStatus.getJobHandle());
+		displayStatus(jobStatus);
+	}
+
+	static WorkbenchSession createAccount(String username, String password) throws Exception
+	{
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setEmail(username + "@foo.com");
+		user.setFirstName(username);
+		user.setLastName(username);
+		user.setRole(UserRole.TESTER);
+		ValidationResult result = workbench.registerNewUser(user);
+		if (result.isValid())
+		{
+			return workbench.getSession(username, password);
+		}
+		throw new Exception(result.getErrors().get(0));
+	}
+
+
+
+	static void checkJobStatus(String jobHandle, User user) throws Exception
+	{
+		JobStatus status = Job.getStatus(jobHandle, user);
+		displayStatus(status);
+		/*
+			Todo: I removed the isFound method.  JobStatus(jobHandle) instead throws
+			a JobNotFoundException.  Haven't tested this code since the change.
+		if (status.isFound() == false)
+		{
+			return;
+		}
+		*/
+		List<JobFile> files = Job.getOutput(jobHandle, user);
+		System.out.println("There are " + files.size() + " result files.");
+		for (JobFile file : files)
+		{
+			displayOutput(file, user);
+		}
+	}
+
+	static void displayStatus(JobStatus status)
+	{
+		System.out.println("\nJOB STATUS " + status.getJobHandle());
+		/*
+		if (status.isFound() == false)
+		{
+			System.out.println("Not found.");
+		}
+		*/
+		System.out.println("Terminal Stage: " + status.isTerminalStage());
+		System.out.println("Job Stage: " + status.getJobStage());
+		System.out.println("Date Submitted: " + status.getDateSubmitted().toString());
+	}
+
+	static void displayOutput(JobFile file, User user) throws Exception
+	{
+		System.out.println("\nResult File " + file.getFilename());
+		System.out.println("Parameter: " + file.getParameterName());
+		System.out.println("OutputDocumentId: " + file.getOutputDocumentId());
+		System.out.println("Length: " + file.getLength());
+
+		InputStream is = null;
+		InputStreamReader reader = null;
+		try
+		{
+			is = Job.getOutputContent(file.getJobHandle(), file.getOutputDocumentId(), user);
+			reader = new InputStreamReader(is);
+			int len = reader.read(buffer, 0, buffer.length);
+			if (len > -1)
+			{
+				System.out.println(buffer + " ...\n");
+			} else
+			{
+				System.out.println("EOF trying to read contents.");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error reading contents: " + e.getMessage());
+		}
+		finally
+		{
+			if (reader != null) { reader.close(); }
+			if (is != null) { is.close(); }
+		}
+
+	}
+}

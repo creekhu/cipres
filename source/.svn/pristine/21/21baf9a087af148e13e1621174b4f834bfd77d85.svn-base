@@ -1,0 +1,20 @@
+PROBALIGN
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+alignment_order_ - Switch - Print sequences in alignment order rather than input order (-a)
+scoring_matrix_ - Excl - Sequence Type (Protein specifies gonnet 160; Nucleic acid specifies simple)
+output_format_ - Switch - ClustalW output format (-clustalw)?
+Section: ****************************************************************************
+dna_params
+*************************************************************************************
+gapopenn_ - Float - Gap Open Penalty (-go, recommended = 4.0)
+gapextn_ - Float - Gap Extension Penalty (-ge, recommended = 0.25)
+temp_na_ - Float - Temperature for Nucleic Acid (-T, recommended = 1.0)
+Section: ****************************************************************************
+prot_params
+*************************************************************************************
+gapopenp_ - Float - Protein Gap Open Penalty (-go, recommended = 22)
+gapextp_ - Float - Gap Extension Penalty (-ge, recommended = 1)
+temp_aa_ - Float - Temperature for Amino Acids (-T, recommended = 5)
+output_files_ - Results -
+

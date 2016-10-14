@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>sorttrans</description>
+    <authors>Russell, Barton</authors>
+  </head>
+
+  <command>sorttrans</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>sorttrans</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>sorttrans</code>
+		<language>perl</language>
+		<code>"sorttrans"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>scanfile</name>
+<attributes>
+
+	<prompt>Scan output file produced by stamp (-f)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -f $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+		<pipetype>stamp_trans_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" isstandout="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<vdef><value>"sorttrans.out"</value></vdef>
+	<pipe>
+		<pipetype>stamp_trans_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Excl">
+<name>sort_keyword</name>
+<attributes>
+
+	<prompt>Sort by ... (-s)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -s $value" : ""</code>
+	</format>
+	<group>2</group>
+	<vlist>
+		<value>Sc</value>
+		<label>Sc: sort by Sc</label>
+		<value>rms</value>
+		<label>rms: RMS deviation</label>
+		<value>nfit</value>
+		<label>nfit: number of fitted atoms</label>
+		<value>len</value>
+		<label>len: alignment length</label>
+		<value>frac</value>
+		<label>frac: nfit/len</label>
+		<value>q_frac</value>
+		<label>q_frac: nfit/q_len (q_len = length of query structure)</label>
+		<value>d_frac</value>
+		<label>d_frac: nfit/d_len (d_len = length of database structure)</label>
+		<value>n_sec</value>
+		<label>n_sec: number of equivalent secondary structure elements</label>
+		<value>seq_id</value>
+		<label>seq_id: percent sequence identity</label>
+		<value>sec_id</value>
+		<label>sec_id: percent secondary structure identity</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter type="Float">
+<name>cutoff</name>
+<attributes>
+
+	<prompt>Cutoff (-cutoff)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " $value" : ""</code>
+	</format>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>identifiers_only</name>
+<attributes>
+
+	<prompt>Identifiers only. Consider only the best transformation per identifier (-i)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -i" : ""</code>
+	</format>
+	<group>4</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>ignore_domain</name>
+<attributes>
+
+	<prompt>Ignore domain descriptors (-n)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -n" : ""</code>
+	</format>
+	<group>4</group>
+	<comment>
+		<value>This means that only the filename and the transformations are used. This is useful if you have different domain names attributed to the same region of the structure. </value>
+	</comment>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

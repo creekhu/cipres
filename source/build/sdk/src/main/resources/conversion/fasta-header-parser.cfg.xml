@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FastaHeaderParserConfig>
+	<HeaderFormats>
+		<Format id="GENBANK" regex="^>gi\|(\d+)\|gb\|(\S+)\|(.*)$">
+			<Match group="1" field="ALTERNATIVE_ID" optional="false"/>
+			<Match group="2" field="PRIMARY_ID" optional="false"/>
+			<Match group="3" field="NAME" optional="false"/>
+		</Format>
+		<Format id="EMBL" regex="^>embl\|(\S+)\|(.*)$$">
+			<Match group="1" field="PRIMARY_ID" optional="false"/>
+			<Match group="2" field="NAME" optional="false"/>
+		</Format>
+		<Format id="REFSEQ" regex="^>gi\|(\d+)\|ref\|(\S+)\|(.*)$">
+			<Match group="1" field="ALTERNATIVE_ID" optional="false"/>
+			<Match group="2" field="PRIMARY_ID" optional="false"/>
+			<Match group="3" field="NAME" optional="false"/>
+		</Format>
+		<Format id="PIR" regex="^>pir\|(\S+)\s?(.*)$">
+			<Match group="1" field="PRIMARY_ID" optional="false"/>
+			<Match group="2" field="NAME" optional="true"/>
+		</Format>
+		<Format id="SWISSPROT" regex="^>([^\|]{6,8})\|(\S+)\s+(.*)$">
+			<Match group="1" field="PRIMARY_ID" optional="false"/>
+			<Match group="2" field="ALTERNATIVE_ID" optional="false"/>
+			<Match group="3" field="NAME" optional="false"/>
+		</Format>
+		<Format id="PDB" regex="^>(\S{4})\:([^\|]+)\|PDBID\|CHAIN\|SEQUENCE\s*$">
+			<Match group="1" field="PRIMARY_ID" optional="PRIMARY_ID"/>
+			<Match group="2" field="CHAIN" optional="false"/>
+		</Format>
+		<Format id="PATENT" regex="^>pat\|(\S+)\|(\S+)\s?(.*)$">
+			<Match group="1" field="PRIMARY_ID" optional="false"/>
+			<Match group="2" field="COUNTRY" optional="true"/>
+		</Format>
+		<Format id="GENERAL_DATABASE_ID" regex="^>gnl\|([^\|]+)\|([^\|\s]+)\s?(.*)$">
+			<Match group="1" field="DATABASE" optional="false"/>
+			<Match group="2" field="PRIMARY_ID" optional="false"/>
+			<Match group="3" field="NAME" optional="true"/>
+		</Format>
+		<Format id="LOCAL" regex="^>lcl\|(\S+)\s?(.*)$">
+			<Match group="1" field="PRIMARY_ID" optional="false"/>
+			<Match group="2" field="NAME" optional="true"/>
+		</Format>
+	</HeaderFormats>
+</FastaHeaderParserConfig>

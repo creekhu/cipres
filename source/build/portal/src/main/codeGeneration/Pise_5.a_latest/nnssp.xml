@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>NNSSP</title>
+    <description>Prediction of protein secondary structure by combining nearest-neighbor algorithms and multiple sequence alignment</description>
+    <authors>Salamov &amp; Solovyev</authors>
+    <reference>Salamov AA, Solovyev VV (1995) Prediction of protein secondary structure by combinin nearest-neighbr algorithms and multiple sequence alignment. J Mol Biol, 247 : 11-15</reference>
+    <category>protein:2d structure</category>
+</head>
+
+
+<command>nnssp</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>nnssp</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "clu2nnssp -I$infile -O$infile.nns -S$seq; nnssp $infile.nns" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>infile</name>
+<attributes>
+
+	<prompt>Clustalw Alignment File</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>100</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>seq</name>
+<attributes>
+
+	<prompt>Name of the sequence to analyze</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>nnsspfile</name>
+<attributes>
+
+	<filenames>*.nns</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<prompt>Output File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>nnssp.results</value></vdef>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+<head>
+   <title>DRUID</title>
+   <description>Localization of recombination breakpoints in an
+   alignment of sequences</description>
+   <authors>M. Zelwer, MF. Sagot</authors>
+    <category>phylogeny</category>
+</head>
+
+<command>druid</command>
+
+<parameters>
+
+   <parameter iscommand="1" ishidden="1" type="String">
+   <name>druid</name>
+   <attributes>
+
+        <format>
+                <language>perl</language>
+                <code> "druid" </code>
+        </format>
+        <group>0</group>
+
+   </attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+   <name>sequences</name>
+   <attributes>
+
+        <prompt>DNA Sequence File (at least 4 sequences)</prompt>
+        <format>
+                <language>perl</language>
+                <code>" $value"</code>
+        </format>
+        <group>4</group>
+	<seqfmt>
+             <value>12</value>
+        </seqfmt>
+	<pipe>
+	      <pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<comment>
+		<value>The data should be an alignment of DNA sequences containing at least four sequences</value>
+	</comment>
+
+   </attributes>
+</parameter>
+
+<parameter type="Integer">
+    <name>window_size</name>
+    <attributes>
+    	<prompt>window_size (-w)</prompt>
+    	<format>
+    	<language>perl</language>
+    	<code> (defined $value &amp;&amp; $value ne $vdef)? " -w $value" : ""</code>
+    	</format>
+   	 <vdef><value>5</value></vdef>
+    	<group>2</group>
+	<comment>
+	  <value>This parameter sets the size of each half of the double window.    </value>
+	</comment>
+    </attributes>
+</parameter>
+
+<parameter type="Integer">
+    <name>iterations</name>
+    <attributes>
+    <prompt>number of iterations (-n)</prompt>
+    <format>
+    <language>perl</language>
+    <code> (defined $value &amp;&amp; $value ne $vdef)? " -n $value" : ""</code>
+    </format>
+    <vdef><value>1000</value></vdef>
+	<ctrls>
+	  <ctrl>
+	    <message>If you want to run the program with this parameter set a value greater than 2000, please contact the authors.</message>
+	    <language>perl</language>
+	    <code>$value &gt; 2000</code>
+	  </ctrl>
+	</ctrls>
+    <group>3</group>
+    <comment>
+    <value>This option specifies how many separate datasets should be simulated for each  Farris' ILD test.</value>
+    </comment>
+    </attributes>
+</parameter>
+
+</parameters>
+</pise>

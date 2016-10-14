@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>prose</title>
+    <version>0.02</version>
+    <description>Prosite Pattern search</description>
+    <authors>K. Schuerer</authors>
+    <category>protein:motifs</category>
+    <category>motifs</category>
+  </head>
+
+  <command>prose</command>
+
+  <parameters>
+
+    <parameter ishidden="1" iscommand="1" type="String">
+      <name>prose</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"prose"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+
+	<vdef>
+	  <value>"prose.out"</value>
+	</vdef>
+
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>infile</name>
+      <attributes>
+
+	<prompt>Protein Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>100</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Switch">
+      <name>skip</name>
+      <attributes>
+	<prompt>include abundant patterns</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -s" : ""</code>
+	</format>
+	<group>3</group>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>report</name>
+      <attributes>
+	<prompt>report occurences (-m)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value ne $vdef) ? " -m $value" : ""</code>
+	</format>
+	<group>3</group>
+	<vdef><value>short</value></vdef>
+	<vlist>
+	  <value>short</value>
+	  <label>shortest only (short)</label>
+	  <value>long</value>
+	  <label>longest only (long)</label>
+	  <value>all</value>
+	  <label>all subpatterns (all)</label>
+	</vlist>
+	<comment>
+	  <value>With sequence ACErrrACErrrrDFGrrrDFG and pattern
+	  A-C-E-x(0,)-D-F-G</value>
+	  <value>shortest (default): reports only ACErrrrDFG</value>
+	  <value>longest: reports only ACErrrACErrrrDFGrrrDFG as match</value>
+	  <value>all: reports ACErrrACErrrrDFGrrrDFG,
+	  ACErrrACErrrrDFG, ACErrrrDFGrrrDFG and ACErrrrDFG</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>case</name>
+      <attributes>
+	<prompt>search case-sensitive</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -c" : ""</code>
+	</format>
+	<group>3</group>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>warn</name>
+      <attributes>
+	<prompt>warn of inproper prosite pattern syntaxe</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -w" : ""</code>
+	</format>
+	<group>3</group>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>patterns</name>
+	<prompt>User defined patterns</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="InFile">
+	    <name>listfile</name>
+	    <attributes>
+	      <prompt>Pattern List File (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; !$pattern) ? " -l $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>File format : one pattern per line.</value>
+		<value>This option exclude the Pattern option (-p).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+  </parameters>
+</pise>

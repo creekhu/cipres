@@ -1,0 +1,1508 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <version>3.2.1</version>
+    <description>buildmodel - create a new model from a family of sequences, or refine an existing model</description>
+    <authors>R. Hughey &amp; A. Krogh</authors>
+    <reference>R. Hughey and A. Krogh., SAM: Sequence alignment and modeling software system. Technical Report UCSC-CRL-96-22, University of California, Santa Cruz, CA, September 1996. </reference>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/ismb99.tutorial.html</doclink>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/sam.html</doclink>
+</head>
+
+
+  <command>buildmodel</command>
+  
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>buildmodel</name>
+      <attributes>
+	<format>
+	  <language>seqlab</language>
+	  <code>buildmodel</code>
+	  <language>perl</language>
+	  <code>"buildmodel"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="String">
+      <name>run</name>
+      <attributes>
+	<prompt>Run name</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>test</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>train</name>
+      <attributes>
+	<prompt>Train sequences</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -train $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>sam_model_file</name>
+      <attributes>
+	<filenames>$run.mod</filenames>
+	<pipe>
+	  <pipetype>sam_model</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfiles</name>
+      <attributes>
+	<filenames>*.freq *.stat *.weightoutput</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input</name>
+	<prompt>Input options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>alphabet</name>
+	    <attributes>
+	      <prompt>Alphabet (-alphabet)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -alphabet $value":""</code>
+	      </format>
+	      <vlist>
+		<value>RNA</value>
+		<label>RNA</label>
+		<value>DNA</value>
+		<label>DNA</label>
+		<value>protein</value>
+		<label>protein</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>train_test_sets</name>
+	      <prompt>Training and test sets</prompt>
+	      <parameters>
+		
+		<parameter type="Sequence">
+		  <name>train2</name>
+		  <attributes>
+		    <prompt>Train sequences, second set</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -train2 $value": ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Sequence">
+		  <name>test</name>
+		  <attributes>
+		    <prompt>Test sequences</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -test $value" : ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Sequence">
+		  <name>test2</name>
+		  <attributes>
+		    <prompt>Test sequences, second set</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -test2 $value": ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>nseq</name>
+		  <attributes>
+		    <prompt>Chose at most this number of sequences from each set (-nseq)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -nseq $value" : "" </code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>ntrain</name>
+		  <attributes>
+		    <prompt>Pick randomly this number of sequences from all files specified as training set (-ntrain)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? " -ntrain $value" : ""</code>
+		    </format>
+		    <comment>
+		      <value>If this option is set, the system partition randominto the training and the test set. It will randomly pick 'ntrain' sequences from all files specified (training and testing) using the random seed ''trainseed' and reserve the rest for the test set.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>trainseed</name>
+		  <attributes>
+		    <prompt>Random seed for partitioning the sequences into the test set and the training set (-trainseed)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> (defined $value)? " -trainseed $value" : "" </code>
+		    </format>
+		    <comment>
+		      <value>By default, the seed is set to the process ID number, which is printed on the output file so that the partition can be reproduced.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>init_models_alignments</name>
+	      <prompt>Initial models and alignments</prompt>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>nmodels</name>
+		  <attributes>
+		    <prompt>How many initial models (-nmodels)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -nmodels $value" : "" </code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Sequence">
+		  <name>alignfile</name>
+		  <attributes>
+		    <prompt>Initial alignment for initial model (-alignfile)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -alignfile $value" : ""</code>
+		    </format>
+		    <seqfmt>
+		      <value>8</value>
+		    </seqfmt>
+		    <comment>
+		      <value>One of the best ways to train a hidden Markov model is to use an existing rough alignment to get the process started. In this case, any initial models are ignored in favor of this starting alignment.</value>
+		      <value>The 'alignment_weights' parameter can be used to specify a file of weights, or 'aweight_method' can be used to internally calculate sequence weights based on the initial alignment.</value>
+		    </comment>
+		    <pipe>
+		      <pipetype>readseq_ok_alig</pipetype>
+		      <language>perl</language>
+		      <code>1</code>
+		    </pipe>
+		  </attributes>
+		</parameter>
+
+
+		<parameter type="Float">
+		  <name>sequence_models</name>
+		  <attributes>
+		    <prompt>When greater than zero, build initial model from randomly selected sequences in the training set (-sequence_models)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef) ? " -sequence_models $value" : ""</code>
+		    </format>
+		    <vdef><value>0.0</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>! $model_file &amp;&amp; $alignfile</code>
+		    </precond>
+		    <comment>
+		      <value> If greater than zero, models from randomly chosen single sequences in the training set are created. As a subcase of an initial alignment,  For each of the initial models required by buildmodel, a random sequence will be chosen and a model created based on that sequence regularized with a weight equal to the value of sequence_models. As long as fewer models are created than sequences in the training set, a different sequence will be chosen for each model. Noise will be reduced according to retrain_noise_scale. </value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+
+		<parameter type="InFile">
+		  <name>model_file</name>
+		  <attributes>
+		    <prompt>Initial model (-model_file)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -model_file $value" : ""</code>
+		    </format>
+		    <pipe>
+		      <pipetype>sam_model</pipetype>
+		      <language>perl</language>
+		      <code>1</code>
+		    </pipe>
+		    <comment>
+		      <value>This is ignored if an initial alignment is done.</value>
+		    </comment>
+		    <precond>
+		      <language>perl</language>
+		      <code>! $alignfile</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="InFile">
+		  <name>nullmodel_file</name>
+		  <attributes>
+		    <prompt>Null model (-nullmodel_file)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -nullmodel_file $value" : ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>seed</name>
+	    <attributes>
+	      <prompt>Seed number for noise generation and for selection of initial model lengths (-seed)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> (defined $value)? " -seed $value" : "" </code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	 
+
+	  <parameter type="Integer">
+	    <name>rerun</name>
+	    <attributes>
+	      <prompt>Rerun the second best model = this number (-rerun)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -rerun $value" : "" </code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>dpstyle</name>
+	    <attributes>
+	      <prompt>Flavor of internal dynamic programming for scoring and training (-dpstyle)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value) ? " -dpstyle $value" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: forward-backward (EM) sum of all paths</label>
+		<value>1</value>
+		<label>1: Viterbi single best path</label>
+		<value>4</value>
+		<label>4: most probable alignment, posterior-decoded on transitions and emissions</label>
+		<value>5</value>
+		<label>5: most probable alignment, posterior-decoded on emissions only</label>
+	      </vlist>
+	      <comment>
+		<value>, 0 or 1: For increased speed and performance (and possible worse results), Viterbi (1) training can be used rather than the default EM training (0). In some cases this is not robust.</value>
+		<value>. 4 or 5: training based on the posterior-decoded alignments. These options will more than double computation time and are not recommended.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  
+
+	  <parameter type="Excl">
+	    <name>SW</name>
+	    <attributes>
+	      <prompt>Sequence scoring for Viterbi (-SW)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -SW $value":""</code>
+	      </format>
+	      <vdef><value>2</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: Global</label>
+		<value>1</value>
+		<label>1: semi-local</label>
+		<value>2</value>
+		<label>2: local</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$viterbi</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>model_length</name>
+	      <prompt>Model length parameters</prompt>
+	      <group>2</group>
+	      <parameters>
+		
+		<parameter type="Integer">
+		  <name>modellength</name>
+		  <attributes>
+		    <prompt>Models length (-modellength)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -modellength $value" : "" </code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>minmodlen</name>
+		  <attributes>
+		    <prompt>Min models length (-minmodlen)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -minmodlen $value" : "" </code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>maxmodlen</name>
+		  <attributes>
+		    <prompt>Max models length (-maxmodlen)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -maxmodlen $value" : "" </code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>model_abort_length</name>
+		  <attributes>
+		    <prompt>Models abort length (-model_abort_length)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -model_abort_length $value" : "" </code>
+		    </format>
+		    <vdef><value>10000</value></vdef>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	<paragraph>
+	<name>regul</name>
+	<prompt>Regularizers and mixtures parameters</prompt>
+	<group>2</group>
+	<parameters>
+
+		<parameter type="Excl">
+		<name>regularizerfile</name>
+		<attributes>
+
+			<prompt>Regularizer (-regularizerfile)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value)? " -regularizerfile /local/gensoft/lib/sam/$value":""</code>
+			</format>
+			<group>2</group>
+			<vlist>
+				<value>long_match.regularizer</value>
+				<label>long_match.regularizer</label>
+				<value>trained.regularizer</value>
+				<label>trained.regularizer</label>
+				<value>weak-gap.regularizer</value>
+				<label>weak-gap.regularizer</label>
+				<value>sam1.3.regularizer</value>
+				<label>sam1.3.regularizer</label>
+			</vlist>
+			<comment>
+				<value>trained.regularizer: Regularizer optimized for unweighted transition counts on some set of re-estimated HSSP alignments </value>
+				<value>cheap_gap.regularizer: Makes gap opening and closing very cheap allowing exploration of many different alignments, but giving too high a cost to long matches</value>
+				<value>long_match.regularizer: Assigns somewhat reasonable gap costs for unweighted data, useful for sweeping away 'chatter' into big matches and big gaps, by making gap opening expensive but gap extension fairly cheap.</value>
+			</comment>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		<name>reglength</name>
+		<attributes>
+
+			<prompt>Length of the regularizer (-reglength)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value)? " -reglength $value" : "" </code>
+			</format>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>priorlibrary</name>
+		  <attributes>
+		    <prompt>Dirichlet mixture prior (-priorlibrary)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value &amp;&amp; $value ne $vdef)? " -priorlibrary /local/gensoft/lib/sam/$value":""</code>
+		    </format>
+		    <vdef><value>recode1.20comp</value></vdef>
+		    <vlist>
+		      <value>mall-opt.9comp</value>
+		      <label>mall-opt.9comp</label>
+		      <value>opt-weight1.9comp</value>
+		      <label>opt-weight1.9comp</label>
+		      <value>uprior.9comp</value>
+		      <label>uprior.9comp</label>
+		      <value>null.1comp</value>
+		      <label>null.1comp</label>
+		      <value>recode1.20comp</value>
+		      <label>recode1.20comp</label>
+		    </vlist>
+		    <comment>
+		      <value>uprior9.plib: The 9-component library discussed in the aforementioned paper. Optimized for unweighted blocks data.</value>
+		      <value>mall-opt.9comp: Library re-optimized for unweighted data from an HSSP subset.</value>
+		      <value>opt-weight1.9comp: Library reoptimized for weighted version of same HSSP subset.</value>
+		      <value>recode1.20comp: A 20-component Dirichlet mixture trained on (realigned) HSSP alignments that have a diverse set of sequences. Intended for use in recoding inputs to neural net, but also useful as a standard regularizer.</value>
+		      <value>null.1comp: A one-component regularizer with tiny alpha, to get effectively no regularization.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>prior_weight</name>
+		<attributes>
+
+			<prompt>Weight of the prior library (-prior_weight)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -prior_weight $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+		<precond>
+			<language>perl</language>
+			<code>$priorlibrary</code>
+		</precond>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>del_jump_conf</name>
+		  <attributes>
+		    <prompt>Confidence in the regularizer for transitions leaving a delete state (-del_jump_conf)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -del_jump_conf $value" : "" </code>
+		    </format>
+		    <vdef><value>1.0</value></vdef>
+		    <comment>
+		      <value>The regularizer's transition values are multiplied by this number.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>ins_jump_conf</name>
+		  <attributes>
+		    <prompt>Confidence in the regularizer for transitions leaving an insert state (-ins_jump_conf)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -ins_jump_conf $value" : "" </code>
+		    </format>
+		    <vdef><value>1.0</value></vdef>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>insconf</name>
+		  <attributes>
+		    <prompt>Confidence in the regularizer for character probabilities in an insert state (-insconf)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -insconf $value" : "" </code>
+		    </format>
+		    <vdef><value>10000</value></vdef>
+		    <comment>
+		      <value>The high default means that the regularizer will overpower the actual counts determined by aligning sequences to the model. The regularizer's character insert values are multiplied by this number. </value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>match_jump_conf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for transitions leaving a match state (-match_jump_conf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -match_jump_conf $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>matchconf</name>
+		<attributes>
+
+			<prompt>Confidence in the regularizer for character probabilities in a match state (-matchconf)</prompt>
+			<format>
+				<language>perl</language>
+				<code> ($value &amp;&amp; $value != $vdef)? " -matchconf $value" : "" </code>
+			</format>
+			<vdef><value>1.0</value></vdef>
+			<group>2</group>
+
+		</attributes>
+		</parameter>
+
+		<parameter type="Paragraph">
+		<paragraph>
+		<name>regul_struct</name>
+		<prompt>Regularizers with structural information parameters</prompt>
+		<group>2</group>
+		<parameters>
+
+			<parameter type="Excl">
+			<name>trans_priors</name>
+			<attributes>
+
+				<prompt>Structure-specific transition prior library (-trans_priors)</prompt>
+				<format>
+					<language>perl</language>
+					<code> ($value)? " -trans_priors /local/gensoft/lib/sam/$value":""</code>
+				</format>
+				<group>2</group>
+				<vlist>
+					<value>TransFromRev15.plib</value>
+					<label>TransFromRev15.plib</label>
+				</vlist>
+
+			</attributes>
+			</parameter>
+
+			<parameter type="Float">
+			<name>transweight</name>
+			<attributes>
+
+				<prompt>A multiplier that affects the influence of the pseudocounts generated by the structure-specific transition priors (-transweight)</prompt>
+				<format>
+					<language>perl</language>
+					<code> ($value &amp;&amp; $value != $vdef)? " -transweight $value" : "" </code>
+				</format>
+				<vdef><value>1.0</value></vdef>
+				<group>2</group>
+
+			</attributes>
+			</parameter>
+
+			<parameter type="InFile">
+			<name>template</name>
+			<attributes>
+
+				<prompt>Template three- column file (amino acid sequence, secondary structure, accessibility) (-template)</prompt>
+				<format>
+					<language>perl</language>
+					<code> ($value)? " -template $value" : ""</code>
+				</format>
+				<group>2</group>
+
+			</attributes>
+			</parameter>
+
+		</parameters>
+		</paragraph>
+
+		</parameter>
+
+	</parameters>
+	</paragraph>
+
+	</parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>noise</name>
+	      <prompt>Noise and annealing parameters</prompt>
+	      <group>2</group>
+	      <parameters>
+
+		<parameter type="Float">
+		  <name>initial_noise</name>
+		  <attributes>
+		    <prompt>Amount of noise to add for the first iteration, when greater than zero (-initial_noise)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -initial_noise $value" : "" </code>
+		    </format>
+		    <vdef><value>-1.0</value></vdef>
+		    <comment>
+		      <value>It serves the important purpose to make models differ, if the program runs many models simultaneously.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>anneal_noise</name>
+		  <attributes>
+		    <prompt>Amount of noise to add to the model (-anneal_noise)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -anneal_noise $value" : "" </code>
+		    </format>
+		    <vdef><value>5.0</value></vdef>
+		    <comment>
+		      <value>If greater than 0, annealing is performed.</value>
+		      <value>If 'initial_noise' is also given, that will determine the noise for the first iteration, and 'anneal_noise' the noise in the following iterations.</value>
+		      <value>During the estimation process the annealing noise is decreased by a speed determined by 'anneal_length'.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>anneal_length</name>
+		  <attributes>
+		    <prompt>Speed with which noise should be decreased to zero (-anneal_length)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -anneal_length $value" : "" </code>
+		    </format>
+		    <vdef><value>0.8</value></vdef>
+		    <comment>
+		      <value>When greater than or equal to 1, the noise is decreased linearly.</value>
+		      <value>When less than 1, the noise is decreased exponentially by multiplying the noise with this value in each iteration. In this case noise injection is halted when the amount of noise reaches 10% of its initial value.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Integer">
+		  <name>randomize</name>
+		  <attributes>
+		    <prompt>Determines how noise is added to the model (-randomize)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -randomize $value" : "" </code>
+		    </format>
+		    <vdef><value>50</value></vdef>
+		    <comment>
+		      <value>. greater than 0 - a set of 'randomize' random paths are calculated through the model according the the regularizer probabilities. Each of these sequences is weighted by the amount of noise. These sequences are added to the counts generated by the real frequencies, thus the noise setting is somewhat dependent on the number of sequences being trained.</value>
+		      <value>. less than 0 - a set of '-randomize' random paths are calculated through the model. With a weight of -noise/randomize, these counts are added to the normalized (probability, rather frequency) model, and than the model is renormalized. Thus, the noise generation is similar to that of the first case, but total noise added is independent of both the number of sequences and the randomize setting.</value>
+		      <value>. equal to zero - for each probability parameter in the model, a random number between 0 and the corresponding parameter in the normalized regularizer is found. This number is scaled by the level of the noise, given for instance by 'initial_noise', and added to the probability in the model. After doing this for the whole model, all the probabilities are normalized. This is the fastest means of noise generation. </value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>retrain_noise_scale</name>
+		  <attributes>
+		    <prompt>Scale  by this multiplier initial_noise (-retrain_noise_scale)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -retrain_noise_scale $value" : "" </code>
+		    </format>
+		    <vdef><value>0.1</value></vdef>
+		    <comment>
+		      <value>After a model has been created, adding too much noise to the model may eliminate all the trained information. Therefore, if an initial model or an initial alignment is specified, noise ('initial_noise' or 'anneal_noise') is reduced from the default setting by a factor of this value.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>surgery_noise_scale</name>
+		  <attributes>
+		    <prompt>After the first surgery, anneal_noise is scaled by this multiplier, which must be between 0.0 and 1.0 (-surgery_noise_scale)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -surgery_noise_scale $value" : "" </code>
+		    </format>
+		    <vdef><value>0.1</value></vdef>
+		    <comment>
+		      <value> In the case of a surgery (see below), the starting noise of the re-estimation process after a surgery, whether or not an initial model is specified, is the 'anneal_noise' scaled by this parameter.</value>
+		    </comment>
+		   
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>surgery</name>
+	      <prompt>Surgery parameters</prompt>
+	      <group>3</group>
+	      <comment>
+		<value>It is often the case that during the course of learning, some match states in the model are used by few sequences, while some insertion states are used by many sequences. Model Surgery is a means of dynamically adjusting the model during training. </value>
+		<value>The basic operation of surgery is to delete unused match states and to insert match states in place of over-used insert states In the default case, any match state used by less than one half of the sequences is removed, forcing those sequences to use an insert state or to significantly change their alignment to the model. Similarly, any insert state used by more than half sequences is replaced with a number of match states approximating the average number of characters inserted by that insert state. </value>
+	      </comment>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>nsurgery</name>
+		  <attributes>
+		    <prompt>Maximum number of surgeries to perform (-nsurgery)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef)? " -nsurgery $value" : "" </code>
+		    </format>
+		    <vdef><value>3</value></vdef>
+		    <comment>
+		      <value>Surgery will be 'nsurgery' times: a full re-estimation process is performed including 'reestimates' re-estimations, or until the 'stopcriterion' is reached. By default surgery is performed up to two times. </value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>stopcriterion</name>
+		  <attributes>
+		    <prompt>The reestimation loop will stop whenever the improvement in the NLL score is less than this number (-stopcriterion)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -stopcriterion $value" : "" </code>
+		    </format>
+		    <vdef><value>0.1</value></vdef>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>reestimates</name>
+		  <attributes>
+		    <prompt>Maximum number of reestimates to perform after a surgery (-reestimates)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -reestimates $value":""</code>
+		    </format>
+		    <vdef><value>40</value></vdef>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>mainline_cutoff</name>
+		  <attributes>
+		    <prompt>Confidence in the regularizer for transitions leaving a match state (-mainline_cutoff)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -mainline_cutoff $value" : "" </code>
+		    </format>
+		    <vdef><value>0.5</value></vdef>
+		    <comment>
+		      <value>Setting this option to a number other than the default will indicate how much non-match, or main line, activity will be accepted. For example, a setting of 0.25 indicates that any match state used by less than one quarter of the sequences should be removed, while any insert state used by more than one quarter of the sequences should be expanded into a number of match states approximately equal to the average number of characters emitted by that state.</value>
+		      <value>For finer tuning of the surgery process, the parameters 'cutmatch', 'cutinsert', and 'fracinsert', can be used.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>cutmatch</name>
+		  <attributes>
+		    <prompt>Remove any match state with a smaller portion of sequences than this (-cutmatch)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -cutmatch $value" : "" </code>
+		    </format>
+		    <vdef><value>0.5</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>$mainline_cutoff != 0.5</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>cutinsert</name>
+		  <attributes>
+		    <prompt>Replace any insert state with a higher portion of sequences than this (-cutinsert)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -cutinsert $value" : "" </code>
+		    </format>
+		    <vdef><value>0.5</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>$mainline_cutoff != 0.5</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>fracinsert</name>
+		  <attributes>
+		    <prompt>When inserted states are to replace, replace it with the average number or characters generated by the insert state multiplied by this number (-fracinsert)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -fracinsert $value" : "" </code>
+		    </format>
+		    <vdef><value>1.0</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>$mainline_cutoff != 0.5</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>maxinserts</name>
+		  <attributes>
+		    <prompt>Maximum number of states inserted after any node by the surgery (-maxinserts)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -maxinserts $value" : "" </code>
+		    </format>
+		    <vdef><value>100</value></vdef>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>weight</name>
+	      <prompt>Weight parameters</prompt>
+	      <group>4</group>
+	      <parameters>
+
+		<parameter type="InFile">
+		  <name>weight_filename</name>
+		  <attributes>
+		    <prompt>Use external parameters for sequence weigthing specified in this file (-weight_filename)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -weight_filename $value" : ""</code>
+		    </format>
+		    <comment>
+		      <value>In this file, any line starting with a percent sign is ignored as a comment. The first non-comment line is presumed to be a description of the weights file. The next non-comment line contains two integers, the number of weighted sequences and the number of weighted subfamilies. Remaining uncommented lines consist of a sequence identifier, white-space, and floating-point sequence weights, one per family. Weights can be positive, negative, or zero, and need not sum to one. If a sequence does not have a corresponding weight, its weight is set to 1.0 and a message is printed. Sequences and weights do not need to be in the same order within their respective files. </value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="InFile">
+		  <name>alignment_weights</name>
+		  <attributes>
+		    <prompt>Use external parameters specified in this file to weight alignments used to form initial models (-alignment_weights)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -alignment_weights $value" : ""</code>
+		    </format>
+		    <precond>
+		      <language>perl</language>
+		      <code>$alignfile</code>
+		    </precond>
+		    <comment>
+		      <value>See at 'weight_filename' just above for the syntax.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Excl">
+		  <name>align_weight_method</name>
+		  <attributes>
+		    <prompt>Internal weighting method of alignments (-aweight_method)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value != $vdef) ? "-aweight_method $value" : ""</code>
+		    </format>
+		    <vdef><value>2</value></vdef>
+		    <vlist>
+		      <value>0</value>
+		      <label>0: no internal alignment weighting</label>
+		      <value>1</value>
+		      <label>1: Karplus relative weighting</label>
+		      <value>2</value>
+		      <label>2: Henikoff relative weighting</label>
+		      <value>3</value>
+		      <label>3: flat relative weighting</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$alignfile</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>aweight_bits</name>
+		  <attributes>
+		    <prompt>Target bits per column to save in determining alignment sequence weighting (-aweight_bits)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef) ? " -aweight_bits $value)" : ""</code>
+		    </format>
+		    <vdef><value>0.5</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>$alignfile</code>
+		    </precond>
+		    <comment>
+		      <value>For the Henikoff and flat weighting schemes, if this parameter is set negative, the initial weighting is used, without adjusting the total weights to get a specified number of bits saved. The initial weighting in these schemes has a total weight of: number_sequences^'aweight_exponent'.</value>
+		    </comment>
+  </attributes>
+		</parameter>
+		
+		<parameter type="Float">
+		  <name>aweight_exp</name>
+		  <attributes>
+		    <prompt>Exponent in determing alignment sequence weighting (-aweight_exponent)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef) ? " -aweight_bits $value)" : ""</code>
+		    </format>
+		    <vdef><value>0.5</value></vdef> 
+		    <precond>
+		      <language>perl</language>
+		      <code>$alignfile</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Float">
+		  <name>weight_length</name>
+		  <attributes>
+		    <prompt>An annealing schedule for the sequence weight multiplier (-weight_length)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -weight_length $value" : "" </code>
+		    </format>
+		    <comment>
+		      <value>When greater than or equal to 1, the weight multiplier is increased linearly to 'weight_final' in 'anneal_length' iterations.</value>
+		      <value>When less than 1, the multiplier is increased exponentially until the multiplier reaches 90% of its final value.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>weight_final</name>
+		  <attributes>
+		    <prompt>The final (steady-state) multiplier of sequence weights (-weight_final)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -weight_final $value" : "" </code>
+		    </format>
+		    <vdef><value>1.0</value></vdef>
+		  </attributes>
+		</parameter>
+
+		
+		<parameter type="Excl">
+		  <name>internal_weight</name>
+		  <attributes>
+		    <prompt>Use internal maximum discrimination sequence weighting during training (-internal_weight</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value != $vdef) ? " -internal_weight $value" : ""</code>
+		    </format><vdef><value>0</value></vdef>
+		    <vlist>
+		      <value>0</value>
+		      <label>0: use external weighting</label>
+		      <value>1</value>
+		      <label>1: internal weight method 1</label>
+		      <value>2</value>
+		      <label>2: internal weight method 2</label>
+		    </vlist>
+		    <comment>
+		      <value>When using method 1, sequences with very poor scores may get excessively large weights. Method 2 modifies the weights of such outlier sequences. If a sequence scores so badly that it exceeds the median score by three standard deviations, it is weighted with a decreasing linear weight function, reaching a minimum of 1.0 for the sequence with the worst score. </value>
+		    </comment>
+		    <precond>
+		      <language>perl</language>
+		      <code>(! $weight_filename) &amp;&amp; (! $alignment_weights)</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>iweight</name>
+		  <attributes>
+		    <prompt>User controlled parameter for internal weighting (-iweight)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef) ? " -iweight $value)" : ""</code>
+		    </format>
+		    <vdef><value>0.1</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>$internal_weight</code>
+		    </precond>
+		    <comment>
+		      <value>The worst scoring sequence will have a weight of 1, while the best scoring sequence will have a weight of this parameter, typically in the 0.01 to 0.1 range.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+	      
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>constraint_opt</name>
+	      <prompt>Constraint options</prompt>
+	      <group>5</group>
+	      <comment>
+		<value>SAM HMM constraints provide a mechanism for associating position in a sequence with a specific node in a model. During model training, a constrained position remains associated with its node, allowing the remaining portions of the sequence to align naturally to the model. This serves as a method of incorporating prior knowledge about the training sequence, such as structurally similar regions.</value>
+		<value>Currently, there is an inconsistency in scoring constraints, in that for EM-style scoring, the constrained score is reported, which will generally provide a very strong signal. For Viterbi or posterior-alignment scoring, constraints are used to find the best path, but the unconstrained score of that path is reported, and thus the score of a constrained sequence is similar to that of an unconstrained sequence.</value>
+	      </comment>
+	      <parameters>
+
+		<parameter type="InFile">
+		  <name>constraints</name>
+		  <attributes>
+		    <prompt>Constraints File (-constraints)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? " -constraints $value" : ""</code>
+		    </format>
+		    <comment>
+		      <value>The node labels in the constraints file are assigned to nodes with the same node number. If necessary, the length of the model will be increased to allow for all labels. If 'surgery' is used, an unlabeled node may be added or removed, resulting in the labels and node numbers differing in the final model. When retraining a model using constraints, the model must already contain labels. Constraints work with both EM and Viterbi.</value>
+		      <value>. Constraints File Format:</value>
+		      <value>Lines starting with '#' are comments and ignored. The file is divided into sections starting with a line containing only the section name followed by a colon. Currently there is only one type of section containing sequence constraints, starting with :</value>
+		      <value>constraints:</value>
+		      <value>Multiple constraints sections may appear, allowing for the easy combining of files.</value> 
+		      <value>A constraint entry defines the model nodes to which residues of a sequence are constrained. Multiple entries may appear for a sequence, however a given residue of a sequence may be constrained only once. Constraints entries consists of lines in the form:</value> 
+		      <value>seqid constrdef, constrdef, ...</value>
+		      <value>Where the 'seqid' is any sequence identifier consisting of non-whitespace characters and 'constrdef' defines a set of model node labels for a range of positions in the sequence in any combination of the following formats: </value>
+		      <value>startpos-endpos: startlabel</value> 
+		      <value>Specifies that consecutive residues starting at startpos and ending at endpos are constrained to consecutive node labels starting at startlabel.</value>
+		      <value>seqpos: label</value>
+		      <value>Constrains a single position to a node label.</value> 
+		      <value>startpos-endpos</value>
+		      <value>Specifies that these residues are to be constrained, but doesn't actually associate a label with the positions. This is used when the labels are to be assigned from an alignment by modelfromalign.</value>
+		      <value>seqpos</value>
+		      <value>Specifies a single residue to be constrained from an alignment.</value>
+		     <value>empty</value>
+		      <value>An entry may be empty (zero or more white space) and is ignored. This can be useful when generating constraint files.</value>
+		      <value>Positions in sequences are identified by one-based indices and node labels are positive numbers. A simple example of a constraint file is shown here.</value>
+		      <value>constraints:</value>
+		      <value>PROT1   10-30: 8, 80-82: 100</value>
+		      <value>PROT2   12-28: 10, 62: 100</value>
+		      <value>PROT3   16-32: 12</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="OutFile">
+		  <name>const_out_file</name>
+		  <attributes>
+		    <filenames>new_constraints.crt</filenames>
+		    <precond>
+		      <language>perl</language>
+		      <code>defined $constraints</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>constraints_out</name>
+		  <attributes>
+		    <prompt>Create a new constraints definition file (-constraints_out)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <format>
+		      <language>perl</language>
+		      <code>($value) ? " -constraints_out $const_out_file" : ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>constraints_from_align</name>
+		  <attributes>
+		    <prompt>Constraints from align (-constraints_from_align)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value) ? " -constraints_from_align 1" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>defined $constraints</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>fim</name>
+	      <prompt>FIM parameters</prompt>
+	      <group>6</group>
+	      <parameters>
+
+		<parameter type="Excl">
+		  <name>FIM_method_train</name>
+		  <attributes>
+		    <prompt>Table probabilities for FIMs (-FIM_method_train)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -FIM_method_train $value":""</code>
+		    </format>
+		    <vdef><value>-1</value></vdef>
+		    <group>2</group>
+		    <vlist>
+		      <value>-1</value>
+		      <label>-1: Uses the letter frequencies in the training set</label>
+		      <value>0</value>
+		      <label>0: Use the tables present in the model</label>
+		      <value>1</value>
+		      <label>1: The relative frequencies of residues in the training sequences</label>
+		      <value>2</value>
+		      <label>2: The relative frequencies of residues in model match states</label>
+		      <value>3</value>
+		      <label>3: Uniform (flat) probability over all residue</label>
+		      <value>5</value>
+		      <label>5: Amino acid background frequencies over all proteins</label>
+		      <value>6</value>
+		      <label>6: Geometric average of the match state probabilities</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>FIM_method_score</name>
+		  <attributes>
+		    <prompt>Table probabilities for FIMs (insert prob) (-FIM_method_score)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -FIM_method_score $value":""</code>
+		    </format>
+		    <vdef><value>-6</value></vdef>
+		    <group>2</group>
+		    <vlist>
+		      <value>-6</value>
+		      <label>-6: Geometric average of match state probabilities</label>
+		      <value>0</value>
+		      <label>0: Use the tables present in the model</label>
+		      <value>1</value>
+		      <label>1: The relative frequencies of residues in the training sequences</label>
+		      <value>2</value>
+		      <label>2: The relative frequencies of residues in model match states</label>
+		      <value>3</value>
+		      <label>3: Uniform (flat) probability over all residue</label>
+		      <value>4</value>
+		      <label>4: The relative frequencies of residues in the sequence being scored</label>
+		      <value>5</value>
+		      <label>5: Amino acid background frequencies over all proteins</label>
+		      <value>6</value>
+		      <label>6: Geometric average of the match state probabilities</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>Insert_method_train</name>
+		  <attributes>
+		    <prompt>Table probabilities for nodes that are not FIMs (-Insert_method_train)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -Insert_method_train $value":""</code>
+		    </format>
+		    <vdef><value>-1</value></vdef>
+		    <group>2</group>
+		    <vlist>
+		      <value>-1</value>
+		      <label>-1: Uses the letter frequencies in the training set</label>
+		      <value>0</value>
+		      <label>0: Use the tables present in the model</label>
+		      <value>1</value>
+		      <label>1: The relative frequencies of residues in the training sequences</label>
+		      <value>2</value>
+		      <label>2: The relative frequencies of residues in model match states</label>
+		      <value>3</value>
+		      <label>3: Uniform (flat) probability over all residue</label>
+		      <value>5</value>
+		      <label>5: Amino acid background frequencies over all proteins</label>
+		      <value>6</value>
+		      <label>6: Geometric average of the match state probabilities</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>Insert_method_score</name>
+		  <attributes>
+		    <prompt>Table probabilities for nodes that are not FIMs (insert prob) (-Insert_method_score)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -Insert_method_score $value":""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>2</group>
+		    <vlist>
+		      <value>0</value>
+		      <label>0: Use the tables present in the model</label>
+		      <value>1</value>
+		      <label>1: The relative frequencies of residues in the training sequences</label>
+		      <value>2</value>
+		      <label>2: The relative frequencies of residues in model match states</label>
+		      <value>3</value>
+		      <label>3: Uniform (flat) probability over all residue</label>
+		      <value>4</value>
+		      <label>4: The relative frequencies of residues in the sequence being scored</label>
+		      <value>5</value>
+		      <label>5: Amino acid background frequencies over all proteins</label>
+		      <value>6</value>
+		      <label>6: Geometric average of the match state probabilities</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Excl">
+		  <name>train_reset_inserts</name>
+		  <attributes>
+		    <prompt>Set insert and FIM character tables according to this variabl (-train_reset_inserts)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value ne $vdef)? " -train_reset_inserts $value":""</code>
+		    </format>
+		    <vdef><value>6</value></vdef>
+		    <vlist>
+		      <value>-1</value>
+		      <label>-1: Uses the letter frequencies in the training set</label>
+		      <value>0</value>
+		      <label>0: Use the tables present in the model</label>
+		      <value>1</value>
+		      <label>1: The relative frequencies of residues in the training sequences</label>
+		      <value>2</value>
+		      <label>2: The relative frequencies of residues in model match states</label>
+		      <value>3</value>
+		      <label>3: Uniform (flat) probability over all residue</label>
+		      <value>5</value>
+		      <label>5: Amino acid background frequencies over all proteins</label>
+		      <value>6</value>
+		      <label>6: Geometric average of the match state probabilities</label>
+		    </vlist>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		<name>fimstrength</name>
+		<attributes>
+		    <prompt>Factor by which to multiply the FIM letter emission probabilities (-fimstrength)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value &amp;&amp; $value != $vdef)? " -fimstrength $value" : "" </code>
+		    </format>
+		    <vdef><value>1.0</value></vdef>
+		    <comment>
+		      <value>If sequences are not using the FIM enough, it can be adjusted with this parameter. Changing this parameter its default from 1.0 to 2.0, for example, make use of the FIM twice as likely as before. The value of this parameter is also applied to simple null models, and if less than zero, its absolute value is applied to both FIMs and normal insertion states.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>fimtrans</name>
+		  <attributes>
+		    <prompt>Factor to adjust the cost of the insert to insert loop within the FIM (-fimtrans)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value &amp;&amp; $value != $vdef)? " -fimtrans $value" : ""</code>
+		    </format>
+		    <vdef><value>0.0</value></vdef>
+		    <comment>
+		      <value>If set to a non-zero value, this option becomes a multiplier of the geometric average of the match to match transitions in the model. Thus, if set to 1.0 (the default), the FIM insert-to-insert transition will cost the same as the average match to match transition. When set to a negative number, non-FIM insert-to-insert transitions are set to p-(1-f)p^2, where p is the regularized and normalized frequency counts for the transition and fis the FIM insert-to-insert transition. The effect of this formula is to ensure that the FIMs remain cheap in comparison to any insert-to-insert transitions, something that can be critical in using buildmodel to train HMMs.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>align_fim</name>
+		  <attributes>
+		    <prompt>Add FIMs to the ends of the initial model (-align_fim)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> ($value)? " -align_fim 1":""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <precond>
+		      <language>perl</language>
+		      <code>$alignfile</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	</parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output options</prompt>
+<group>2</group>
+<parameters>
+
+	  <parameter type="Excl">
+	    <name>dump_parameters</name>
+	    <attributes>
+	      <prompt>Parameter output (-dump_parameters)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value ne $vdef)? " -dump_parameters $value":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: only modified parameters are printed</label>
+		<value>1</value>
+		<label>1: all parameters are printed</label>
+		<value>2</value>
+		<label>2: print dump parameters and exit</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+	  
+	<parameter type="Switch">
+	<name>all_stats</name>
+	<attributes>
+
+		<prompt>Print individual model statistics (-all_stats)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -all_stats 1":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	  <parameter type="Switch">
+	    <name>many_files</name>
+	    <attributes>
+	      <prompt>Print the probability model, frequency model, and run statistics to different files (-many_files)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -many_files 1":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_frequencies</name>
+	    <attributes>
+	      <prompt>Print frequencies (-print_frequencies)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -print_frequencies 1":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_all_models</name>
+	    <attributes>
+	      <prompt>Print models after each iteration of the forward-backward procedure (-print_all_models)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -print_all_models 1":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	<parameter type="Switch">
+	<name>print_surg_models</name>
+	<attributes>
+
+		<prompt>Print models after each surgery (-print_surg_models)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -print_surg_models 1":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	  <parameter type="Switch">
+	    <name>print_all_weights</name>
+	    <attributes>
+	      <prompt>Generates a weight output file is generated after each iteration of the forward-backward procedure (-print_all_weights)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -print_all_weights 1":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>binary_output</name>
+	    <attributes>
+	      <prompt>Write models in binary format (-binary_output)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)? " -binary_output 1":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

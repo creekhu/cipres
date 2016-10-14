@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SMILE</title>
+    <version>1.44</version>
+    <description>Structured Motif Inference and Evaluation, with 2 boxes</description>
+    <authors>L. Marsan, J. Allali</authors>
+    <reference>Marsan L, Sagot MF (2001). Algorithms for extracting structured motifs using a suffix-tree with application to promoter and regulatory site consensus identification. J. of Computational Biology, 7:345-360.</reference>
+  </head>
+
+  <command>smile2</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>smile2</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "smile params" </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>param</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"FASTA file\t\t\t$value\\n"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<group>1</group>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>alphabet</name>
+      <attributes>
+
+	<prompt>Alphabet</prompt>
+	<paramfile>params</paramfile>
+	<format>
+	  <language>perl</language>
+	  <code>"Alphabet file\t\t\t/local/gensoft/lib/SMILE/$value\\n"</code>
+	</format>
+	<vdef><value>dna.alphabet</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>dna.alphabet</value>
+		<label>DNA</label>
+		<value>dnadeg.alphabet</value>
+		<label>degenerated DNA</label>
+		<value>aa-barton.alphabet</value>
+		<label>protein (Zvelebil Barton Taylor Sternberg, JMolBiol 195 (1987))</label>
+		<value>aa-smiths.alphabet</value>
+		<label>protein (Smith and Smith 1990)</label>
+	</vlist>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1"  type="Integer">
+      <name>how_many_N</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$alphabet ne "dna.alphabet"</code>
+	</precond>
+	<vdef><value>0</value></vdef>
+	<prompt>Maximum number of N in a motif (degenerated DNA or protein alphabet)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Composition in *\t\t$value\\n"</code>
+	</format>
+	<group>3</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1"  type="Integer">
+      <name>how_many_R</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$alphabet eq "dnadeg.alphabet"</code>
+	</precond>
+	<vdef><value>0</value></vdef>
+	<prompt>Maximum number of R (purine) in a motif (degenerated DNA)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Composition in AG\t\t$value\\n"</code>
+	</format>
+	<group>3</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1"  type="Integer">
+      <name>how_many_Y</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$alphabet eq "dnadeg.alphabet"</code>
+	</precond>
+	<vdef><value>0</value></vdef>
+	<prompt>Maximum number of Y (pyrimidine) in a motif (degenerated DNA)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Composition in CT\t\t$value\\n"</code>
+	</format>
+	<group>3</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Integer">
+      <name>quorum</name>
+      <attributes>
+	<prompt>Minimum percentage of sequences containing a motif (quorum) (enter a value between 0 and 100)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Quorum\t\t\t\t$value\\n"</code>
+	</format>
+	      <ctrls>
+		<ctrl>
+		  <message>(enter a value between 0 and 100)</message>
+		  <language>perl</language>
+		  <code>$value &gt; 100 || $value &lt; 0</code>
+		</ctrl>
+	      </ctrls>
+	<paramfile>params</paramfile>
+	<group>10</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>minlen</name>
+      <attributes>
+	<prompt>Total min length</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Total min length\t\t$value\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>11</group>
+	<comment>
+	  <value>Length parameters should be close to the expected motifs. A too large range between min/max might produce too many insignificant results.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>maxlen</name>
+      <attributes>
+	<prompt>Total max length</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? "Total max length\t\t$value\\n" : "Total max length\t\t0\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>12</group>
+	<comment>
+	<value>Total length of concatened boxes.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>subst</name>
+      <attributes>
+	<prompt>Total substitutions</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Total substitutions\t\t$value\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>13</group>
+	<ctrls>
+	  <ctrl>
+	    <message>Too many substitutions (number of substitutions
+	    must be smaller than min length)</message>
+	    <language>perl</language>
+	    <code>defined $subst &amp;&amp; ! ($subst &lt; $minlen)</code>
+	  </ctrl>
+	</ctrls>
+       </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>minspacer</name>
+      <attributes>
+	<prompt>Min spacer length</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Min spacer length\t\t$value\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>150</group>
+	<comment>
+	  <value>This parameter describes the minimum distance between the 2 boxes.</value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>maxspacer</name>
+      <attributes>
+	<prompt>Max spacer length</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"Max spacer length\t\t$value\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>150</group>
+	<comment>
+	  <value>This parameter describes the maximum distance between the 2 boxes.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+
+    <parameter ishidden="1" type="String">
+      <name>boxes</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "Boxes\t\t\t\t2\\n" </code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+	<group>70</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>shuffling</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "\\nShufflings\t\t\t\t100\\n" </code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>kmer</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "Size k-mer\t\t\t\t2\\n" </code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>result</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "Output file\t\t\tsmile.result\\n" </code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>box1_options</name>
+	<prompt>Box 1 Parameters</prompt>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>box1_label</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code> "\\nBOX 1 =========================\\n" </code>
+	      </format>
+	      <group>110</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" issimple="1" type="Integer">
+	    <name>minlen1</name>
+	    <attributes>
+	      <prompt>Min length of box 1</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"Min length\t\t$value\\n"</code>
+	      </format>
+	      <paramfile>params</paramfile>
+	      <group>111</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>maxlen1</name>
+	    <attributes>
+	      <prompt>Max length of box 1</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? "Max length\t\t$value\\n" : "Max length\t\t0\\n"</code>
+	      </format>
+	      <paramfile>params</paramfile>
+	      <group>112</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" issimple="1" type="Integer">
+	    <name>subst1</name>
+	    <attributes>
+	      <prompt>Substitutions</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"Substitutions\t\t$value\\n"</code>
+	      </format>
+	      <paramfile>params</paramfile>
+	      <group>113</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Too many substitutions (number of substitutions must be smaller than min length)</message>
+		  <language>perl</language>
+		  <code>defined $subst1 &amp;&amp; ! ($subst1 &lt; $minlen1)</code>
+		</ctrl>
+	      </ctrls>
+ 	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>box2_options</name>
+	<prompt>Box 2 Parameters</prompt>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>box2_label</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code> "\\nBOX 2 =========================\\n" </code>
+	      </format>
+	      <group>210</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" issimple="1" type="Integer">
+	    <name>minlen2</name>
+	    <attributes>
+	      <prompt>Min length of box 2</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"Min length\t\t$value\\n"</code>
+	      </format>
+	      <paramfile>params</paramfile>
+	      <group>211</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>maxlen2</name>
+	    <attributes>
+	      <prompt>Max length of box 2</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? "Max length\t\t$value\\n" : "Max length\t\t0\\n"</code>
+	      </format>
+	      <paramfile>params</paramfile>
+	      <group>212</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" issimple="1" type="Integer">
+	    <name>subst2</name>
+	    <attributes>
+	      <prompt>Substitutions</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"Substitutions\t\t$value\\n"</code>
+	      </format>
+	      <paramfile>params</paramfile>
+	      <group>213</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Too many substitutions (number of substitutions must be smaller than min length)</message>
+		  <language>perl</language>
+		  <code>defined $subst2 &amp;&amp; ! ($subst2 &lt; $minlen2)</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Results">
+      <name>resultsfiles</name>
+      <attributes>
+	<filenames>smile.result smile.result.shuffle</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

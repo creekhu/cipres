@@ -1,0 +1,75 @@
+MAFFT_TG
+
+this test runs
+
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+all_outputfiles_ - Results -
+outputfile_ - Results -
+tree_outputfile_ - Results -
+Section: ****************************************************************************
+overall
+*************************************************************************************
+datatype_ - Excl - Input type
+auto_analysis_ - Switch - Automatically select an appropriate strategy from L-INS-i, FFT-NS-i and FFT-NS-2 (based on data size) (--auto)
+analysis_type_ - Excl - Use a preconfigured MAFFT strategy that:
+Favors accuracy=accurate;Favors speed=fast; Considers RNA structure=rna
+configure_analysis_ - Switch - I want to configure my own analysis from scratch: (--mafft)
+accurate_executable_ - Excl - Choose a MAFFT accurate executable
+fast_executables_ - Excl - Choose a fast MAFFT executable
+rna_executable_ - Excl - Choose a MAFFT RNA structure executable
+use_contrafold_ - Switch - Use Contrafold rather than McCaskill algorithm (--contrafold)
+xinsi_option_ - Excl - Which X-INS-i option should be used
+Section: ****************************************************************************
+para_algorithm
+*************************************************************************************
+distanceMetric_ - Excl - Distance metric
+weighting_factor_ - Float - Weighting factor for the consistency term calculated from pairwise alignments (--weighti)
+retrees_ - Integer - Number of times guide tree is built in progressive stage (--retree)
+iterativeRefinements_ - Integer - Number of cycles of iterative refinement (-maxiterate)
+useFFT_ - Excl - FFT approximation in group-to-group alignment
+noScore_ - Excl - Check alignment score in iterative refinement stage ( --noscore)
+memSave_ - Excl - Use the Myers-Miller (1988) algorithm (--memsave)
+usePartTree_ - Excl - Use the PartTree algorithm for tree building.
+partTreeMetric_ - Excl - PartTree distance metric
+partTreePartitions_ - Integer - Number of partitions in the PartTree algorithm (--partsize)
+maxAlignment_ - Integer - Maximum alignment size (--groupsize)
+Section: ****************************************************************************
+para_parameters
+*************************************************************************************
+use_seed_ - Switch - Use a Seed Alignment (--seed)
+seed_alignment1_ - InFile - Select the Seed Alignment
+use_add_ - Switch - Use Add Alignment (--add)
+add_alignment1_ - InFile - Select the Alignment to add unaligned sequences to
+use_addfrag_ - Switch - Use Addfragments Alignment (--addfragments)
+large_align_ - Switch - Fast Alignment for Large data set (--6merpair)
+ref_alignment1_ - InFile - Select the Reference Alignment
+reorder_add_ - Switch - Reorder Output Alignment (--reorder)
+use_addprof_ - Switch - Add Aligned Sequences to an Existing Alignment (--addprofile)
+existing_alignment1_ - InFile - Select the Existing Alignment
+use_merge_ - Switch - Merge Two or more sub-MSAs into a single file (--merge)
+submsa_table_ - InFile - Select the SUBMSA Table
+treein_tree_ - InFile - Provide a Guide Tree for Merge
+Section: ****************************************************************************
+para_parameters
+*************************************************************************************
+dnaMatrix_ - Excl - Nucleic Acid matrix selection (--kimura)
+aaMatrix_ - Excl - Amino Acid matrix selection
+jtt_ - Integer - JTT PAM matrix (Jones et al. 1992) selection (--jtt)
+tm_ - Integer - Transmembrane PAM matrix (Jones et al. 1994) selection (--tm)
+userMatrix_ - InFile - User-defined amino acid scoring matrix in BLAST format (--aamatrix)
+opPenaltyGroupToGroup_ - Float - Gap opening penalty for group-to-group alignment (--op)
+extendPenaltyGroupToGroup_ - Float - Offset value (gap extension penalty) for group-to-group alignment (--ep)
+opPenaltyPairwise_ - Float - Gap open penalty for pairwise alignment (--lop)
+offsetValuePairwise_ - Float - Offset value for pairwise alignment (--lep)
+extendPenaltyPairwise_ - Float - Gap extension penalty for pairwise alignment (--lexp)
+opPenaltySkip_ - Float - Gap open penalty for skipping the alignment (--LOP)
+extendPenaltySkip_ - Float - Gap extension penalty for skipping the alignment (--LEXP)
+fmodel_ - Excl - Incorporate AA/nucleotide composition information into the scoring matrix (--fmodel)
+Section: ****************************************************************************
+para_io
+*************************************************************************************
+outputFormat_ - Excl - Output format
+outputOrder_ - Excl - Output order
+outputGuideTree_ - Excl - Output guide tree (--treeout)
+

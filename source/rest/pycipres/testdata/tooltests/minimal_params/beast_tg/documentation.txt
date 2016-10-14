@@ -1,0 +1,9 @@
+BEAST_TG
+infile_ - Primary Input File
+runtime_ - Float - Maximum Hours to Run (up to 168 hours)
+is_partitioned_ - Switch - My data set is partitioned
+nu_partitions_ - Integer - How many partitions does your data have?
+no_beagle_ - Switch - Do not use Beagle
+spec_seed_ - Switch - Specify a seed for this run (by default a random seed is used)
+seed_val_ - Integer - Enter the seed value here
+

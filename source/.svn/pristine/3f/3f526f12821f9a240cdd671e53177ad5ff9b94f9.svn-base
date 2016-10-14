@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd"[]> 
+       
+<pise>
+  
+  <head>
+    <title>HMM</title>
+    <version>5.2.1-90/90</version>
+    <description>compares amino acid sequence(s) against a HMM models database.</description>
+    <authors>Paracel</authors>
+    <reference>Paracel's Hidden Markov Models use the Viterbi algorithm.
+               HMM BTK 5.2.1-90/90 2003-06-12 (Fdf Client 1.500)
+               Copyright 2001 Paracel, Inc.</reference>
+    <doclink>http://bioweb.pasteur.fr/seqanal/search/index.html</doclink>
+    
+  </head>
+  
+  <command>hmmpfampar</command>
+  
+  <parameters>
+    
+    <parameter ismandatory="1" iscommand="1" ishidden="1" type="String">
+      <name>hmmpfampar</name>
+      <attributes>
+	<prompt>hmm program</prompt>
+	<format>	
+	  <language>perl</language>
+	  <code>"btk hmm"</code>
+	</format>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>queryset</name>
+      <attributes>
+	<prompt>Specifies the name of the query to be used in the
+	search.(qs)</prompt>
+	<format>	
+	  <language>perl</language>
+	  <code>" qs=$value"</code>
+	</format>
+	<vlist>
+	  <value>Pfam14_fs </value>
+	  <label>Pfam14_fs</label>
+	  <value>Pfam14_ls </value>
+	  <label>Pfam14_ls</label>
+	</vlist>
+	
+      </attributes>
+    </parameter>
+    
+    
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>database</name>
+      <attributes>
+	<prompt>One or more of protein(s) against which HMM run (file
+	in fasta format)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" d=$value"</code>
+	</format>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    
+    <parameter ismandatory="1" ishidden="1" type="String">
+      <name>invert</name>
+      <attributes>
+	<prompt>invert</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" invert=on"</code>
+	</format>
+      </attributes>
+    </parameter>
+    
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>algorithm_opt</name>
+	<prompt>Algorithm options</prompt>
+	
+	<parameters>
+	  <parameter type="Excl">
+	    <name>alignquery</name>
+	    <attributes>
+	      <prompt>Switch between global or local type of search (alignequery)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value eq "global")? " alignquery=global" : ""</code>
+	      </format>
+	      <vdef><value>local</value></vdef>
+	      <vlist>
+		<value>local</value>
+		<label>local</label>
+		<value>global</value>
+		<label>global</label>
+	      </vlist>
+	      <comment>
+		<value>The global specifies that the entire query
+		sequence be used in the comparison between the
+		database and the query sequences. The local option
+		(default) specifiew that the best matching segment of
+		the query sequence is to be compared to the database
+		sequence. Negative threshold values are allowed for
+		this type of search.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scoring_opt</name>
+	<prompt>Scoring options</prompt>
+	
+	<parameters>
+	  
+	  <parameter type="Excl">
+	    <name>null2</name>
+	    <attributes>
+	      <prompt> This argument, switch the null2 postprocessing (null2).</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef)? "
+		null2=$value" : ""</code>
+	      </format>
+	      <vdef><value>on</value></vdef>
+	      <vlist>
+		<value>on</value>
+		<label>on</label>
+		<value>off</value>
+		<label>off</label>
+		<value>full</value>
+		<label>full</label>
+	      </vlist>
+	      <comment>
+		<value>This argument, if set to off, turns off null2
+		postprocessing. If this parameter is set to on or
+		full, HMMER's null2 score adjustment is intended to
+		correct artifically high scores caused by hits that
+		have large insertions. If this value is set to on
+		while performing an mhsp search that produces only
+		negative hits, the null2 correction will only be
+		performed on the hit with the highest raw score. If
+		this value is set to full while performing an mhsp
+		search that produces only negative hits, the null2
+		correction will be performed on all of the
+		hits.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>sam_adjust_score</name>
+	    <attributes>
+	      <prompt>Adjustment of the SAM scoring.(sam_adjust_score)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : " sam_adjust_score=0" </code>
+	      </format>
+	      <vdef><value>2</value></vdef>
+	      <comment>
+		<value>The only accepted values are 2 (the default)
+		and 0 (no adjustment). If set to 2, BTK computes the
+		score of each hit of a SAM model against a database
+		sequence by subtracting the natural log of the length
+		of the database from the raw score. This works in the
+		same manner as setting adjust_score=2 in the SAM
+		software. SAM software's behaviour when adjust_score=1
+		is not currently supported by BTK.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>threshold_opt</name>
+	<prompt>Treshold options</prompt>
+	
+	<parameters>
+	  
+	  <parameter type="Float">
+	    <name>evalue_threshold  </name>
+	    <attributes>
+	      <prompt>evalue_threshold (evt)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>($sort eq "ev")</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "
+		evt=$value" : ""</code>
+	      </format>
+	      <vdef><value>10.00</value></vdef>
+	    </attributes>
+	  </parameter>
+	    
+	  <parameter type="Float">
+	    <name>evdprob_threshold </name>
+	    <attributes>
+	      <prompt>evdprob_threshold (evdt)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$sort eq "evd"</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>" evdt=$value"</code>
+	      </format>
+	      <vdef><value>0.0010</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>pvalue_threshold</name>
+	    <attributes>
+	      <prompt>pvalue_threshold (pvt)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$sort eq "pv"</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>" pvt=$value"</code>
+	      </format>
+	      <vdef><value>0.0010</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="String">
+	    <name>threshold</name>
+	    <attributes>
+	      <prompt>Specifies the minimum score of hits to be output.(t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef) ? " t=$value" : ""</code>
+	      </format>
+	      <vdef><value>auto</value></vdef>
+	      <comment>
+		<value>Specifies the minimum score of hits to be output. If
+		the auto option is selected, BTK will calculate a score
+		threshold that is appropriate for the number of alignments
+		and summaries selected. The default is auto. Note that it
+		is rarely necessary to change the value of this
+		parameter.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>report_opt</name>
+	<prompt>report or output options</prompt>
+	<group>4</group>
+	
+	<parameters>
+	  
+	  <parameter type="Excl">
+	    <name>format</name>
+	    <attributes>
+	      <prompt>Specifies the output report format. The hmmer
+		output format is the default for hmm searches.(f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef)? "
+		f=$value" : ""</code>
+	      </format>
+	      <vdef><value>h</value></vdef>
+	      <vlist>
+		<value>b0</value>
+		<label>blast0</label>
+		<value>b1</value>
+		<label>blast1</label>
+		<value>b2</value>
+		<label>blast2</label>
+		<value>btkml</value>
+		<label>btkml</label>
+		<value>gff</value>
+		<label>gff</label>
+		<value>h</value>
+		<label>hmmer</label>
+		<value>p</value>
+		<label>paracel</label>
+		<value>p2</value>
+		<label>paracel2</label>
+		<value>p3</value>
+		<label>paracel3</label>
+		<value>r</value>
+		<label>raw</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>outputmode</name>
+	    <attributes>
+	      <prompt> Specifies the sort order(om)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef)? "
+		om=$value" : ""</code>
+	      </format>
+	      <vdef><value>s</value></vdef>
+	      <vlist>
+		<value>s</value>
+		<label>sorted</label>
+		<value>u</value>
+		<label>unsorted</label>
+	      </vlist>
+	      <comment>
+		<value>The sorted s option specifies that the queries be
+		returned in the order that they were submitted.</value>
+		<value>The unsorted u option specifies that queries be
+		returned in the order that they were completed.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>alignments</name>
+	    <attributes>
+	      <prompt>Specifies the number of alignments to be
+		  calculated in a search. This value can be set to any
+		  non-negative number; a value of zero will cause this
+		  report section to be skipped. By default, twenty-five
+		  alignments are calculated. (a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " a=$value" : ""</code>
+	      </format>
+	      <vdef><value>25</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>mhsp</name>
+	    <attributes>
+	      <prompt>Report multiple hits / sequence</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " mhsp=data" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Directs BTK to return multiple hits in the same
+		database sequence (data) or to return only a single hit per
+		sequence (no). By allowing more than one hit per database
+		sequence, no potentially important similarity information
+		between the query and a database sequence is omitted when
+		reporting results. This option cannot be used in
+		conjunction with the histogram or the zscore options. The
+		default value is no, meaning that a maximum of one hit can
+		be found for each database sequence.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  
+	  <parameter type="Excl">
+	    <name>sort</name>
+	    <attributes>
+	      <prompt> Specify the criterion to sort the hits. Default
+	      sorting is by E value. (sort)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef)? "
+		sort=$value" : "" </code>
+	      </format>
+	      <vdef><value>ev</value></vdef>
+	      <vlist>
+		<value>ev</value>
+		<label>evalue</label>
+		<value>evd</value>
+		<label>evdprob</label>
+		<value>h</value>
+		<label>highscore</label>
+		<value>l</value>
+		<label>loglength</label>
+		<value>pv</value>
+		<label>pvalue</label>
+	      </vlist>
+	      <comment>
+		<value>E value - Sorts hits by their E values. The E-value
+		    of a hit with score S is the expected number of hits on
+		    the database with a score of at least S, taking into
+		    account the total size of the database. The closer this
+		    number is to zero, the greater the significance of the
+		    hit; the closer this value is to the number of
+		    sequences in the database, the lower the significance
+		    of the hit.</value> 
+		<value>EVD probability - Specifies
+		    that the hits be sorted by their extreme value
+		    distri-bution probabilities. Extreme value distribution
+		    (EVD) is the probability of a single score exceeding a
+		    given score by chance. The closer this value is to
+		    zero, the greater the significance of the hit; the
+		    closer it is to one, the lower the significance of the
+		    hit. The default value of the EVD threshold is
+		    .001.</value> 
+		<value> Highscore - Specifies that the
+		    results be sorted from the highest to the lowest
+		    scores. This score is derived using the matrix
+		    associated with the HMM or the matrix selected by the
+		    user, depending on the type of query selected. This is
+		    the default sorting method if no sort option is
+		    specified and the report type is GeneWise; otherwise,
+		    hits will be sorted by E value.</value>
+		<value>Loglength - Specifies that the scores be sorted
+		    by loglength normalization.</value> 
+		<value>P value -  Specifies that the scores be sorted by Karlin-Altschul
+		    P values. This P value is the probability of seeing at
+		    least one occurrence of a score greater than or equal
+		    to the given score. Setting a P value threshold will
+		    cause all the hits below this threshold to be filtered
+		    out. The lower the P value of an alignment, the less
+		    likely that the hit is random. The default value for
+		    the P value threshold is 0.001.</value>
+		<value>Sequence
+		    P value - Specifies that the scores be sorted by their
+		    sequence P values. The sequence P value is the
+		    probability of a single database sequence having a
+		    score greater than or equal to a given score, the
+		    sequence P value threshold, considering the lengths of
+		    the query and database sequences. The default value for
+		    the seq_pvalue is 0.001.</value> 
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>summaries</name>
+	    <attributes>
+	      <prompt>Specifies the number of one-line summaries
+		  generated in the result report.. The minimum allowed
+		  value is 1. (s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " summaries=$value" : ""</code>
+	      </format>
+	      <vdef><value>250</value></vdef>
+	      <comment>
+		<value>Specifies the number of one-line summaries
+		    generated in the result report.This value can be
+		    changed to any positive number. By default, up to 250
+		    one-line summaries are generated. The minimum allowed
+		    value is 1.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>	
+	<name>verbosity_opt</name>
+	<prompt>Verbosity level</prompt>
+	
+	<parameters>
+	  
+	  <parameter ishidden="1" type="String">
+	    <name>verbose</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>($warning ne "" || $param ne "" || $timestamp ne "" || $quiet ne "")? "
+		v=" : ""</code>
+	      </format>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>warning</name>
+	    <attributes>
+	      <prompt>outputs all warnings</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "w" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>param</name>
+	    <attributes>
+	      <prompt>outputs the search parameters</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "p" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>timestamp</name>
+	    <attributes>
+	      <prompt>add a timestamp to progress report output.</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "t" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+            <name>quiet</name>
+            <attributes>
+              <prompt>runs in quiet mode.</prompt>
+              <format>
+                <language>perl</language>
+                <code>($value)? "q" : ""</code>
+              </format>
+              <vdef><value>0</value></vdef>
+            </attributes>
+          </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+
+  </parameters>
+</pise>
+                

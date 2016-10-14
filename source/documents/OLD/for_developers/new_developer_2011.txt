@@ -1,0 +1,153 @@
+View this file with tabstop=4
+
+In Sept 2011 Jeff Sale joined the cipres team as a new developer.  These are notes about what I 
+had to do to configure a build and development environment for him on 8ball.sdsc.edu.  We use 
+8ball to host our test instance of the application and I also use it to run my development 
+instance. Some of the issues I ran into were making sure the ports used by our tomcat servers 
+didn't conflict and that we weren't writing to any of the same files.
+
+According to Paul Hoover it is possible to set up a development instance on one's mac, you 
+just need to configure database.tempfileRoot to point to a local path.  It isn't however 
+possible to deploy to windows and have a fully functional application because of our use of 
+shell scripts. 
+
+	* Jeff's login name is "jsale".
+
+	* Jeff got an account on 8ball in the ngbw group, with login shell = /bin/bash.
+
+	* I created /projects/cipres/jsale directory for Jeff since none of us have enough 
+	space in our home directories.
+
+Here's what we needed to do next:
+
+	* Check out trunk versions of sdk, cipres-portal and documents directories from svn, to
+	/projects/cipres/jsale.
+
+	* Install tomcat 5.5.27 under /projects/cipres/jsale. Find free ports to run tomcat on and 
+	configure tomcat's conf/server.xml file.  Jeff is using 6080.
+
+	* Create an sdk_versions directory and set the env var SDK_VERSIONS to point to it.  
+	Here are all the changes to Jeff's .bashrc, including SDK_VERSIONS:
+
+		export SDK_VERSIONS=/projects/cipres/jsale/cipres/sdk_versions
+		export PATH=$SDK_VERSIONS:$SDK_VERSIONS/current:$PATH
+
+		export LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+		export PYTHONPATH=/fs/cipres/misc/python-gd/lib/python:/archive/science/ngbt/python/PyMySQL-0.4
+		export CATALINA_HOME=/projects/cipres/jsale/apache-tomcat-5.5.27
+		export SVNROOT=http://nladr-cvs.sdsc.edu/svn/CIPRES/cipresdev
+		export SVN_EDITOR=/bin/vi
+		export MAVEN_OPTS=-"Xms512M -Xmx512M"
+		export JAVA_HOME=/usr/local/apps/java-1.5
+
+		# Jeff is using my globus installation.
+		export GLOBUS_LOCATION=/projects/cipres/terri/teragrid/globus
+		export MYPROXY_SERVER=myproxy.teragrid.org
+		export MYPROXY_SERVER_PORT=7514
+		export GLOBUS_TCP_PORT_RANGE=50000,51000
+		source $GLOBUS_LOCATION/etc/globus-user-env.sh
+
+	* Create ~jsale/.m2/settings.xml and set permissions to 600 (ie. only owner can read it).
+	Passwords are shown here as PASSWORD - need to be replaced with the real passwords.
+
+		<settings>
+			<servers>
+				<server>
+					<id>tomcat</id>
+					<username>admin</username>
+					<password>PASSWORD</password>
+				</server>
+				<!-- For adding jars to our maven repository -->
+				<server>
+					<id>maven-repository-production</id>
+					<username>maven</username>
+					<password>PASSWORD</password>
+				</server>
+			</servers>
+			<activeProfiles>
+				<activeProfile>always</activeProfile>
+			</activeProfiles>
+			<profiles>
+				<!-- This is always active for sdsc builds -->
+				<profile>
+					<id>always</id>
+					<properties>
+						<eightball.username>bwbatch</eightball.username> 
+						<eightball.password>PASSWORD</eightball.password> 
+						<snooker.username>bwbatch</snooker.username> 
+						<snooker.password>PASSWORD</snooker.password> 
+						<db.ngbw.test.username>ngbw</db.ngbw.test.username>
+						<db.ngbw.test.password>PASSWORD</db.ngbw.test.password>
+						<db.ngbw.production.username>ngbw</db.ngbw.production.username>
+						<db.ngbw.production.password>PASSWORD</db.ngbw.production.password>
+						<teragrid.username>cipres</teragrid.username> 
+						<teragrid.password>PASSWORD</teragrid.password> 
+						<triton.username>cipres_test</triton.username>
+						<triton.keyFile>${env.HOME}/.ssh/id_dsa</triton.keyFile>
+					</properties>
+				</profile>
+			</profiles>
+		</settings>
+
+	* To submit serial jobs like clustalw to triton the developer must make sure he can ssh to 
+	cipres_test@triton-login.sdsc.edu without being prompted for a password.  To make this work, 
+	append the developer's .ssh/id_dsa.pub to cipres_test@triton-login.sdsc.edu/.ssh/authorized_keys.
+
+	* Make sure the local maven repo is running on 8ball:
+		maven repository on 8ball: http://8ball.sdsc.edu:9999/maven2/
+		host: 8ball.sdsc.edu
+		port: 9999
+		login: maven
+		password: cac...
+		Apache installation: /users/u4/maven/apache_webserver
+		To start/stop the server: apachectl [start | stop | restart]
+
+	* I found that the sdk/properties/cipres-dev.properties had a number of settings that would 
+	cause collisions between Jeff and my development instances.  I grouped these properties together 
+	at the end of the file AND I moved cipres-dev.properties to cipres-dev.properties.template.  
+	This way we will both need to copy the .template file to cipres-dev.properties and
+	modify it before we can do a build.  
+
+	I used to create certain files in /tmp.  Now, I instead have a ~/cipres_tmp directory, and 
+	I configured the same for Jeff.  Jeff's properties are:
+
+		grid.myproxyfile=/users/u2/jsale/cipres_tmp/x509_cipres
+		disabled.resources.file=/users/u2/jsale/cipres_tmp/disabled_resources
+		process_worker_logs=/users/u2/jsale/cipres_tmp
+		portal.url=http://8ball.sdsc.edu:6080/portal2
+		job.callback.url=http://8ball.sdsc.edu:6080/portal2/taskupdate.action
+
+	* Once the application was built and deployed, I got an error getting a certificate when I tried to 
+	submit a teragrid job.  To fix this I: 
+		- moved Jeff's existing ~/.globus directory to ~/.globus_save and created a new 
+		empty ~/.globus
+		- reran the build so that ~/.globus would be populated with our files.
+		- ran sdk/scripts/update_crl.sh to populate the ~/.globus/certificates
+		  directory.
+
+The development build process is usually just:
+	cd cipres-portal
+	sh tl.sh
+
+But, the first time (and then again, if either tl.sh or cipres-dev.properties.template have changed) 
+there are a few extra steps:
+
+	[ put the build script, "tl.sh" where it's needed ]
+	cd cipres-portal
+	cp scripts/tl.sh .
+
+	[ create cipres-dev.properties from the template ]
+	cd ../sdk/properties
+	cp cipres-dev.properties.template cipres-dev.properties
+	[and then edit cipres-dev.properties as explained above]
+
+	[ now you can do the build ]
+	cd ../cipres-portal
+	sh tl.sh
+
+Log files are under $CATALINA_HOME/logs and ~/cipres_tmp. 
+
+
+
+
+

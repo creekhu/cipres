@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>confmat</title>
+    <description>Side chain packing optimization on a given main chain template for protein PDB files</description>
+    <authors>P. Koehl, M. Delarue</authors>
+    <reference>P. Koehl et M. Delarue. J. Mol. Biol. 239:249-275 (1994)</reference>
+    <category>protein:3d structure</category>
+</head>
+
+
+<command>confmat</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>confmat</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "confmat &lt; params" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>result_files</name>
+<attributes>
+
+	<filenames>params logfile $generic_name*</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>pdbfile</name>
+<attributes>
+
+	<prompt>PDB file</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<comment>
+		<value>The programm will read all coords, extract the sequence from the PDB file, forget about the side chains and reconstruct them according to the mean-field algorithm.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<pipe>
+		<pipetype>pdbfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="InFile">
+<name>bridge_file</name>
+<attributes>
+
+	<prompt>Disulphide bridges file</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "$value\\n" : "\\n" </code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>This file should contain all known S-S bridges, one per line, in the format :</value>
+		<value>SSBOND i j</value>
+		<value>where i is the number of the first residue involved in the disulphide bridge and j its partner (Again, beware that i and j corresponds to the internal numbering, not the numbering used in the pdb file. Personally I reformatthe pdb file before running CONFMAT).</value>
+		<value>The number of space between SSBOND and i and j are not important, however it is important that SSBOND be in upper case.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="String">
+<name>generic_name</name>
+<attributes>
+
+	<prompt>Generic name of output files</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>result</value></vdef>
+	<group>3</group>
+	<comment>
+		<value>The program will generate, for each cycle of the iteration, files of the type:</value>
+		<value>generic_nameN.pdb</value>
+		<value>generic_nameN.proba</value>
+		<value>generic_nameN.ent</value>
+		<value>where generic_name is the name chosen by the user and N is the cycle number. The first file contains the coords in the current iteration cycle, the second one the probability matrix for each rotamer of each position and the third one an estimate of the entropy (disorder) of each residue, from which an estimate of the entropy gained upon folding for each residue can easily be calculated.</value>
+		<value>The most important files to look at are the ones of the last iteration cycle (usually 20). The CONVERGENCE of the algorithm is monitored in the log file called logfile.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<size>20</size>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>cycles</name>
+<attributes>
+
+	<prompt>Number of cycles you want to perform</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>20</value></vdef>
+	<group>4</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>logfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"logfile\\n"</code>
+	</format>
+	<group>5</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

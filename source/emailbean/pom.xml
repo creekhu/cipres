@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.cipres.utils</groupId>
+	<artifactId>mailservice</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0</version>
+	<name>EmailBean</name>
+	<url>http://www.phylo.org</url>
+	<description>Email Service Bean</description>
+	<parent>
+		<groupId>org.ngbw</groupId>
+		<artifactId>cipres</artifactId>
+		<version>2.0</version>
+		<relativePath>../build</relativePath>
+	</parent>
+
+	<dependencies>
+		<!-- Junit -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+			<version>2.5.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>2.5.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.14</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>mailservice</finalName>
+		<sourceDirectory>${build.dir}/emailbean/src/main/java</sourceDirectory>
+		<testSourceDirectory>${build.dir}/emailbean/src/test/java</testSourceDirectory>
+		<directory>${build.dir}/emailbean/target</directory>
+	</build>
+
+</project>

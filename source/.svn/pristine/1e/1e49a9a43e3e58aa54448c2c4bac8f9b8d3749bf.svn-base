@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>CDS</title>
+    <description>Search Coding Regions</description>
+    <authors>F. Chauveau</authors>
+    <category>nucleic:translation</category>
+    <category>gene finding</category>
+  </head>
+
+
+<command>cds</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>cds</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>cds</code>
+		<language>perl</language>
+		<code>"cds"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>10</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>search</name>
+<prompt>Search parameters</prompt>
+<parameters>
+
+	<parameter type="Integer">
+	<name>minaa</name>
+	<attributes>
+
+		<prompt>Minimum number of amino acids in CDS</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -l $value" : "" </code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>frame</name>
+	<attributes>
+
+		<prompt>Frame</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -f $value" : "" </code>
+		</format>
+		<group>1</group>
+		<vlist>
+			<value>1</value>
+			<label>1</label>
+			<value>2</value>
+			<label>2</label>
+			<value>3</value>
+			<label>3</label>
+			<value>-1</value>
+			<label>1 (opposite strand)</label>
+			<value>-2</value>
+			<label>2 (opposite strand)</label>
+			<value>-3</value>
+			<label>3 (opposite strand)</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>starts</name>
+	<attributes>
+
+		<prompt>START codons (separated by commas)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($value !~ /,/ || $value =~ s/,/ /g) )? " -c \\"$value\\" " : "" </code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>maxf</name>
+	<attributes>
+
+		<prompt>longest CDS in each frame</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -m":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>max</name>
+	<attributes>
+
+		<prompt>longest CDS</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -M":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>all</name>
+	<attributes>
+
+		<prompt>all CDS, including CDS inside CDS</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -a":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output parameters</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>nucl</name>
+	<attributes>
+
+		<prompt>nucleotids output</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -n":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>print_adn</name>
+	<attributes>
+
+		<prompt>Print ADN as well as Amino-acids</prompt>
+		<format>
+			<language>perl</language>
+			<code>($print_adn || defined $left_adn)? " -v $left_adn" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>left_adn</name>
+	<attributes>
+
+		<prompt>How many base pairs on the left (if print ADN)</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>print_frame</name>
+	<attributes>
+
+		<prompt>print frame before search</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -s":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>print_pos</name>
+	<attributes>
+
+		<prompt>print only position(s)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -p":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>xml</name>
+	<attributes>
+
+		<prompt>XML output (-x)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -x":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>xmldtdcopy</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"; cp /local/gensoft/lib/pasteur/cds.dtd ."</code>
+	</format>
+	<group>100</group>
+<precond>
+	<language>perl</language>
+	<code>$xml</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>xmldtd</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>$xml</code>
+</precond>
+	<filenames>cds.dtd</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>others</name>
+<prompt>Other parameters</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>end_stop</name>
+	<attributes>
+
+		<prompt>CDS ends at STOP</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -e":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>genetic</name>
+	<attributes>
+
+		<prompt>Genetic Code</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value &amp;&amp; $value ne $vdef)? " -g $value" : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+		<vlist>
+			<value>1</value>
+			<label>Standard</label>
+			<value>2</value>
+			<label>Vertebrate Mitochondrial</label>
+			<value>3</value>
+			<label>Yeast Mitochondrial</label>
+			<value>4</value>
+			<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+			<value>5</value>
+			<label>Invertebrate Mitochondrial</label>
+			<value>6</value>
+			<label>Ciliate Macronuclear and Dasycladacean</label>
+			<value>9</value>
+			<label>Echinoderm Mitochondrial</label>
+			<value>10</value>
+			<label>Euplotid Nuclear</label>
+			<value>11</value>
+			<label>Bacterial</label>
+			<value>12</value>
+			<label>Alternative Yeast Nuclear</label>
+			<value>13</value>
+			<label>Ascidian Mitochondrial</label>
+			<value>14</value>
+			<label>Flatworm Mitochondrial</label>
+			<value>15</value>
+			<label>Blepharisma Macronuclear</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

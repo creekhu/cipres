@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SHOWALIGN</title>
+<description>Displays a multiple sequence alignment (EMBOSS)</description>
+<category>alignment:multiple</category>
+<category>display</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/showalign.html</doclink>
+</head>
+
+<command>showalign</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [set of sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>The sequence alignment to be displayed.</value>
+		</comment>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>refseq</name>
+	<attributes>
+		<prompt>The number or the name of the reference sequence (-refseq)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -refseq=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>If you give the number in the alignment or the name of a sequence, it will be taken to be the reference sequence. The reference sequence is always show in full and is the one against which all the other sequences are compared. If this is set to 0 then the consensus sequence will be used as the reference sequence. By default the consensus sequence is used as the reference sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>bottom</name>
+	<attributes>
+		<prompt>Display the reference sequence at the bottom (-bottom)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nobottom"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>If this is true then the reference sequence is displayed at the bottom of the alignment as well as at the top.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>show</name>
+	<attributes>
+		<prompt>What to show -- What to show (-show)</prompt>
+			<vlist>
+				<value>A</value>
+				<label>All of the sequences</label>
+				<value>I</value>
+				<label>Identities between the sequences</label>
+				<value>N</value>
+				<label>Non-identities between the sequences</label>
+				<value>S</value>
+				<label>Similarities between the sequences</label>
+				<value>D</value>
+				<label>Dissimilarities between the sequences</label>
+			</vlist>
+		<vdef>
+			<value>N</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -show=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>order</name>
+	<attributes>
+		<prompt>Output order of the sequences -- Output order of the sequences (-order)</prompt>
+			<vlist>
+				<value>I</value>
+				<label>Input order - no change</label>
+				<value>A</value>
+				<label>Alphabetical order of the names</label>
+				<value>S</value>
+				<label>Similarity to the reference sequence</label>
+			</vlist>
+		<vdef>
+			<value>I</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -order=$value"</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>similarcase</name>
+	<attributes>
+		<prompt>Show similar residues in lower-case (-similarcase)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nosimilarcase"</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>If this is set True, then when -show is set to 'Similarities' or 'Non-identities' and a residue is similar but not identical to the reference sequence residue, it will be changed to lower-case. If -show is set to 'All' then non-identical, non-similar residues will be changed to lower-case. If this is False then no change to the case of the residues is made on the basis of their similarity to the reference sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>matrix</name>
+	<attributes>
+		<prompt>Similarity scoring Matrix file (-matrix)</prompt>
+			<vlist>
+				<value>I</value>
+				<label></label>
+				<value>A</value>
+				<label></label>
+				<value>S</value>
+				<label></label>
+			</vlist>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -matrix=$value" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>uppercase</name>
+	<attributes>
+		<prompt>Regions to put in uppercase (eg: 4-57,78-94) (-uppercase)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -uppercase=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>Regions to put in uppercase. &lt;BR&gt; If this is left blank, then the sequence case is left alone. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are separated by any non-digit, non-alpha character. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45, 56-78 &lt;BR&gt; 1:45, 67=99;765..888 &lt;BR&gt; 1,5,8,10,23,45,57,99</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>number</name>
+	<attributes>
+		<prompt>Number the sequences (-number)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nonumber"</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>If this option is true then a line giving the positions in the alignment is displayed every 10 characters above the alignment.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>ruler</name>
+	<attributes>
+		<prompt>Display ruler (-ruler)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noruler"</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>If this option is true then a ruler line marking every 5th and 10th character in the alignment is displayed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>width</name>
+	<attributes>
+		<prompt>Width of sequence to display (-width)</prompt>
+		<vdef>
+			<value>60</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -width=$value" : ""</code>
+		</format>
+		<group>11</group>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>margin</name>
+	<attributes>
+		<prompt>Length of margin for sequence names (-margin)</prompt>
+		<vdef>
+			<value>-1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -margin=$value" : ""</code>
+		</format>
+		<group>12</group>
+		<comment>
+			<value>This sets the length of the left-hand margin for sequence names. If the margin is set at 0 then no margin and no names are displayed. If the margin is set to a value that is less than the length of a sequence name then the sequence name is displayed truncated to the length of the margin. If the margin is set to -1 then the minimum margin width that will allow all the sequence names to be displayed in full plus a space at the end of the name will automatically be selected.</value>
+		</comment>
+		<scalemin><value>-1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Use HTML formatting (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>highlight</name>
+	<attributes>
+		<prompt>Regions to colour in HTML (eg: 4-57 red 78-94 green) (-highlight)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -highlight=$value" : ""</code>
+		</format>
+		<group>14</group>
+		<comment>
+			<value>Regions to colour if formatting for HTML. &lt;BR&gt; If this is left blank, then the sequence is left alone. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are followed by any valid HTML font colour. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45 blue 56-78 orange &lt;BR&gt; 1-100 green 120-156 red &lt;BR&gt; A file of ranges to colour (one range per line) can be specified as '\@filename'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>plurality</name>
+	<attributes>
+		<prompt>Plurality check % for consensus (-plurality)</prompt>
+		<vdef>
+			<value>50.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -plurality=$value" : ""</code>
+		</format>
+		<group>15</group>
+		<comment>
+			<value>Set a cut-off for the % of positive scoring matches below which there is no consensus. The default plurality is taken as 50% of the total weight of all the sequences in the alignment.</value>
+		</comment>
+		<scalemin><value>0.0</value></scalemin>
+		<scalemax><value>100.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>setcase</name>
+	<attributes>
+		<prompt>Threshold above which the consensus is given in uppercase (-setcase)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@( $(sequence.totweight) / 2)</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -setcase=$value" : ""</code>
+		</format>
+		<group>16</group>
+		<comment>
+			<value>Sets the threshold for the scores of the positive matches above which the consensus is in upper-case and below which the consensus is in lower-case. By default this is set to be half of the (weight-adjusted) number of sequences in the alignment.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>identity</name>
+	<attributes>
+		<prompt>Required % of identities at a position for consensus (-identity)</prompt>
+		<vdef>
+			<value>0.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -identity=$value" : ""</code>
+		</format>
+		<group>17</group>
+		<comment>
+			<value>Provides the facility of setting the required number of identities at a position for it to give a consensus. Therefore, if this is set to 100% only columns of identities contribute to the consensus.</value>
+		</comment>
+		<scalemin><value>0.0</value></scalemin>
+		<scalemax><value>100.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>consensus</name>
+	<attributes>
+		<prompt>Display the consensus line (-consensus)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noconsensus"</code>
+		</format>
+		<group>18</group>
+		<comment>
+			<value>If this is true then the consensus line is displayed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>19</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>20</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

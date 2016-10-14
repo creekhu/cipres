@@ -1,0 +1,8 @@
+toolId=RAXMLHPC8_REST_XSEDE
+runtime_=0.50
+dna_gtrcat_ = GTRGAMMA
+provide_parsimony_seed_ = 1
+parsimony_seed_val_ = 895922564
+specify_runs_ = 1
+altrun_number_ = 12
+generic_=--mesquite

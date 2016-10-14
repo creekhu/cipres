@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>ETANDEM</title>
+<description>Looks for tandem repeats in a nucleotide sequence (EMBOSS)</description>
+<category>nucleic:repeats</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/etandem.html</doclink>
+</head>
+
+<command>etandem</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>minrepeat</name>
+	<attributes>
+		<prompt>Minimum repeat size (-minrepeat)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -minrepeat=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value> Allowed values: Integer, 2 or higher</value>
+		</comment>
+		<scalemin><value>2</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>maxrepeat</name>
+	<attributes>
+		<prompt>Maximum repeat size (-maxrepeat)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>$minrepeat</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -maxrepeat=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value> Allowed values: Integer, same as -minrepeat or higher</value>
+		</comment>
+		<scalemin>
+			<language>acd</language>
+			<code>$minrepeat</code>
+		</scalemin>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>threshold</name>
+	<attributes>
+		<prompt>Threshold score (-threshold)</prompt>
+		<vdef>
+			<value>20</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -threshold=$value" : ""</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>mismatch</name>
+	<attributes>
+		<prompt>Allow N as a mismatch (-mismatch)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -mismatch" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>uniform</name>
+	<attributes>
+		<prompt>Allow uniform consensus (-uniform)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -uniform" : ""</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>origfile</name>
+	<attributes>
+		<prompt>origfile (-origfile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -origfile=$value" : ""</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>10</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

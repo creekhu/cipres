@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlatfileRecordFilterConfig>
+	<DataFormat id="FASTA" startPattern="^>.*" endPattern="null"/>
+	<DataFormat id="GENBANK" startPattern="^LOCUS\s+" endPattern="^\s*//\s*$"/>
+	<DataFormat id="GENPEPT" startPattern="^LOCUS\s+" endPattern="^\s*//\s*$"/>
+	<DataFormat id="UNIPROT" startPattern="^ID\s+" endPattern="^\s*//\s*$"/>
+	<DataFormat id="EMBL" startPattern="^ID\s+" endPattern="^\s*//\s*$"/>
+	<DataFormat id="PDB" startPattern="^HEADER\s+" endPattern="^END\s*$"/>
+</FlatfileRecordFilterConfig>

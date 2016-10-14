@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>MFOLD</title>
+    <version>3.1.2</version>
+    <description>Prediction of RNA secondary structure</description>
+    <authors>M. Zuker</authors>
+    <reference>M. Zuker, D.H. Mathews and D.H. Turner Algorithms and Thermodynamics for RNA Secondary Structure Prediction: A Practical Guide in RNA Biochemistry and Biotechnology, J. Barciszewski and B.F.C. Clark, eds., NATO ASI Series, Kluwer Academic Publishers, (1999) </reference>
+  </head>
+
+  <command>mfold</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>mfold</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "mfold RUN_TYPE=html" </code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>SEQ</name>
+      <attributes>
+	
+	<prompt>Sequence File (SEQ)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>  " SEQ=$value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>1</value>
+	  <value>2</value>
+	  <value>4</value>
+	</seqfmt>
+	<comment>
+	  <value>
+SEQ : The sequence file may contain multiple sequences.
+At present, the mfold script will fold the first sequence by default.</value>
+	</comment>
+ 
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Excl">
+      <name>LC</name>
+      <attributes>
+	
+	<prompt>Sequence type (default = linear) (LC)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value and $value ne $vdef)?" LC=$value":""</code>
+	</format>
+	<vdef><value>linear</value></vdef>
+	<group>2</group>
+	<vlist>
+	  <value>linear</value>
+	  <label>linear</label>
+	  <value>circular</value>
+	  <label>circular</label>
+	</vlist>
+	
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Excl">
+      <name>NA</name>
+      <attributes>
+	
+	<prompt>RNA (default) or DNA (NA)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value and $value ne $vdef)?" NA=$value":""</code>
+	</format>
+	<vdef><value>RNA</value></vdef>
+	<group>2</group>
+	<vlist>
+	  <value>RNA</value>
+	  <label>RNA</label>
+	  <value>DNA</value>
+	  <label>DNA</label>
+	</vlist>
+	
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control options</prompt>
+	<group>3</group>
+	<parameters>
+
+    <parameter ismandatory="0" issimple="0" type="InFile">
+      <name>AUX</name>
+      <attributes>
+	
+	<prompt>Constraints File (AUX)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>  " AUX=$value"</code>
+	</format>
+	<group>3</group>
+	<comment>
+	  <value>
+AUX : (optional) This is the name of an auxiliary input file of folding 
+constraints. If this parameter is not used, mfold looks for a file 
+named `fold_name.aux'. If this file exists and is not empty, then it 
+is interpreted as a constraint file. Thus constraints may be used 
+without the use of this command line parameter.</value>
+<value>Fill the box or the file with constraints (1 constraint per line) You may:</value>
+<value>   1. force bases i,i+1,...,i+k-1 to be double stranded by entering:</value>
+<value>      F   i   0   k </value>
+<value>   2. force consecutive base pairs i.j,i+1.j-1, ...,i+k-1.j-k+1 by entering:</value>
+<value>      F   i   j   k </value>
+<value>   3. force bases i,i+1,...,i+k-1 to be single stranded by entering:</value>
+<value>      P   i   0   k </value>
+<value>   4. prohibit the consecutive base pairs</value>
+<value>      i.j,i+1.j-1, ...,i+k-1.j-k+1 by entering:</value>
+<value>      P   i   j   k </value>
+<value>   5. prohibit bases i to j from pairing with bases k to l by entering:</value>
+<value>      P   i-j   k-l </value>
+	</comment>
+ 
+      </attributes>
+    </parameter>
+
+	  <parameter type="Integer">
+	    <name>T</name>
+	    <attributes>
+	      
+	      <prompt>Temperature (T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef)?" T=$value":""</code>
+	      </format>
+	      <vdef><value>37</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>P</name>
+	    <attributes>
+	      
+	      <prompt>Percent (P)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef)?" P=$value":""</code>
+	      </format>
+	      <vdef><value>5</value></vdef>
+	      <group>3</group>
+	      <comment>
+		<value>
+P : This is the percent suboptimality for computing the energy dot
+plot and suboptimal foldings. The default value is 5%. This parameter
+controls the value of the free energy increment, delta (deltaG).
+Delta of deltaG is set to P% of deltaG, the computed minimum free
+energy.  The energy dot plot shows only those base pairs that are in
+foldings with free energy minus or equal to deltaG plus delta
+(deltaG). Similarly, the free energies of computed foldings are in the
+range from deltaG to deltaG plus delta (deltaG). No matter the value
+of P, mfold currently keeps delta (deltaG) in the range [1,12]
+(kcal/mole).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>NA_CONC</name>
+	    <attributes>
+	      
+	      <prompt>Na+ molar concentration (NA_CONC)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef)?" NA_CONC=$value":""</code>
+	      </format>
+	      <vdef><value>1.0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>MG_CONC</name>
+	    <attributes>
+	      
+	      <prompt>Mg++ molar concentration (MG_CONC)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef)?" MG_CONC=$value":""</code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>W</name>
+	    <attributes>
+	      
+	      <prompt>Window parameter (default - set by sequence length) (W)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)?" W=$value":""</code>
+	      </format>
+	      <group>3</group>
+	      <comment>
+		<value>
+W : This is the window parameter that controls the number of foldings
+that are automatically computed by mfold . `W' may be thought of as a
+distance parameter. The distance between 2 base pairs, i.j and i'.j'
+may be defined as max{|i-i'|,|j-j'|}. Then if k-1 foldings have
+already been predicted by mfold , the kth folding will have at least W
+base pairs that are at least a distance W from any of the base pairs
+in the first k-1 foldings. As W increases, the number of predicted
+foldings decreases. If W is not specified, mfold selects a value by
+default based on sequence length, as displayed in Table 3.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+ 	    <name>MAXBP</name>
+	    <attributes>
+	      <prompt>MAXBP: Max base pair distance (default - no limit)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)?" MAXBP=$value":""</code>
+	      </format>
+	      <group>3</group>
+	      <comment>
+		<value>
+MAXBP : A base pair i.j will not be allowed to form (in linear RNA) if
+j-i > MAXBP. For circular RNA, a base pair i.j cannot form if
+min{j-i,n+i-j} > MAXBP . Thus small values of MAXBP ensure that only
+short range base pairs will be predicted. By default, MAXBP=+infinity,
+indicating no constraint. </value> 
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>MAX</name>
+	    <attributes>
+	      <prompt>MAX: Maximum number of foldings to be computed</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)?" MAX=$value":""</code>
+	      </format>
+	      <vdef><value>50</value></vdef>
+	      <group>3</group>
+	      <comment>
+		<value>
+MAX : This is the maximum number of foldings that mfold will compute
+(50 by default). It is better to limit the number of foldings by
+careful selection of the P and W parameters. </value> 
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>ANN</name>
+	    <attributes>
+	      <prompt>Structure annotation type (default=none) (ANN)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)?" ANN=$value":""</code>
+	      </format>
+	      <vdef><value>none</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>none</value>
+		<label>none</label>
+		<value>p-num</value>
+		<label>p-num</label>
+		<value>ss-count</value>
+		<label>ss-count</label>
+	      </vlist>
+	      <comment>
+		<value>
+ANN : This parameter currently takes on 3 values. </value>
+		<value>1. `none' :
+secondary structures are drawn without any special annotation. Letters
+or outline are in black, while base pairs are red lines or dots for GC
+pairs and blue lines or dots for AU and GU pairs. </value>
+		<value>2. `p-num' : Colored
+dots, colored base characters or a combination are used to display in
+each folding how well-determined each base is according to the P-num
+values in the `fold_name.ann' file. </value>
+		<value>3. `ss-count' : Colored dots,
+colored base characters or a combination are used to display in each
+folding how likely a base is to be single-stranded according to sample
+statistics stored in the `fold_name.ss-count' file. Both 2. and
+3. were recently described [38].</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>MODE</name>
+	    <attributes>
+	      
+	      <prompt>Structure display mode (default=auto) (MODE)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)?" MODE=$value":""</code>
+	      </format>
+	      <vdef><value>auto</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>auto</value>
+		<label>auto</label>
+		<value>bases</value>
+		<label>bases</label>
+		<value>lines</value>
+		<label>lines</label>
+	      </vlist>
+	      
+	    </attributes>
+	  </parameter>
+
+ 	  <parameter type="Integer">
+	    <name>ROT_ANG</name>
+	    <attributes>
+	      <prompt>Structure rotation angle (ROT_ANG)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)?" ROT_ANG=$value":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>START</name>
+	    <attributes>
+	      <prompt>5' base number (START)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)?" START=$value":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>STOP</name>
+	    <attributes>
+	      <prompt>3' base number (default = end) (STOP)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)?" STOP=$value":""</code>
+	      </format>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter> 
+     
+    <parameter type="Results">
+      <name>outfiles</name>
+      <attributes>
+	<filenames>*.pnt *.plot *.ct *.html *.gif *.ps</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

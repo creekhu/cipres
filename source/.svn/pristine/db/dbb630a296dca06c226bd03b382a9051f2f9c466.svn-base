@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ngbw</groupId>
+	<artifactId>restdatatypes</artifactId>
+	<name>Cipres REST Datatypes</name>
+	<version>2.0</version>
+	<!--
+		We don't reference a parent pom, and we build in place, so that clients
+		can export and build the restdatatypes jar.
+	-->
+
+	<build>
+		<finalName>restdatatypes</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>schemagen</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<includes>
+								<!--
+									This operates on src dir not build.dir.  Using build.dir doesn't seem to be possible.  
+									build.py will copy the schema to $SDK_VERSIONS
+								-->
+								<include>**/*.java</include>
+							</includes>
+							<outputDirectory>schemas</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+			<!-- include jaxb.index in the jar -->
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/jaxb.index</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+	<!--
+	<dependencies>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+	</dependencies>
+	-->
+
+</project>

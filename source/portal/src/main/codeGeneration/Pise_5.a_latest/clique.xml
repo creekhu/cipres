@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>clique - Compatibility Program</description>
+    &phylip_header;
+  </head>
+
+  <command>clique</command>
+
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>clique</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"clique &lt; params"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+
+	<prompt>Input File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -sf $infile infile; "</code>
+	</format>
+	<group>-10</group>
+	<comment>
+	  <value>Example input file</value>
+	  <value>     5    6</value>
+	  <value>Alpha     110110</value>
+	  <value>Beta      110000</value>
+	  <value>Gamma     100110</value>
+	  <value>Delta     001001</value>
+	  <value>Epsilon   001110</value>
+	</comment>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>clique_opt</name>
+	<prompt>Clique options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>use_ancestral_state</name>
+	    <attributes>
+	      <prompt>Use ancestral states in input file (A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "A\\n" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <comment>
+		<value>There should also be, in the input  file  after  the  numbers  of species  and  characters,  an A on the first line of the file.  There must also be, before the character data, a line or lines giving the ancestral states  for each  character.   It will look like the data for a species (the ancestor).  It must start with the letter A in the first column.   There  then  follow  enough characters  or  blanks  to  complete  the  full length of a species name (e. g. ANCESTOR).  Then  the  states  which  are  ancestral  for  the  individual characters  follow.   These  may  be  0, 1 or ?, the latter indicating that the ancestral state is unknown.</value>
+		<value>Examples:</value>
+		<value>ANCESTOR  0010011</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>spec_min_clique_size</name>
+	    <attributes>
+	      
+	      <prompt>Specify minimum clique size? (C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "C\\n$min_clique_size\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>3</group>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>min_clique_size</name>
+	    <attributes>
+	      <prompt>Minimum clique size</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$spec_min_clique_size</code>
+	      </precond>
+	      
+	      <ctrls>
+		<ctrl>
+		  <message>You must enter a numeric value, greater than 0</message>
+		  <language>perl</language>
+		  <code>($min_clique_size !~ /^\d+(\.\d+)?$/) || ($min_clique_size &lt; 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <comment>
+		<value>This option indicates that you wish to  specify  a  minimum clique size and print out all cliques (and their associated trees) greater than or equal to than that size.</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>bootstrap</name>
+	<prompt>Bootstrap options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>multiple_dataset</name>
+	    <attributes>
+	      
+	      <prompt>Analyze multiple data sets (M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "M\\n$datasets_nb\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>datasets_nb</name>
+	    <attributes>
+	      
+	      <prompt>How many data sets</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>9</group>
+	      <ctrls>
+		<ctrl>
+		  <message>enter a value &gt; 0 ; there must be no more than 1000 datasets for this server</message>
+		  <language>perl</language>
+		  <code>($value &gt; 1000) || ($value &lt; 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>consense</name>
+	    <attributes>
+	      <prompt>Compute a consensus tree</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "; cp infile infile.clique; cp outtree outtree.clique; cp outfile outfile.clique; mv treefile intree; consense &lt; consense.params; cp outtree outtree.consense; cp outfile outfile.consense; mv outtree.clique outtree; mv infile.clique infile; mv outfile.clique outfile" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$multiple_dataset &amp;&amp; $print_treefile</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>print_matrix</name>
+	    <attributes>
+	      
+	      <prompt>Print out compatibility matrix (3)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "3\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_tree</name>
+	    <attributes>
+	      
+	      <prompt>Print out tree (4)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "4\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to print a semi-graphical picture of the tree in the outfile.</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>print_treefile</name>
+	    <attributes>
+	      
+	      <prompt>Write out trees onto tree file (5)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "5\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to save the tree in a treefile (a standard representation of trees where the tree is specified by a nested pairs of parentheses, enclosing names and separated by commas).</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>printdata</name>
+	    <attributes>
+	      
+	      <prompt>Print out the data at start of run (1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "1\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>indent_tree</name>
+	    <attributes>
+
+	      <prompt>Indent treefile</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " &amp;&amp; indenttree -o outtree.indent outtree" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1000</group>
+	      
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_options</name>
+	<prompt>Other options</prompt>
+	<parameters>
+	  
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+	      
+	      <prompt>Outgroup root (default, use as outgroup species 1) (O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? "O\\n$value\\n" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      
+	      <ctrls>
+		<ctrl>
+		  <message>Please enter a value greater than 0</message>
+		  <language>perl</language>
+		  <code>$value &lt; 1</code>
+		</ctrl>
+	      </ctrls>
+
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+
+	<filenames>outfile</filenames>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile</code>
+	</precond>
+	<filenames>outtree</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>indented_treefile</name>
+      <attributes>
+	
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile &amp;&amp; $indent_tree</code>
+	</precond>
+	<filenames>outtree.indent</filenames>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	
+	<filenames>params</filenames>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"Y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>terminal_type</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<group>-1</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>tmp_params</name>
+      <attributes>
+	<filenames>*.params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>consense_confirm</name>
+      <attributes>
+        <format>
+          <language>perl</language>
+          <code>"Y\\n"</code>
+        </format>
+        <group>1000</group>
+        <precond>
+          <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <paramfile>consense.params</paramfile>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>consense_terminal_type</name>
+      <attributes>
+        <format>
+          <language>perl</language>
+          <code>"T\\n"</code>
+        </format>
+        <group>-2</group>
+        <precond>
+          <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <paramfile>consense.params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>consense_outfile</name>
+      <attributes>
+        <precond>
+          <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <filenames>outfile.consense</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>consense_treefile</name>
+      <attributes>
+        <precond>
+        <language>perl</language>
+          <code>$consense</code>
+        </precond>
+        <filenames>outtree.consense</filenames>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+
+</pise>

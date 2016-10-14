@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>homology</title>
+    <description>SCMF Homology Modelling Program</description>
+    <authors>P. Koehl, M. Delarue</authors>
+    <reference>P. Koehl and M. Delarue. Nature Structural Biology. 2:163-169 (1995). </reference>
+    <category>protein:3d structure</category>
+</head>
+
+
+<command>homology</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>homology</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "homology.perl &lt; params" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>result_files</name>
+<attributes>
+
+	<filenames>params *.info *.proba *.frame *.log model*</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>pdb_file</name>
+<attributes>
+
+	<filenames>*.pdb</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>pdbfile</name>
+<attributes>
+
+	<prompt>PDB data for the template protein</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+	<pipe>
+		<pipetype>pdbfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>model_name</name>
+<attributes>
+
+	<prompt>Name of the model protein to be built</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>model</value></vdef>
+	<group>2</group>
+	<comment>
+		<value>The file named MODEL.pdb will contain the model protein coordinates (where MODEL is the chosen name of the model).</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>alignment</name>
+<attributes>
+
+	<prompt>Pairwise sequence alignment of template and model (MSF format preferred)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>3</group>
+	<comment>
+		<value>The template correspond to the molecule described in the PDB data, the model is the molecule whose structure is to be be computed.</value>
+		<value>You must provide an alignment in this order:</value>
+		<value>1st sequence: template</value>
+		<value>2nd sequence: protein to model</value>
+	</comment>
+	<seqfmt>
+		<value>15</value>
+	</seqfmt>
+	<paramfile>params</paramfile>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Float">
+<name>cycles</name>
+<attributes>
+
+	<prompt>Total number of cycles for SCMF refinement</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>30</value></vdef>
+	<group>5</group>
+	<comment>
+		<value>30 or 40 should be enough most of the time.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Float">
+<name>lambda</name>
+<attributes>
+
+	<prompt>Lambda for SCMF updates</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>0.1</value></vdef>
+	<group>6</group>
+	<comment>
+		<value>Enter 0.1 or 0.2</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

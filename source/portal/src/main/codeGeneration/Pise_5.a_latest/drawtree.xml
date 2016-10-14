@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>drawtree - Plots an unrooted tree diagram</description>
+    &phylip_header;
+  </head>
+
+  <command>drawtree</command>
+  
+  <parameters>
+    
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>drawtree</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> "drawtree &lt; params" </code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>treefile</name>
+      <attributes>
+	<prompt>Tree File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -sf $treefile intree; "</code>
+	</format>
+	<group>-10</group>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>screen_type</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>-1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>options</name>
+	<prompt>Drawtree options</prompt>
+	<parameters>
+
+	  <parameter ismandatory="1" issimple="1" type="Excl">
+	    <name>plotter</name>
+	    <attributes>
+	      <prompt>Which plotter or printer will the tree be drawn on</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef) ? "P\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>L</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>L</value>
+		<label>L: Postscript printer file format</label>
+		<value>M</value>
+		<label>M: PICT format</label>
+		<value>J</value>
+		<label>J: HP Laserjet PCL file format</label>
+		<value>W</value>
+		<label>W: MS-Windows Bitmap</label>
+		<value>K</value>
+		<label>K: TeKtronix 4010 graphics terminal</label>
+		<value>H</value>
+		<label>H: Hewlett-Packard pen plotter (HPLG)</label>
+		<value>D</value>
+		<label>D: DEC ReGIS graphics (VT240 terminal)</label>
+		<value>B</value>
+		<label>B: Houston Instruments plotter</label>
+		<value>E</value>
+		<label>E: Epson MX-80 dot-matrix printer</label>
+		<value>C</value>
+		<label>C: Prowriter/Imagewriter dot-matrix printer</label>
+		<value>O</value>
+		<label>O: Okidata dot-matrix printer</label>
+		<value>T</value>
+		<label>T: Toshiba 24-pin dot-matrix printer</label>
+		<value>P</value>
+		<label>P: PCX file format</label>
+		<value>X</value>
+		<label>X: X Bitmap format</label>
+		<value>F</value>
+		<label>F: FIG 2.0 drawing program format</label>
+		<value>A</value>
+		<label>A: Idraw drawing program format</label>
+		<value>Z</value>
+		<label>Z: VRML Virtual Reality Markup Language file</label>
+		<value>V</value>
+		<label>V: POVRAY 3D rendering program file</label>
+		<value>R</value>
+		<label>R: Rayshade 3D rendering program file</label>
+	      </vlist>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>bitmap_options</name>
+	      <prompt>Bitmap options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$plotter eq "X" or $plotter eq "W"</code>
+	      </precond>
+	      <parameters>
+		
+		<parameter ismandatory="1" type="Float">
+		  <name>xxres</name>
+		  <attributes>
+		    <prompt>X resolution</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>500</value></vdef>
+		    <group>3</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$plotter eq "X" or $plotter eq "W"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		  </attributes>
+		</parameter>
+		
+		<parameter ismandatory="1" type="Float">
+		  <name>xyres</name>
+		  <attributes>
+		    <prompt>Y resolution</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>500</value></vdef>
+		    <group>4</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$plotter eq "X" or $plotter eq "W"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+	  
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>laserjet_options</name>
+	      <prompt>Laserjet options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$plotter eq "J"</code>
+	      </precond>
+	      <parameters>
+		
+		<parameter ismandatory="1" type="Excl">
+		  <name>laserjet_resolution</name>
+		  <attributes>
+		    <prompt>Laserjet resolution</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>3</value></vdef>
+		    <group>3</group>
+		    <vlist>
+		      <value>1</value>
+		      <label>1: 75 DPI</label>
+		      <value>2</value>
+		      <label>2: 150 DPI</label>
+		      <value>3</value>
+		      <label>3: 300 DPI</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$plotter eq "J"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		    
+		  </attributes>
+		</parameter>
+		
+	      </parameters>
+	    </paragraph>
+	    
+	  </parameter>
+	  
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>pcx_options</name>
+	      <prompt>Paintbrush options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$plotter eq "P"</code>
+	      </precond>
+	      <parameters>
+		
+		<parameter ismandatory="1" type="Excl">
+		  <name>pcx_resolution</name>
+		  <attributes>
+		    <prompt>Paintbrush PCX resolution</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>3</value></vdef>
+		    <group>3</group>
+		    <vlist>
+		      <value>1</value>
+		      <label>1: EGA 640 X 350</label>
+		      <value>2</value>
+		      <label>2: VGA 800 X 600</label>
+		      <value>3</value>
+		      <label>3: VGA 1024 X 768</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$plotter eq "P"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+	  
+	  <parameter ishidden="1" type="String">
+	    <name>preview</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>"V\\nN\\n"</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>branch_lengths</name>
+	    <attributes>
+	      <prompt>Use branch lengths</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "B\\n"</code>
+	      </format>
+	      <vdef>
+		<value>1</value>
+	      </vdef>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>angle</name>
+	    <attributes>
+	      <prompt>Angle of labels</prompt>
+	      <vdef>
+		<value>M</value>
+	      </vdef>
+	      <group>5</group>
+	      <vlist>
+		<value>F</value>
+		<label>F: Fixed</label>
+		<value>R</value>
+		<label>R: Radial</label>
+		<value>A</value>
+		<label>A: Along</label>
+		<value>M</value>
+		<label>M: Middle</label>
+	      </vlist>
+	      <flist>
+		<value></value>
+		<code>""</code>
+		<value>A</value>
+		<code>"L\\nA\\n"</code>
+		<value>R</value>
+		<code>"L\\nR\\n"</code>
+		<value>F</value>
+		<code>""</code>
+		<value>M</value>
+		<code>""</code>
+	      </flist>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>fixed_angle</name>
+	    <attributes>
+	      <prompt>Fixed angle: Are the labels to be plotted vertically (90), horizontally (0), or downwards (-90)? </prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "L\\nF\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0.0</value>
+	      </vdef>
+	      <group>7</group>
+	      <ctrls>
+		<ctrl>
+		  <message>The value must be comprised between -90 and 90</message>
+		  <language>perl</language>
+		  <code>$value &lt; -90.0 || $value &gt; 90.0</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$angle eq "" || $angle eq "F"</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>rotation</name>
+	    <attributes>
+	      <prompt>Rotation of tree (in degrees from 360 to -360)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "R\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+	      <scalemin><value>-360</value></scalemin>
+	      <scalemax><value>360</value></scalemax>
+	      <scaleinc>1</scaleinc>
+	      <ctrls>
+		<ctrl>
+		  <message>The value must be comprised between -360 and +360</message>
+		  <language>perl</language>
+		  <code>$value &lt; -360.0 || $value &gt; 360.0</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>arc</name>
+	    <attributes>
+	      <prompt>Angle of arc for tree (in degrees from 0 to 360)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "A\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+	      <scalemin><value>0</value></scalemin>
+	      <scalemax><value>360</value></scalemax>
+	      <scaleinc>1</scaleinc>
+	      <ctrls>
+		<ctrl>
+		  <message>The value must be comprised between 0 and 360</message>
+		  <language>perl</language>
+		  <code>$value &lt; 0.0 || $value &gt; 360.0</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>iterate</name>
+	    <attributes>
+	      <prompt>Iterate to improve tree</prompt>
+	      <vdef>
+		<value>E</value>
+	      </vdef>
+              <vlist>
+                <value>E</value>
+                <label>Equal-Daylight algorithm</label>
+		<value>B</value>
+		<label>n-Body algorithm</label>
+		<value>N</value>
+		<label>No</label>
+              </vlist>
+	      <flist>
+		<value>E</value>
+		<code>""</code>
+		<value>B</value>
+		<code>"I\\n"</code>
+		<value>N</value>
+		<code>"I\\nI\\n"</code>
+	      </flist>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>scale</name>
+	    <attributes>
+	      <prompt>Scale of branch length (default: Automatically rescaled)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? "S\\n$value\\n" : ""</code>
+	      </format>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>horizontal_margins</name>
+	    <attributes>
+	      <prompt>Horizontal margins</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "M\\n$value\\n$vertical_margins\\n" : ""</code>
+	      </format>
+	      <vdef><value>1.73</value></vdef>
+	      <group>10</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>vertical_margins</name>
+	    <attributes>
+	      <prompt>Vertical margins</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <vdef><value>2.24</value></vdef>
+	      <group>9</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>character_height</name>
+	    <attributes>
+	      <prompt>Relative character height</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "C\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>0.3333</value></vdef>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>font</name>
+	    <attributes>
+	      <prompt>Font (PostScript only)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? "F\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>Hershey</value></vdef>
+	      <group>5</group>
+	      <precond>
+		<language>perl</language>
+		<code>$plotter eq "L"</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+	      <size>50</size>
+	      <comment>
+	        <value>Possible values: courier, helvetica,
+	        avantgarde_demi, souvenir_demi, ... (depends on local
+	        web server configuration)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Results">
+      <name>plotfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$plotter ne "L"</code>
+	</precond>
+	<filenames>plotfile</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>psfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$plotter eq "L"</code>
+	</precond>
+	<filenames>plotfile.ps</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>pictfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$plotter eq "M"</code>
+	</precond>
+	<filenames>plotfile.pict</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>xbmfile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$plotter eq "X"</code>
+	</precond>
+	<filenames>plotfile.xbm</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>tops</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>($plotter eq "L") ? " ; ln -sf plotfile plotfile.ps" : "" </code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>topict</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>($plotter eq "M") ? " ; cp plotfile plotfile.pict" : "" </code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>toxbm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>($plotter eq "X") ? " ; ln -sf plotfile plotfile.xbm" : "" </code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"Y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,1 @@
+raxmlHPC-PTHREADS -s infile.txt -m GTRGAMMA -p 12345  -f E -O -n infile.tre  && raxmlHPC-PTHREADS -f e -t RAxML_fastTree.infile.tre  -n brL.infile.tre -s infile.txt -O -m GTRGAMMA  

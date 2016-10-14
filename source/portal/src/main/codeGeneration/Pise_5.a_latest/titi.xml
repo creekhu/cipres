@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Titi</title>
+    <version>0.01</version>
+    <description>Essais (suite)</description>
+  </head>
+
+
+  <command>titi</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>titi</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"echo "</code>
+	</format>
+	<group>0</group>
+	
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+    <name>input</name>
+      <attributes>
+
+        <prompt>Input </prompt>
+        <format>
+          <language>perl</language>
+          <code>" $value"</code>
+        </format>
+        <group>2</group>
+	<pipe>
+	  <pipetype>toto_output</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+
+  </parameters>
+</pise>

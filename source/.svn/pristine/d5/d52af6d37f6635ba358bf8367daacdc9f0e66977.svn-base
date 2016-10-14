@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>html4blast</title>
+    <version>1.6</version>
+    <description>HTML blast results formatter</description>
+    <authors>Nicolas Joly</authors>
+  </head>
+  
+  <command>html4blast</command>
+  
+  <parameters>
+    
+    <!-- ** Command ** -->
+    <parameter type="String" iscommand="1" ishidden="1">
+      <name>html4blast</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>html4blast</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Input file, blast results ** -->
+    <parameter type="InFile" ismandatory="1" issimple="1">
+      <name>input</name>
+      <attributes>
+	<prompt>Blast output file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>4</group>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <!-- ** Output file ** -->
+    <parameter type="Results">
+      <name>output</name>
+      <attributes>
+	<filenames>blast.html</filenames>
+      </attributes>
+    </parameter>
+
+    <!-- ** Database links selection ** -->
+    <parameter type="Excl">
+      <name>links</name>
+      <attributes>
+	<prompt>Database links</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value ne "") ? " $value" : ""</code>
+	</format>
+	<group>1</group>
+	<vlist>
+	  <value>-n</value>
+	  <label>no links</label>
+	  <value></value>
+	  <label>efetch links</label>
+	  <value>-s</value>
+	  <label>Srs links</label>
+	  <value>-e</value>
+	  <label>external sites links</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <!-- ** Graphical display ** -->
+    <parameter type="Switch">
+      <name>graph</name>
+      <attributes>
+	<prompt>Graphical alignment summary</prompt>
+	<vdef>
+	  <value>1</value>
+	</vdef>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -g" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Draw one HSP per graphic line -->
+    <parameter type="Switch">
+      <name>hspline</name>
+      <attributes>
+	<prompt>Draw one HSP per graphic line</prompt>
+	<vdef>
+	  <value>0</value>
+	</vdef>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -l" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Generate query based image names ** -->
+    <parameter type="Switch">
+      <name>queryimagename</name>
+      <attributes>
+	<prompt>Generate query based images names</prompt>
+	<vdef>
+	  <value>0</value>
+	</vdef>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -q" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

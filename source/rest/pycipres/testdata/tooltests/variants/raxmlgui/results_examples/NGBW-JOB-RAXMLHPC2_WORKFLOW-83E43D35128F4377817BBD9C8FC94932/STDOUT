@@ -1,0 +1,237 @@
+CIPRES_THREADSPP=6
+CIPRES_NP=5
+running:
+  ibrun -n 5 --tpp 6 raxmlHPC-HYBRID -T 6 -s infile.txt -p 12345 -m PROTGAMMABLOSUM62F -k -O -f d -N 10 -n infile.tre
+
+This is RAxML MPI Process Number: 0
+
+This is RAxML MPI Process Number: 1
+
+This is RAxML MPI Process Number: 3
+
+This is RAxML MPI Process Number: 2
+
+This is RAxML MPI Process Number: 4
+
+This is the RAxML Master Pthread
+
+This is the RAxML Master Pthread
+
+This is the RAxML Master Pthread
+
+This is the RAxML Master Pthread
+
+This is the RAxML Master Pthread
+Modifying processor affinity for RAxML Master Pthread.
+Modifying processor affinity for RAxML Master Pthread.
+Modifying processor affinity for RAxML Master Pthread.
+Modifying processor affinity for RAxML Master Pthread.
+Modifying processor affinity for RAxML Master Pthread.
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 5
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 5
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 256 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 4.63%
+
+RAxML rapid hill-climbing mode
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+Executing 10 inferences on the original alignment using 10 distinct randomized MP trees
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 256
+Name: No Name Provided
+DataType: AA
+Substitution Matrix: BLOSUM62
+Using empirical base frequencies
+
+
+
+
+RAxML was called as follows:
+
+/opt/raxml/bin/raxmlHPC-HYBRID -T 6 -s infile.txt -p 12345 -m PROTGAMMABLOSUM62F -k -O -f d -N 10 -n infile.tre 
+
+
+Partition: 0 with name: No Name Provided
+Base frequencies: 0.068 0.067 0.042 0.063 0.016 0.035 0.066 0.068 0.027 0.059 0.103 0.037 0.033 0.044 0.041 0.047 0.061 0.009 0.028 0.087 
+
+Inference[0]: Time 245.233780 GAMMA-based likelihood -31139.487840, best rearrangement setting 10
+Inference[6]: Time 252.679920 GAMMA-based likelihood -31141.079202, best rearrangement setting 5
+Inference[2]: Time 261.592186 GAMMA-based likelihood -31141.375112, best rearrangement setting 10
+Inference[4]: Time 270.452343 GAMMA-based likelihood -31145.969585, best rearrangement setting 10
+Inference[8]: Time 278.793201 GAMMA-based likelihood -31141.079338, best rearrangement setting 5
+Inference[1]: Time 228.546634 GAMMA-based likelihood -31140.504827, best rearrangement setting 10
+Inference[3]: Time 229.674733 GAMMA-based likelihood -31143.215503, best rearrangement setting 10
+Inference[5]: Time 222.893079 GAMMA-based likelihood -31143.370908, best rearrangement setting 5
+Inference[7]: Time 257.209627 GAMMA-based likelihood -31141.079245, best rearrangement setting 5
+Inference[9]: Time 256.521760 GAMMA-based likelihood -31141.079247, best rearrangement setting 5
+
+
+Conducting final model optimizations on all 10 trees under GAMMA-based models ....
+
+Inference[6] final GAMMA-based Likelihood: -31141.079202 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.6
+Inference[8] final GAMMA-based Likelihood: -31141.079202 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.8
+Inference[9] final GAMMA-based Likelihood: -31141.079202 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.9
+Inference[0] final GAMMA-based Likelihood: -31139.487843 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.0
+Inference[7] final GAMMA-based Likelihood: -31141.079202 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.7
+Inference[2] final GAMMA-based Likelihood: -31141.375116 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.2
+Inference[4] final GAMMA-based Likelihood: -31145.980512 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.4
+Inference[5] final GAMMA-based Likelihood: -31143.369390 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.5
+Inference[3] final GAMMA-based Likelihood: -31143.233172 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.3
+Inference[1] final GAMMA-based Likelihood: -31140.523654 tree written to file /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_result.infile.tre.RUN.1
+
+
+Starting final GAMMA-based thorough Optimization on tree 0 likelihood -31139.487843 .... 
+
+Final GAMMA-based Score of best tree -31139.487841
+
+Program execution info written to /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_info.infile.tre
+Best-scoring ML tree written to: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_bestTree.infile.tre
+
+Overall execution time: 632.616082 secs or 0.175727 hours or 0.007322 days
+
+CIPRES_THREADSPP=6
+CIPRES_NP=5
+running:
+raxmlHPC-PTHREADS -T 6 -f J -t RAxML_bestTree.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m PROTGAMMABLOSUM62
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+This is the RAxML Master Pthread
+
+This is RAxML Worker Pthread Number: 1
+
+This is RAxML Worker Pthread Number: 2
+
+This is RAxML Worker Pthread Number: 3
+
+This is RAxML Worker Pthread Number: 4
+
+This is RAxML Worker Pthread Number: 5
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 256 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 4.63%
+
+RAxML computation of SH-like support values on a given tree
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 256
+Name: No Name Provided
+DataType: AA
+Substitution Matrix: BLOSUM62
+Using fixed base frequencies
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 6 -f J -t RAxML_bestTree.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m PROTGAMMABLOSUM62 
+
+
+Time after model optimization: 3.812499
+Initial Likelihood -31110.646049
+
+NNI interchanges 0 Likelihood -31110.646049
+
+Final Likelihood of NNI-optimized tree: -31110.646049
+
+RAxML NNI-optimized tree written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_fastTree.sh.infile.tre
+
+Same tree with SH-like supports written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-83E43D35128F4377817BBD9C8FC94932/RAxML_fastTreeSH_Support.sh.infile.tre
+
+Total execution time: 7.316128

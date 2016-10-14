@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>codontree</title>
+    <description>codon usage table, distance matrix and bases composition</description>
+    <authors>Pesole, Attimonelli and Liuni</authors>
+    <reference>Graziano Pesole, Marcella Attimonelli and Sabino Liuni (CNR-Bari). NAR (16):5:1988 pp. 1715-1728</reference>
+</head>
+
+
+<command>codontree</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>codontree</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>codontree</code>
+		<language>perl</language>
+		<code>"codontree"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seqfile</name>
+<attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+		<language>perl</language>
+		<code>  " $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>files</name>
+<attributes>
+
+	<filenames>*.tab *.bc *.mat</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>tabfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" -TABfile=$seqfile.tab"</code>
+	</format>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control_options</name>
+<prompt>Control options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>ntable</name>
+	<attributes>
+
+		<prompt>Translation  table to be used for the computation of distance and codon usage (-NTAble)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -NTAble=$value" : "" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>0</value>
+			<label>UNIVERSAL</label>
+			<value>1</value>
+			<label>CILIATED PROTOZOA</label>
+			<value>2</value>
+			<label>DROSOPHILA MITOCHONDRIAL</label>
+			<value>3</value>
+			<label>MAMMALIAN MITOCHONDRIAL</label>
+			<value>4</value>
+			<label>YEAST MITOCHONDRIAL</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output_options</name>
+<prompt>Output options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="List">
+	<name>bc</name>
+	<attributes>
+
+		<prompt>Bases composition to be computed (-BC)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -BC=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<vlist>
+			<value>1</value>
+			<label>-BC=1 prints the bases composition values of the first position of codons</label>
+			<value>2</value>
+			<label>-BC=2 prints the bases composition values of the second position</label>
+			<value>3</value>
+			<label>-BC=2 prints the bases composition values of the third position</label>
+			<value>A</value>
+			<label>-BC=A prints the bases composition values of all the three</label>
+			<value>Q</value>
+			<label>-BC=Q prints the bases composition values of quartets</label>
+		</vlist>
+		<separator>''</separator>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>eachseq</name>
+	<attributes>
+
+		<prompt>Allows the printout of a distinct codon usage table for each sequence  of  the input file (-EACHseq)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -EACHseq" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>If the switch is not on the command line, the codon usage table refers to all sequences in the input file.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>dist</name>
+	<attributes>
+
+		<prompt>Allows the computation and the printout of the  distances matrix (-DISTance)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -DISTance" : ""</code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>verbose</name>
+	<attributes>
+
+		<prompt>Prints on the screen some useful information (-VERbose)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -VERbose" : ""</code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>bcfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" -BCFILE=$seqfile.bc"</code>
+	</format>
+	<group>3</group>
+<precond>
+	<language>perl</language>
+	<code>$bc</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>matfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" -MATFILE=$seqfile.mat"</code>
+	</format>
+	<group>3</group>
+<precond>
+	<language>perl</language>
+	<code>$dist</code>
+</precond>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

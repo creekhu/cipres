@@ -1,0 +1,354 @@
+/**
+ * QsubProcessWorker.java
+ */
+
+/**
+	Notes about using QsubProcessWorker.  
+
+	- This process does a runtime exec of "qsub."  Thus the env for running qsub (including
+	having qsub's location in PATH) must be configured for the web server running this code.
+
+	- The job will be submitted by whatever user is running the web server, so this user must
+	also have an account on the cluster that the job is submitted too.
+
+	- Use of a LocalFileHandler is hardcoded in here.  We are counting on the workspace directory
+	being directly accessible from both the web server machine and the cluster.
+
+*/
+package org.ngbw.sdk.tool;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.ngbw.sdk.api.tool.FileHandler;
+import org.ngbw.sdk.common.util.ProcessRunner;
+import org.ngbw.sdk.common.util.SuperString;
+import org.ngbw.sdk.core.shared.TaskRunStage;
+
+
+/**
+ * QsubProcessWorker 
+ * 
+ * Required system properties:
+ * 
+ * <ul>
+ * <li>hostName
+ * </ul>
+ * 
+ * @author Terri Liebowitz <br />
+ *
+ */
+public class QsubProcessWorker extends BaseProcessWorker 
+{
+
+/*
+	Add a shutdown hook to qdel the scheduled job?
+*/
+
+	private static final String HOST_NAME = "hostName";
+	private static final String RC = "rc";
+	private static final Log log = LogFactory.getLog(QsubProcessWorker.class.getName());
+	private String m_hostName;
+	private String m_gridEngineJobName;
+
+	private static final int DONE = 0;
+	private static final int ERROR = 1;
+	private static final int TIMEOUT = 2;
+
+	// Poll for job completion every minute.
+	private static final int pollForCompletionInterval = 1 * 60; 
+
+	// I gather from looking at other people's code that qstat may initally return no 
+	// output and that it's worth retrying a few times at a small interval.
+	private static final int waitForQstatInterval = 2; 
+	private static final int waitForQstatTries  = 3; 
+
+	private int qstatExitCode;
+	private String qstatOutput;
+
+
+	public static void addProperties(Map<String, String> params, List<String> props)
+	{
+		String value = params.get("host");
+
+		if (value != null)
+			props.add("-D" + HOST_NAME + "=" + value);
+	}
+
+
+	public static void main(String args[])
+	{
+		try 
+		{
+			(new QsubProcessWorker()).execute();
+		}
+		catch (Throwable thrown) 
+		{
+			log.error("", thrown);
+
+			System.exit(-1);
+		}
+	}
+
+	private QsubProcessWorker() throws PropertyException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, Exception
+	{
+		super();
+
+		// host name
+		m_hostName = System.getProperty(HOST_NAME);
+
+		if (m_hostName == null)
+			throw new PropertyException("required property " + HOST_NAME + " is null");
+
+	}
+
+	private String submitJob() throws Exception
+	{
+		m_gridEngineJobName = m_jobHandle.replaceAll("-", "_");
+
+		/*
+			We'll be doing a runtime exec of "qsub <options> /bin/sh -c <commandline>" where
+			<commandline> will be passed as a single string.  Here we build the commandline.  It 
+			consists of the command to run the user selected tool, with all the user specified
+			parameters, preceeded by some stuff to set up the right environment.
+		*/
+		String commandLine = (m_rc == null) ? "" : ("source " + m_rc + "; ");
+			// source a file to get the PATH and other env vars set.
+
+		commandLine += ( "export WB_JOBID=" + m_jobHandle + "; " ) ;
+			// pass the jobID to the program we're going to run via the env.  At the moment, none of the
+			// tools use this except the cipres framework wrapper.
+
+		commandLine +=  m_commandLine;
+			// add the command and args for the tool
+
+		/*
+			Build the list of options for qsub.
+		*/
+		SuperString ss = SuperString.valueOf("-w e -p 0 -b yes -shell no -cwd -N " + m_gridEngineJobName, ' ');
+		List<String> options = ss.toList();
+
+		/*
+			Compose the full qsub command line
+		*/
+		ArrayList<String> command = new ArrayList<String>();
+		command.add("qsub");
+		command.addAll(options);
+		command.add("/bin/sh");
+		command.add("-c");
+		command.add(commandLine);
+
+		log.debug("m_gridEngineJobName is " + m_gridEngineJobName + " working directory is: " + m_workingDir);
+
+		ProcessRunner pr = new ProcessRunner();
+		pr.directory(new File(m_workingDir));
+
+		try
+		{
+			int exitCode = pr.run(command);
+			if (exitCode != 0)
+			{
+				throw new Exception("Qsub failed with exit status " + exitCode);
+			}
+			String jobID = getJobId(pr.getStdOut());
+			log.info("Job " + m_gridEngineJobName + " was submitted to SGE and returned job number " + jobID);
+			return jobID;
+		}
+		catch (Exception e)
+		{
+			log.error("Stdout from qsub is: " + pr.getStdOut());
+			log.error("Stderr from qsub is: " + pr.getStdErr());
+			throw e;
+		}
+	}
+
+	String  getJobId(String qsubStdout) throws Exception
+	{
+		Pattern p = Pattern.compile("Your job (\\d+) \\(\".*\"\\) has been submitted" );
+		Matcher m = p.matcher(qsubStdout);
+		boolean found = m.find();
+		if (found)
+		{
+			return m.group(1);
+		}
+		throw new Exception("Qsub problem - couldn't parse job id from qsub stdout.");
+	}
+
+	/**
+		This only throws an exception if there's an error writing a failure message to the db.  
+		All other exceptions are handled before returning.
+	*/
+	/* This is called by BaseProcessWorker's execute() method */
+	protected void executeImpl() throws Exception
+	{
+		//SFTPFileHandler handler = new SFTPFileHandler(m_hostName);
+		FileHandler handler = new LocalFileHandler();
+		String statusMessage = null;
+		try 
+		{
+			String jobID = "";
+			int exitStatus = 0;
+			
+			jobID = submitJob();
+
+			/*
+				Todo: set the timeout in the qsub job parameters.  Right now we aren't we're just
+				keeping track of the timeout in how long we wait for completion and then we try to
+				qdel the job.
+			*/
+
+			// tool-registry specifies timeout in minutes, we convert to milliseconds.  0 means no timeout.
+			long timeout = m_jobTimeout > 0 ? (m_jobTimeout * 60 * 1000) : 0;
+			int result;
+
+			result = waitForCompletion(jobID, timeout);
+
+			if (result == TIMEOUT)
+			{
+				log.debug("Job timed out");
+				statusMessage = "Job was terminated when maximum runtime of " + m_jobTimeout + " minutes was reached.";
+				logMessage(statusMessage, TaskRunStage.COMPLETED, true /* error */);
+				exitStatus = -1;
+				runQDel(jobID);
+			} else if (result == ERROR)
+			{
+				throw new Exception("Error getting job status from qstat.");
+			} 
+			String stderr = readStdErr(m_gridEngineJobName, jobID, handler);
+			String stdout = readStdOut(m_gridEngineJobName, jobID, handler);
+
+			log.debug("Calling storeTaskResults");
+			storeTaskResults(stdout, stderr, exitStatus, statusMessage, handler);
+		}
+		catch (Throwable thrown) 
+		{
+			log.error("", thrown);
+			storeTaskFailure(null, thrown, handler);
+		}
+	}
+
+
+	/**
+		Runs qstat -j <jid> repeatedly, eventually returning
+			DONE (when qstat says job doesn't exist)
+			TIMEOUT (if the timeout is exeeded)
+			ERROR (if qstat exits with an error or no output).  In this case it's worth checking
+				or logging qstatError and qstatOutput.
+	*/
+	private int waitForCompletion(String jobID, long timeout) throws Exception
+	{
+		try
+		{
+			return waitForCompletionI(jobID, timeout);	
+		}
+		finally
+		{
+			// I decided to only run qdel on timeouts.
+			//runQDel(jobID);
+		}
+	}
+
+	private void runQDel(String jobID)
+	{
+		try
+		{
+			/* 
+				To do: According to the documentation, sge operators can delete the jobs of other
+				users with qdel.  Since we don't want to do that here it would be safter to delete
+				by jobName and userid than by jobId.  See "man qdel".
+			*/
+			ProcessRunner pr = new ProcessRunner(true);
+			int exitCode = pr.run("qdel " + jobID);
+			log.debug("qdel " + jobID + " returned " + exitCode + ", with stdout/err = " + pr.getStdOut());
+		}
+		catch (Exception e)
+		{
+			log.error("", e);
+		}
+	}
+
+	private int waitForCompletionI(String jobID, long timeout) throws Exception
+	{
+		long startTime = System.currentTimeMillis();
+
+		int timesTried = 0;
+		boolean done = false;
+
+		/*
+			We exit this loop when 1) time exceeded or 
+			2) qstat returns an error or no output more than twice
+			or qstat says job doesn't exist.
+		*/
+		while (timeout == 0 || ((System.currentTimeMillis() - startTime) < timeout))
+		{
+			runQstat(jobID);
+			if (qstatOutput.length() == 0)
+			{
+				if (timesTried > waitForQstatTries)
+				{
+					log.error("Qstat failed, exit code = " + qstatExitCode + ". Qstat output is: " + qstatOutput);
+					return ERROR;
+				}
+				timesTried++;
+				Thread.sleep(waitForQstatInterval); 
+			} else
+			{
+				if (qstatOutput.contains("do not exist"))
+				{
+					return DONE;
+				} 
+				// todo: may want to add code to verify that qstat knows about the job.
+				// for example run qstat without arguments and grep for the jobid.
+				Thread.sleep(pollForCompletionInterval * 1000); 
+			}
+		}
+		return TIMEOUT;
+	}
+
+	private void runQstat(String jobID) throws IOException, InterruptedException
+	{
+		ProcessRunner pr = new ProcessRunner(true /* merge err and output */); 
+		qstatExitCode = pr.run("qstat -j " + jobID);
+		qstatOutput= pr.getStdOut();
+	}
+
+	private String readFile(String filename, FileHandler handler)
+	{
+		try
+		{
+			log.debug("Reading file " + filename);
+			byte[] b = handler.readFile(filename);
+			return new String(b);
+		}
+		catch (Throwable t)
+		{
+			log.debug("", t);
+			return null;
+		}
+	}
+
+	private String readStdErr(String gridEngineJobName, String jobID, FileHandler handler)
+	{
+		return readFile( m_workingDir + gridEngineJobName + ".e" + jobID, handler);
+	}
+
+	private String readStdOut(String gridEngineJobName, String jobID, FileHandler handler)
+	{
+		return readFile( m_workingDir + gridEngineJobName + ".o" + jobID, handler);
+	}
+
+	protected FileHandler getFileHandler() throws Exception
+	{
+		return new LocalFileHandler();
+	}
+
+}
+

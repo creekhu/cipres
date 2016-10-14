@@ -1,0 +1,62 @@
+	<vlist>
+		<value>embl</value>
+		<label>embl: Embl last release + updates</label>
+		<value>embl_new</value>
+		<label>embl_new: Embl updates</label>
+		<value>genbank</value>
+		<label>genbank: Genbank last release + updates</label>
+		<value>genbank_new</value>
+		<label>genbank_new: Genbank updates</label>
+		<value>gbbct</value>
+		<label>gbbct: genbank bacteria</label>
+		<value>gbpri</value>
+		<label>gbpri: primates</label>
+		<value>gbmam</value>
+		<label>gbmam: other mammals</label>
+		<value>gbrod</value>
+		<label>gbrod: rodents</label>
+		<value>gbvrt</value>
+		<label>gbvrt: other vertebrates</label>
+		<value>gbinv</value>
+		<label>gbinv: invertebrates</label>
+		<value>gbpln</value>
+		<label>gbpln: plants (including yeast)</label>
+		<value>gbvrl</value>
+		<label>gbvrl: virus</label>
+		<value>gbphg</value>
+		<label>gbphg: phages</label>
+		<value>gbest</value>
+		<label>gbest: EST (Expressed Sequence Tags)</label>
+		<value>gbsts</value>
+		<label>gbsts: STS (Sequence Tagged sites)</label>
+		<value>gbsyn</value>
+		<label>gbsyn: synthetic</label>
+		<value>gbpat</value>
+		<label>gbpat: patented</label>
+		<value>gbuna</value>
+		<label>gbuna: unannotated</label>
+		<value>gbgss</value>
+		<label>gbgss: Genome Survey Sequences</label>
+		<value>gbhtg</value>
+		<label>gbhtg: GS (high throughput Genomic Sequencing)</label>
+		<value>imgt</value>
+		<label>imgt: ImMunoGeneTics</label>
+		<value>borrelia</value>
+		<label>borrelia: Borrelia burgdorferi complete genome</label>
+		<value>ecoli</value>
+		<label>ecoli: Escherichia Coli complete genome</label>
+		<value>genitalium</value>
+		<label>genitalium: Mycoplasma Genitalium complete genome</label>
+		<value>pneumoniae</value>
+		<label>pneumoniae: Mycoplasma Pneumoniae complete genome</label>
+		<value>pylori</value>
+		<label>pylori: Helicobacter Pylori complete genome</label>
+		<value>subtilis</value>
+		<label>subtilis: Bacillus Subtilis complete genome</label>
+		<value>tuberculosis</value>
+		<label>tuberculosis: Mycobacterium tuberculosis complete genome</label>
+		<value>ypestis</value>
+		<label>Yersinia pestis unfinished genome</label>
+		<value>yeast</value>
+		<label>yeast: Yeast chromosomes</label>
+	</vlist>

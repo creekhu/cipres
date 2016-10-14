@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>ComAlign</title>
+    <description>Combining many multiple alignments in one improved alignment</description>
+    <authors>O. Caprani, K. Bucka-Lassen</authors>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>comalign</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>comalign</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"ComAlign"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+	<prompt>Sequences File (-f)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -f$value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>seed</name>
+      <attributes>
+	<prompt>Random seed number (-s)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -s$value" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>seqnb</name>
+      <attributes>
+	<prompt>Number of sequences that are to be aligned (-n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -n$value" : ""</code>
+	</format>
+	<vdef><value>2</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>iterations</name>
+      <attributes>
+	<prompt>Number of iterations (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -i$value" : ""</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<group>1</group>
+	<comment>
+	  <value>On each iteration a new alignment is added to the pool of alignments ComAlign is working on</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>score</name>
+      <attributes>
+	<prompt>score: ComAlign records the time it took to  find a solution as good as this score (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -l$value" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>time</name>
+      <attributes>
+	<prompt>ComAlign marks the best solution found after this number of 1/100 seconds (-t)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -t$value" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>last_iterations</name>
+      <attributes>
+	<prompt>Makes ComAlign terminate if the score hasn't changed within the last this number of iterations (-c)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef) ? " -c$value" : ""</code>
+	</format>
+	<vdef><value>20</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>print_best</name>
+      <attributes>
+	<prompt>Print the best found alignment on termination (-a)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -a" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

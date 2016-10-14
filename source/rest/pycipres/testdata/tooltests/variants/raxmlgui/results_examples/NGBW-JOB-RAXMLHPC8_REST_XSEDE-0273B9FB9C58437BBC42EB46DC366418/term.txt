@@ -1,0 +1,7 @@
+1426440907 Sun Mar 15 10:35:07 PDT 2015
+ExitCode=0
+Job Id: 2542150.trestles-fe1.local
+Resource List: epilogue=/projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC8_REST_XSEDE-0273B9FB9C58437BBC42EB46DC366418/epilogue.sh,neednodes=trestles-1-12:ppn=32+trestles-1-14:ppn=32,nodes=2:ppn=32,walltime=00:30:00
+Resources Used: cput=00:00:00,mem=27372kb,vmem=447968kb,walltime=00:21:32
+Queue Name: normal
+

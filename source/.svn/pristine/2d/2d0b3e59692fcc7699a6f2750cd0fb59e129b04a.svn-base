@@ -1,0 +1,5 @@
+toolId=RAXMLHPC2_TGB
+runtime_=0.50
+specify_bootstraps_=1
+outsuffix_=!$
+outgroup_="abc"

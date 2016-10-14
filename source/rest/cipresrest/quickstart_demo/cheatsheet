@@ -1,0 +1,8 @@
+List Jobs
+	Get $URL/job/$CRA_USER
+
+Job Status
+	Get job url  
+
+Results
+	Get job url/output

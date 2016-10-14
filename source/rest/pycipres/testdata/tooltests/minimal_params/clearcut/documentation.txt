@@ -1,0 +1,26 @@
+CLEARCUT
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+alignment_or_ - Switch - My data is an alignment (no =distance matrix)
+datatype_is_ - Excl - Datatype:
+corr_model_ - Excl - Correction Model for Computing Distance Matrix
+Section: ****************************************************************************
+adv_opts
+*************************************************************************************
+use_trad_ - Switch - Use traditional Neighbor-Joining algorithm. (-N)
+shuff_matrix_ - Switch - Randomly shuffle the distance matrix. (-S)
+join_det_ - Switch - Attempt joins deterministically. (-r)
+spec_seed_ - Switch - Explicitly set the PRNG seed to a specific value. (-s)
+seed_val_ - Integer -
+Section: ****************************************************************************
+output_opts
+*************************************************************************************
+matrix_out_ - Switch - Output a Distance Matrix
+ntrees_out_ - Integer - Number of trees to write out
+exp_dist_ - Switch - Exponential notation in distance output (-E)
+exp_brl_ - Switch - Exponential notation for branch lengths (-e)
+tree_results_ - Results -
+matrix_results_ - Results -
+commandline_ - Results -
+job_info_ - Results -
+

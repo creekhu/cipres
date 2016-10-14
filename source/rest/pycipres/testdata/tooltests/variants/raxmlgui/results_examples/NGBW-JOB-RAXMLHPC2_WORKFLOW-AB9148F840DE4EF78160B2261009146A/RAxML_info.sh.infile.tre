@@ -1,0 +1,59 @@
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 256 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 4.63%
+
+RAxML computation of SH-like support values on a given tree
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 256
+Name: No Name Provided
+DataType: AA
+Substitution Matrix: BLOSUM62
+Using fixed base frequencies
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 6 -f J -t RAxML_bestTree.infile.tre -p 12345 -n sh.infile.tre -s infile.txt -O -m PROTGAMMABLOSUM62 
+
+
+Time after model optimization: 3.752448
+Initial Likelihood -31110.646049
+
+NNI interchanges 0 Likelihood -31110.646049
+
+Final Likelihood of NNI-optimized tree: -31110.646049
+
+RAxML NNI-optimized tree written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-AB9148F840DE4EF78160B2261009146A/RAxML_fastTree.sh.infile.tre
+
+Same tree with SH-like supports written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-AB9148F840DE4EF78160B2261009146A/RAxML_fastTreeSH_Support.sh.infile.tre
+
+Total execution time: 7.246689

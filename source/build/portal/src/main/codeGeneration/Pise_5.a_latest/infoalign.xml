@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>INFOALIGN</title>
+<description>Information on a multiple sequence alignment (EMBOSS)</description>
+<category>alignment:multiple</category>
+<category>information</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/infoalign.html</doclink>
+</head>
+
+<command>infoalign</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [set of sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>The sequence alignment to be displayed.</value>
+		</comment>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>refseq</name>
+	<attributes>
+		<prompt>The number or the name of the reference sequence (-refseq)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -refseq=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>If you give the number in the alignment or the name of a sequence, it will be taken to be the reference sequence. The reference sequence is the one against which all the other sequences are compared. If this is set to 0 then the consensus sequence will be used as the reference sequence. By default the consensus sequence is used as the reference sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>matrix</name>
+	<attributes>
+		<prompt>Similarity scoring Matrix file (-matrix)</prompt>
+			<vlist>
+				<value>EPAM60</value>
+				<label>EPAM60</label>
+				<value>EPAM290</value>
+				<label>EPAM290</label>
+				<value>EPAM470</value>
+				<label>EPAM470</label>
+				<value>EPAM110</value>
+				<label>EPAM110</label>
+				<value>EBLOSUM50</value>
+				<label>EBLOSUM50</label>
+				<value>EPAM220</value>
+				<label>EPAM220</label>
+				<value>EBLOSUM62-12</value>
+				<label>EBLOSUM62-12</label>
+				<value>EPAM400</value>
+				<label>EPAM400</label>
+				<value>EPAM150</value>
+				<label>EPAM150</label>
+				<value>EPAM330</value>
+				<label>EPAM330</label>
+				<value>EBLOSUM55</value>
+				<label>EBLOSUM55</label>
+				<value>EPAM30</value>
+				<label>EPAM30</label>
+				<value>EPAM260</value>
+				<label>EPAM260</label>
+				<value>EBLOSUM90</value>
+				<label>EBLOSUM90</label>
+				<value>EPAM440</value>
+				<label>EPAM440</label>
+				<value>EPAM190</value>
+				<label>EPAM190</label>
+				<value>EPAM370</value>
+				<label>EPAM370</label>
+				<value>EPAM70</value>
+				<label>EPAM70</label>
+				<value>EPAM480</value>
+				<label>EPAM480</label>
+				<value>EPAM120</value>
+				<label>EPAM120</label>
+				<value>EDNAMAT</value>
+				<label>EDNAMAT</label>
+				<value>EPAM300</value>
+				<label>EPAM300</label>
+				<value>EBLOSUM60</value>
+				<label>EBLOSUM60</label>
+				<value>EPAM230</value>
+				<label>EPAM230</label>
+				<value>EBLOSUM62</value>
+				<label>EBLOSUM62</label>
+				<value>EPAM410</value>
+				<label>EPAM410</label>
+				<value>EPAM160</value>
+				<label>EPAM160</label>
+				<value>EPAM340</value>
+				<label>EPAM340</label>
+				<value>EBLOSUM65</value>
+				<label>EBLOSUM65</label>
+				<value>EPAM40</value>
+				<label>EPAM40</label>
+				<value>EPAM270</value>
+				<label>EPAM270</label>
+				<value>EPAM450</value>
+				<label>EPAM450</label>
+				<value>EPAM380</value>
+				<label>EPAM380</label>
+				<value>EPAM80</value>
+				<label>EPAM80</label>
+				<value>EPAM490</value>
+				<label>EPAM490</label>
+				<value>EBLOSUM30</value>
+				<label>EBLOSUM30</label>
+				<value>EBLOSUMN</value>
+				<label>EBLOSUMN</label>
+				<value>EPAM200</value>
+				<label>EPAM200</label>
+				<value>EPAM130</value>
+				<label>EPAM130</label>
+				<value>EBLOSUM35</value>
+				<label>EBLOSUM35</label>
+				<value>EPAM310</value>
+				<label>EPAM310</label>
+				<value>EBLOSUM70</value>
+				<label>EBLOSUM70</label>
+				<value>EPAM10</value>
+				<label>EPAM10</label>
+				<value>EPAM240</value>
+				<label>EPAM240</label>
+				<value>EPAM420</value>
+				<label>EPAM420</label>
+				<value>EPAM170</value>
+				<label>EPAM170</label>
+				<value>EBLOSUM75</value>
+				<label>EBLOSUM75</label>
+				<value>EPAM350</value>
+				<label>EPAM350</label>
+				<value>EPAM280</value>
+				<label>EPAM280</label>
+				<value>EPAM50</value>
+				<label>EPAM50</label>
+				<value>EPAM460</value>
+				<label>EPAM460</label>
+				<value>EPAM390</value>
+				<label>EPAM390</label>
+				<value>EPAM90</value>
+				<label>EPAM90</label>
+				<value>EPAM100</value>
+				<label>EPAM100</label>
+				<value>EBLOSUM40</value>
+				<label>EBLOSUM40</label>
+				<value>EPAM210</value>
+				<label>EPAM210</label>
+				<value>EPAM140</value>
+				<label>EPAM140</label>
+				<value>EBLOSUM45</value>
+				<label>EBLOSUM45</label>
+				<value>EPAM320</value>
+				<label>EPAM320</label>
+				<value>EBLOSUM80</value>
+				<label>EBLOSUM80</label>
+				<value>EPAM500</value>
+				<label>EPAM500</label>
+				<value>EPAM20</value>
+				<label>EPAM20</label>
+				<value>EPAM250</value>
+				<label>EPAM250</label>
+				<value>EPAM430</value>
+				<label>EPAM430</label>
+				<value>EPAM180</value>
+				<label>EPAM180</label>
+				<value>EBLOSUM85</value>
+				<label>EBLOSUM85</label>
+				<value>EPAM360</value>
+				<label>EPAM360</label>
+			</vlist>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -matrix=$value" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>plurality</name>
+	<attributes>
+		<prompt>Plurality check % for consensus (-plurality)</prompt>
+		<vdef>
+			<value>50.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -plurality=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Set a cut-off for the % of positive scoring matches below which there is no consensus. The default plurality is taken as 50% of the total weight of all the sequences in the alignment.</value>
+		</comment>
+		<scalemin><value>0.0</value></scalemin>
+		<scalemax><value>100.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>identity</name>
+	<attributes>
+		<prompt>Required % of identities at a position fro consensus (-identity)</prompt>
+		<vdef>
+			<value>0.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -identity=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Provides the facility of setting the required number of identities at a position for it to give a consensus. Therefore, if this is set to 100% only columns of identities contribute to the consensus.</value>
+		</comment>
+		<scalemin><value>0.0</value></scalemin>
+		<scalemax><value>100.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>If you enter the name of a file here then this program will write the sequence details into that file.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Format output as an HTML table (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>only</name>
+	<attributes>
+		<prompt>Display the specified columns (-only)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -only" : ""</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>This is a way of shortening the command line if you only want a few things to be displayed. Instead of specifying: &lt;BR&gt; '-nohead -nousa -noname -noalign -nogaps -nogapcount -nosimcount -noidcount -nodiffcount' &lt;BR&gt; to get only the sequence length output, you can specify &lt;BR&gt; '-only -seqlength'</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>heading</name>
+	<attributes>
+		<prompt>Display column headings (-heading)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -heading" : ""</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>usa</name>
+	<attributes>
+		<prompt>Display the USA of the sequence (-usa)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -usa" : ""</code>
+		</format>
+		<group>10</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Display 'name' column (-name)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -name" : ""</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>seqlength</name>
+	<attributes>
+		<prompt>Display 'seqlength' column (-seqlength)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -seqlength" : ""</code>
+		</format>
+		<group>12</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>alignlength</name>
+	<attributes>
+		<prompt>Display 'alignlength' column (-alignlength)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -alignlength" : ""</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>gaps</name>
+	<attributes>
+		<prompt>Display number of gaps (-gaps)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -gaps" : ""</code>
+		</format>
+		<group>14</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>gapcount</name>
+	<attributes>
+		<prompt>Display number of gap positions (-gapcount)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -gapcount" : ""</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>idcount</name>
+	<attributes>
+		<prompt>Display number of identical positions (-idcount)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -idcount" : ""</code>
+		</format>
+		<group>16</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>simcount</name>
+	<attributes>
+		<prompt>Display number of similar positions (-simcount)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -simcount" : ""</code>
+		</format>
+		<group>17</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>diffcount</name>
+	<attributes>
+		<prompt>Display number of different positions (-diffcount)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -diffcount" : ""</code>
+		</format>
+		<group>18</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>change</name>
+	<attributes>
+		<prompt>Display % number of changed positions (-change)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -change" : ""</code>
+		</format>
+		<group>19</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>description</name>
+	<attributes>
+		<prompt>Display 'description' column (-description)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -description" : ""</code>
+		</format>
+		<group>20</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>21</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

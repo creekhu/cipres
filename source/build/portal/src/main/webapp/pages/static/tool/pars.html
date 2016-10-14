@@ -1,0 +1,93 @@
+<h2>PARS</h2>
+<p>
+	<strong>PARS</strong> estimates phylogenies from protein sequences (input using
+	the standard one-letter code  for amino acids) using the parsimony method,
+	in a variant which counts only  those nucleotide changes that change the amino
+	acid, on the assumption that  silent changes are more easily accomplished. Part of Phylip.
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/pars.html">
+		http://evolution.genetics.washington.edu/phylip/doc/pars.html
+	</a>
+</h3>
+	   <h3>TEST DATA SET</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp; 6</pre>
+               <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; 110110</pre>
+             <pre>Beta&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;110000</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; 100110</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; 001001</pre>
+             <pre>Epsilon&nbsp;&nbsp; 001110</pre></td>
+         </tr>
+       </table>
+	   <div align="center">
+         <hr size="2" width="100%" align="center" />
+       </div>
+	   <h3>TEST SET OUTPUT (with all numerical options on)</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>Discrete character parsimony algorithm, version 3.6</pre>
+             <pre>&nbsp;</pre>
+             <pre> 5 species,&nbsp;&nbsp; 6&nbsp; sites</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequences</pre>
+             <pre>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---------</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 110110</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...00.</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .0....</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 001001</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 001...</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>One most parsimonious tree found:</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +Epsilon&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+----------------3&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+--------2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-------------------------Delta&nbsp;&nbsp;&nbsp; &nbsp;</pre>
+             <pre>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +Gamma&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp; </pre>
+             <pre>&nbsp;&nbsp;1----------------Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+Alpha&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>requires a total of&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8.000</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; between&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; length</pre>
+             <pre>&nbsp; -------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.00</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.00</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.00</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.00</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.00</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.00</pre>
+             <pre>&nbsp;</pre>
+             <pre>steps in each site:</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3&nbsp;&nbsp; 4&nbsp;&nbsp; 5&nbsp;&nbsp; 6&nbsp;&nbsp; 7&nbsp;&nbsp; 8&nbsp;&nbsp; 9</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; *-----------------------------------------</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 0|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 2&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;</pre>
+             <pre>From&nbsp;&nbsp;&nbsp; To&nbsp;&nbsp;&nbsp;&nbsp; Any Steps?&nbsp;&nbsp;&nbsp; State at upper node</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( . means same as in the node below it on tree)</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 110110</pre>
+             <pre>&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp; &nbsp;&nbsp;.0....</pre>
+             <pre>&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; 0.1...</pre>
+             <pre>&nbsp;&nbsp; 3&nbsp;&nbsp; Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; ......</pre>
+             <pre>&nbsp;&nbsp; 3&nbsp;&nbsp; Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ...001</pre>
+             <pre>&nbsp;&nbsp; 2&nbsp;&nbsp; Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; ......</pre>
+             <pre>&nbsp;&nbsp; 1&nbsp;&nbsp; Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ...00.</pre>
+             <pre>&nbsp;&nbsp; 1&nbsp;&nbsp; Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; ......</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre></td>
+         </tr>
+       </table>
+	   <h3>&nbsp;</h3>

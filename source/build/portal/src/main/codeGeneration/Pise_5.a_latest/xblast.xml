@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>XBLAST</title>
+    <description>read blast output and mask query</description>
+  </head>
+
+
+<command>xblast</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>xblast</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>xblast</code>
+		<language>perl</language>
+		<code>"xblast"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>blast_output</name>
+<attributes>
+
+	<prompt>Blast Output File (does not work on Blast2 or Blast-Wu output)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>blast_output</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="InFile">
+<name>query</name>
+<attributes>
+
+	<prompt>Query File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+<parameter type="String">
+<name>mask</name>
+<attributes>
+
+	<prompt>masking character</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>4</group>
+	<comment>
+		<value>no value: will generate a query masked with 'x'</value>
+		<value>N&gt; will generate a query masked with 'N', etc ... </value>
+		<value>for using special masking characters like '!@#$%^&amp;*- =&gt;&lt;' and others, quote them with ''</value>
+		<value>for deleting instead of masking use empty double quotes : ''</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>fasta</name>
+<attributes>
+
+	<prompt>generate a fasta-format database of the matched segments</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -d":""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>reversed</name>
+<attributes>
+
+	<prompt>generate a reversed output, e.g. masking the non-matched segments.</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -r":""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

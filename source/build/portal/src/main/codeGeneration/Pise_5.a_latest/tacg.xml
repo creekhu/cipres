@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>TACG</title>
+    <version>2.391</version>
+    <description>Restriction Enzyme analysis</description>
+    <authors>Mangalam</authors>
+    <category>nucleic:restriction</category>
+  </head>
+
+  <command>tacg</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>tacg</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"tacg"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence</name>
+      <attributes>
+	<prompt>DNA Sequence (raw sequence)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" &lt; $value "</code>
+	</format>
+	<group>100</group>
+	<seqfmt>
+	  <value>13</value>
+	</seqfmt>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input_options</name>
+	<prompt>Input options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>beginning</name>
+	    <attributes>
+	      <prompt>Beginning of a subsequence in your sequence (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -b $value" : "" </code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>end</name>
+	    <attributes>
+	      <prompt>End of a subsequence in your sequence (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -e $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>topology</name>
+	    <attributes>
+	      <prompt>Form (or topology) of DNA (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -f $value" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: circular</label>
+		<value>1</value>
+		<label>1: linear</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>degeneracy</name>
+	    <attributes>
+	      <prompt>Degeneracy flag - controls input and analysis of degenerate sequence input (-D)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -D $value" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: FORCES excl'n of degens in seq; only 'acgtu' accepted</label>
+		<value>1</value>
+		<label>1: cut as NONdegen unless degen's found; then cut as '-D3'</label>
+		<value>2</value>
+		<label>2: degen's OK; ignore in KEY, but match outside of KEY</label>
+		<value>3</value>
+		<label>3: degen's OK; expand in KEY, find only EXACT matches</label>
+		<value>4</value>
+		<label>4: degen's OK; expand in KEY, find ALL POSSIBLE matches</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>codon</name>
+	    <attributes>
+	      <prompt>Codon Usage table to use for translation (-C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -C $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <vlist>
+		<value>0</value>
+		<label>0: Universal</label>
+		<value>1</value>
+		<label>1: Mito_Vertebrates</label>
+		<value>2</value>
+		<label>2: Mito_Drosophila</label>
+		<value>3</value>
+		<label>3: Mito_S_Cervisiae</label>
+		<value>4</value>
+		<label>4: Mito_S_Pombe</label>
+		<value>5</value>
+		<label>5: Mito_N_crassa</label>
+		<value>6</value>
+		<label>6: Mito_Higher_Plants</label>
+		<value>7</value>
+		<label>7: Ciliates</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>order_by_cut</name>
+	    <attributes>
+	      <prompt>Order the output by number of cuts/fragments (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$print_fragments || $sites || $ladder_map || $gel_map</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>width</name>
+	    <attributes>
+	      <prompt>Output width (between 60 and 210) (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -w $value" : ""</code>
+	      </format>
+	      <vdef><value>60</value></vdef>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>graphic</name>
+	    <attributes>
+	      <prompt>Histogram output (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -G$binsize,$value" : ""</code>
+	      </format>
+	      <group>2</group>
+	      <vlist>
+		<value>X</value>
+		<label>X: horizontal X axis</label>
+		<value>Y</value>
+		<label>Y: vertical X axis</label>
+		<value>Z</value>
+		<label>Z: long output</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>binsize</name>
+	    <attributes>
+	      <prompt>Step size in histogram</prompt>
+	      <format>
+		<language>perl</language>
+		<code> "" </code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$graphic</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>selection_options</name>
+	<prompt>Enzymes Selection options</prompt>
+	<group>2</group>
+	<parameters>
+	  
+	  <parameter type="String">
+	    <name>enzymes</name>
+	    <attributes>
+	      <prompt>Enzymes selection list (separated by comma)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -r $value" : "" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>max_cut</name>
+	    <attributes>
+	      <prompt>Maximum number of cuts allowed in sequence (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -M $value" : "" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>min_cut</name>
+	    <attributes>
+	      <prompt>Minimum number of cuts in sequence for the enzyme to be selected (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m $value" : "" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>magnitude</name>
+	    <attributes>
+	      <prompt>Select enzymes by magnitude of recognition site (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -n $value" : "" </code>
+	      </format>
+	      <vdef><value>3</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>3</value>
+		<label>3</label>
+		<value>4</value>
+		<label>4</label>
+		<value>5</value>
+		<label>5</label>
+		<value>6</value>
+		<label>6</label>
+		<value>7</value>
+		<label>7</label>
+		<value>8</value>
+		<label>8</label>
+	      </vlist>
+	      <comment>
+		<value>The 'magnitude' of the recognition sequence depends on the number of defined bases that make up the site. Degenerate bases can also contribute:</value>
+		<value>acgt each count '1' magnitude point</value>
+		<value>yrwsmk each count '1/2' magnitude point</value>
+		<value>bdhu each count '1/4' magnitude point</value>
+		<value>n doesn't count at all</value>
+		<value>Those enzymes sequences' patterns that 'sum' to the equivalent of at least the given magnitude pass the test</value>
+		<value>Examples: tgca=4, tgyrca=5, tgcnnngca=6, etc...</value>
+		<value>The values are upwardly inclusive (5=5,6,7,8 6=6,7,8 ...)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>overhang</name>
+	    <attributes>
+	      <prompt>Select enzymes by overhang generated (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value ne $vdef)? " -o $value" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>5</value>
+		<label>5: 5' overhang</label>
+		<value>3</value>
+		<label>3: 3'</label>
+		<value>0</value>
+		<label>0: blunt (no overhang)</label>
+		<value>1</value>
+		<label>1: all</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>analyses</name>
+	<prompt>Analyses</prompt>
+	<group>2</group>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>summary</name>
+	    <attributes>
+	      <prompt>Summary of site information (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -s" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>print_fragments</name>
+	    <attributes>
+	      <prompt>Table of fragments (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -F $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>0</value>
+		<label>0: don't print fragments</label>
+		<value>1</value>
+		<label>1: by sites</label>
+		<value>2</value>
+		<label>2: sorted by sizes</label>
+		<value>3</value>
+		<label>3: both</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>sites</name>
+	    <attributes>
+	      <prompt>Table of actual cut sites (a la Strider) (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -S" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>ladder_map</name>
+	    <attributes>
+	      <prompt>Ladder map of selected enzymes (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -l" : "" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gel_map</name>
+	    <attributes>
+	      <prompt>Pseudo-graphic gel map (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -g $cutoff" : "" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>cutoff</name>
+	    <attributes>
+	      <prompt>Low-end cutoff in number of bases for gel map (&gt;= 10) </prompt>
+	      <format>
+		<language>perl</language>
+		<code> "" </code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>You can cut off any size in 10^n increments (as you might want to cut off very large fragments if you were doing chromosomal digests).</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$gel_map</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>linear_map_options</name>
+	      <prompt>Linear map</prompt>
+	      <group>2</group>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>linear_map</name>
+		  <attributes>
+
+		    <prompt>Linear map a la Strider (-L)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -L" : "" </code>
+		    </format>
+		    <group>2</group>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>translation</name>
+		  <attributes>
+
+		    <prompt>Linear co-translation  (-t,-T)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " $trans_flag $translation_frames" : ""</code>
+		    </format>
+		    <group>2</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message 1</message>
+			<language>perl</language>
+			<code>$three_letter &amp;&amp; ($trans_flag="-T") &amp;&amp; 0</code>
+		      </ctrl>
+		      <ctrl>
+			<message>no message 2</message>
+			<language>perl</language>
+			<code>! $three_letter &amp;&amp; ($trans_flag="-t") &amp;&amp; 0</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$linear_map</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>translation_frames</name>
+		  <attributes>
+
+		    <prompt>Translation in how many frames</prompt>
+		    <vdef><value>1</value></vdef>
+		    <group>2</group>
+		    <vlist>
+		      <value>1</value>
+		      <label>1 frame</label>
+		      <value>3</value>
+		      <label>3 frames</label>
+		      <value>6</value>
+		      <label>6 frames</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$translation</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>three_letter</name>
+		  <attributes>
+
+		    <prompt>Translation in 3-letter code (-T)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>2</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$translation</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>orf_options</name>
+	      <prompt>Open Reading Frames</prompt>
+	      <group>2</group>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>orf</name>
+		  <attributes>
+
+		    <prompt>Do an ORF analysis</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -O $frame,$min_size" : "" </code>
+		    </format>
+		    <group>2</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>($frame=~ s/\\s//g) &amp;&amp; 0</code>
+		      </ctrl>
+		    </ctrls>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="List">
+		  <name>frame</name>
+		  <attributes>
+
+		    <prompt>Frames to search</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>""</code>
+		    </format>
+		    <vdef>
+		      <value>1</value>
+
+		    </vdef>
+		    <group>2</group>
+		    <vlist>
+		      <value>1</value>
+		      <label>1</label>
+		      <value>2</value>
+		      <label>2</label>
+		      <value>3</value>
+		      <label>3</label>
+		      <value>4</value>
+		      <label>4</label>
+		      <value>5</value>
+		      <label>5</label>
+		      <value>6</value>
+		      <label>6</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$orf</code>
+		    </precond>
+		    <separator>'" "'</separator>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Integer">
+		  <name>min_size</name>
+		  <attributes>
+
+		    <prompt>Min ORF size</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>""</code>
+		    </format>
+		    <group>2</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$orf</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>pattern_search_options</name>
+	      <prompt>Pattern Search</prompt>
+	      <group>2</group>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>pattern_search</name>
+		  <attributes>
+
+		    <prompt>Do a pattern search (-p)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -p $name,$pattern,$errors" : "" </code>
+		    </format>
+		    <group>2</group>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="String">
+		  <name>pattern</name>
+		  <attributes>
+
+		    <prompt>Pattern (&lt;30 IUPAC character)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"" </code>
+		    </format>
+		    <group>2</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$pattern_search</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Integer">
+		  <name>errors</name>
+		  <attributes>
+
+		    <prompt>Max number of errors that are tolerated (&lt;6) (-p)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>2</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$pattern_search</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="String">
+		  <name>name</name>
+		  <attributes>
+
+		    <prompt>Label of pattern</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code> "" </code>
+		    </format>
+		    <vdef><value>pattern1</value></vdef>
+		    <group>2</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$pattern_search</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Paragraph">
+		  <paragraph>
+		    <name>proximity_options</name>
+		    <prompt>Search for spatial relationships between factors (-P)</prompt>
+		    <group>2</group>
+		    <parameters>
+
+		      <parameter type="Switch">
+			<name>proximity</name>
+			<attributes>
+
+			  <prompt>Do a proximity search</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>($value)? " -P $nameA,$distance,$nameB" : "" </code>
+			  </format>
+
+			</attributes>
+		      </parameter>
+
+		      <parameter ismandatory="1" type="String">
+			<name>distance</name>
+			<attributes>
+
+			  <prompt>Distance between factors</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>""</code>
+			  </format>
+			  <comment>
+			    <value>Distance specification: [+-][lg]Dist_Lo[-Dist_Hi</value>
+			    <value>+ NameA is DOWNSTREAM of NameB (default is either)</value>
+			    <value>- NameA is UPSTREAM of NameB (ditto)</value>
+			    <value>l NameA is LESS THAN Dist_Lo from NameB (default)</value>
+			    <value>g NameA is GREATER THAN Dist_Lo from NameB</value>
+			    <value>examples:</value>
+			    <value>HindIII,350,bamhi: Matches HindIII sites within 350 bp of BamHI sites</value>
+			    <value>Pit1,-30-2500,Tataa: Match Pit1 sites 30 to 2500 bp UPSTREAM of a Tataa site</value>
+			  </comment>
+			  <precond>
+			    <language>perl</language>
+			    <code>$proximity</code>
+			  </precond>
+
+			</attributes>
+		      </parameter>
+
+		      <parameter ismandatory="1" type="String">
+			<name>nameA</name>
+			<attributes>
+
+			  <prompt>Name of first factor (nameA)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code> "" </code>
+			  </format>
+			  <comment>
+			    <value>NameA and NameB must be enzymes names (Rebase db)</value>
+			  </comment>
+			  <precond>
+			    <language>perl</language>
+			    <code>$proximity</code>
+			  </precond>
+
+			</attributes>
+		      </parameter>
+
+		      <parameter ismandatory="1" type="String">
+			<name>nameB</name>
+			<attributes>
+
+			  <prompt>Name of second factor (nameB)</prompt>
+			  <format>
+			    <language>perl</language>
+			    <code>"" </code>
+			  </format>
+			  <precond>
+			    <language>perl</language>
+			    <code>$proximity</code>
+			  </precond>
+
+			</attributes>
+		      </parameter>
+
+		    </parameters>
+		  </paragraph>
+
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>quiet</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -q"</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

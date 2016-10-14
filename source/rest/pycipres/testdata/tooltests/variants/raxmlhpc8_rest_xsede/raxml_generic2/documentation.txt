@@ -1,0 +1,13 @@
+Using raxml generic_ parameter.
+
+User can enter anything in whitelist chars, except our validation
+for generic parameter makes sure each arg is entered separately
+with a hyphen or double hyphen and we don't allow -w and -T.
+
+This test succeeds with generic_ arguments appearing at end of commandline.
+As a result commandline specifies -n twice, with the copy from the generic
+param at the end of the line as "-n foo".  Apparently this takes precedence.
+
+Generates this command line:
+raxmlHPC-PTHREADS  -f d -n result  -s infile.txt -c 25 -p 12345 -m GTRCAT   -n foo'
+

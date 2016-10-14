@@ -1,0 +1,15 @@
+PHYLOBAYES_XSEDE_RESTART
+infile_ - Primary Input File
+ALL_FILES_ - Results -
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+chainfile1_ - InFile - Select the first chain file to restart
+chainfile2_ - InFile - Select the second chain file to restart
+chainparamfile1_ - InFile - Select the first chain.param file to restart
+chainparamfile2_ - InFile - Select the second chain.param file
+chaintreefile1_ - InFile - Select the first chain.treelist file to restart
+chaintreefile2_ - InFile - Select the second chain.treelist file
+chaintracefile1_ - InFile - Select the first chain.trace file to restart
+chaintracefile2_ - InFile - Select the second chain.trace file
+chainmonfile1_ - InFile - Select the first chain.monitor file to restart
+chainmonfile2_ - InFile - Select the second chain.monitor file
+

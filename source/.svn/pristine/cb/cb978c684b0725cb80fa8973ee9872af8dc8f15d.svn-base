@@ -1,0 +1,14 @@
+This test suite covers the ViPR use case where no bootstrapping is used, with DNA data:
+
+tool=RAXMLHPC2_TGB
+vparam.runtime_=168 (we use cipres run wall time as suggested by you)
+vparam.bootstrap_seed_=0 (this will be 0 for non-bootstrapping)
+vparam.dna_gtrcat_=GTRGAMMA for dna sequences
+At present we must set vparam.bootstrap_seed_=0
+
+
+Generates the command line:
+raxmlHPC-PTHREADS      -n result -s infile.txt    -p 12345      -m GTRGAMMA '
+
+
+

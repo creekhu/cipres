@@ -1,0 +1,21 @@
+This is a skeleton of a web application that uses CIPRES REST API and UMBRELLA authentication.
+
+A real web application would have some sort of user registration, but this example doesn't.
+Instead, in this example, you enter all the required user info, on the login screen, each
+time you start a session.  Whatever you enter on the login form will be sent to the CRA,
+in the cipres-eu headers, when you do something that requires communication with the CRA like 
+"List Tasks" or "Create Task".  At that point you may see an Authentication Error, returned 
+from the CRA, if, for example, you've entered an invalid country code or you use the same 
+email address as another user.  (Please note that the country code must be 2 letters, all caps.)
+
+Note that you can enter any login name you like; it doesn't need to be something that you
+previously registered with the CRA.  When UMBRELLA auth is used, the CRA treats the application name + 
+username pair as a unique user ID.  If it doesn't find the pair in its database, it automatically 
+creates an account for the user.  Thus there is no need for end users of an UMBRELLA application 
+to register with the CRA.
+
+Also note:
+- The maximum job runtime is capped at 1 min.
+- The example does NO validation of what you enter on the Create Task form.  Bad inputs will
+be passed on the CRA and you'll have plenty of opportunity to see the kinds of validation 
+error messages the CRA can return.

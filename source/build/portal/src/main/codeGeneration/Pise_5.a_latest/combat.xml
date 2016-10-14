@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>COMBAT</title>
+    <version>1.0</version>
+    <description>Comparison of coding DNA</description>
+    <authors>Pedersen, Lyngso,Hein</authors>
+    <reference>Christian N. S. Pedersen, Rune B. Lyngso and Jotun Hein. Comparison of coding DNA in Proceedings of the 9th Annual Symposium of Combinatorial Pattern Matching (CPM), 1998.</reference>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>combat</command>
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>combat</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"cat $sequence2 >> $sequence1; combat control_file > distance.out ; combat_combine $sequence1 combat.aln"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence1</name>
+      <attributes>
+
+	<prompt>First Sequence</prompt>
+	<format>
+		<language>perl</language>
+		<code>"&gt;inputfile\n\"$value\"\n"</code>
+	</format>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+	<group>1</group>
+	<paramfile>control_file</paramfile>
+	<comment>
+	  <value> Each of the two sequences must describe an integer number of
+codon, i.e. the length of each sequence must be a multiple of three.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence2</name>
+      <attributes>
+
+	<prompt>Second Sequence</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+	<group>0</group>
+	<comment>
+	  <value> Each of the two sequences must describe an integer number of
+codon, i.e. the length of each sequence must be a multiple of three.</value>
+	</comment>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>output_aln</name>
+      <attributes>
+	<vdef>
+	  <value>"combat.aln"</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>"&gt;outputfile\n\"combat.aln\"\n"</code>
+	</format>
+	<group>2</group>
+	<paramfile>control_file</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile" isstandout="1">
+      <name>alignment_file</name>
+      <attributes>
+	<vdef>
+	  <value>"combat.out"</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<group>0</group>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>protein_distance_matrix</name>
+      <attributes>
+	<prompt>Amino-acid distance matrix</prompt>
+	<vlist>
+	  <value>PAM60</value>
+	  <label>PAM60</label>
+	  <value>PAM120</value>
+	  <label>PAM120</label>
+	  <value>PAM250</value>
+	  <label>PAM250</label>
+	  <value>PAM350</value>
+	  <label>PAM350</label>
+	  <value>Blosum30</value>
+	  <label>Blosum30</label>
+	  <value>Blosum62</value>
+	  <label>Blosum62</label>
+	  <value>Blosum90</value>
+	  <label>Blosum90</label>
+	</vlist>
+	<vdef>
+	  <value>PAM60</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>"&gt;distance matrix\n\"/local/gensoft/lib/combat/$value" . "_distance.m\"\n"</code>
+	</format>
+	<group>3</group>
+	<paramfile>control_file</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>nucleotide_distance_matrix</name>
+      <attributes>
+	<prompt>Nucleotid distance matrix</prompt>
+	<vlist>
+	  <value>1</value>
+	  <label>matrix 1</label>
+	  <value>2</value>
+	  <label>matrix 2</label>
+	  <value>3</value>
+	  <label>matrix 3</label>
+	</vlist>
+	<vdef>
+	  <value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>"&gt;nucleotide matrix\n\"/local/gensoft/lib/combat/nucleotide_distance$value.m\"\n"</code>
+	</format>
+	<group>4</group>
+	<paramfile>control_file</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>protein_gap_open</name>
+      <attributes>
+	<prompt>Gap open cost for protein</prompt>
+	<format>
+		<language>perl</language>
+		<code>"&gt;gap functions\\nprotein:        $value"</code>
+	</format>
+	<vdef>
+	  <value>20</value>
+	</vdef>
+	<group>5</group>
+	<paramfile>control_file</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>protein_gap_ext</name>
+      <attributes>
+	<prompt>Gap extension cost for protein</prompt>
+	<format>
+		<language>perl</language>
+		<code>" + $value*k\\n"</code>
+	</format>
+	<vdef>
+	  <value>8</value>
+	</vdef>
+	<group>6</group>
+	<paramfile>control_file</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>dna_gap_open</name>
+      <attributes>
+	<prompt>Gap open cost for dna</prompt>
+	<format>
+		<language>perl</language>
+		<code>"dna:        $value"</code>
+	</format>
+	<vdef>
+	  <value>8</value>
+	</vdef>
+	<group>7</group>
+	<paramfile>control_file</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Integer">
+      <name>dna_gap_ext</name>
+      <attributes>
+	<prompt>Gap extension cost for dna</prompt>
+	<format>
+		<language>perl</language>
+		<code>" + $value*k"</code>
+	</format>
+	<vdef>
+	  <value>2</value>
+	</vdef>
+	<group>8</group>
+	<paramfile>control_file</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>results_files</name>
+      <attributes>
+	<filenames>control_file gnuplot_file combat.ps distance.out</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>gnuplot_call</name>
+      <attributes>
+	<format>
+		<language>perl</language>
+		<code>"; gnuplot &lt; gnuplot_file"</code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>gnuplot_commands</name>
+      <attributes>
+	<format>
+		<language>perl</language>
+		<code>"set xtics 12,5.,1000\nset ytics 12,5.,1000\nset grid\nset terminal postscript\nset output \"combat.ps\"\nplot \"combat.aln\" with lines\n"</code>
+	</format>
+	<group>1</group>
+	<paramfile>gnuplot_file</paramfile>
+      </attributes>
+    </parameter>
+
+    
+</parameters>
+</pise>

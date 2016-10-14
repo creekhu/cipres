@@ -1,0 +1,14 @@
+curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER/validate \
+-F metadata.statusEmail=true \
+-F tool=BEAST_TG \
+-F input.infile_=@./info.txt \
+-F vparam.beagle_scaling_=dynamic \
+-F vparam.codon_partitioning_=0 \
+-F vparam.datatype_=0 \
+-F vparam.no_beagle_=0 \
+-F vparam.nu_partitions_=1 \
+-F vparam.nu_patterns_=250 \
+-F vparam.runtime_=0.5 \
+-F vparam.spec_seed_=0 \
+-F vparam.which_beast_=2 \
+-F vparam.seed_val_=10

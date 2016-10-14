@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>MORGAN</title>
+    <description>finding genes in eukaryotic DNA</description>
+    <authors>Salzberg, Delcher, Fasman and Henderson</authors>
+    <reference>S. Salzberg, A. Delcher, K. Fasman, and J. Henderson.  A Decision Tree System for Finding Genes in DNA.  Technical Report 1997-03, Department of Computer Science, Johns Hopkins University, March 1997.</reference>
+</head>
+
+
+<command>morgan</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>morgan</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"fasta2seq.pl $seqfile | morgan - " </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seqfile</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

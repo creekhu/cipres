@@ -1,0 +1,41 @@
+package org.ngbw.examples;
+
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.ngbw.sdk.api.tool.ProcessResult;
+import org.ngbw.sdk.tool.LocalProcessWorker;
+
+
+public class LocalProcessWorkerSample {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		/*
+		ExecutorService pool = Executors.newCachedThreadPool();
+		
+		StreamReaderImplementor sr = new StreamReaderImplementor(pool);
+		String cmd = "/usr/local/blast/bin/blastall -p blastp -d SWISSPROT -i query.fasta -a 2 -o blast.txt";
+		
+		// redirect throws an error:  [NULL_Caption] ERROR: Arguments must start with '-' (the offending argument #9 was: '>')
+		//String cmd = "/usr/local/blast/bin/blastall -p blastp -d SWISSPROT -i query.fasta -a 2 > blast.txt";
+		
+		LocalProcessWorker worker = new LocalProcessWorker(cmd, sr);
+		Map<String, String> cfg = new HashMap<String, String>();
+		cfg.put("workspace", "/fs/swami-ws/");
+		worker.configure(cfg);
+		ProcessResult result = worker.call();
+		
+		System.out.println("STDOUT: " + result.getSTDOUT());
+		System.out.println("STDERR: " + result.getSTDERR());
+		*/
+
+	}
+
+}

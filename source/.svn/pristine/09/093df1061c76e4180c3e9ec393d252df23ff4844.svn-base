@@ -1,0 +1,20 @@
+
+In AuthenticationInterceptor.java, I added a way for an ADMIN user to impersonate any other user 
+without knowing his password.  To use it, login as an administrator, go to "my profile" (other 
+locations work just as well, but you definitely don't want to do this on the login url), and 
+then modify url in brower, adding query parameter ?impersonate=username
+and tell the browser to go to that url.  Now go to Home tab and you should see that user's 
+folders as well as a "Welcome username ..." message with the name of the user you're impersonating.
+
+Example url: http://localhost:7070/portal2/profile.action?impersonate=test1
+to impersonate the test1 user.  Note that you have to refresh the page to see
+test1's profile.
+
+Be sure to logout when done!
+
+TODO
+1) figure out what happens if the user you're impersonating is logged in, or logs in
+while you're impersonating.
+2) Implement a way to enable/disable this feature.  Maybe build time so we don't add the
+overhead of checking something to each request.
+

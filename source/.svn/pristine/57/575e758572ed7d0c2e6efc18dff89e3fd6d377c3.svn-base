@@ -1,0 +1,341 @@
+/**
+ * GlobusProcessWorker.java
+ */
+
+package org.ngbw.sdk.tool;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.globus.gram.Gram;
+import org.globus.gram.GramException;
+import org.globus.gram.GramJob;
+import org.ietf.jgss.GSSCredential;
+import org.ngbw.sdk.WorkbenchException;
+import org.ngbw.sdk.api.tool.FileHandler;
+import java.util.Date;
+import org.ngbw.sdk.database.Statistics;
+
+
+/**
+ * GlobusProcessWorker 
+ * 
+ * Required system properties:
+ * 
+ * <ul>
+ * <li>hostName
+ * </ul>
+ * 
+ * @author Terri Liebowitz <br />
+ *
+ */
+public class GlobusProcessWorker extends BaseProcessWorker 
+{
+	// These properties should be specified in the tool-resource.cfg.xml, in the ToolResource
+	// entry.  Tool.processTask() adds them to our command line.
+	private static final String JOBHOST = "jobHost";
+	private static final String JOBPORT= "jobPort";
+	static final String FILEHOST = "fileHost";
+	static final String FILEPORT= "filePort";
+	private static final String WRAPPER = "wrapper";
+	private static final String RSL = "rsl";
+	private static final String PROJECT="project";
+
+	private static final Log log = LogFactory.getLog(GlobusProcessWorker.class.getName());
+	private String m_jobHost;
+	private String m_jobPort;
+	private String m_fileHost;
+	private int m_filePort;
+	private String m_wrapper;
+	private CipresRSL m_rsl;
+	private String m_project;
+	@SuppressWarnings("unchecked")
+	private Class rslClass;
+	private GramJob m_job;
+	private String m_jobID;
+	private GSSCredential m_proxy;
+	private long startTime;
+	private long endTime;
+	private String m_userName, m_userEmail, m_userIP;
+
+
+	/**
+		These are the properties we expect to find in tool registry entry for this resource.
+		Tool.processTask() calls our addProperties method to take the properties from
+		the registry and add them to our commandline as system properties.
+	*/
+	public static void addProperties(Map<String, String> params, List<String> cmd)
+	{
+		String value = params.get(JOBHOST);
+		if (value != null)
+			cmd.add("-D" + JOBHOST + "=" + value);
+		value = params.get(JOBPORT);
+		if (value != null)
+			cmd.add("-D" + JOBPORT + "=" + value);
+		value = params.get(FILEHOST);
+		if (value != null)
+			cmd.add("-D" + FILEHOST + "=" + value);
+		value = params.get(FILEPORT);
+		if (value != null)
+			cmd.add("-D" + FILEPORT + "=" + value);
+		value = params.get(WRAPPER);
+		if (value != null)
+			cmd.add("-D" + WRAPPER + "=" + value);
+
+		value = params.get(RSL);
+		if (value != null)
+			cmd.add("-D" + RSL + "=" + value);
+
+		value = params.get(PROJECT);
+		if (value != null)
+			cmd.add("-D" + PROJECT + "=" + value);
+	}
+
+
+	public static void main(String args[])
+	{
+		try 
+		{
+			(new GlobusProcessWorker()).execute();
+		}
+		catch (Throwable thrown) 
+		{
+			log.error("", thrown);
+			System.exit(-1);
+		}
+	}
+
+	private GlobusProcessWorker() throws PropertyException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, Exception
+	{
+		super();
+		log.debug("In GlobusProcessWorker ctor, just initialized base class");
+		String tmp;
+
+		// host name
+		m_jobHost = System.getProperty(JOBHOST);
+		m_jobPort = System.getProperty(JOBPORT);
+		m_fileHost = System.getProperty(FILEHOST);
+		tmp = System.getProperty(FILEPORT);
+		if (tmp == null)
+		{
+			throw new PropertyException("Required property " + FILEPORT + " is null.");
+		}
+		m_filePort = new Integer(tmp);
+
+		m_wrapper = System.getProperty(WRAPPER);
+		m_userName = System.getProperty(Tool.USER_NAME);
+		m_userEmail = System.getProperty(Tool.USER_EMAIL);
+		m_userIP = System.getProperty(Tool.USER_IP);
+
+		tmp = System.getProperty(RSL);
+		if (tmp == null)
+		{
+			throw new PropertyException("Required property " + RSL + " is null.");
+		}
+		rslClass = Class.forName(tmp);
+
+		if ((m_jobHost == null) || (m_jobPort == null) || (m_fileHost == null) || (m_wrapper == null) )
+			throw new PropertyException("one of the required properties in the following list is null: " + 
+				JOBHOST + ", " + JOBPORT + ", " + FILEHOST + ", " + WRAPPER);
+
+		if (m_userName == null) 
+		{
+			throw new PropertyException("Required property " + Tool.USER_NAME + " is missing.");
+		}
+		m_userEmail = (m_userEmail == null) ? "" : m_userEmail;
+		m_userIP = (m_userIP == null) ? "" : m_userIP;
+
+		m_proxy = GlobusCred.getInstance().get();
+
+		startTime = (new Date()).getTime();
+
+		endTime = startTime + (GlobusConfig.getMaxMinutes() * 60 * 1000);
+
+		tmp = System.getProperty(PROJECT);
+		if (tmp == null)
+		{
+			throw new PropertyException("Required property " + PROJECT + " is null.");
+		}
+		m_project = tmp;
+	}
+
+	@SuppressWarnings("unchecked")
+	private CipresRSL getRSLObject() throws Exception
+	{
+		Object[] args = new Object[] {m_commandLine, m_workingDir, m_wrapper, m_jobHandle, m_schedulerConf, m_project};
+		Class[] argTypes = new Class[] {String.class, String.class, String.class, String.class, Properties.class, 
+			String.class};
+		Constructor ctor = rslClass.getConstructor(argTypes);
+		CipresRSL retval = (CipresRSL)ctor.newInstance(args);
+		return retval;
+	}
+
+
+	private String submitJob() throws Exception
+	{
+		Gram.ping(m_proxy, m_jobHost);
+
+		m_rsl = getRSLObject();
+		String theRSLString = m_rsl.getGT2String();
+		log.debug("RSL=" + theRSLString);
+
+		m_job = new GramJob(m_proxy, theRSLString);
+		m_job.request(m_jobHost, true);
+		m_jobID = m_job.getIDAsString();
+		log.info("Gram jobid=" + m_jobID);
+
+		Statistics stat = Statistics.findStatistic(m_taskId, m_jobHandle);
+		stat.setRemoteJobId(m_jobID);
+		stat.save();
+
+		return m_jobID;
+	}
+
+	private String  probe() throws Exception
+	{
+		try
+		{
+			m_job = new GramJob("proble rsl");
+			m_job.setCredentials(m_proxy);
+			m_job.setID(m_jobID);
+			Gram.jobStatus(m_job);
+			return m_job.getStatusAsString();
+		}
+		/*
+			GramException with ERROR_CONTACTING_JOB_MANAGER error code happens
+			when job is DONE and job manager has exitted - if we don't probe
+			very frequently we'll probably miss the moment where the job manager
+			returns a status of DONE and instead we'll get this exception.
+
+			Unfortunately, we could also get this exception if there were a 
+			network error. If that's the case we'll probably also get an error when
+			we try to retrieve the output files and we'll have to recover results
+			manually for the user.
+		*/
+		catch (GramException ge)
+		{
+			if (ge.getErrorCode() == GramException.ERROR_CONTACTING_JOB_MANAGER)
+			{
+				return null;
+			}
+			throw ge;
+		}
+	}
+
+	/* This is called by BaseProcessWorker's execute() method */
+	protected void executeImpl() throws Exception
+	{
+		Date timeNow;
+
+		GridFtpFileHandler handler = (GridFtpFileHandler)getFileHandler();
+		try 
+		{
+			m_jobID = submitJob();
+			log.info("Submitted job with gram ID=" + m_jobID);
+		}
+		catch (Exception e)
+		{
+			log.error("Job submission failed", e);
+			storeTaskFailure("Job submission failed", e, handler);
+			return;
+		}
+
+		int count = 0;
+		while (true)
+		{
+			try 
+			{
+				String status = probe();
+				if (status == null || status.equals("FAILED") || status.equals("DONE"))
+				{
+					log.info("Job finished with status=" + ((status == null) ?  "ERROR_CONTACTING_JOB_MANAGER" : status));
+					break;
+				}
+				// Process Worker kills itself after waiting longer than any job should take.
+				timeNow = new Date();
+				if (timeNow.after(new Date(endTime)))
+				{
+					throw new Exception("Internal Error. Process worker waited " + GlobusConfig.getMaxMinutes());
+				}
+			}
+			catch (Exception e)
+			{
+				log.error("Caught unexpected exception polling job status.", e);
+				storeTaskFailure("Polling job status error", e, handler);
+				return;
+			}
+
+			// For the first minute, check every 15 sec.  Next 10 times, check frequently then use longer poll interval. 
+			if (count < 4)
+			{
+				Thread.sleep(15 * 1000);
+			} else if (count < 15)
+			{
+				Thread.sleep(GlobusConfig.getQuickPollInterval() * 60 * 1000);
+			} else if (count < 60)
+			{
+				Thread.sleep(GlobusConfig.getMediumPollInterval() * 60 * 1000);
+			} else
+			{
+				Thread.sleep(GlobusConfig.getPollInterval() * 60 * 1000);
+			}
+			count++;
+		}
+
+		try
+		{
+			String stderr = readStdErr(handler);
+			String stdout = readStdOut(handler);
+
+			log.debug("Calling storeTaskResults");
+			storeTaskResults(stdout, stderr, 0, "If present, the file done.txt shows the exit status.", handler);
+		}
+		catch (Exception e)
+		{
+			log.error("Caught exception reading stdout/err or storing task results.", e);
+			storeTaskFailure("Error reading stdout or stderr or storing task results", e, handler);
+		}
+	}
+
+	private String readFile(String filename, FileHandler handler)
+	{
+		try
+		{
+			log.debug("Reading File " + filename);
+			byte[] b = handler.readFile(filename);
+			log.debug("Read from File " + filename + b.length + " bytes");
+			return new String(b);
+		}
+		catch (Throwable t)
+		{
+			log.debug("", t);
+			return null;
+		}
+	}
+
+	private String readStdErr(FileHandler handler)
+	{
+		return readFile(m_rsl.getStdErrFilename(), handler);
+	}
+
+	private String readStdOut(FileHandler handler)
+	{
+		return readFile(m_rsl.getStdOutFilename(),handler);
+	}
+
+	protected FileHandler getFileHandler() throws Exception
+	{
+		if (m_fileHost == null)
+		{
+			throw new WorkbenchException("INTERNAL ERROR: m_fileHost isn't initialized");
+		}
+		return new GridFtpFileHandler(m_fileHost, m_filePort);
+	}
+
+}
+

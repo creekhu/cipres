@@ -1,0 +1,21 @@
+<h2>UNROOT</h2>
+<p>
+	<strong>UNROOT</strong> unroots a rooted tree using the Phylip tree editor RETREE.
+	Retree  reads in a tree, or allows the user to construct one, and displays this tree
+	on  the screen. The user then can specify  how the tree is to be rearraranged,
+	rerooted or written out to a file.
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/retree.html">
+		http://evolution.genetics.washington.edu/phylip/doc/retree.html
+	</a>
+</h3>
+       <h3>TEST INPUT TREE FILE</h3>
+       <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>((((((((Human,Chimp),Gorilla),Orang),Gibbon),(Barbary_Ma,(Crab-e._Ma,</pre>
+               <pre>(Rhesus_Mac,Jpn_Macaq)))),Squir._Mon),((Tarsier,Lemur),Bovine)),Mouse);</pre></td>
+         </tr>
+       </table>
+       <h3>&nbsp;</h3>
+       <p>&nbsp;</p>

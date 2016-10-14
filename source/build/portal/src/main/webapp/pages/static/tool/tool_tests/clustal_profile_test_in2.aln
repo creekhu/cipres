@@ -1,0 +1,44 @@
+CLUSTAL W (1.83) multiple sequence alignment
+
+
+lcl|Q5QQT0.0|Q5QQT0      ---------------------------------------------------------HFH
+lcl|Q1T3V8.0|Q1T3V8      ------------------------------------------------------------
+lcl|Q5QQQ9.0|Q5QQQ9      ---------------------------------------------------------HFH
+lcl|Q15B58.0|Q15B58      ---------------DPSRLSLSYYSKTCPTAEEIVRAEMACAVQANPRNAAFIIRLHFH
+lcl|A2Q4B7.0|A2Q4B7      MKQISIIIFFFILPLAFADLELGFYASSCRKAESIVKQVVQKRFNRDKSITAALLRMHFH
+                                                                                     
+
+lcl|Q5QQT0.0|Q5QQT0      DCFVQGCDASILLDDAPSIVSEKNALPNK-GSVRGYDVIEAAKAEVEKLCP--GVVSCAD
+lcl|Q1T3V8.0|Q1T3V8      ----------MLLDYAK--------------NTRSFEVVDQIKAAVTKACKR-DVVSCAD
+lcl|Q5QQQ9.0|Q5QQQ9      DCFVQGCDASVMIASTGSNTAEKDHQDNLSLAGGGFDTVIKAKAAVDAVASCRNKVSCAD
+lcl|Q15B58.0|Q15B58      DCFVHGCDGSVLLDDTVTLIGEKHADQNV-NSLQGFELVDRIKQKLEAECPG--VVSCAD
+lcl|A2Q4B7.0|A2Q4B7      DCFVRGCDASLLIDSTKNNISEKDTGAN--DSVRGYDLIDDVKEAIEAACPS--TVSCAD
+                                   :::  :                  .:: :   *  :   .     *****
+
+lcl|Q5QQT0.0|Q5QQT0      VLTVAARDASEMVGGPS--WSVKLGRRDSTTASLVLAETGALPSFKAPLDTLIKTFGDNG
+lcl|Q1T3V8.0|Q1T3V8      ILAIAARDSVAILGGKQYWYQVLLGRRDSRFASRDAANTNLPPPFFN-FSQLIKNFKSHG
+lcl|Q5QQQ9.0|Q5QQQ9      ILVMATRDVVKMAGGPA--YAVELGRLDGLSSTAASVGGKLPKPNMN-LDQLNAMFAANG
+lcl|Q15B58.0|Q15B58      LLAIAARDATILVG----------------------------------------------
+lcl|A2Q4B7.0|A2Q4B7      IVALATRDAVALSGGPK--YNIPTGRRDGLIANRDDVDLPGPNIPIG---ALSQFFAAKG
+                         ::.:*:**   : *                                              
+
+lcl|Q5QQT0.0|Q5QQT0      LNARDMVALSGAHTLG--------------------------------------------
+lcl|Q1T3V8.0|Q1T3V8      LNLKDLVVLSGGHTIGFSKCTNFRNRIYNDTNIDKKFAANLQKTCPQIGGDNNLAPFDST
+lcl|Q5QQQ9.0|Q5QQQ9      LTQADMIVLSGAHTLG--------------------------------------------
+lcl|Q15B58.0|Q15B58      ------------------------------------------------------------
+lcl|A2Q4B7.0|A2Q4B7      ITTEEMVTLLGAHTVGVAHCGFFASRLSSVRGKPDPTMDPALDTKLVKLCKSNSDGAAFL
+                                                                                     
+
+lcl|Q5QQT0.0|Q5QQT0      ------------------------------------------------------------
+lcl|Q1T3V8.0|Q1T3V8      PN----KVDTSFYKALLYKRGLLHSD----------------------------------
+lcl|Q5QQQ9.0|Q5QQQ9      ------------------------------------------------------------
+lcl|Q15B58.0|Q15B58      ------------------------------------------------------------
+lcl|A2Q4B7.0|A2Q4B7      DQNTSFTVDNEFYKQILLKRGIMQIDQQLALDKSTSTFVSNFASNGDKFVKSFATAMIKM
+                                                                                     
+
+lcl|Q5QQT0.0|Q5QQT0      ------------------------
+lcl|Q1T3V8.0|Q1T3V8      ------------------------
+lcl|Q5QQQ9.0|Q5QQQ9      ------------------------
+lcl|Q15B58.0|Q15B58      ------------------------
+lcl|A2Q4B7.0|A2Q4B7      GKVGVLVGNEGEIRKNCRVFNKRN
+                                                 

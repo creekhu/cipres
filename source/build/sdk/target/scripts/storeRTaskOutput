@@ -1,0 +1,2 @@
+#!/bin/sh
+mvn -Denv=cipres-dev exec:java -Dexec.mainClass=org.ngbw.utils.StoreRTaskOutput -Dexec.args="$@"

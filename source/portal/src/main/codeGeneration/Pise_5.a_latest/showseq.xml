@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SHOWSEQ</title>
+<description>Display a sequence with features, translation etc.. (EMBOSS)</description>
+<category>display</category>
+<category>nucleic:translation</category>
+<category>nucleic:restriction</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/showseq.html</doclink>
+</head>
+
+<command>showseq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>2</value>
+			<value>4</value>
+			<value>14</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>format</name>
+	<attributes>
+		<prompt>Display format -- Things to display (-format)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Enter your own list of things to display</label>
+				<value>1</value>
+				<label>Sequence only</label>
+				<value>2</value>
+				<label>Default sequence with features</label>
+				<value>3</value>
+				<label>Pretty sequence</label>
+				<value>4</value>
+				<label>One frame translation</label>
+				<value>5</value>
+				<label>Three frame translations</label>
+				<value>6</value>
+				<label>Six frame translations</label>
+				<value>7</value>
+				<label>Restriction enzyme map</label>
+				<value>8</value>
+				<label>Baroque</label>
+			</vlist>
+		<vdef>
+			<value>2</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -format=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>things</name>
+	<attributes>
+		<prompt>Enter a list of things to display -- Specify your own things to display [select  values] (-things)</prompt>
+			<vlist>
+				<value>S</value>
+				<label>Sequence</label>
+				<value>B</value>
+				<label>Blank line</label>
+				<value>1</value>
+				<label>Frame1 translation</label>
+				<value>2</value>
+				<label>Frame2 translation</label>
+				<value>3</value>
+				<label>Frame3 translation</label>
+				<value>-1</value>
+				<label>CompFrame1 translation</label>
+				<value>-2</value>
+				<label>CompFrame2 translation</label>
+				<value>-3</value>
+				<label>CompFrame3 translation</label>
+				<value>T</value>
+				<label>Ticks line</label>
+				<value>N</value>
+				<label>Number ticks line</label>
+				<value>C</value>
+				<label>Complement sequence</label>
+				<value>F</value>
+				<label>Features</label>
+				<value>R</value>
+				<label>Restriction enzyme cut sites in forward sense</label>
+				<value>-R</value>
+				<label>Restriction enzyme cut sites in reverse sense</label>
+				<value>A</value>
+				<label>Annotation</label>
+			</vlist>
+			<separator>,</separator>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(format))</code>
+			</precond>
+		<vdef>
+			<value>B,N,T,S,A,F</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -things=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>Specify a list of one or more code characters in the order in which you wish things to be displayed one above the other down the page. For example if you wish to see things displayed in the order: sequence, complement sequence, ticks line, frame 1 translation, blank line; then you should enter 'S,C,T,1,B'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>translate</name>
+	<attributes>
+		<prompt>Regions to translate (eg: 4-57,78-94) (-translate)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -translate=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Regions to translate (if translating). &lt;BR&gt; If this is left blank the complete sequence is translated. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are separated by any non-digit, non-alpha character. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45, 56-78 &lt;BR&gt; 1:45, 67=99;765..888 &lt;BR&gt; 1,5,8,10,23,45,57,99</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>orfminsize</name>
+	<attributes>
+		<prompt>Minimum size of ORFs (-orfminsize)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -orfminsize=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This sets the minimum size of Open Reading Frames (ORFs) to display in the translations. All other translation regions are masked by changing the amino acids to '-' characters.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>uppercase</name>
+	<attributes>
+		<prompt>Regions to put in uppercase (eg: 4-57,78-94) (-uppercase)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -uppercase=$value" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>Regions to put in uppercase. &lt;BR&gt; If this is left blank, then the sequence case is left alone. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are separated by any non-digit, non-alpha character. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45, 56-78 &lt;BR&gt; 1:45, 67=99;765..888 &lt;BR&gt; 1,5,8,10,23,45,57,99</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>highlight</name>
+	<attributes>
+		<prompt>Regions to colour in HTML (eg: 4-57 red 78-94 green) (-highlight)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -highlight=$value" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>Regions to colour if formatting for HTML. &lt;BR&gt; If this is left blank, then the sequence is left alone. &lt;BR&gt; A set of regions is specified by a set of pairs of positions. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are followed by any valid HTML font colour. &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45 blue 56-78 orange &lt;BR&gt; 1-100 green 120-156 red &lt;BR&gt; A file of ranges to colour (one range per line) can be specified as '\@filename'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>annotation</name>
+	<attributes>
+		<prompt>Regions to mark (eg: 4-57 promoter region 78-94 first exon) (-annotation)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -annotation=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>Regions to annotate by marking. &lt;BR&gt; If this is left blank, then no annotation is added. &lt;BR&gt; A set of regions is specified by a set of pairs of positions followed by optional text. &lt;BR&gt; The positions are integers. &lt;BR&gt; They are followed by any text (but not digits when on the command-line). &lt;BR&gt; Examples of region specifications are: &lt;BR&gt; 24-45 new domain 56-78 match to Mouse &lt;BR&gt; 1-100 First part 120-156 oligo &lt;BR&gt; A file of ranges to annotate (one range per line) can be specified as '\@filename'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>remapsection</name>
+		<prompt>Restriction map options</prompt>
+
+	<parameters>
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>flatreformat</name>
+		<attributes>
+			<prompt>Display RE sites in flat format (-flatreformat)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -flatreformat" : ""</code>
+			</format>
+			<group>9</group>
+			<comment>
+				<value>This changes the output format to one where the recognition site is indicated by a row of '===' characters and the cut site is pointed to by a '&gt;' character in the forward sense, or a '&lt;' in the reverse sense strand.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>mincuts</name>
+		<attributes>
+			<prompt>Minimum cuts per RE (-mincuts)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -mincuts=$value" : ""</code>
+			</format>
+			<group>10</group>
+			<comment>
+				<value>This sets the minimum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut fewer times than this will be ignored.</value>
+			</comment>
+			<scalemin><value>1</value></scalemin>
+			<scalemax><value>1000</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxcuts</name>
+		<attributes>
+			<prompt>Maximum cuts per RE (-maxcuts)</prompt>
+			<vdef>
+				<value>2000000000</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxcuts=$value" : ""</code>
+			</format>
+			<group>11</group>
+			<comment>
+				<value>This sets the maximum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut more times than this will be ignored.</value>
+			</comment>
+			<scalemin>
+				<language>acd</language>
+				<code>$mincuts</code>
+			</scalemin>
+			<scalemax><value>2000000000</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>sitelen</name>
+		<attributes>
+			<prompt>Minimum recognition site length (-sitelen)</prompt>
+			<vdef>
+				<value>4</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -sitelen=$value" : ""</code>
+			</format>
+			<group>12</group>
+			<comment>
+				<value>This sets the minimum length of the restriction enzyme recognition site. Any enzymes with sites shorter than this will be ignored.</value>
+			</comment>
+			<scalemin><value>2</value></scalemin>
+			<scalemax><value>20</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>single</name>
+		<attributes>
+			<prompt>Force single RE site only cuts (-single)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -single" : ""</code>
+			</format>
+			<group>13</group>
+			<comment>
+				<value>If this is set then this forces the values of the mincuts and maxcuts qualifiers to both be 1. Any other value you may have set them to will be ignored.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>blunt</name>
+		<attributes>
+			<prompt>Allow blunt end RE cutters (-blunt)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -noblunt"</code>
+			</format>
+			<group>14</group>
+			<comment>
+				<value>This allows those enzymes which cut at the same position on the forward and reverse strands to be considered.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>sticky</name>
+		<attributes>
+			<prompt>Allow sticky end RE cutters (-sticky)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -nosticky"</code>
+			</format>
+			<group>15</group>
+			<comment>
+				<value>This allows those enzymes which cut at different positions on the forward and reverse strands, leaving an overhang, to be considered.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>ambiguity</name>
+		<attributes>
+			<prompt>Allow ambiguous RE matches (-ambiguity)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -noambiguity"</code>
+			</format>
+			<group>16</group>
+			<comment>
+				<value>This allows those enzymes which have one or more 'N' ambiguity codes in their pattern to be considered</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>plasmid</name>
+		<attributes>
+			<prompt>Allow circular DNA (-plasmid)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -plasmid" : ""</code>
+			</format>
+			<group>17</group>
+			<comment>
+				<value>If this is set then this allows searches for restriction enzyme recognition site and cut postions that span the end of the sequence to be considered.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>commercial</name>
+		<attributes>
+			<prompt>Only use restriction enzymes with suppliers (-commercial)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -nocommercial"</code>
+			</format>
+			<group>18</group>
+			<comment>
+				<value>If this is set, then only those enzymes with a commercial supplier will be searched for. This qualifier is ignored if you have specified an explicit list of enzymes to search for, rather than searching through 'all' the enzymes in the REBASE database. It is assumed that, if you are asking for an explicit enzyme, then you probably know where to get it from and so all enzymes names that you have asked to be searched for, and which cut, will be reported whether or not they have a commercial supplier.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>limit</name>
+		<attributes>
+			<prompt>Limits RE hits to one isoschizomer (-limit)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -nolimit"</code>
+			</format>
+			<group>19</group>
+			<comment>
+				<value>This limits the reporting of enzymes to just one enzyme from each group of isoschizomers. The enzyme chosen to represent an isoschizomer group is the prototype indicated in the data file 'embossre.equ', which is created by the program 'rebaseextract'. If you prefer different prototypes to be used, make a copy of embossre.equ in your home directory and edit it. If this value is set to be false then all of the input enzymes will be reported. You might like to set this to false if you are supplying an explicit set of enzymes rather than searching 'all' of them.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>enzymes</name>
+		<attributes>
+			<prompt>Comma separated restriction enzyme list (-enzymes)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -enzymes=$value" : ""</code>
+			</format>
+			<group>20</group>
+			<comment>
+				<value>The name 'all' reads in all enzyme names from the REBASE database. You can specify enzymes by giving their names with commas between then, such as: 'HincII,hinfI,ppiI,hindiii'. &lt;BR&gt; The case of the names is not important. You can specify a file of enzyme names to read in by giving the name of the file holding the enzyme names with a '\@' character in front of it, for example, '\@enz.list'. &lt;BR&gt; Blank lines and lines starting with a hash character or '!' are ignored and all other lines are concatenated together with a comma character ',' and then treated as the list of enzymes to search for. &lt;BR&gt; An example of a file of enzyme names is: &lt;BR&gt; ! my enzymes &lt;BR&gt; HincII, ppiII &lt;BR&gt; ! other enzymes &lt;BR&gt; hindiii &lt;BR&gt; HinfI &lt;BR&gt; PpiI</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>table</name>
+	<attributes>
+		<prompt>Genetic code to use -- Genetic codes (-table)</prompt>
+			<vlist>
+				<value>0</value>
+				<label>Standard</label>
+				<value>1</value>
+				<label>Standard (with alternative initiation codons)</label>
+				<value>2</value>
+				<label>Vertebrate Mitochondrial</label>
+				<value>3</value>
+				<label>Yeast Mitochondrial</label>
+				<value>4</value>
+				<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+				<value>5</value>
+				<label>Invertebrate Mitochondrial</label>
+				<value>6</value>
+				<label>Ciliate Macronuclear and Dasycladacean</label>
+				<value>9</value>
+				<label>Echinoderm Mitochondrial</label>
+				<value>10</value>
+				<label>Euplotid Nuclear</label>
+				<value>11</value>
+				<label>Bacterial</label>
+				<value>12</value>
+				<label>Alternative Yeast Nuclear</label>
+				<value>13</value>
+				<label>Ascidian Mitochondrial</label>
+				<value>14</value>
+				<label>Flatworm Mitochondrial</label>
+				<value>15</value>
+				<label>Blepharisma Macronuclear</label>
+				<value>16</value>
+				<label>Chlorophycean Mitochondrial</label>
+				<value>21</value>
+				<label>Trematode Mitochondrial</label>
+				<value>22</value>
+				<label>Scenedesmus obliquus</label>
+				<value>23</value>
+				<label>Thraustochytrium Mitochondrial</label>
+			</vlist>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -table=$value"</code>
+		</format>
+		<group>21</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>threeletter</name>
+	<attributes>
+		<prompt>Display protein sequences in three-letter code (-threeletter)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -threeletter" : ""</code>
+		</format>
+		<group>22</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>number</name>
+	<attributes>
+		<prompt>Number the sequences (-number)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -number" : ""</code>
+		</format>
+		<group>23</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>width</name>
+	<attributes>
+		<prompt>Width of sequence to display (-width)</prompt>
+		<vdef>
+			<value>60</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -width=$value" : ""</code>
+		</format>
+		<group>24</group>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>length</name>
+	<attributes>
+		<prompt>Line length of page (0 for indefinite) (-length)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -length=$value" : ""</code>
+		</format>
+		<group>25</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>margin</name>
+	<attributes>
+		<prompt>Margin around sequence for numbering (-margin)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -margin=$value" : ""</code>
+		</format>
+		<group>26</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Show sequence ID (-name)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noname"</code>
+		</format>
+		<group>27</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the ID name of the sequence</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>description</name>
+	<attributes>
+		<prompt>Show description (-description)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nodescription"</code>
+		</format>
+		<group>28</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the description of the sequence</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>offset</name>
+	<attributes>
+		<prompt>Offset to start numbering the sequence from (-offset)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -offset=$value" : ""</code>
+		</format>
+		<group>29</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Use HTML formatting (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>30</group>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>featuresection</name>
+		<prompt>Feature display options</prompt>
+
+	<parameters>
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>matchsource</name>
+		<attributes>
+			<prompt>Source of feature to display (-matchsource)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchsource=$value" : ""</code>
+			</format>
+			<group>31</group>
+			<comment>
+				<value>By default any feature source in the feature table is shown. You can set this to match any feature source you wish to show. &lt;BR&gt; The source name is usually either the name of the program that detected the feature or it is the feature table (eg: EMBL) that the feature came from. &lt;BR&gt; The source may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one source, separate their names with the character '|', eg: &lt;BR&gt; gene* | embl</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>matchtype</name>
+		<attributes>
+			<prompt>Type of feature to display (-matchtype)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchtype=$value" : ""</code>
+			</format>
+			<group>32</group>
+			<comment>
+				<value>By default any feature type in the feature table is shown. You can set this to match any feature type you wish to show. &lt;BR&gt; See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature types and see Appendix A of the Swissprot user manual in http://www.expasy.ch/txt/userman.txt for a list of the Swissprot feature types. &lt;BR&gt; The type may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one type, separate their names with the character '|', eg: &lt;BR&gt; *UTR | intron</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>matchsense</name>
+		<attributes>
+			<prompt>Sense of feature to display (-matchsense)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -matchsense=$value" : ""</code>
+			</format>
+			<group>33</group>
+			<comment>
+				<value>By default any feature type in the feature table is shown. You can set this to match any feature sense you wish to show. 0 - any sense, 1 - forward sense, -1 - reverse sense</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>minscore</name>
+		<attributes>
+			<prompt>Minimum score of feature to display (-minscore)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minscore=$value" : ""</code>
+			</format>
+			<group>34</group>
+			<comment>
+				<value>If this is greater than or equal to the maximum score, then any score is permitted</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxscore</name>
+		<attributes>
+			<prompt>Maximum score of feature to display (-maxscore)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxscore=$value" : ""</code>
+			</format>
+			<group>35</group>
+			<comment>
+				<value>If this is less than or equal to the maximum score, then any score is permitted</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>matchtag</name>
+		<attributes>
+			<prompt>Tag of feature to display (-matchtag)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchtag=$value" : ""</code>
+			</format>
+			<group>36</group>
+			<comment>
+				<value>Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Some of these tags also have values, for example '/gene' can have the value of the gene name. &lt;BR&gt; By default any feature tag in the feature table is shown. You can set this to match any feature tag you wish to show. &lt;BR&gt; The tag may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one tag, separate their names with the character '|', eg: &lt;BR&gt; gene | label</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>matchvalue</name>
+		<attributes>
+			<prompt>Value of feature tags to display (-matchvalue)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchvalue=$value" : ""</code>
+			</format>
+			<group>37</group>
+			<comment>
+				<value>Tag values are the values associated with a feature tag. Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Only some of these tags can have values, for example '/gene' can have the value of the gene name. By default any feature tag value in the feature table is shown. You can set this to match any feature tag valueyou wish to show. &lt;BR&gt; The tag value may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one tag value, separate their names with the character '|', eg: &lt;BR&gt; pax* | 10</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>stricttags</name>
+		<attributes>
+			<prompt>Only display the matching tags (-stricttags)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -stricttags" : ""</code>
+			</format>
+			<group>38</group>
+			<comment>
+				<value>By default if any tag/value pair in a feature matches the specified tag and value, then all the tags/value pairs of that feature will be displayed. If this is set to be true, then only those tag/value pairs in a feature that match the specified tag and value will be displayed.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>39</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>40</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

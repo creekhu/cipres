@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>MAP</title>
+    <description>Multiple Alignment Program</description>
+  </head>
+
+<command>map</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>map</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>map</code>
+		<language>perl</language>
+		<code>"map"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>scoring</name>
+<prompt>Scoring Parameters</prompt>
+<comment>
+	<value>In the simplest form, users provide 3 integers: ms, q and r, where ms is the score of a mismatch and the score of an i-symbol indel is -(q + r * i). Each match automatically receives score 10. In addition, an integer gs is provided so that any gap of length &gt; gs in a short sequence is given a penalty of -(q + r * gs), the linear penalty for a gap of length gs. In other words, long gaps in the short sequence are given a constant penalty. This simple scoring scheme may be used for DNA sequences. NOTE: all scores are integers.</value>
+</comment>
+<parameters>
+
+	<parameter ismandatory="1" issimple="1" type="Integer">
+	<name>gap_size</name>
+	<attributes>
+
+		<prompt>gap size: minimum length of any gap in a short sequence charged with a constant gap penalty (gs)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " $value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>gapsize is provided so that any gap of length &gt; gs in a short sequence is given a penalty of -(q + r * gs), the linear penalty for a gap of length gs. In other words, long gaps in the short sequence are given a constant penalty. </value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Integer">
+	<name>mismatch</name>
+	<attributes>
+
+		<prompt>score of a mismatch (&lt;0)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &lt; 0 &amp;&amp; ! $matrix)? " $value" : "" </code>
+		</format>
+		<group>3</group>
+		<ctrls>
+			<ctrl>
+			<message>enter a negative value</message>
+				<language>perl</language>
+				<code>($value &gt;= 0)</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Integer">
+	<name>gapopen</name>
+	<attributes>
+
+		<prompt>gap open penalty (&gt;=0)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " $value" : "" </code>
+		</format>
+		<group>4</group>
+		<ctrls>
+			<ctrl>
+			<message>enter a positive a null value</message>
+				<language>perl</language>
+				<code>($value &lt; 0)</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" issimple="1" type="Integer">
+	<name>gapext</name>
+	<attributes>
+
+		<prompt>gap extension penalty (&gt;=0)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " $value" : ""</code>
+		</format>
+		<group>5</group>
+		<ctrls>
+			<ctrl>
+			<message>enter a positive a null value</message>
+				<language>perl</language>
+				<code>($value &lt; 0)</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>matrix</name>
+	<attributes>
+
+		<prompt>Matrix (Name of a file containing an alternate or user-defined scoring matrix)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " $value" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>users can define an alphabet of characters to appear in the sequences and a matrix that gives the substitution score for each pair of symbols in the alphabet. The 127 ASCII characters are eligible. The alphabet and matrix are given in a file, where the first line lists the characters in the alphabet and the lower triangle of the matrix comes next. </value>
+			<value>Example:</value>
+			<value>ARNDC</value>
+			<value> 13</value>
+			<value>-15 19</value>
+			<value>-10 -22 11</value>
+			<value>-20 -10 -20 18</value>
+			<value>-10 -20 -10 -20 12</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

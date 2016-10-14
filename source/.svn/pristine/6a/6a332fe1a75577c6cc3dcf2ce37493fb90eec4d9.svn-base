@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>INFOSEQ</title>
+<description>Displays some simple information about sequences (EMBOSS)</description>
+<category>information</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/infoseq.html</doclink>
+</head>
+
+<command>infoseq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef>
+			<value>stdout</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -outfile=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>If you enter the name of a file here then this program will write the sequence details into that file.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Format output as an HTML table (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>only</name>
+	<attributes>
+		<prompt>Display the specified columns (-only)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -only" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>This is a way of shortening the command line if you only want a few things to be displayed. Instead of specifying: &lt;BR&gt; '-nohead -noname -noacc -notype -nopgc -nodesc' &lt;BR&gt; to get only the length output, you can specify &lt;BR&gt; '-only -length'</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>heading</name>
+	<attributes>
+		<prompt>Display column headings (-heading)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -heading" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>usa</name>
+	<attributes>
+		<prompt>Display the USA of the sequence (-usa)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -usa" : ""</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Display 'name' column (-name)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -name" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>accession</name>
+	<attributes>
+		<prompt>Display 'accession' column (-accession)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -accession" : ""</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>gi</name>
+	<attributes>
+		<prompt>Display 'GI' column (-gi)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -gi" : ""</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>version</name>
+	<attributes>
+		<prompt>Display 'version' column (-version)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -version" : ""</code>
+		</format>
+		<group>10</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>type</name>
+	<attributes>
+		<prompt>Display 'type' column (-type)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -type" : ""</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>length</name>
+	<attributes>
+		<prompt>Display 'length' column (-length)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -length" : ""</code>
+		</format>
+		<group>12</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>pgc</name>
+	<attributes>
+		<prompt>Display 'percent GC content' column (-pgc)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -pgc" : ""</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>description</name>
+	<attributes>
+		<prompt>Display 'description' column (-description)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@(!$(only))</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -description" : ""</code>
+		</format>
+		<group>14</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>15</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

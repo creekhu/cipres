@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>GRAILCLNT</title>
+    <version>1.3b</version>
+    <description>Grail client</description>
+    <authors>Xu, Einstein, Mural, Shah, Uberbacher</authors>
+    <reference>Xu, Y., Einstein, J. R., Mural, R.J., Shah, M. and Uberbacher, E.C., (1994) An Improved System for Exon Recognition and Gene Modeling in Human DNA Sequences, Published Presentation: The Second International Conference on Intelligent Systems for Molecular Biology, Stanford University, San Francisco, CA, August 14-17, 1994.</reference>
+    <category>nucleic:translation</category>
+    <category>gene finding</category>
+  </head>
+
+  <command>grailclnt</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>grailclnt</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"cat grail_input_* &gt; grail_input; grailclnt -host grailsrv.lsd.ornl.gov -port 2050 &lt; grail_input " </code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence</prompt>
+	<format>
+		<language>perl</language>
+		<code>" ln -s $seq grail_input_a4 ;"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>13</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Excl">
+<name>feature</name>
+<attributes>
+
+	<prompt>Which feature?</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value eq "cpg" || $value eq "rpttv" || $value eq "smprpt")? "\\n\\[Request\\_$value\\_1.3\\]\\n\\n" : "\\n\\[Request\\_$value\\_$organism\\_1.3\\]\\n\\n" </code>
+	</format>
+	<vdef><value>grail2exons</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>grail1exons</value>
+		<label>grail1exons: Protein Coding Regions (grail 1)</label>
+		<value>grail1aexons</value>
+		<label>grail1aexons: Protein Coding Regions (grail 1.a)</label>
+		<value>grail2exons</value>
+		<label>grail2exons: Protein Coding Regions (grail 2)</label>
+		<value>gap2</value>
+		<label>gap2: Gene Modeling</label>
+		<value>polya</value>
+		<label>polya: PolyA sites</label>
+		<value>polIIprom</value>
+		<label>polIIprom: Pol II Promoters</label>
+		<value>cpg</value>
+		<label>cpg: CpG Islands</label>
+		<value>rpttv</value>
+		<label>rpttv: repetitive DNA elements</label>
+		<value>smprpt</value>
+		<label>smprpt: simple repeats</label>
+		<value>fserr</value>
+		<label>fserr: Frame Shift Errors</label>
+	</vlist>
+	<comment>
+		<value>The coding recognition portion of the system uses a neural network which combines a series of coding prediction algorithms. There are three basic versions of this neural network, GRAIL 1, GRAIL 1a and GRAIL 2: </value>
+		<value>GRAIL 1 has been in place for about five years. It uses a neural network described in PNAS 88, 11261-11265, which recognizes coding potential within a fixed size (100 base) window. It evaluates coding potential without looking for additional features (information such as splice junctions, etc).</value>
+		<value>GRAIL 1a is an updated version of GRAIL 1. It uses a fixed-length window to locate the potential coding regions and then evaluates a number of discrete candidates of different lengths around each potential coding region, using information from the two 60-base regions adjacent to that coding region, to find the 'best' boundaries for that coding region.</value>
+		<value>GRAIL 2 uses variable-length windows tailored to each potential exon candidate, defined as an open reading frame bounded by a pair of start/donor, acceptor/donor or acceptor/stop sites. This scheme facilitates the use of more genomic context information (splice junctions, translation starts, non-coding scores of 60-base regions on either side of a putative exon) in the exon recognition process. GRAIL 2 is therefore not appropriate for sequences without genomic context (when the regions adjacent to an exon are not present).</value>
+	</comment>
+	<ctrls>
+		<ctrl>
+		<message>CpG is available only for Human or Mouse</message>
+			<language>perl</language>
+			<code>$feature eq "cpg" &amp;&amp; (! ($organism eq "human" || $organism eq "mouse"))</code>
+		</ctrl>
+		<ctrl>
+		<message>polIIprom is available only for Human or Mouse</message>
+			<language>perl</language>
+			<code>$feature eq "polIIprom" &amp;&amp; (! ($organism eq "human" || $organism eq "mouse"))</code>
+		</ctrl>
+		<ctrl>
+		<message>Grail 1 or 1.a is not available for arabidopsis</message>
+			<language>perl</language>
+			<code>$organism eq "arabd" &amp;&amp; ($feature =~ /grail1/)</code>
+		</ctrl>
+		<ctrl>
+		<message>fserr is available only for Human or Mouse</message>
+			<language>perl</language>
+			<code>$feature eq "fserr" &amp;&amp; (! ($organism eq "human" || $organism eq "mouse"))</code>
+		</ctrl>
+		<ctrl>
+		<message>Grail 1 or 1.a is not available for drosophila</message>
+			<language>perl</language>
+			<code>$organism eq "droso" &amp;&amp; ($feature =~ /grail1/)</code>
+		</ctrl>
+		<ctrl>
+		<message>Repetitive DNA is available only for Human or Mouse</message>
+			<language>perl</language>
+			<code>$feature eq "rpttv" &amp;&amp; (! ($organism eq "human" || $organism eq "mouse"))</code>
+		</ctrl>
+		<ctrl>
+		<message>polya is available only for Human or Mouse</message>
+			<language>perl</language>
+			<code>$feature eq "polya" &amp;&amp; (! ($organism eq "human" || $organism eq "mouse"))</code>
+		</ctrl>
+		<ctrl>
+		<message>E. coli is available only for grail1 or simple repeats</message>
+			<language>perl</language>
+			<code>$organism eq "ecoli" &amp;&amp; (! ($feature eq "grail1" || $feature eq "smprpt")) </code>
+		</ctrl>
+	</ctrls>
+	<paramfile>grail_input_a1</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>organism</name>
+<attributes>
+
+	<prompt>Organism</prompt>
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>human</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>human</value>
+		<label>Human</label>
+		<value>mouse</value>
+		<label>Mouse</label>
+		<value>arabd</value>
+		<label>Arabidopsis</label>
+		<value>droso</value>
+		<label>Drosophila</label>
+		<value>ecoli</value>
+		<label>E. coli</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>header</name>
+<attributes>
+
+	<prompt>Header</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "[Option= header]\\n" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>3</group>
+	<paramfile>grail_input_a1</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>exons_options</name>
+<prompt>Exons options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$feature =~ /grail/</code>
+</precond>
+<parameters>
+
+	<parameter type="Switch">
+	<name>translation</name>
+	<attributes>
+
+		<prompt>Translation</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Option= translation]\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature =~ /grail/</code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>strandscores</name>
+	<attributes>
+
+		<prompt>Strandscores (grail1)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Option= strandscores]\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature =~ /grail/ &amp;&amp; $feature eq "grail1exons" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>shadowexons</name>
+	<attributes>
+
+		<prompt>Shadowexons (grail 1.a or grail2)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Option= shadowexons]\\n" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>3</group>
+		<comment>
+			<value>This feature is needed for a further polIIpromoters analysis.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$feature =~ /grail/ &amp;&amp; $feature ne "grail1exons" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>clusters</name>
+	<attributes>
+
+		<prompt>Clusters (grail 2)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Option= clusters]\\n" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>3</group>
+		<comment>
+			<value>This feature is needed for a further Gene Modelling analysis with GAP2 or polIIpromoters.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$feature =~ /grail/ &amp;&amp; $feature eq "grail2exons" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>gap_options</name>
+<prompt>Gene modelling options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$feature eq "gap2" </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>cluster_file</name>
+	<attributes>
+
+		<prompt>grail2exons results file</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "sed -n \\"/^.Start clusters/,/^.End clusters/p\\" $cluster_file &gt; grail_input_b4 ;" : "" </code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>For gap2 (gene assembly) the cluster tables returned by grail2exons must be included.</value>
+			<value>So what you have to do here is to put your grail2exons results, the program will extract clusters from this data.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2" </code>
+	</precond>
+		<pipe>
+			<pipetype>grail_cluster</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>modelexon_translation</name>
+	<attributes>
+
+		<prompt>Gene model exons translation</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Option= modelexon_translation]\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>genemodel_translation</name>
+	<attributes>
+
+		<prompt>Entire gene models translation</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Option= genemodel_translation]\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>auto_strand</name>
+	<attributes>
+
+		<prompt>AUTO STRAND</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Params= AUTO_STRAND $start_strand $end_strand]\\n" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Integer">
+	<name>start_strand</name>
+	<attributes>
+
+		<prompt>AUTO STRAND start</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2"  &amp;&amp; $auto_strand</code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Integer">
+	<name>end_strand</name>
+	<attributes>
+
+		<prompt>AUTO STRAND end</prompt>
+		<format>
+			<language>perl</language>
+			<code> "" </code>
+		</format>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2"  &amp;&amp; $auto_strand</code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>forward_strand</name>
+	<attributes>
+
+		<prompt>FORWARD_STRAND</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Params= FORWARD_STRAND]\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2"  &amp;&amp; ! $auto_strand</code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>reverse_strand</name>
+	<attributes>
+
+		<prompt>REVERSE_STRAND</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "[Params= REVERSE_STRAND]\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "gap2"  &amp;&amp; ! $auto_strand</code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>polIIprom_options</name>
+<prompt>Pol II Promoters options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$feature eq "polIIprom" </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>grail2_file</name>
+	<attributes>
+
+		<prompt>grail2exons results file</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " ln -s $grail2_file grail_input_b2 ;" : "" </code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>For Pol II promoters, all the results of grail2 must be included.</value>
+			<value>The [Start/end header] lines must be removed.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "polIIprom" </code>
+	</precond>
+		<pipe>
+			<pipetype>grail_cluster</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>fserr_options</name>
+<prompt>fserr options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$feature eq "fserr" </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>fserr_strand</name>
+	<attributes>
+
+		<prompt>Strand</prompt>
+		<format>
+			<language>perl</language>
+			<code>"[Params= $value]\\n" </code>
+		</format>
+		<vdef><value>AUTO_STRAND</value></vdef>
+		<group>4</group>
+		<vlist>
+			<value>AUTO_STRAND</value>
+			<label>AUTO_STRAND</label>
+			<value>FORWARD_STRAND</value>
+			<label>FORWARD_STRAND</label>
+			<value>REVERSE_STRAND</value>
+			<label>REVERSE_STRAND</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$feature eq "fserr" </code>
+	</precond>
+		<paramfile>grail_input_a1</paramfile>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>rpttv_organism</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"\\n\\n[Params= $organism]\\n\\n"</code>
+	</format>
+	<group>4</group>
+<precond>
+	<language>perl</language>
+	<code>$feature eq "rpttv" </code>
+</precond>
+	<paramfile>grail_input_a1</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>start_seq</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"\\n\\n[Start DNASequence]\\n\\n"</code>
+	</format>
+	<paramfile>grail_input_a3</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>end_seq</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"\\n\\n[End DNASequence]\\n\\n"</code>
+	</format>
+	<paramfile>grail_input_a5</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>end_request</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"\\n\\n[End_Request]\\n\\n"</code>
+	</format>
+	<paramfile>grail_input_z9</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>input_file</name>
+<attributes>
+
+	<filenames>grail_input</filenames>
+
+</attributes>
+</parameter>
+
+<parameter isstandout="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<prompt>Result file</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " &gt; $value" : ""</code>
+	</format>
+	<vdef><value>grailclnt.txt</value></vdef>
+	<group>10</group>
+	<pipe>
+		<pipetype>grail_cluster</pipetype>
+			<language>perl</language>
+			<code>$feature eq "grail2exons" </code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

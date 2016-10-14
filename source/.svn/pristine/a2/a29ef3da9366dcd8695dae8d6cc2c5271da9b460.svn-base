@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>decorate</title>
+    <description>Side chain packing optimization of a new sequence on a given template main chain.</description>
+    <authors>P. Koehl, M. Delarue</authors>
+    <reference>P. Koehl et M. Delarue. J. Mol. Biol. 239:249-275 (1994)</reference>
+    <category>protein:3d structure</category>
+  </head>
+
+
+  <command>decorate</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>decorate</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code> "decorate &lt; params" </code>
+	</format>
+	<group>0</group>
+
+      </attributes>   
+    </parameter>
+
+    <parameter type="Results">
+      <name>result_files</name>
+      <attributes>
+	<filenames>params *.proba *.log model*</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>pdb_file</name>
+      <attributes>
+	<filenames>*.pdb</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>pdbfile</name>
+      <attributes>
+
+	<prompt>PDB data for the template backbone</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>PDB data for the template backbone.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<pipe>
+	  <pipetype>pdbfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>alignment</name>
+      <attributes>
+
+	<prompt>Pairwise sequence alignment of template and model (MSF format required) PLEASE GIVE THE ALIGNEMENT IN THIS ORDER !  PDB Seq.(#1) vs Target Seq. (#2)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<group>2</group>
+	<comment>
+	  <value>The template correspond to the molecule described in the PDB data, the model is the molecule whose structure is to be be computed.</value>
+	  <value>You MUST provide an alignment in this order:</value>
+	  <value>1st sequence: PDB template</value>
+	  <value>2nd sequence: protein to model</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="String">
+      <name>generic_name</name>
+      <attributes>
+
+	<prompt>Generic name of output files</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>model</value></vdef>
+	<group>3</group>
+	<comment>
+	  <value>The program will generate, for the last cycle of the iteration, files of the type:</value>
+	  <value>check.pdb</value>
+	  <value>generic_name.log</value>
+	  <value>where generic_name is the name chosen by the user. The first file contains the coords of the last iteration cycle, the second one an estimate of the entropy (disorder) for each iteration cycle, from which an estimate of the entropy gained upon folding for each residue can easily be calculated.</value>
+	</comment>
+	<paramfile>params</paramfile>
+	<size>20</size>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Integer">
+      <name>cycles</name>
+      <attributes>
+
+	<prompt>Total number of cycles you want to perform</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>20</value></vdef>
+	<group>4</group>
+	<comment>
+	  <value>20 or 30 should be enough most of the time.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Float">
+      <name>lambda</name>
+      <attributes>
+
+	<prompt>Lambda factor for convergence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<vdef><value>0.5</value></vdef>
+	<group>5</group>
+	<comment>
+	  <value>Enter a number between 0.4 or 0.6</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

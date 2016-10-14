@@ -1,0 +1,9 @@
+BlastN, created for a special application 
+
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+query_ - Primary Input File, named query.fasta
+use_epa_ - Switch - Use cna specify whether or not they are using EPA
+nucleotid_db_ - Excl - Sets the database that will be used. Default = 5_8S; allowed values
+nuclsu, nucssu, mitssu, rpb1, rpb2, unaligned_its, unaligned_lsu, unaligned_ssu, unaligned_mitssu, unaligned_rpb1, unaligned_rpb2
+(the misspelling is actual, for this database)  NOTE: unaligned databases cannot be used when use_epa=1
+

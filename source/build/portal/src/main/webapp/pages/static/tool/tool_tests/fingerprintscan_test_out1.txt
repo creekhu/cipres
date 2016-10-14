@@ -1,0 +1,46 @@
+Sn; 2CYP:A|PDBID|CHAIN|SEQUENCE
+Si; Fasta sequence
+1TBS
+1TBH ASPEROXIDASE    2.933726e-36
+1TBH PEROXIDASE      1.041261e-15
+1TBH BPEROXIDASE     1.093997e-05
+1TBH LIGNINASE       3.290956e-03
+1TBF
+2TBS
+2TBT FingerPrint     No.Motifs SumId    AveId    ProfScore  Ppvalue     Evalue      GraphScan               
+2TBH ASPEROXIDASE    6  of  11 2.6e+02  43       2941       3.7e-41     2.9e-36     .I.II.III..     
+2TBH PEROXIDASE      5  of  5  165.99   33.20    1190       1.3e-20     1e-15       IiIIi           
+2TBH BPEROXIDASE     2  of  12 81.89    40.95    922        1.4e-10     1.1e-05     ...II.......    
+2TBH LIGNINASE       3  of  14 68.50    22.83    698        4.1e-08     0.0033      .....i..i..i..  
+2TBN BROMODOMAIN     2  of  4  47.99    24.00    333        0.00015     12          ii..            
+2TBN CDATPASE        2  of  9  72.58    36.29    426        0.00019     15          ....I..I.       
+2TBF
+3TBS
+3TBT MotifName       No.Mots   IdScore PfScore Pvalue    Sequence                                                Len  low  pos  high 
+3TBH ASPEROXIDASE    2  of  11 55.05   607     2.58e-08  GPVLVRLAWHTSGTWD                                        16   27   43   34   
+3TBH ASPEROXIDASE    4  of  11 36.77   461     4.73e-08  EFNDPSNAGLQNGFKFLEPIHKEFP                               25   59   76   66   
+3TBH ASPEROXIDASE    5  of  11 38.46   311     9.74e-05  WISSGDLFSLGGVTAVQEM                                     19   84   101  91   
+3TBH ASPEROXIDASE    7  of  11 46.79   437     4.47e-07  RLPDADKDADYVRTFFQR                                      18   123  143  131  
+3TBH ASPEROXIDASE    8  of  11 41.43   588     3.70e-09  LNMNDREVVALMGAHALGKTHL                                  22   141  161  149  
+3TBH ASPEROXIDASE    9  of  11 37.54   537     1.87e-07  KNSGYEGPWGAANNVFTNEFYLNLL                               25   163  183  171  
+3TBB
+3TBH PEROXIDASE      1  of  5  34.39   261     8.75e-05  GPVLVRLAWHTSGTW                                         15   14   43   124  
+3TBH PEROXIDASE      2  of  5  26.88   213     3.49e-05  ISSGDLFSLGGVTAVQEM                                      18   35   102  186  
+3TBH PEROXIDASE      3  of  5  37.62   174     2.69e-03  QGPKIPWRCGRVD                                           13   53   120  204  
+3TBH PEROXIDASE      4  of  5  42.30   371     3.62e-07  EVVALMGAHALGKTHL                                        16   98   167  282  
+3TBH PEROXIDASE      5  of  5  24.81   171     4.38e-03  WGAANNVFTNEFYLNL                                        16   112  191  640  
+3TBB
+3TBH BPEROXIDASE     4  of  12 50.20   633     3.17e-08  VRLAWHTSGTWDKHDNTGG                                     19   78   47   118  
+3TBH BPEROXIDASE     5  of  12 31.69   289     4.32e-03  YRFKKEFNDPSNAGLQNGFKFLEPI                               25   102  71   142  
+3TBB
+3TBH LIGNINASE       6  of  14 24.13   226     3.05e-03  ISSGDLFSLGGVTAVQEM                                      18   121  102  132  
+3TBH LIGNINASE       9  of  14 22.01   213     2.51e-03  MNDREVVALMGAHALGKTHLKNS                                 23   182  163  193  
+3TBH LIGNINASE       12 of  14 22.36   259     5.37e-03  GYMMLPTDYSLIQDPKYLSIVKEYAN                              26   250  228  260  
+3TBB
+3TBN BROMODOMAIN     1  of  4  20.50   115     4.81e-02  QNGFKFLEPIHKEF                                          14   47   86   1718 
+3TBN BROMODOMAIN     2  of  4  27.49   218     3.14e-03  LPTDYSLIQDPKYLSIV                                       17   63   232  1734 
+3TBB
+3TBN CDATPASE        5  of  9  38.46   182     2.37e-02  GGTYRFKKEFNDP                                           13   126  68   220  
+3TBN CDATPASE        8  of  9  34.12   244     7.87e-03  TNEFYLNLLNEDWKLEK                                       17   261  199  355  
+3TBB
+3TBF

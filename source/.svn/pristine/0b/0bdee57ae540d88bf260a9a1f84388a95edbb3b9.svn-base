@@ -1,0 +1,42 @@
+Pairwise distances
+command line:
+raxmlHPC-PTHREADS.exe -T 2   -f x -n infile.tre  -s  infile.txt -p 777  -m GTRGAMMA -O 
+
+RAXMLHPC8_XSEDE-A2AB5A07B7094403B19E213FF014DB73 (saved) produces:
+raxmlHPC-PTHREADS (T 8)  -f x  -n outfile.tre -s infile.txt -m GTRGAMMA -p 777  -O
+
+RAXMLHPC8_XSEDE
+select_analysis_=fx (default is fd)
+outsuffix_=outfile.tre
+parsimony_seed_val_=362 (set the parsimony value for the starting tree, turned off for -f a or if a tree is supplied using treeetop)
+dna_gtrcat_=GTRGAMMA (default for datatype_=dna; default for dna_gtrcat_=GTRCAT)
+disable_seqcheck_=1 (sets the -O value, default is off)
+
+Job is OK, command line is 
+raxmlHPC-PTHREADS (-T 8)   -f x -n outfile.tre  -s infile.txt  -p 777 -m GTRGAMMA -O '
+Test passed
+
+select_analysis: use this to choose the main analysis. if the option is -f a, the value is fa; if -f o, fo, and so forth.
+
+other model options:
+If not DNA , set datatype_=(protein/rna/binary/multi) then set this parameter
+(GTRCAT default;  prot_sub_model_=PROTGAMMA/PROTCAT; rna_model_ ;bin_model_=BINCAT/BINGAMMA; multi_model_=MULTICAT/MULTIGAMMA)
+Then set sub_parameters for protein:
+prot_matrix_spec_= (DAYHOFF is default)
+
+other modifiers can be set:
+invariable_= - switch - Estimate proportion of invariable sites (GTRGAMMA + I)
+ascertainment_= switch -
+ascertainment_corr_= excl - sets the kind of correction used
+use_emp_freqs_= to use empirical frequencies, protein only 
+
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+
+upload modifying files
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+
+printbrlength_ - Switch - Print branch lengths (-k)
+

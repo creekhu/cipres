@@ -1,0 +1,101 @@
+This is a log of changes to the database schema.  Unfortunately I should have started this a long time ago
+but didn't, so I tried to reconstruct the stuff prior to 4/2014.
+
+At some point in the future we may start using flyway or liquibase to better manage database schema changes.
+In the meantime, if you are a CIPRES developer and you make schema changes, please add an entry to this
+file to describe the change, and commit an sql script or a java program, that will migrate a database to
+your new format.  Provide instructions here on how to run the migration code, and how to tell whether
+a database is both ready for the migration and needs the migration.
+
+Before migrating a database: 
+	1. shutdown cipres and its daemons and disable cron jobs that restart them, to make sure nothing is using the db.
+	2. backup the db. See example script for doing this, dump_cipres_data.
+	3. Run the migration.
+	4. If the migration fails and you want to restore from backup, see example script, copy, except
+	you already have the mysqldump, so run mysql with stdin redirected from the dump you created in step 2.
+
+9/28/2016:
+	Added home folders in revision 1362. Also added a utility, org.ngbw.utils.CreateHomeFolders, that adds home
+	folders for users that don't have them
+
+9/27/2016:
+	Add UUID column to userdata. Make it a unique index and initialize existing rows with a UUID.  Use
+	07_19_2016.py to do this.
+
+
+7/6/2016:
+	1. Mike Dwyer made some changes to the live production DB to improve performance (with advice from
+	Percona).  The new schema is cipres.sql.  I saved the previous version as cipres.sql.previous. Still
+	need to diff the two and create a script for converting (to be applied to restprod db). The changes were
+	basically to make job_stats remote job id field shorter so that it can be part of an index and add some indices.
+
+	2. I'm adding an index to UserDataItem on comment field, used for tus_servlet large file uploads.
+	7_06_2016.sql adds the index.  I ran it on all our dbs.
+
+3/12/2015:
+	Changed the SIGNATURE column of the source_documents table to be unique; added foreign key relationships 
+	between tables related to source_documents (tasks, task_input_parameters, task_input_source_documents,
+	task_output_parameters, task_output_source_documents, userdata, source_documents)
+
+11/3/2014:
+	Add DATE_CREATED column that's automatically set on insert to users and applications tables.
+	Existing rows have the field set to the current date at the time the col is added.
+	Run  11_03_2014.sql to make the changes to the db.
+
+
+8/19/2014:
+	Changes to "user" table to support email activation registration.  Added 
+		`ACTIVATION_CODE` varchar(50) DEFAULT NULL,
+		`ACTIVATION_SENT` datetime  DEFAULT NULL,
+		KEY `ACTIVATION` (`ACTIVATION_SENT`)
+	If activation code is set, user is not activated and shouldn't be allowed to login.  If you
+	don't want to require email activation, then registration just doesn't set activation_code.  If you do
+	want to require activation, as the rest service does, then registration will set activation_code and
+	activation_sent.  When user activates (by clicking on an emailed link) we clear activation_code and activation_sent.
+	Can delete unactivated user records where activation_sent is older than a certain time (Mark and I discussed 
+	somewhere between 1 hr and 24 hrs). 
+
+	Run script aug_19_2014.sql to add these fields and index. Ran this script on all our databases, cipresprod, 
+	cipres_copy (test), resttest and restprod on 8/28.  It's ok to have extra fields in a table that the code
+	doesn't yet reference.
+
+	I also changed the User.find methods so that some find all users and some only find activated users.
+
+5/29/2014:
+	- realized the current email/role unique index doesn't let two umbrella apps register
+	users with the same email address and we need to allow that.  So
+		- add umbrella_appname to user record.  Will be empty string unless role=REST_END_USER_UMBRELLA
+		- change unique email index to be email, role, umbrella_appname
+	Since we don't have REST in production yet, I'll manually fill in the umbrella_appname for the cipres_copy,
+	ngbwalpha and resttest dbs
+
+	Script to make these changes is may_29_2014.sql.  (Read and edit before running as diffent sets of
+	changes are needed for dbs where we applied may_2014.sql: ngbwalpha and cipres_copy, vs dbs where
+	we haven't yet: resttest and cipres production).
+
+5/27/2014:
+	- add table application_preferences (like user_preferences), to server as optional
+	properties for applications.  Planned use is to override global usage limit
+	settings on a per app basis, same as they can be overriden on a per user basis via
+	user_preferences
+
+	Put these changes in a script may_2014.sql and ran it on ngbwalpha and cipres_copy.
+
+5/1/2014: Don't want users to have to create separate account for each CRA enabled app they use
+so we need to keep track of which app submitted the job in tasks and job_stats.  
+	- removed users.appname, removed EMAIL index and recreated it as unique index email (email,role)
+	- added appname to job_stats and tasks
+	- added job_stats.su_override column (can use when time is creditted back to us)
+
+
+???:  new way of storing source docs, hashing content, not storing multiple copies of same content
+	- Paul modified source_documents, adding signature field and index.  Use sdkrun org.ngbw.sdk.utils.MigrageDbFiles
+	to handle the conversion.  It modifies the schema, then starts converting the data.  Let it finish 
+	modifying the schema before starting cipres, but it can convert the data while cipres is running.
+
+??? :  
+	- alter table job_stats add  SU_PREDICTED bigint(20) ;
+    - alter table job_stats add  SU_COMPUTED bigint(20) ;
+    - alter table job_stats add  SU_CHARGED bigint(20) ;
+
+Jan/2014 : I made the changes indicated in the convert*.sql scripts by running them.

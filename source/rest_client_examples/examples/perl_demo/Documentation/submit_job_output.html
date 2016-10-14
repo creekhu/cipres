@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Submit Job Output </title>
+	<style> 
+		h1 {color:black;}
+		pre {color:green;
+		    white-space: pre-wrap;       /* CSS 3 */
+    		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    		white-space: -pre-wrap;      /* Opera 4-6 */
+    		white-space: -o-pre-wrap;    /* Opera 7 */
+    		word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    		}
+	</style>
+</head>
+
+<body>
+	<h1> Submit Job Output </h1>
+	<p>		
+		<pre><xmp>
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	s
+	User typed s
+	Please provide a tool to use (ex. CLUSTALW)
+	CLUSTALW
+	User typed CLUSTALW
+	Please provide an input file:
+	ctest1.fasta
+	User typed ctest1.fasta
+	Would you like to provide a tree file? (Y/N)? N
+	User typed N
+	Would you like the results to be emailed to you (Y/N)
+	Y
+	User typed 
+	Please provide a job ID number (eg. 110) that you will recognize
+	121
+	User typed 121
+	Submitting a job with input file: ./ctest1.fasta
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C -F tool=CLUSTALW 
+	-F input.infile_=./ctest1.fasta -F metadata.statusEmail=TRUE -F metadata.clientJobId=121 
+	-F vparam.runtime_=1
+	User wants their results emailed
+	Email bool is true
+
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<jobstatus>
+	    <selfUri>
+	        <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-DFF58EB411354740A27FEEBDAFDAC413</url>
+	        <rel>jobstatus</rel>
+	        <title>NGBW-JOB-CLUSTALW-DFF58EB411354740A27FEEBDAFDAC413</title>
+	    </selfUri>
+	    <jobHandle>NGBW-JOB-CLUSTALW-DFF58EB411354740A27FEEBDAFDAC413</jobHandle>
+	    <jobStage>QUEUE</jobStage>
+	    <terminalStage>false</terminalStage>
+	    <failed>false</failed>
+	    <metadata><br>
+	        <entry><br>
+	            <key>clientJobId</key>
+	            <value>121</value>
+	        </entry>
+	        <entry>
+	            <key>statusEmail</key>
+	            <value>true</value>
+	        </entry>
+	    </metadata>
+	    <dateSubmitted>2015-01-03T14:13:07-08:00</dateSubmitted>
+	    <resultsUri>
+	        <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-DFF58EB411354740A27FEEBDAFDAC413/output</url>
+	        <rel>results</rel>
+	        <title>Job Results</title>
+	    </resultsUri>
+	    <workingDirUri>
+	        <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-DFF58EB411354740A27FEEBDAFDAC413/workingdir</url>
+	        <rel>workingdir</rel>
+	        <title>Job Working Directory</title>
+	    </workingDirUri>
+	    <messages>
+	        <message>
+	            <timestamp>2015-01-03T14:13:08-08:00</timestamp>
+	            <stage>QUEUE</stage>
+	            <text>Added to cipres run queue.</text>
+	        </message>
+	    </messages>
+	</jobstatus>
+
+		</xmp></pre>
+	</p>
+</body>
+</html>

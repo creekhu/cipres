@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>AMPS</title>
+    <version>2.1</version>
+    <description>Alignment of Multiple Protein Sequences</description>
+    <authors>Barton, Sternberg</authors>
+    <reference>Barton, G. J. and Sternberg, M. J. E. (1987b). J. Mol. Biol. 198, 327-337.</reference>
+</head>
+
+
+<command>amps</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>amps</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"ln -s $infile infile.seq; runamps infile"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>ps_files</name>
+<attributes>
+
+	<filenames>infile_*.ps</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>blc_files</name>
+<attributes>
+
+	<filenames>infile_*.blc</filenames>
+	<pipe>
+		<pipetype>amps_blc_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>com_files</name>
+<attributes>
+
+	<filenames>infile_*.com</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>out_files</name>
+<attributes>
+
+	<filenames>infile_*.out</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>tree_files</name>
+<attributes>
+
+	<filenames>infile_*.tree</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>tord_files</name>
+<attributes>
+
+	<filenames>infile_*.tord</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>infile</name>
+<attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+		<language>perl</language>
+		<code> ""</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>3</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>amps_seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

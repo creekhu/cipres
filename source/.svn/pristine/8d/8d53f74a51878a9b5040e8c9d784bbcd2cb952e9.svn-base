@@ -1,0 +1,19 @@
+MRBAYES_321RESTARTBETA
+infile_ - Primary Input File
+ALL_FILES_ - Results -
+run_version_ - Excl - I am restarting a checkpoint from
+nruns_specified_ - Integer - My MrBayes Block specifies nruns=
+nchains_specified_ - Integer - My MrBayes Block specifies nchains=
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+upload_ckpfile_ - InFile - Upload Checkpoint File (.ckp)
+upload_mcmcfile_ - InFile - Upload mcmc File (.mcmc)
+num_ptfiles_ - Excl - How many Sump/Sumt files do you wish to upload?
+upload_sumpfile1_ - InFile - Upload Sump File 1 (.p)
+upload_sumpfile2_ - InFile - Upload Sump File 2 (.p)
+upload_sumpfile3_ - InFile - Upload Sump File 3 (.p)
+upload_sumpfile4_ - InFile - Upload Sump File 4 (.p)
+upload_sumtfile1_ - InFile - Upload Sumt File 1 (.t)
+upload_sumtfile2_ - InFile - Upload Sumt File 2 (.t)
+upload_sumtfile3_ - InFile - Upload Sumt File 3 (.t)
+upload_sumtfile4_ - InFile - Upload Sumt File 4 (.t)
+

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Xpound</title>
+    <description>software for exon trapping</description>
+    <authors>Thomas and Skolnick</authors>
+    <reference>A probabilistic model for detecting coding regions in DNA sequences.  Alun Thomas and Mark H Skolnick,  IMA Journal of Mathematics Applied in Medicine and Biology, 1994, 11, 149-160.</reference>
+    <category>nucleic:translation</category>
+    <category>gene finding</category>
+  </head>
+
+  <command>xpound</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>xpound</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"xpound"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>seq</name>
+      <attributes>
+	<prompt>DNA sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" &lt; $value" </code>
+	</format>
+	<group>2</group>
+	<comment>
+	  <value>Everything after a % on a line in the input file is ignored. Other than comment xpound expects only white space, which is also ignored, or IUPAC charaters:</value>
+	  <value>A C M G R S V T W Y H K D B N</value>
+	  <value>in upper or lower case. Characters which do not uniquely determine a base, such as N, B, S and so on, are all interpreted as a C.</value>
+	  <value>Xpound will not accept the IUPAC character -, all occurences of which should be stripped from the input file beforehand.</value>
+	</comment>
+	<seqfmt>
+	  <value>13</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; xpound.out " </code>
+	</format>
+	<vdef><value>xpound.out</value></vdef>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>report_options</name>
+	<prompt>Report options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>report</name>
+	    <attributes>
+	      <prompt>Reports regions of bases for which the probability of coding is high (xreport)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " ; xreport &lt; xpound.out " : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>20</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>cut_off</name>
+	    <attributes>
+	      <prompt>Cut off value for report</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef )? " $value " : "" </code>
+	      </format>
+	      <vdef><value>0.75</value></vdef>
+	      <group>21</group>
+	      <precond>
+		<language>perl</language>
+		<code>$report</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>min_length</name>
+	    <attributes>
+	      <prompt>Minimum length value for report</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef )? " $value " : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>22</group>
+	      <precond>
+		<language>perl</language>
+		<code>$report</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>report_file</name>
+	    <attributes>
+	      <prompt>Report file</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " &gt; $value " : " &gt; xreport.out " </code>
+	      </format>
+	      <vdef><value>xreport.out</value></vdef>
+	      <group>25</group>
+	      <precond>
+		<language>perl</language>
+		<code>$report</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>postscript_options</name>
+	<prompt>Postscript options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>postscript</name>
+	    <attributes>
+	      <prompt>Produces a file of graphs in PostScript format (xpscript)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "; xpscript " : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>30</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>orientation</name>
+	    <attributes>
+	      <prompt>Orientation</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value eq "lanscape")? " -l " : "" </code>
+	      </format>
+	      <vdef><value>portrait</value></vdef>
+	      <group>31</group>
+	      <vlist>
+		<value>portrait</value>
+		<label>portrait</label>
+		<value>lanscape</value>
+		<label>lanscape</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$postscript</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>rows</name>
+	    <attributes>
+	      <prompt>Rows of plots per page (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef )? " -r $value " : "" </code>
+	      </format>
+	      <vdef><value>5</value></vdef>
+	      <group>32</group>
+	      <precond>
+		<language>perl</language>
+		<code>$postscript</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>columns</name>
+	    <attributes>
+	      <prompt>Columns of plots per page (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef )? " -c $value " : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>32</group>
+	      <precond>
+		<language>perl</language>
+		<code>$postscript</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>high</name>
+	    <attributes>
+	      <prompt>Draw a line at this level (-hi)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef )? " -hi $value " : "" </code>
+	      </format>
+	      <vdef><value>0.75</value></vdef>
+	      <group>33</group>
+	      <precond>
+		<language>perl</language>
+		<code>$postscript</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>low</name>
+	    <attributes>
+	      <prompt>Draw a line at this level (-hi)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef )? " -lo $value " : "" </code>
+	      </format>
+	      <vdef><value>0.5</value></vdef>
+	      <group>34</group>
+	      <precond>
+		<language>perl</language>
+		<code>$postscript</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter isstandout="1" type="OutFile">
+	    <name>psfile</name>
+	    <attributes>
+	      <prompt>PostScript file</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " &gt; $value" : " &gt; xpound.ps" </code>
+	      </format>
+	      <vdef><value>xpound.ps</value></vdef>
+	      <group>100</group>
+	      <precond>
+		<language>perl</language>
+		<code>$postscript</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="InFile">
+      <name>result</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> " xpound.out " </code>
+	</format>
+	<group>40</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$postscript</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

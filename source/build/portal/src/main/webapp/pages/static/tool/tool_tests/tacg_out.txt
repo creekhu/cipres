@@ -1,0 +1,67 @@
+
+
+ == Enzymes that DO NOT MAP to this sequence:
+       AarI      AatII       AbsI       AccI     Acc65I       AclI      AflII
+     AflIII       AhdI       AjuI       AjuI       AleI       AlfI       AloI
+       AloI       ApaI      ApaLI       AscI       AseI      AsiSI       AvaI
+      AvrII      BamHI       BarI       BarI       BdaI       BglI      BglII
+   BmeT110I      BmgBI       BmtI      BsaAI      BsaBI      BsiEI      BsiWI
+       BsmI      BsmBI      BspEI      BspHI      BspMI      BsrBI      BsrGI
+     BssHII      BstBI     BstEII      BstUI      BstYI    BstZ17I     Bsu36I
+      BtgZI       ClaI      CspCI      CspCI       DraI       DrdI       EagI
+       EciI      EcoNI      EcoRI      EcoRV       FauI       FseI       FspI
+      FspAI       HgaI     HincII       HpaI     Hpy99I       KpnI       MfeI
+       MluI       MreI       NaeI       NciI       NdeI     NgoMIV       NheI
+    NmeAIII       NotI       NruI       NsiI       PacI       PciI       PfoI
+       PmeI       PmlI       PpiI       PpiI      PpuMI      PshAI       PsiI
+     PspOMI      PspXI       PsrI       PsrI       PvuI      RsrII      SacII
+       SalI      SanDI       SbfI      SexAI       SfiI      SgrAI      SgrDI
+       SmaI      SnaBI       SpeI       SrfI       SwaI       TaqI      TaqII
+      TaqII     TspGWI    Tth111I       XbaI       XhoI       XmaI       ZraI
+
+
+
+ == Total Number of Hits per Enzyme:
+
+       AciI     4      BsaXI     1       FokI     5       PleI     2
+       AcuI     4      BsaXI     1       GlaI     4      PspGI     8
+       AfeI     2     BseMII     8      HaeII     3       PstI     3
+       AgeI     1      BseRI     4     HaeIII     9      PvuII     2
+       AluI    11      BseYI     2       HhaI     4       RsaI     4
+       AlwI     2       BsgI     2      Hin4I     5       SacI     1
+      AlwNI     1    BsiHKAI     2      Hin4I     5       SapI     1
+       ApoI     1       BslI     8     HinP1I     4     Sau96I     5
+      AvaII     2      BsmAI     5    HindIII     1       ScaI     1
+       BaeI     2      BsmFI     4      HinfI     8      ScrFI     8
+       BaeI     2   Bsp1286I     7      HpaII     4       SetI    30
+       BanI     2     BspCNI     8       HphI     9      SfaNI     4
+      BanII     4       BsrI     9      Hpy8I     1       SfcI     3
+       BbeI     1      BsrDI     2    Hpy188I     6       SfoI     1
+       BbsI     1      BsrFI     3  Hpy188III     4       SmlI     1
+       BbvI     8      BssSI     2      HpyAV     9       SphI     2
+      BbvCI     1     BstAPI     1  HpyCH4III     3       SspI     2
+       BccI     2     BstKTI     5   HpyCH4IV     1       StuI     2
+      BceAI     1      BstNI     8    HpyCH4V    10       StyI     3
+       BcgI     1      BstXI     2       KasI     1     StyD4I     8
+       BcgI     1       BtgI     1     MaeIII     4       TaiI     1
+      BciVI     1       BtsI     1       MboI     5       TatI     2
+       BclI     1      BtsCI     5      MboII    13       TauI     1
+       BfaI     5      Cac8I     5       MlyI     2       TfiI     6
+       BisI     9     CviAII     7       MmeI     1       TseI     8
+       BlpI     1    CviKI-1    36       MnlI    25       TsoI     2
+       BlsI     9      CviQI     4       MscI     3     Tsp45I     3
+   Bme1580I     2       DdeI    11       MseI     4    Tsp509I     6
+   BmgT120I     5       DpnI     5       MslI     1     TspDTI    10
+       BmrI     2     DraIII     2     MspA1I     2      TspRI    12
+       BplI     2       EaeI     3       MwoI     4       TstI     2
+       BpmI     5       EarI     4       NarI     1       TstI     2
+     Bpu10I     1    EcoICRI     1       NcoI     1       XcmI     2
+      BpuEI     1    Eco57MI     9     NlaIII     7       XmnI     1
+       BsaI     1   EcoO109I     1      NlaIV     5
+      BsaHI     1       FalI     3       NspI     2
+      BsaJI    12       FatI     7       PasI     2
+      BsaWI     2     Fnu4HI     9      PflMI     3
+
+ ==--------------------------  End of Analysis  --------------------------==
+
+

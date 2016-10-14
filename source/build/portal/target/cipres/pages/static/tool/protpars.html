@@ -1,0 +1,93 @@
+<h2>PROTPARS</h2>
+<p>
+	<strong>PROTPARS </strong>is a Multistate <em>discrete-characters</em> parsimony method.
+	Up to 8 states (as well as &quot;?&quot;) are allowed. Cannot  do Camin-Sokal or Dollo
+	Parsimony. Can cope with multifurcations, reconstruct  ancestral states, use character
+	weights, and infer branch lengths. Part of  Phylip.
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/protpars.html">
+		http://evolution.genetics.washington.edu/phylip/doc/protpars.html
+	</a>
+</h3>
+	   <h3>TEST DATA SET</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp; 10</pre>
+               <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; ABCDEFGHIK</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AB--EFGHIK</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; ?BCDSFG*??</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; CIKDEFGHIK</pre>
+             <pre>Epsilon&nbsp;&nbsp; DIKDEFGHIK</pre></td>
+         </tr>
+       </table>
+	   <div align="center">
+         <hr size="2" width="100%" align="center" />
+       </div>
+	   <h3>CONTENTS OF OUTPUT FILE (with all numerical options on)</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>Protein parsimony algorithm, version 3.6</pre>
+             <pre>&nbsp;</pre>
+             <pre> 5 species,&nbsp; 10&nbsp; sites</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequences</pre>
+             <pre>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---------</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ABCDEFGHIK </pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..--...... </pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ?...S..*?? </pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CIK....... </pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DIK....... </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>One most parsimonious tree found:</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; +--------Gamma&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;!&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+--2&nbsp;&nbsp;&nbsp;&nbsp; +--Epsilon&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;!&nbsp; !&nbsp; +--4&nbsp; </pre>
+             <pre>&nbsp;&nbsp;!&nbsp; +--3&nbsp; +--Delta&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp; </pre>
+             <pre>&nbsp;&nbsp;!&nbsp;&nbsp;&nbsp;&nbsp; +-----Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;!&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+-----------Alpha&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; remember: this is an unrooted tree!</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>requires a total of&nbsp;&nbsp;&nbsp;&nbsp; 15.000</pre>
+             <pre>&nbsp;</pre>
+             <pre>steps in each position:</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3&nbsp;&nbsp; 4&nbsp;&nbsp; 5&nbsp;&nbsp; 6&nbsp;&nbsp; 7&nbsp;&nbsp; 8&nbsp;&nbsp; 9</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; *-----------------------------------------</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 0!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp; 1&nbsp;&nbsp; 4&nbsp;&nbsp; 3&nbsp;&nbsp; 2&nbsp;&nbsp; 0&nbsp;&nbsp; 0&nbsp;&nbsp; 2&nbsp;&nbsp; 0</pre>
+             <pre>&nbsp;&nbsp; 10!&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>From&nbsp;&nbsp;&nbsp; To&nbsp;&nbsp;&nbsp;&nbsp; Any Steps?&nbsp;&nbsp;&nbsp; State at upper node</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( . means same as in the node below it on tree)</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ANCDEFGHIK </pre>
+             <pre>&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no&nbsp;&nbsp;&nbsp;&nbsp; .......... </pre>
+             <pre>&nbsp;&nbsp;2&nbsp;&nbsp; Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ?B..S..*?? </pre>
+             <pre>&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ..?....... </pre>
+             <pre>&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ?IK....... </pre>
+             <pre>&nbsp;&nbsp;4&nbsp;&nbsp; Epsilon&nbsp;&nbsp;&nbsp;&nbsp; maybe&nbsp;&nbsp; D......... </pre>
+             <pre>&nbsp;&nbsp;4&nbsp;&nbsp; Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; C......... </pre>
+             <pre>&nbsp;&nbsp;3&nbsp;&nbsp; Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; .B--...... </pre>
+             <pre>&nbsp;&nbsp;1&nbsp;&nbsp; Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maybe&nbsp;&nbsp; .B........ </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre></td>
+         </tr>
+       </table>
+	   <h3>&nbsp;</h3>
+	   <p><br />
+         <a href="PSIBLAST"></a></p>

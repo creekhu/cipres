@@ -1,0 +1,1 @@
+raxmlHPC-PTHREADS  -f A  -n result -s infile.txt -m GTRGAMMA -p 12345 -t tree.tre  -O 

@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PHYML</title>
+    <version>2.4.6</version>
+    <description>a program that  computes maximum likelihood phylogenies from DNA or AA homologous sequences</description>
+    <authors>S. Guindon and O. Gascuel</authors>
+    <reference> Guindon, S. and Gascuel, O. (2003) A simple, fast and accurate algorithm to estimate large phylogenies by maximum likelihood Syst. Biol., 52, 696-704</reference>
+    <category>phylogeny</category>
+  </head>
+
+  <command>phyml</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>phyml</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"phyml"</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>alignment</name>
+      <attributes>
+
+	<prompt>Sequence Alignment</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>12</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+	    <name>data_type</name>
+	    <attributes>
+
+	      <prompt>Data type</prompt>
+              <vlist>
+		<value>0</value>
+		<label>DNA</label>
+		<value>1</value>
+		<label>Amino-Acids</label>
+              </vlist>
+
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " $value" : ""</code>
+	      </format>
+	      <group>3</group>
+
+	    </attributes>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>inputopt</name>
+	<prompt>Input Options</prompt>
+	<parameters>
+
+	  <parameter ismandatory="1" type="Excl">
+	    <name>format</name>
+	    <attributes>
+
+	      <prompt>Format</prompt>
+              <vlist>
+		<value>i</value>
+		<label>interleaved</label>
+		<value>s</value>
+		<label>sequential</label>
+              </vlist>
+              <vdef><value>i</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <group>4</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>datasets</name>
+	    <attributes>
+
+	      <prompt>Number of data sets to analyse</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <group>5</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>bootstrap_sets</name>
+	    <attributes>
+
+	      <prompt>Number of bootstraps sets to analyse (only works with one data set to analyse)</prompt>
+	      <vdef><value>2</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($datasets == 1)? " $value" : " 0"</code>
+	      </format>
+	      <group>6</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_opt</name>
+	<prompt>Control Options</prompt>
+	<parameters>
+
+	  <parameter ismandatory="1" type="Excl">
+	    <name>model</name>
+	    <attributes>
+
+	      <prompt>Substitution model</prompt>
+              <vlist>
+		<value>JC69</value>
+		<label>JC69 (DNA)</label>
+		<value>K2P</value>
+		<label>K2P (DNA)</label>
+		<value>F81</value>
+		<label>F81 (DNA)</label>
+		<value>HKY</value>
+		<label>HKY (DNA)</label>
+		<value>F84</value>
+		<label>F84 (DNA)</label>
+		<value>TN93</value>
+		<label>TN93 (DNA)</label>
+		<value>GTR</value>
+		<label>GTR (DNA)</label>
+		<value>JTT</value>
+		<label>JTT (Amino-Acids)</label>
+		<value>MtREV</value>
+		<label>MtREV (Amino-Acids)</label>
+		<value>Dayhoff</value>
+		<label>Dayhoff (Amino-Acids)</label>
+		<value>WAG</value>
+		<label>WAG (Amino-Acids)</label>
+              </vlist>
+
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <group>7</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Float">
+	    <name>kappa</name>
+	    <attributes>
+
+	      <prompt>Transition/transversion ratio (only for DNA sequences)</prompt>
+              <vdef><value>4</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <group>8</group>
+	      <precond>
+		<language>perl</language>
+		<code>$data_type == 0 &amp;&amp; not $kappa_e</code>
+	      </precond>
+              <comment>
+		<value>Either enter a value or ask for an estimate
+		(see following option).</value>
+	      </comment>
+
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>kappa_e</name>
+	    <attributes>
+
+	      <prompt>Estimate Transition/transversion ratio? (only for DNA sequences)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " e" : "" </code>
+	      </format>
+	      <group>8</group>
+	      <precond>
+		<language>perl</language>
+		<code>$data_type == 0</code>
+	      </precond>
+              <comment>
+		<value>Either enter a value for the ratio (see
+		previous option) or ask for an estimate.</value>
+	      </comment>
+
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Float">
+	    <name>invar</name>
+	    <attributes>
+
+	      <prompt>Proportion of invariable sites</prompt>
+              <vdef><value>0.0</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>not $invar_e</code>
+	      </precond>
+	      <group>9</group>
+
+              <comment>
+		<value>Either enter a value or ask for an estimate
+		(see following option).</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>invar_e</name>
+	    <attributes>
+
+	      <prompt>Estimate proportion of invariable sites?</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " e" : "" </code>
+	      </format>
+	      <group>9</group>
+              <comment>
+		<value>Either enter a value for the proportion of
+		invariable sites (see previous option) or ask for an
+		estimate.</value> 
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>nb_categ</name>
+	    <attributes>
+
+	      <prompt>number of relative substitution rate categories (ex:4)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>" $value" </code>
+	      </format>
+	      <group>10</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Float">
+	    <name>alpha</name>
+	    <attributes>
+
+	      <prompt>Gamma distribution parameter</prompt>
+	      <format>
+		<language>perl</language>
+		<code> " $value" </code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>not $alpha_e</code>
+	      </precond>
+	      <group>11</group>
+              <comment>
+		<value>Either enter a value or ask for an estimate
+		(see following option).</value>
+	      </comment>
+
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>alpha_e</name>
+	    <attributes>
+
+	      <prompt>Estimate Gamma distribution parameter?</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " e" : "" </code>
+	      </format>
+	      <group>11</group>
+              <comment>
+		<value>Either enter a value for the gamma distribution (see
+		previous option) or ask for an estimate.</value>
+	      </comment>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>opt_topology</name>
+	    <attributes>
+
+	      <prompt>Optimise tree topology?</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " y" : " n" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>55</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>opt_lengths</name>
+	    <attributes>
+
+	      <prompt>Optimise branch lengths and rate parameters?</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " y" : " n" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>56</group>
+
+	    </attributes>
+	  </parameter>
+
+
+
+	  <parameter type="Switch">
+	    <name>user_tree</name>
+	    <attributes>
+	      
+	      <prompt>Starting tree?</prompt>
+	      <vdef><value>0</value></vdef>
+              <format>
+		<language>perl</language>
+		<code>($value)? " $user_tree_file" : " BIONJ" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	     <group>50</group>
+	    </attributes>
+	  </parameter>
+
+
+           <parameter ismandatory="1" type="InFile">
+            <name>user_tree_file</name>
+            <attributes>
+             <prompt>Starting tree filename (Newick format)</prompt>
+             <format>
+		<language>perl</language>
+		<code>"" </code>
+	     </format>
+             <pipe>
+	      <pipetype>phylip_tree</pipetype>
+	      <language>perl</language>
+	      <code>1</code>
+	     </pipe>
+             <precond>
+		<language>perl</language>
+		<code>$user_tree</code>
+	      </precond>	
+            </attributes>
+           </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+           <parameter type="Results">
+             <name>outfiles</name>
+             <attributes>
+            	<filenames>*.txt</filenames>
+             </attributes>
+           </parameter>
+
+           <parameter type="Results">
+           <name>outtree_result</name>
+           <attributes>
+	      <filenames>*tree* </filenames>
+	      <pipe>
+	        <pipetype>phylip_tree</pipetype>
+	        <language>perl</language>
+	        <code>1</code>
+	      </pipe>
+
+           </attributes>
+           </parameter>
+
+
+
+
+  </parameters>
+</pise>

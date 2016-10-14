@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmalign - align sequences to an HMM profile</description>
+    <authors>S .Eddy</authors>
+    <category>hmm</category>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>hmmalign</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmalign</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmalign"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Sequences File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $seqfile" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	  <value>11</value>
+	  <value>12</value>
+	  <value>15</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="InFile">
+      <name>hmmfile</name>
+      <attributes>
+	<prompt>HMM file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Results">
+      <name>align_file</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -o selex_alignment"</code>
+	</format>
+	<group>1</group>
+	<filenames>"selex_alignment"</filenames>
+	<pipe>
+	  <pipetype>hmmer_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>output_format</name>
+      <attributes>
+	<prompt>Additional output in GCG MSF format (default is SELEX format)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Results">
+      <name>msf_align_file</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"; sreformat msf selex_alignment &gt; msf_alignment"</code>
+	</format>
+	<group>100</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$output_format</code>
+	</precond>
+	<filenames>"msf_alignment"</filenames>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>match_states</name>
+      <attributes>
+	<prompt>Include in the alignment only those symbols aligned to match states. Do not show symbols assigned to insert states. (-m)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -m" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>expert_options</name>
+	<prompt>Expert Options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="String">
+	    <name>mapali</name>
+	    <attributes>
+	      <prompt>(--mapali f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --mapali $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Reads an alignment from file f and aligns it as a single object to the HMM; e.g. the alignment in f is held fixed. This allows you to align sequences to a model with hmmalign and view them in the context of an existing trusted multiple alignment. The alignment to the alignment is defined by a 'map' kept in the HMM, and so is fast and guaranteed to be consistent with the way the HMM was constructed from the alignment. The alignment in the file f must be exactly the alignment that the HMM was built from. Compare the --withali option.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>withali</name>
+	    <attributes>
+	      <prompt>(--withali f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --withali $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Reads an alignment from file f and aligns it as a single object to the HMM; e.g. the alignment in f is held fixed. This allows you to align sequences to a model with hmmalign and view them in the context of an existing trusted multiple alignment. The alignment to the alignment is done with a heuristic (nonoptimal) dynamic programming procedure, which may be somewhat slow and is not guaranteed to be completely consistent with the way the HMM was constructed (though it should be quite close). However, any alignment can be used, not just the alignment that the HMM was built from. Compare the --mapali option.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

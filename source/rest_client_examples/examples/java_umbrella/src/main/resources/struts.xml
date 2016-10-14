@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<!-- Include Struts 2 default configuration (from Struts 2 JAR) -->
+	<include file="struts-default.xml"/>
+
+	<!-- limit upload file size to 350 mb -->
+	<constant name="struts.multipart.maxSize" value="367001600"/>
+
+	<constant name="struts.devMode" value="true"/>
+   	<constant name="struts.i18n.encoding" value="UTF-8"/>
+   	<constant name="struts.custom.i18n.resources" value="MessageResources,errors,tools"/>
+   	<constant name="struts.enable.SlashesInActionNames" value="true"/>
+
+    <package name="default" extends="struts-default">
+		<interceptors>
+			<!-- User authentication interceptor -->
+			<interceptor name="authentication"
+				class="org.ngbw.restclient.AuthenticationInterceptor"/>
+
+			<!-- Basic user authentication interceptor stack -->
+			<interceptor-stack name="authenticationStack">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="authentication"/>
+			</interceptor-stack>
+
+		</interceptors>
+
+		<default-interceptor-ref name="authenticationStack"/>
+
+		<!-- If an action returns a result for which the action has no mapping, struts looks for a mapping here -->
+		<global-results>
+			<result name="login" type="redirectAction">login</result>
+			<!--
+			<result name="error">/error.jsp</result>
+			-->
+		</global-results>
+
+		<!-- Has to come after global-results -->
+		<!--
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception" result="error" />
+		</global-exception-mappings>
+		-->
+
+
+        <action name="login" class="org.ngbw.restclient.Login" method="login">
+			<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirectAction">home</result>
+			<result name="input">/login.jsp</result>
+        </action>
+
+        <action name="logout" class="org.ngbw.restclient.Login" method="logout">
+			<interceptor-ref name="defaultStack"/>
+			<result type="redirectAction">login</result>
+        </action>
+
+
+		<!-- These actions can't be referenced w/o being logged in -->
+
+        <action name="taskList" class="org.ngbw.restclient.TaskList">
+			<result name="list">/taskList.jsp</result>
+        </action>
+
+        <action name="taskStatus" class="org.ngbw.restclient.TaskStatus">
+			<result name="list">/taskStatus.jsp</result>
+        </action>
+
+		<action name="taskCreateForm">
+			<result>/taskCreate.jsp</result>
+		</action>
+
+        <action name="taskCreate" class="org.ngbw.restclient.TaskCreate">
+			<result name="input">/taskCreate.jsp</result>
+			<result>/taskCreateStatus.jsp</result>
+        </action>
+
+        <action name="taskDelete" class="org.ngbw.restclient.TaskDelete">
+			<result>/taskCreateStatus.jsp</result>
+        </action>
+
+        <action name="download" class="org.ngbw.restclient.Download">
+			<result name="success" type="stream">
+                <param name="contentType">${getContentType()}</param>
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">4096</param>
+                <param name="contentDisposition">${getContentDisposition()}</param>
+            </result>
+		</action>
+
+        <action name="home" class="org.ngbw.restclient.BaseAction">
+			<result>/home.jsp</result>
+        </action>
+
+		<!--
+		This is how you go straight to a jsp without specifying an action, but getting
+		interceptors invoked.  We don't do this however because we need to use info
+		from our BaseAction class in the home.jsp page.
+        <action name="home">
+			<result>/home.jsp</result>
+        </action>
+		-->
+
+    </package>
+
+</struts>

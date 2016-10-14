@@ -1,0 +1,4 @@
+#!/bin/sh
+echo Run this from the directory that contains the sdk pom file.  
+echo This runs against the production database.  Modify the script if you want to run against test.
+mvn -Denv=cipres-dev exec:java -Dexec.mainClass="org.ngbw.utils.RunningTaskInspector" -Dexec.args="$*"

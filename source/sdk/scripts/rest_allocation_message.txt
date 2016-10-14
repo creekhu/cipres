@@ -1,0 +1,13 @@
+Usage notice from '{{application_name}}'
+
+Dear '{{application_name}}' User: {{username}}, 
+
+This is a courtesy notice to let you know that you have now used {{hours_used}} CPU hours of CIPRES RESTful services via your account on '{{application_name}}'. Our fair use policies ( {{portal_url}}/portal/use_policy) allow us to provide all users with access to up to 30,000 CPU hours of XSEDE computational time from the CIPRES Community Account, and up to 50,000 cpu hrs for researchers at institutions in the United States. Once you reach your limit, you won't be able to submit jobs using CIPRES Services, but all other functions of {{application_name}} will be unaffected.
+
+Users conducting research in the USA, or collaborating with a researcher in the USA are eligible to use CIPRES RESTful services beyond the 50,000 CPU hr limit by establishing an individual XSEDE Allocation.  You can find tools for creating an allocation request at this location {{portal_url}}/help/request_allocation .
+
+If you are not a US researcher, and do not have a US collaborator, we may be able to assist you on a fee for service basis.
+Please contact us at {{email}} if you require more information or need support in preparing an allocation request.
+
+Sincerely,
+Mark Miller

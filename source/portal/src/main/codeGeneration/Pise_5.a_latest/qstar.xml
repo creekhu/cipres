@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PHYLOQUART</title>
+    <version>1.3</version>
+    <description>qstar - reliable phylogeny reconstruction from a set of quartets</description>
+    <authors>Berry</authors>
+    <category>phylogeny</category>
+  </head>
+
+  <command>qstar</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>qstar</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>qstar</code>
+		<language>perl</language>
+		<code>"qstar"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>quartfile</name>
+<attributes>
+
+	<prompt>quartfile containing the list of quartets</prompt>
+	<format>
+		<language>perl</language>
+		<code>"ln -s $quartfile quartfile; "</code>
+	</format>
+	<group>-10</group>
+	<comment>
+		<value>This file is computed by quartet inference programs (parciquart and distquart) which infer a set of quartets from biological data, mainly nucleotide sequences for the species or inter-species distances.</value>
+	</comment>
+	<pipe>
+		<pipetype>quartfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>quartfile_res</name>
+<attributes>
+
+	<vdef><value>"quartfile.res"</value></vdef>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>quartfile_left</name>
+<attributes>
+
+	<vdef><value>"quartfile.left"</value></vdef>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>bipfile</name>
+<attributes>
+
+	<vdef><value>"bipfile"</value></vdef>
+	<pipe>
+		<pipetype>bipfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<withpipe>
+		<pipetype>bipfile</pipetype>
+			<parametername>quartfile_left</parametername>
+			<parametername>quartfile_res</parametername>
+	</withpipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="Switch">
+<name>tree_pop</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" ;tree-pop"</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>treefile</name>
+<attributes>
+
+	<filenames>treefile</filenames>
+	<pipe>
+		<pipetype>phylip_tree</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

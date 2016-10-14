@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmfetch - retrieve an HMM from an HMM database</description>
+    <authors>S. Eddy</authors>
+    <category>hmm</category>
+  </head>
+
+  <command>hmmfetch</command>
+
+  <parameters>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>Description of hmmfetch</prompt>
+	<comment>
+	  <value>hmmfetch is a small utility that retrieves an HMM from a HMMER model database in a new format, and prints that model to standard output. The retrieved HMM file is written in HMMER 2 ASCII format.</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmfetch</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmfetch"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="String">
+      <name>name</name>
+      <attributes>
+	<prompt>name of the HMM</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Excl">
+      <name>HMMDB</name>
+      <attributes>
+	<prompt>HMM database</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>Pfam</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>Pfam</value>
+	  <label>Pfam</label>
+	  <value>PfamFrag</value>
+	  <label>PfamFrag</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>hmmfile</name>
+      <attributes>
+	<filenames>"hmmfetch.out"</filenames>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

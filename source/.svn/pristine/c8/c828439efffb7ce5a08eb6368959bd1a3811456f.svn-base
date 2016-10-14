@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>transform</description>
+    <authors>Russell, Barton</authors>
+  </head>
+
+  <command>transform</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>transform</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>transform</code>
+		<language>perl</language>
+		<code>"transform"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>transfile</name>
+<attributes>
+
+	<prompt>Domain descriptions file produced by stamp/sorttrans/alignfit (-f)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -f $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+		<pipetype>stamp_trans_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>het</name>
+<attributes>
+
+	<prompt>Include hetero atoms. Hetero atoms are normally not included in the output. (-het)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -het" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>hoh</name>
+<attributes>
+
+	<prompt>Include  waters (-hoh)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -hoh" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>graphics</name>
+<attributes>
+
+	<prompt>Graphics output (-g)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -g" : ""</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>This mode puts all transformed coordinates into a single PDB file, and labels the chains for domains sequentially (after their order in the transformation file) with A, B, C.. etc. This allows fast analysis of the structures graphically (i.e. using Rasmol) since one need only colour each chain a different colour to see the superimposition. The default file for writing the coordinates using this mode is `all.pdb'.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>all_pdb</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>$graphics</code>
+</precond>
+	<filenames>all.pdb</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>pdbfiles</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>! $graphics</code>
+</precond>
+	<filenames>*.pdb</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

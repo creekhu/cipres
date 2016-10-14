@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>EST2GENOME</title>
+<description>Align EST and genomic DNA sequences (EMBOSS)</description>
+<category>alignment:global</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/est2genome.html</doclink>
+</head>
+
+<command>est2genome</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>est</name>
+	<attributes>
+		<prompt>EST sequence(s) (-est)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -est=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>genome</name>
+	<attributes>
+		<prompt>Genomic sequence (-genome)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -genome=$value -sformat=fasta"</code>
+		</format>
+		<group>2</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>match</name>
+	<attributes>
+		<prompt>Score for matching two bases (-match)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -match=$value" : ""</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>mismatch</name>
+	<attributes>
+		<prompt>Cost for mismatching two bases (-mismatch)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -mismatch=$value" : ""</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>gappenalty</name>
+	<attributes>
+		<prompt>Gap penalty (-gappenalty)</prompt>
+		<vdef>
+			<value>2</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -gappenalty=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Cost for deleting a single base in either sequence, excluding introns</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>intronpenalty</name>
+	<attributes>
+		<prompt>Intron penalty (-intronpenalty)</prompt>
+		<vdef>
+			<value>40</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -intronpenalty=$value" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>Cost for an intron, independent of length.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>splicepenalty</name>
+	<attributes>
+		<prompt>Splice site penalty (-splicepenalty)</prompt>
+		<vdef>
+			<value>20</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -splicepenalty=$value" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>Cost for an intron, independent of length and starting/ending on donor-acceptor sites</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>minscore</name>
+	<attributes>
+		<prompt>Minimum accepted score (-minscore)</prompt>
+		<vdef>
+			<value>30</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -minscore=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>Exclude alignments with scores below this threshold score.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>reverse</name>
+	<attributes>
+		<prompt>Reverse orientation (-reverse)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -reverse" : ""</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>Reverse the orientation of the EST sequence</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>splice</name>
+	<attributes>
+		<prompt>Use donor and acceptor splice sites (-splice)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nosplice"</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>Use donor and acceptor splice sites. If you want to ignore donor-acceptor sites then set this to be false.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>mode</name>
+	<attributes>
+		<prompt>Comparison mode (-mode)</prompt>
+		<vdef>
+			<value>both</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -mode=$value" : ""</code>
+		</format>
+		<group>11</group>
+		<comment>
+			<value>This determines the comparion mode. The default value is 'both', in which case both strands of the est are compared assuming a forward gene direction (ie GT/AG splice sites), and the best comparsion redone assuming a reversed (CT/AC) gene splicing direction. The other allowed modes are 'forward', when just the forward strand is searched, and 'reverse', ditto for the reverse strand.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>best</name>
+	<attributes>
+		<prompt>Print out only best alignment (-best)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nobest"</code>
+		</format>
+		<group>12</group>
+		<comment>
+			<value>You can print out all comparisons instead of just the best one by setting this to be false.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>space</name>
+	<attributes>
+		<prompt>Space threshold (in megabytes) (-space)</prompt>
+		<vdef>
+			<value>10.0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -space=$value" : ""</code>
+		</format>
+		<group>13</group>
+		<comment>
+			<value>for linear-space recursion. If product of sequence lengths divided by 4 exceeds this then a divide-and-conquer strategy is used to control the memory requirements. In this way very long sequences can be aligned. &lt;BR&gt; If you have a machine with plenty of memory you can raise this parameter (but do not exceed the machine's physical RAM)</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>shuffle</name>
+	<attributes>
+		<prompt>Shuffle (-shuffle)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -shuffle=$value" : ""</code>
+		</format>
+		<group>14</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>seed</name>
+	<attributes>
+		<prompt>Random number seed (-seed)</prompt>
+		<vdef>
+			<value>20825</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -seed=$value" : ""</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>16</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>align</name>
+	<attributes>
+		<prompt>Show the alignment (-align)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -align" : ""</code>
+		</format>
+		<group>17</group>
+		<comment>
+			<value>Show the alignment. The alignment includes the first and last 5 bases of each intron, together with the intron width. The direction of splicing is indicated by angle brackets (forward or reverse) or ???? (unknown).</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>width</name>
+	<attributes>
+		<prompt>Alignment width (-width)</prompt>
+		<vdef>
+			<value>50</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -width=$value" : ""</code>
+		</format>
+		<group>18</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>19</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

@@ -1,0 +1,396 @@
+/*CIPRES 2.0 custom css*/
+
+
+body {
+	margin-top: 0;
+}
+
+
+.container {
+	text-align: left;
+	margin:0 auto 0 90px;
+}
+
+div.main {
+	/*background: url(../images/container-bg.gif) repeat-y top left;*/
+	background-image: url(../images/container-bg.gif);
+	background-repeat: repeat-y;
+	background-position: -430px 0px;
+}
+
+.container-stretch {
+		background: #003366;
+		width: 100%;
+		margin-bottom: 9px;
+}
+
+form ul {
+	list-style: none;
+}
+
+a, a:link {
+	color: #0066cc;
+}
+
+h2 {
+	color: #003366;
+}
+
+h4 {
+	color: #3e79b3;
+	font-weight: bold;
+}
+
+h5 {
+	font-weight: normal;
+}
+
+ol {
+	margin-right: 0;
+}
+
+#contactus {
+	margin-top: 20px;
+	background: #fff;
+	border-top: 1px solid #ccc;
+	margin-bottom: 0px;
+}
+
+div.teragrid {
+	text-align: right;
+}
+
+#left-column p, #left-column ul {
+	margin-right: 9px;
+}
+
+/* Footer styles
+*********************************************************************/
+
+#footer {
+	margin-top: 0px;
+	background: #fff;
+	}
+
+#footer .center {
+	text-align: center;
+}
+
+div.ucsd {
+	text-align: right;
+}
+
+h3.headline {
+		color: #003366;
+		line-height: 1.3em;
+}
+
+/* Branding
+*********************************************************************/
+
+#page-head {
+}
+
+#page-head h1 {
+	text-indent: -9999em;
+	display: block;
+	background-repeat: no-repeat;
+	background-color: transparent; 
+	margin-bottom: 0;
+}
+	
+#page-head h1 a {
+	display: block;
+	width: 500px;
+	height: 106px;
+	overflow: hidden;
+	border-bottom: none;
+	margin: 0;
+	padding: 0;
+	background: url(../images/logo.gif) no-repeat;
+}
+
+#page-head h1 a:hover {
+	border-bottom: none;
+}
+
+/* Main Nav bar styles
+**************************************************************************/
+
+.navMain { float: left; width: 100%; line-height: normal; background: #003366 /*url(../images/navInner_bg.gif) bottom repeat-x*/; }
+
+.navMain ul { list-style-type: none; margin: 0; padding: 0; }
+
+.navMain li { display: inline; margin: 0; padding: 0; }
+
+.navMain a { cursor: pointer; float: left; margin: 0; margin-right: 1px; padding: 0 0 0 7px; text-decoration: none; text-align: center; font-weight: bold;
+	background: url(../images/tabs_left.gif) no-repeat left top; }
+
+.navMain a span { float: left; display: block; padding: 8px 10px 7px 3px; width: 8em; color: #fff;
+	background: url(../images/tabs_right.gif) no-repeat right top; }
+
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+.navMain a span { float: none; }
+/* End IE5-Mac hack */
+
+.navMain a:hover span { color: #000; }
+
+.navMain a.current { background: url(../images/tabs_left_over.gif) no-repeat left top; }
+
+.navMain a.current span { background: url(../images/tabs_right_over.gif) no-repeat right top; color: black; }
+
+.navMain a:hover {background: url(../images/tabs_left_over.gif) no-repeat left top; }
+
+.navMain a:hover span { background: url(../images/tabs_right_over.gif) no-repeat right top; }
+
+/* Innver Nav bar styles
+**************************************************************************/
+.navInner {
+	float: left;
+	width: 100%;
+	line-height: normal;
+	border-bottom: 1px solid gray;
+}
+.navInner ul {
+	list-style: none;	/* get rid of bullets */
+	margin: 0;
+	padding: 0;
+}
+.navInner li {
+	float: left;	/* line items next to each other horizontally */
+	display: block; /* turn tabs into block elements */
+	margin: 0;
+	padding: 0;
+}
+.navInner a {
+	cursor: pointer;
+	float: left;
+	margin: 0;
+	margin-right: 1px;
+	padding: 0 0 0 7px;
+	text-decoration: none;
+	text-align: center;
+	background: url(../images/tab-left.gif) no-repeat left top;
+	margin: 0;
+}
+.navInner a span {
+	float: left;
+	display: block;
+	background: url(../images/tab-right.gif) no-repeat right top;
+	padding: 8px 10px 10px 3px;
+	margin-right: 2px;
+ 	width: 8.5em; 
+	color: #000;
+}
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+.navInner a span { float: none; }
+/* End IE5-Mac hack */
+
+.navInner a:hover span {
+	color: #000;
+}
+.navInner a.current {
+	background: url(../images/tab-left-over.gif) no-repeat left top;
+}
+.navInner a.current span {
+	background: red;
+	background: url(../images/tab-right-over.gif) no-repeat right top;
+	color: black;
+}
+
+fieldset {
+		border-radius: 5px; 
+
+-moz-border-radius: 5px; 
+
+-webkit-border-radius: 5px;
+}
+
+div.reportIssue {
+	border: 0px solid #ccc;
+	margin-top: 18px;
+	text-align: center;
+	background: #fff;
+	display: block;
+	padding: 9px;
+	border-radius: 5px; 
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+}
+
+
+-moz-border-radius: 5px; 
+
+-webkit-border-radius: 5px; 
+background-image: linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -o-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -moz-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -webkit-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -ms-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.42, rgb(238,238,238)),
+	color-stop(0.71, rgb(255,255,255))
+);
+}
+
+div.reportIssue img {
+	text-align: center;
+	margin: 0 45px;
+}
+
+div.reportIssue a {
+	text-decoration: none;
+}
+
+.top-affiliates {
+	float: right;
+	margin-top: 36px;
+}
+
+img.iplant-top {
+	
+}
+
+img.xsede-top {
+	margin-left: 9px;
+	padding-left: 9px;
+	
+border-left: 1px solid #0072a1;
+}
+
+.status-alert {
+	background: #ffe9d4;
+	border: 3px dashed #ff907f;
+	padding: 0 9px;
+	margin-bottom: 18px;
+	border-radius: 5px; 
+
+-moz-border-radius: 5px; 
+
+-webkit-border-radius: 5px; 
+}
+
+.status-alert p {
+	margin-top: 9px;
+	margin-bottom: 9px;
+	color: #de0018;
+}
+
+.status-alert-off {
+	border: 3px dashed #508600;
+	padding: 0 9px;
+	margin-bottom: 18px;
+	border-radius: 5px; 
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+	background-color: #e7ffd4;
+}
+
+.status-alert-off p {
+	margin-top: 9px;
+	margin-bottom: 9px;
+	color: #508600;
+}
+
+ul.stories {
+	list-style-type: none;
+	margin: 0;
+	border: 1px solid #ccc;
+		border-radius: 5px; 
+
+-moz-border-radius: 5px; 
+
+-webkit-border-radius: 5px;
+background: #fff;
+padding-top: 5px;
+padding-bottom: 9px;
+	
+}
+
+ul.stories li {
+	border-bottom: 1px dotted #ccc;
+	padding: 5px 9px;
+}
+
+ul.stories li a {
+	font-weight: bold;
+	font-size: 13px;
+	text-decoration: none;
+}
+
+ul.stories li a:hover {
+	text-decoration: underline;
+}
+
+/*
+	Sub Menu
+**************************************************************************/
+
+ul#sub-nav {
+	padding: 0;
+	margin: 0 9px 0 0;
+	list-style-type: none;
+background: #fff;
+border-top: 1px solid #ccc;
+}
+
+ul#sub-nav li a {
+	display: block;
+    border-bottom: 1px solid #ccc;
+	padding: 6px;
+	text-decoration: none;
+	font-size: 11px;
+	font-weight: bold;
+	color: #333;
+	/*background-image: linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -o-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -moz-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -webkit-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+background-image: -ms-linear-gradient(bottom, rgb(238,238,238) 42%, rgb(255,255,255) 71%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.42, rgb(238,238,238)),
+	color-stop(0.71, rgb(255,255,255))
+);*/
+
+/*background: url(../images/li-arrow.png) no-repeat 5px 6px;*/
+}
+
+ul#sub-nav li a:hover {
+		color: #0066cc;
+		/*background: #fff url(../images/li-arrow.png) no-repeat 5px 6px;*/
+}
+/*
+	Tree Menu
+**************************************************************************/
+#treemenu th {
+	background: #FFF;
+	padding: 0px;
+}
+#treemenu td {
+	background: #FFF;
+	padding: 0px;
+}
+
+/*.sidebar {
+	margin-left: 30px;
+}*/
+a.toolkit {
+	background: transparent url(../images/toolkit.gif) no-repeat 0 50%;
+	padding-left: 30px;
+}
+.toollist ul {
+}
+.toollist li{
+  border-bottom: 1px solid #CCCCCC;
+  width: 800px;
+  padding: 5px 0;
+  list-style: none;
+} 

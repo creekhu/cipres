@@ -1,0 +1,193 @@
+<web-app 
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<display-name>Cipres Science Gateway 3.0</display-name>
+
+	<context-param>
+		<param-name>iplant.enabled</param-name>
+		<param-value>${iplant.enabled}</param-value>
+		<description>Is sso login via iplant enabled.</description>
+	</context-param>
+	<context-param>
+		<param-name>portal.url</param-name>
+		<param-value>http://localhost/cipres</param-value>
+		<description>Just for testing</description>
+	</context-param>
+
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
+	</filter>
+
+	<!-- TUS FILTERS -->
+	<filter>
+        <filter-name>MethodOverrideFilter</filter-name>
+        <filter-class>org.tus.filter.methodoverride.HttpMethodOverrideFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>SessionAuth</filter-name>
+        <filter-class>org.tus.filter.auth.SessionAuth</filter-class>
+        <init-param>
+            <param-name>principalManager.class</param-name>
+            <param-value>org.ngbw.web.tus.UserBridge</param-value>
+        </init-param>
+    </filter>
+	<filter-mapping>
+        <filter-name>MethodOverrideFilter</filter-name>
+        <servlet-name>upload</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionAuth</filter-name>
+        <servlet-name>upload</servlet-name>
+    </filter-mapping>
+
+
+
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ResponseOverrideFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<!-- NGBW web session management listener -->
+	<listener>
+		<listener-class>
+			org.ngbw.web.interceptors.SessionListener
+		</listener-class>
+	</listener>
+
+	<!-- 90 min for large uploads on slow connections using the traditional, non resumable  upload mechanism -->
+	<session-config>
+	    <session-timeout>90</session-timeout>
+	</session-config>
+
+	
+	<servlet>
+		<servlet-name>tiles</servlet-name>
+		<servlet-class>org.apache.tiles.web.startup.TilesServlet</servlet-class>
+		<init-param>
+			<param-name>
+				org.apache.tiles.impl.BasicTilesContainer.DEFINITIONS_CONFIG</param-name>
+			<param-value>/WEB-INF/tiles.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<!-- TUS SERVLET 
+		TUS upload folder must be on same filesystem as database source doc storage.
+	-->
+	<servlet>
+        <servlet-name>upload</servlet-name>
+        <servlet-class>org.tus.servlet.upload.Upload</servlet-class>
+        <init-param>
+            <param-name>uploadFolder</param-name>
+            <param-value>/Users/creekthu/Desktop/db_documents/upload</param-value>
+        </init-param>
+        <init-param>
+            <param-name>maxFileSize</param-name>
+            <param-value>0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>maxStorage</param-name>
+            <param-value>0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>datastoreProvider</param-name>
+            <param-value>org.ngbw.tus.DBDatastore</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbdatastore.poolSize</param-name>
+            <param-value>5</param-value>
+        </init-param>
+        <init-param>
+            <param-name>dbdatastore.importFolder</param-name>
+            <param-value>uploads</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>upload</servlet-name>
+        <url-pattern>/files/*</url-pattern>
+    </servlet-mapping>
+
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!--
+	The following is added to prevent "ELException" in dataList.jps when calling "s:select"
+	when running jetty but not in Tomcat.
+	You can add <%@ page isELIgnored='false'%> is you need this for your jsp page
+	-->
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<el-ignored>true</el-ignored>  
+		</jsp-property-group>
+	</jsp-config> 
+
+	<!-- Terri: I added this section to enable basic auth for the statistics page.  You
+	also need to add the cipres-admin role to tomcat-users.xml.  Some browsers seem to 
+	cache this info a little strangely so if you get a 401 or 403 error instead of a 
+	login prompt, try restarting the browser or getting the latest update of the browser.
+	Firefox thru a proxy gave me 401 instead of login dialogn.
+
+	For the rest service, I want to run /portal2, so Mark and I can use it to look at
+	user's jobs but I don't want users to be able to reach it, so the whole app
+	will be password protected.
+	-->
+	<security-constraint>
+		<web-resource-collection> 
+			<web-resource-name>cipres</web-resource-name>
+			<!--
+			This is for the normal portal2 case, just protect statistics.
+				<url-pattern>/statistics.action</url-pattern>
+			This is for the rest service, all of portal2 is protected. 
+				<url-pattern>/*</url-pattern>
+			-->
+			<url-pattern>/statistics.action</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>cipres-admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>UserDatabase</realm-name>
+	</login-config>
+	<security-role>
+		<description>Administrative Pages</description>
+		<role-name>cipres-admin</role-name>
+	</security-role>
+	<!-- Terri: END basic auth addition --> 
+
+	
+</web-app>

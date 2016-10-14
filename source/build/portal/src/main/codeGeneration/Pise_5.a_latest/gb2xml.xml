@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>gb2xml</title>
+    <description>Genbank to XML conversion tool</description>
+    <authors>P. Bouige</authors>
+    <category>format</category>
+  </head>
+
+
+<command>gb2xml</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>gb2xml</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>gb2xml</code>
+		<language>perl</language>
+		<code>"gb2xml"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>query</name>
+<attributes>
+
+	<precond>
+	  <language>perl</language>
+	  <code>$access ne "f"</code>
+	</precond>
+	<prompt>Accession</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Excl">
+<name>access</name>
+<attributes>
+
+	<prompt>Access method</prompt>
+	<vlist>
+	  <value>e</value>
+	  <label>fetch</label>
+	  <value>g</value>
+	  <label>SRS</label>
+	  <value>f</value>
+	  <label>file</label>
+	</vlist>
+	<vdef>
+	  <value>e</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>" -$value"</code>
+	</format>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="InFile">
+<name>file</name>
+<attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$access eq "f"</code>
+	</precond>
+	<prompt>File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>xmldtdcopy</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"; cp /local/gensoft/lib/pasteur/genbank.dtd ."</code>
+	</format>
+	<group>100</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>dtdfile</name>
+<attributes>
+
+	<filenames>genbank.dtd</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

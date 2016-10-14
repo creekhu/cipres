@@ -1,0 +1,1 @@
+raxmlHPC-PTHREADS  -f x  -n outfile.tre -s infile.txt -m GTRGAMMA -p 777  -O 

@@ -1,0 +1,20 @@
+Logcombiner: beast program to put log files together.
+LogCombiner is part of the BEAST set of programs. It is used to add information to tree files ggenerated in BEAST
+This test provides the bare minimum to submit.
+
+input.infile_ - Primary Input File
+input.log_file2_ - additional log files (required when num_logfiles > 0)
+input.log_file3_ - additional log files (required when num_logfiles > 1))
+input.log_file4_ - additional log files (required when num_logfiles > 2)
+input.log_file5_ - additional log files (required when num_logfiles > 3)
+input.log_file6_ - additional log files ((required when num_logfiles > 4)
+
+vparam.which_beast - Excl - Only the default (3) is allowed today 
+vparam.runtime_ - Float - Maximum Hours to Run 72 max, default=1.0
+vparam.file_type_ - Excl - lgfiles (default) or trees. (lgfiles means log files)
+vparam.num_logfiles_ - Excl - 0,1,2,3,4,5 default=0
+vparam.set_decimal_ - Switch - Convert from scientific notation to decimal.
+vparam.resample_val_ - Integer - Resample at new frequency, must be integer divisor of original frequency (no default)
+vparam.scale_factor_ - Float  - Specify a scaling factor that will multiply any time units by this value (-scale; no default).
+vparam.set_burnin_ - Integerl - specify the number of trees to discard (default=200).
+vparam.set_output_ - String - Name the output file (default=out.txt).

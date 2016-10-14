@@ -1,0 +1,61 @@
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 4 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 0.00%
+
+RAxML marginal ancestral state computation
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 4
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 8 -f A -n result -s infile.txt -m GTRGAMMA -p 12345 -t tree.tre -O 
+
+
+Reverting BFGS ... 
+Reverting BFGS ... 
+Reverting BFGS ... 
+Marginal Ancestral Probabilities written to file:
+/projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC8_REST_XSEDE-4B2917C9BA164339A416A27AEA3205EF/RAxML_marginalAncestralProbabilities.result
+
+Ancestral Sequences based on Marginal Ancestral Probabilities written to file:
+/projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC8_REST_XSEDE-4B2917C9BA164339A416A27AEA3205EF/RAxML_marginalAncestralStates.result
+
+Node-laballed ROOTED tree written to file:
+/projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC8_REST_XSEDE-4B2917C9BA164339A416A27AEA3205EF/RAxML_nodeLabelledRootedTree.result
+
+
+Time for marginal ancestral state computation: 0.077187
+

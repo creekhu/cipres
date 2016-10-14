@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SHOWFEAT</title>
+<description>Show features of a sequence. (EMBOSS)</description>
+<category>display</category>
+<category>feature tables</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/showfeat.html</doclink>
+</head>
+
+<command>showfeat</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- any [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>2</value>
+			<value>4</value>
+			<value>14</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>matchsource</name>
+	<attributes>
+		<prompt>Source of feature to display (-matchsource)</prompt>
+		<vdef>
+			<value>all</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchsource=$value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>By default any feature source in the feature table is shown. You can set this to match any feature source you wish to show. &lt;BR&gt; The source name is usually either the name of the program that detected the feature or it is the feature table (eg: EMBL) that the feature came from. &lt;BR&gt; The source may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one source, separate their names with the character '|', eg: &lt;BR&gt; gene* | embl</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>matchtype</name>
+	<attributes>
+		<prompt>Type of feature to display (-matchtype)</prompt>
+		<vdef>
+			<value>all</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchtype=$value" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>By default any feature type in the feature table is shown. You can set this to match any feature type you wish to show. &lt;BR&gt; See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature types and see Appendix A of the Swissprot user manual in http://www.expasy.ch/txt/userman.txt for a list of the Swissprot feature types. &lt;BR&gt; The type may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one type, separate their names with the character '|', eg: &lt;BR&gt; *UTR | intron</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>matchtag</name>
+	<attributes>
+		<prompt>Tag of feature to display (-matchtag)</prompt>
+		<vdef>
+			<value>all</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchtag=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Some of these tags also have values, for example '/gene' can have the value of the gene name. &lt;BR&gt; By default any feature tag in the feature table is shown. You can set this to match any feature tag you wish to show. &lt;BR&gt; The tag may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one tag, separate their names with the character '|', eg: &lt;BR&gt; gene | label</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>matchvalue</name>
+	<attributes>
+		<prompt>Value of feature tags to display (-matchvalue)</prompt>
+		<vdef>
+			<value>all</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value =~ s/all/*/)? " -matchvalue=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Tag values are the values associated with a feature tag. Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Only some of these tags can have values, for example '/gene' can have the value of the gene name. By default any feature tag value in the feature table is shown. You can set this to match any feature tag valueyou wish to show. &lt;BR&gt; The tag value may be wildcarded by using '*'. &lt;BR&gt; If you wish to show more than one tag value, separate their names with the character '|', eg: &lt;BR&gt; pax* | 10</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>sort</name>
+	<attributes>
+		<prompt>Sort features by Type, Start or Source, Nosort (don't sort - use input order) or join coding regions together and leave other features in the input order -- Sorting features (-sort)</prompt>
+			<vlist>
+				<value>source</value>
+				<label>Sort by Source</label>
+				<value>start</value>
+				<label>Sort by Start position</label>
+				<value>type</value>
+				<label>Sort by Type</label>
+				<value>nosort</value>
+				<label>No sorting done</label>
+				<value>join</value>
+				<label>Join coding regions together</label>
+			</vlist>
+		<vdef>
+			<value>start</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -sort=$value"</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>html</name>
+	<attributes>
+		<prompt>Use HTML formatting (-html)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -html" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>id</name>
+	<attributes>
+		<prompt>Show sequence ID (-id)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noid"</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the ID name of the sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>description</name>
+	<attributes>
+		<prompt>Show description (-description)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nodescription"</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the description of the sequence.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>scale</name>
+	<attributes>
+		<prompt>Show scale line (-scale)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noscale"</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the scale line.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>width</name>
+	<attributes>
+		<prompt>Width of graphics lines (-width)</prompt>
+		<vdef>
+			<value>60</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -width=$value" : ""</code>
+		</format>
+		<group>11</group>
+		<comment>
+			<value>You can expand (or contract) the width of the ASCII-character graphics display of the positions of the features using this value. &lt;BR&gt; For example, a width of 80 characters would cover a standard page width and a width a 10 characters would be nearly unreadable. &lt;BR&gt; If the width is set to less than 4, the graphics lines and the scale line will not be displayed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>collapse</name>
+	<attributes>
+		<prompt>Display features with the same type on one line (-collapse)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -collapse" : ""</code>
+		</format>
+		<group>12</group>
+		<comment>
+			<value>If this is set, then features from the same source and of the same type and sense are all printed on the same line. For instance if there are several features from the EMBL feature table (ie. the same source) which are all of type 'exon' in the same sense, then they will all be displayed on the same line. This makes it hard to distinguish overlapping features. &lt;BR&gt; If this is set to false then each feature is displayed on a separate line making it easier to distinguish where features start and end.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>forward</name>
+	<attributes>
+		<prompt>Display forward sense features (-forward)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noforward"</code>
+		</format>
+		<group>13</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display forward sense features.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>reverse</name>
+	<attributes>
+		<prompt>Display reverse sense features (-reverse)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noreverse"</code>
+		</format>
+		<group>14</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display reverse sense features.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>unknown</name>
+	<attributes>
+		<prompt>Display unknown sense features (-unknown)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nounknown"</code>
+		</format>
+		<group>15</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display unknown sense features. (ie. features with no directionality - all protein features are of this type and some nucleic features (for example, CG-rich regions)).</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>strand</name>
+	<attributes>
+		<prompt>Display strand of features (-strand)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -strand" : ""</code>
+		</format>
+		<group>16</group>
+		<comment>
+			<value>Set this if you wish to display the strand of the features. Protein features are always directionless (indicated by '0'), forward is indicated by '+' and reverse is '-'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>source</name>
+	<attributes>
+		<prompt>Display source of features (-source)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -source" : ""</code>
+		</format>
+		<group>17</group>
+		<comment>
+			<value>Set this if you wish to display the source of the features. &lt;BR&gt; The source name is usually either the name of the program that detected the feature or it is the name of the feature table (eg: EMBL) that the feature came from.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>position</name>
+	<attributes>
+		<prompt>Display position of features (-position)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -position" : ""</code>
+		</format>
+		<group>18</group>
+		<comment>
+			<value>Set this if you wish to display the start and end position of the features. If several features are being displayed on the same line, then the start and end positions will be joined by a comma, for example: '189-189,225-225'.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>type</name>
+	<attributes>
+		<prompt>Display type of features (-type)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -notype"</code>
+		</format>
+		<group>19</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the type of the features.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>tags</name>
+	<attributes>
+		<prompt>Display tags of features (-tags)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -tags" : ""</code>
+		</format>
+		<group>20</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the tags and values of the features.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>values</name>
+	<attributes>
+		<prompt>Display tag values of features (-values)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -novalues"</code>
+		</format>
+		<group>21</group>
+		<comment>
+			<value>Set this to be false if you do not wish to display the tag values of the features. If this is set to be false, only the tag names will be displayed. If the tags are not displayed, then the values will not be displayed. The value of the 'translation' tag is never displayed as it is often extremely long.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>stricttags</name>
+	<attributes>
+		<prompt>Only display the matching tags (-stricttags)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -stricttags" : ""</code>
+		</format>
+		<group>22</group>
+		<comment>
+			<value>By default if any tag/value pair in a feature matches the specified tag and value, then all the tags/value pairs of that feature will be displayed. If this is set to be true, then only those tag/value pairs in a feature that match the specified tag and value will be displayed.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>23</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>24</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

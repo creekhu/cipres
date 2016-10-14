@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>TCODE</title>
+<description>Fickett TESTCODE statistic to identify protein-coding DNA (EMBOSS)</description>
+<category>nucleic:gene finding</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/tcode.html</doclink>
+</head>
+
+<command>tcode</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- dna [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>window</name>
+	<attributes>
+		<prompt>Length of sliding window (-window)</prompt>
+		<vdef>
+			<value>200</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -window=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>This is the number of nucleotide bases over which the TESTCODE statistic will be performed each time. The window will then slide along the sequence, covering the same number of bases each time.</value>
+		</comment>
+		<scalemin><value>200</value></scalemin>
+		<scalemax>
+			<language>acd</language>
+			<code>$sequence.length</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>plot</name>
+	<attributes>
+		<prompt>Graphical display (-plot)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -plot" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>On selection a graph of the sequence (X axis) plotted against the coding score (Y axis) will be displayed. Sequence above the green line is coding, that below the red line is non-coding.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>step</name>
+	<attributes>
+		<prompt>Stepping increment for the window (-step)</prompt>
+		<vdef>
+			<value>3</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -step=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>The selected window will, by default, slide along the nucleotide sequence by three bases at a time, retaining the frame (although the algorithm is not frame sensitive). This may be altered to increase or decrease the increment of the slide.</value>
+		</comment>
+		<scalemin><value>1</value></scalemin>
+		<scalemax>
+			<language>acd</language>
+			<code>@($(sequence.length) - $(window))</code>
+		</scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>datafile</name>
+	<attributes>
+		<prompt>Testcode data file (-datafile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -datafile=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>The default data file is Etcode.dat and contains coding probabilities for each base. The probabilities are for both positional and compositional information.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(plot))</code>
+			</precond>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -outfile=$value" : ""</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>graph</name>
+	<attributes>
+		<prompt>graph (-graph)</prompt>
+			<vlist>
+				<value>x11</value>
+				<label>x11</label>
+				<value>hp7470</value>
+				<label>hp7470</label>
+				<value>postscript</value>
+				<label>postscript</label>
+				<value>cps</value>
+				<label>cps</label>
+				<value>hp7580</value>
+				<label>hp7580</label>
+				<value>null</value>
+				<label>null</label>
+				<value>data</value>
+				<label>data</label>
+				<value>colourps</value>
+				<label>colourps</label>
+				<value>text</value>
+				<label>text</label>
+				<value>none</value>
+				<label>none</label>
+				<value>tek4107t</value>
+				<label>tek4107t</label>
+				<value>tekt</value>
+				<label>tekt</label>
+				<value>xwindows</value>
+				<label>xwindows</label>
+				<value>hpgl</value>
+				<label>hpgl</label>
+				<value>xterm</value>
+				<label>xterm</label>
+				<value>meta</value>
+				<label>meta</label>
+				<value>ps</value>
+				<label>ps</label>
+				<value>tek</value>
+				<label>tek</label>
+				<value>png</value>
+				<label>png</label>
+				<value>tektronics</value>
+				<label>tektronics</label>
+			</vlist>
+			<precond>
+				<language>perl</language>
+				<code>$plot</code>
+				<language>acd</language>
+				<code>$plot</code>
+			</precond>
+		<vdef><value>postscript</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -graph=$value" : ""</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>9</group>
+</attributes>
+</parameter>
+<parameter type="String" ishidden="1">
+<name>psouput</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps"  || $graph eq "cps" || $graph eq "png"</code>
+	</precond>
+	<format>
+		<language>perl</language>
+		<code>" -goutfile=tcode"</code>
+	</format>
+	<group>100</group>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>psresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "postscript" || $graph eq "ps" || $graph eq "colourps" || $graph eq "cps"</code>
+	</precond>
+	<filenames>*.ps</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>metaresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "meta"</code>
+	</precond>
+	<filenames>*.meta</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>dataresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "data"</code>
+	</precond>
+	<filenames>*.dat</filenames>
+</attributes>
+</parameter>
+<parameter type="Results">
+<name>pngresults</name>
+<attributes>
+	<precond>
+		<language>perl</language>
+		<code>$graph eq "png"</code>
+	</precond>
+	<filenames>*.png *.2 *.3</filenames>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

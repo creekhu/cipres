@@ -1,0 +1,193 @@
+ Comparison of:
+(A) sequence2.fasta 110005943 Pantholops hodgsonii hemoglobin alpha chain mRNA, - 502 nt
+(B) sequence1.fasta 126742336 Ochotona curzoniae hemoglobin alpha chain mRNA, c - 429 nt
+ using matrix file: DNA (5/-4), gap-open/ext: -12/-4 E(limit)   0.05
+
+
+        10        20        30        40        50        60       
+110005 ATGGTGCTGTCTGCCGCCGACAAGTCCAATGTCAAGGCCGCCTGGGGCAAGGTTGGCGGC
+       :::::::::::: :::: :::::: :::: ::::::::::::::::::::::: :: :::
+126742 ATGGTGCTGTCTCCCGCTGACAAGGCCAACGTCAAGGCCGCCTGGGGCAAGGTCGGGGGC
+               10        20        30        40        50        60
+
+
+        70        80        90       100       110       120       
+110005 AACGCTGGAGCTTATGGCGCAGAGGCTCTGGAGAGGATGTTCCTGAGCTTCCCCACCACC
+        :::: :: :  :::::::: ::::: :::::::::::::::::::::::::::::::::
+126742 CACGCCGGCGAGTATGGCGCCGAGGCCCTGGAGAGGATGTTCCTGAGCTTCCCCACCACC
+               70        80        90       100       110       120
+
+
+       130       140       150       160       170       180       
+110005 AAGACCTACTTCCCCCACTTCGACCTGAGCCACGGCTCCGCCCAGGTCAAGGGCCACGGC
+       :::::::::::::::::::::::: ::: ::::::::::::::::::::::: :::::::
+126742 AAGACCTACTTCCCCCACTTCGACGTGACCCACGGCTCCGCCCAGGTCAAGGCCCACGGC
+              130       140       150       160       170       180
+
+
+       190       200       210       220       230       240       
+110005 GAGAAGGTGGCCGCCGCGCTGACCAAAGCGGTGGGCCACCTGGACGACCTGCCCGGTACC
+        ::::::::::::  :: :: ::: : :  :: : :::: ::::::::::::::::  ::
+126742 AAGAAGGTGGCCGATGCCCTCACCCAGGTCGTCGACCACTTGGACGACCTGCCCGGCGCC
+              190       200       210       220       230       240
+
+
+       250       260       270       280       290       300       
+110005 CTGTCTGATCTGAGTGACCTGCACGCCCACAAGCTGCGTGTGGACCCGGTCAACTTCAAG
+       ::::: :  :: :: :::::::::::::: :::::::: :::::::: :: :::::::::
+126742 CTGTCCGCGCTCAGCGACCTGCACGCCCAAAAGCTGCGGGTGGACCCTGTTAACTTCAAG
+              250       260       270       280       290       300
+
+
+       310       320       330       340       350       360       
+110005 CTTCTGAGCCACACCCTGCTGGTGACCCTGGCCTGCCACCTCCCCAATGATTTCACCCCC
+       :: :::   :::  :::::::::::::::::::  ::::: ::::::::: ::::: :: 
+126742 CTCCTGGCTCACTGCCTGCTGGTGACCCTGGCCAACCACCACCCCAATGAATTCACTCCT
+              310       320       330       340       350       360
+
+
+       370       380       390       400       410       420       
+110005 GCCGTCCACGCCTCCCTGGACAAGTTCTTGGCCAGCGTGGGCACCGTGCTGACCTCCAAA
+       :: :: ::::::::::::::::::::: :::::: :::: :::::::::: :::::::: 
+126742 GCGGTGCACGCCTCCCTGGACAAGTTCCTGGCCAACGTGAGCACCGTGCTCACCTCCAAG
+              370       380       390       400       410       420
+
+
+       430      
+110005 TACCGTTAA
+       :: ::::::
+126742 TATCGTTAA
+
+                
+
+      110       120       130       140       150       160        
+110005 CCTGAGCTTCCCCACCACCAAGACCTACTTCCCCCACTTCGACCTGAGCCACGGCTCCGC
+       : ::: :  :  : :: :: ::  : :   :: :  :    :  ::  : : : :  : :
+126742 CGTGACCCACGGCTCCGCCCAGGTCAAGGCCCACGGCAAGAAGGTGGCCGATGCCCTCAC
+           150       160       170       180       190       200   
+
+
+      170       180       190       200       210       220        
+110005 CCAGGTCAAGGGCCACGGCGAGAAGGTGGCCGCCGCGCTGACCAAAGCGGTGGGCCACCT
+       :::::::   : ::::   ::  :  :: ::: ::: ::: ::   ::: :  :: ::::
+126742 CCAGGTCGTCGACCACTTGGACGACCTGCCCGGCGCCCTGTCC---GCGCTCAGCGACCT
+           210       220       230       240          250       260
+
+
+      230             240        250       260       270       280 
+110005 GGACGACC------TGCCCG-GTACCCTGTCTGATCTGAGTGACCTGCACGCCCACAAGC
+       : ::: ::      :::  : : ::::::: : :  : :   : :: :  :: :::   :
+126742 GCACGCCCAAAAGCTGCGGGTGGACCCTGT-TAACTTCA---AGCTCCTGGCTCACTGCC
+              270       280       290           300       310      
+
+
+             290       300 
+110005 TGCGTGTGGACCCGGTCAAC
+       :::  :::  :: :: ::::
+126742 TGCTGGTGACCCTGGCCAAC
+        320       330      
+
+
+     160       170       180          190       200        
+110005 CGGCTCCGCCCAGGTCAAGGGCCACG---GCGAGAAGGTGGCCGCCGCGCTG
+       :: ::  : : :::::  ::::::::   ::::: : :  ::::  :: :::
+126742 CGCCTGGGGCAAGGTCGGGGGCCACGCCGGCGAGTATGGCGCCGAGGCCCTG
+       40        50        60        70        80        90
+
+
+             30        40        50        60        70          80
+110005 GCCGACAAGTCCAATGTCAAGGCCGCCTGGGGCAAGGTTGGCGGCAACGC--TGGAGCTT
+       :::: :  :  ::: :::  :: :  :   ::: ::  ::::: : : ::  :::::   
+126742 GCCGCCTGGGGCAAGGTCGGGGGCCACGCCGGCGAGTATGGCGCCGAGGCCCTGGAGAGG
+         40        50        60        70        80        90      
+
+
+               90       100       110       120       130          
+110005 ATGGCGCAGAGGCTCTGGAGAGGATGTTCCTGAGCTTCCCCACCACCAAG--ACCTACTT
+       :::   : :::  ::   :         ::: :  : ::::::  : : :  ::: ::  
+126742 ATGTTCCTGAGCTTCCCCACCACCAAGACCT-ACTTCCCCCACTTCGACGTGACCCACGG
+        100       110       120        130       140       150     
+
+
+      140       150       160       170       180       190        
+110005 CCCCCACTTCGACCTGAGCCACGGCTCCGCCCAGGTCAAGGGCCACGGCGAGAAGGTGGC
+       : ::  :   : :  :  :::::::        :: : : : :: :  : ::   :: : 
+126742 CTCCGCCCAGGTCAAGGCCCACGGCAAGAAGGTGGCCGATGCCCTCACCCAGGTCGTCGA
+         160       170       180       190       200       210     
+
+
+            200       210       220       230       240  
+110005 C------GCCGCGCTGACCAAAGCGGTGGGCCACCTGGACGACCTGCCCG
+       :      : ::  ::: ::   ::  ::  :   ::   :::::::: ::
+126742 CCACTTGGACGACCTGCCCGGCGCCCTGTCCGCGCTCAGCGACCTGCACG
+         220       230       240       250       260     
+
+
+              160       170       180       190       200       210
+110005 CCTGAGCCACGGCTCCGCCCAGGTCAAGGGCCACGGCGAGAAGGTGGCCGCCGCGCTGAC
+       :::::::  :  : :: :: ::  : :   :: :  :    : ::: ::  ::      :
+126742 CCTGAGCTTCCCCACCACCAAGACCTACTTCCCCCACTTCGACGTGACCCACGGCTCCGC
+             110       120       130       140       150       160 
+
+
+              220       230       240       250       260       270
+110005 CAAAGCGGTGGGCCACCTGGACGACCTGCCCGGTACCCTGTCTGATCTGAGTGACCTGCA
+       : : :    :: ::::    :  :  :: ::: : ::::  :  :  :    ::::   :
+126742 CCAGGTCAAGGCCCACGGCAAGAAGGTGGCCGATGCCCTCACCCAGGTCGTCGACC---A
+             170       180       190       200       210           
+
+
+              280       290       300          310       320       
+110005 CGCCCACAAGCTGCGTGTGGACCCGGTCAACTTCA---AGCTTCTGAGCCACACCCTGCT
+       :    :: : ::::  :  : :: :  :    :::   : :: :    ::: :  :::: 
+126742 CTTGGACGACCTGCCCGGCGCCCTGTCCGCGCTCAGCGACCTGCACGCCCAAAAGCTGCG
+      220       230       240       250       260       270        
+
+
+       330        
+110005 GGTG-ACCCTG
+       :::: ::::::
+126742 GGTGGACCCTG
+      280         
+
+
+        170       180       190        200       210  
+110005 GCCCAGGTCAAGGGCCACGGCGAGAAGGT-GGCCGCCGCGCTGACCA
+       ::: : ::::::: :  : : :  ::::: ::  ::: ::: : : :
+126742 GCCAACGTCAAGGCCGCCTGGGGCAAGGTCGGGGGCCACGCCGGCGA
+           30        40        50        60        70 
+
+
+          320       330       340       350       360       370    
+110005 GCCACACCCTGCTGGTGACCCTGGCCTGCCACCTCCCCAATGATTTCACCCCCGCCGTCC
+       ::  : ::: : :   : :::  : :    :  :  :: :::   ::::::  : :::: 
+126742 GCTCCGCCCAGGTCAAGGCCCACGGCAAGAAGGTGGCCGATGCCCTCACCCAGGTCGTCG
+          160       170       180       190       200       210    
+
+
+          380       390       400       410           420       430
+110005 ACGCCTCCCTGGACAAGTTCTTGGCCAGCGTGGGCACCGTGCT----GACCTCCAAATAC
+       ::  ::   ::::: :   : :: :: :::      ::: :::    ::::: ::    :
+126742 ACCACT---TGGACGA---CCTGCCCGGCGCCCTGTCCGCGCTCAGCGACCTGCAC--GC
+          220             230       240       250       260        
+
+
+              440   
+110005 CGTTAAGCTGGGG
+       :   :::::: ::
+126742 CCAAAAGCTGCGG
+        270         
+
+
+         370       380       390       400         
+110005 CCGCCGTCCACGCCTCCCTGGACAAGTTCTTGGCCAGCGTGGGC
+       ::  :::: : ::: ::  :: :::: ::  :: :  ::  :::
+126742 CCAACGTCAAGGCCGCCTGGGGCAAGGTCGGGGGCCACGCCGGC
+          30        40        50        60         
+
+
+            170       180       190       200       210 
+110005 CTCCGCCCAGGTCAAGGGCCACGGCGAGAAGGTGGCCGCCGCGCTGACC
+       : :: ::: :: ::::  ::  : :   :: :::  : ::: ::: :::
+126742 CGCCTCCCTGGACAAGTTCCTGGCC---AACGTGAGCACCGTGCTCACC
+      370       380       390          400       410    

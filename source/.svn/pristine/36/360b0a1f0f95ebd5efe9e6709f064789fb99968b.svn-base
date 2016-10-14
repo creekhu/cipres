@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlatfileParserConfig>
+	<RecordType id="COMPOUND_STRUCTURE">
+		<DataFormat id="PDB">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^HEADER\s+.*(\w{4})\s+$"/>
+			<RecordField id="TYPE" collection="false"
+				regex="^EXPDTA\s+(\w.*\w)\s+$"/>
+			<RecordField id="RESOLUTION" collection="false"
+				regex="^REMARK\s+.+RESOLUTION\.\s+([\d.*\d?]+)\s+ANGSTROMS\.\s+$"/>
+			<RecordField id="NAME" collection="false"
+				regex="TITLE\s+\d?\s(.*\S)\s+$"/>
+			<RecordField id="AUTHOR" collection="true" separator="\s*,\s*"
+				regex="^AUTHOR\s+\d?\s(.*\S;?)\s+$"/>
+			<RecordField id="MOLECULE" collection="false"
+				regex="^COMPND\s+\d?\sMOLECULE:\s+(.*\S;?)\s+$"/>
+			<RecordField id="ORGANISM" collection="true"
+				regex="^SOURCE\s+\d?\sORGANISM_SCIENTIFIC:\s(\S.*[^\s;]);?\s+$"/>
+			<RecordField id="DEPOSITION_DATE" collection="false"
+				dateFormat="dd-MMM-yy"
+				regex="^HEADER\s+.*(\d{2}-\w{3}-\d{2})\s.*$"/>
+			<RecordField id="MODIFICATION_DATE" collection="true"
+				dateFormat="dd-MMM-yy"
+				regex="^REVDAT\s+\d?\s+(\d{2}-\w{3}-\d{2})\s.*$"/>
+		</DataFormat>
+	</RecordType>
+	<RecordType id="NUCLEIC_ACID_STRUCTURE">
+		<DataFormat id="PDB">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^HEADER\s+.*(\w{4})\s+$"/>
+			<RecordField id="TYPE" collection="false"
+				regex="^EXPDTA\s+(\w.*\w)\s+$"/>
+			<RecordField id="RESOLUTION" collection="false"
+				regex="^REMARK\s+.+RESOLUTION\.\s+([\d.*\d?]+)\s+ANGSTROMS\.\s+$"/>
+			<RecordField id="NAME" collection="false"
+				regex="TITLE\s+\d?\s(.*\S)\s+$"/>
+			<RecordField id="AUTHOR" collection="true" separator="\s*,\s*"
+				regex="^AUTHOR\s+\d?\s(.*\S;?)\s+$"/>
+			<RecordField id="MOLECULE" collection="false"
+				regex="^COMPND\s+\d?\sMOLECULE:\s+(.*\S;?)\s+$"/>
+			<RecordField id="ORGANISM" collection="true"
+				regex="^SOURCE\s+\d?\sORGANISM_SCIENTIFIC:\s(\S.*[^\s;]);?\s+$"/>
+			<RecordField id="DEPOSITION_DATE" collection="false"
+				dateFormat="dd-MMM-yy"
+				regex="^HEADER\s+.*(\d{2}-\w{3}-\d{2})\s.*$"/>
+			<RecordField id="MODIFICATION_DATE" collection="true"
+				dateFormat="dd-MMM-yy"
+				regex="^REVDAT\s+\d?\s+(\d{2}-\w{3}-\d{2})\s.*$"/>
+		</DataFormat>
+	</RecordType>
+	<RecordType id="PROTEIN_STRUCTURE">
+		<DataFormat id="PDB">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^HEADER\s+.*(\w{4})\s+$"/>
+			<RecordField id="TYPE" collection="false"
+				regex="^EXPDTA\s+(\w.*\w)\s+$"/>
+			<RecordField id="RESOLUTION" collection="false"
+				regex="^REMARK\s+.+RESOLUTION\.\s+([\d.*\d?]+)\s+ANGSTROMS\.\s+$"/>
+			<RecordField id="NAME" collection="false"
+				regex="TITLE\s+\d?\s(.*\S)\s+$"/>
+			<RecordField id="AUTHOR" collection="true" separator="\s*,\s*"
+				regex="^AUTHOR\s+\d?\s(.*\S;?)\s+$"/>
+			<RecordField id="MOLECULE" collection="false"
+				regex="^COMPND\s+\d?\sMOLECULE:\s+(.*\S;?)\s+$"/>
+			<RecordField id="ORGANISM" collection="true"
+				regex="^SOURCE\s+\d?\sORGANISM_SCIENTIFIC:\s(\S.*[^\s;]);?\s+$"/>
+			<RecordField id="DEPOSITION_DATE" collection="false"
+				dateFormat="dd-MMM-yy"
+				regex="^HEADER\s+.*(\d{2}-\w{3}-\d{2})\s.*$"/>
+			<RecordField id="MODIFICATION_DATE" collection="true"
+				dateFormat="dd-MMM-yy"
+				regex="^REVDAT\s+\d?\s+(\d{2}-\w{3}-\d{2})\s.*$"/>
+		</DataFormat>
+	</RecordType>
+	<RecordType id="PROTEIN_SEQUENCE">
+		<DataFormat id="UNIPROT">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^AC\s+(\w+);.*$"/>
+			<RecordField id="ALTERNATIVE_ID" collection="false"
+				regex="^ID\s+([\w_]+).*$"/>
+			<RecordField id="NAME" collection="false"
+				regex="^DE\s+(.*?)\.?$"/>
+			<RecordField id="ORGANISM" collection="false"
+				regex="^OS\s+([^()]+).*$"/>
+			<RecordField id="VERSION" collection="false"
+				regex="^DT.*entry version (\d*).*$"/>
+		</DataFormat>
+		<DataFormat id="GENPEPT">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^ACCESSION\s+(\S*)"/>
+			<RecordField id="ALTERNATIVE_ID" collection="false"
+				regex="^VERSION\s+.*GI:(\d+)"/>
+			<RecordField id="NAME" collection="false"
+				regex="^DEFINITION\s+(.*[^\.]+)\.?"/>
+			<RecordField id="ORGANISM" collection="false"
+				regex="^\s+ORGANISM\s+(.*)"/>
+			<RecordField id="VERSION" collection="false"
+				regex="^VERSION\s+(\S+)\s+GI:.*"/>
+		</DataFormat>
+	</RecordType>
+	<RecordType id="NUCLEIC_ACID_SEQUENCE">
+		<DataFormat id="GENBANK">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^ACCESSION\s+(\S*)"/>
+			<RecordField id="ALTERNATIVE_ID" collection="false"
+				regex="^VERSION\s+.*GI:(\d+)"/>
+			<RecordField id="NAME" collection="false"
+				regex="^DEFINITION\s+(.*[^\.]+)\.?"/>
+			<RecordField id="ORGANISM" collection="false"
+				regex="^\s+ORGANISM\s+(.*)"/>
+			<RecordField id="VERSION" collection="false"
+				regex="^VERSION\s+(\S+)\s+GI:.*"/>
+		</DataFormat>
+		<DataFormat id="EMBL">
+			<RecordField id="PRIMARY_ID" collection="false"
+				regex="^AC\s+(\w+);.*$"/>
+			<RecordField id="ALTERNATIVE_ID" collection="false"
+				regex="^ID\s+([\w_]+).*$"/>
+			<RecordField id="NAME" collection="false"
+				regex="^DE\s+(.*?)\.?$"/>
+			<RecordField id="ORGANISM" collection="false"
+				regex="^OS\s+([^()]+).*$"/>
+			<RecordField id="VERSION" collection="false"
+				regex="^DT.*entry version (\d*).*$"/>
+		</DataFormat>
+	</RecordType>
+</FlatfileParserConfig>

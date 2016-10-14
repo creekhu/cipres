@@ -1,0 +1,81 @@
+1. pom.xml:
+--------------------------------------------------------------------------------------
+<dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>servlet-api</artifactId>
+	<version>2.4</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>servlet-api</artifactId>
+	<version>2.4</version>
+	<scope>provided</scope>
+</dependency>
+
+2. if using template to generate files, create one for text, one for html. 
+By default, the files names are exepected to end with "-text.ftl", "-html.ftl" 
+as the extensions
+--------------------------------------------------------------------------------------
+A.) xxx-html.ftl:
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>good</title>
+</head>
+<body>
+Thank you <b>${name}</b> for your job submission.  You result is now available at <a href="http://www.google.com">goolge</a>
+</body>
+</html>
+
+B.) xxx-test.ftl:
+Thank you ${name} for your job submission.  You result is now available at <a href="http://www.google.com">goolge</a>
+
+
+3. in src/main/resources (add spring-mail.xml or whatever name desired, and change as needed)
+--------------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.ucsd.edu" />
+        <property name="port" value="25" />
+    </bean>
+    <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from">
+            <value><![CDATA[Cipres Portal <lcchan@sdsc.edu>]]></value>
+        </property>   
+        <property name="subject" value="[Enter Your Subject Here newssss]"/>
+    </bean>
+    <!-- configuration for freemark template -->
+    <bean id="mailTemplateEngine" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/mail-template"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">0</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="locale">zh_CN</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="mailService" class="org.cipres.utils.MailService">
+        <property name="mailTemplateEngine" ref="mailTemplateEngine"></property>
+        <property name="mailSender" ref="mailSender"></property>
+        <property name="mailMessage" ref="mailMessage"/>
+    </bean>
+</beans>
+
+4. to use:
+--------------------------------------------------------------------------------------
+ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("spring-mail.xml");
+MailService mailservice = (MailService) appContext.getBean("mailService");
+Map<String, String> model = new HashMap<String, String>();
+model.put("name", "lcchan"); // if you need to replace content in the template *.ftl)
+mailservice.sendMimeMessage("lcchan.temp@gmail.com", "job", model);
+mailservice.sendSimpleMessage("lucie.chan@gmail.com", "just a test message");

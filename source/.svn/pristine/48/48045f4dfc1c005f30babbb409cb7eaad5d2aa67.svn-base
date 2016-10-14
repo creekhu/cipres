@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SQUIZZ</title>
+    <version>0.99</version>
+    <description>Sequence/Alignment format checker</description>
+    <authors>N. Joly</authors>
+    <category>format</category>
+  </head>
+
+  <command>squizz</command>
+
+  <parameters>
+
+    <!-- ** Command name ** -->
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>squizz</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"squizz"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Sequence/Alignment file ** -->
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	<prompt>Sequence/Alignment</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <!-- ** Sequence format check (do not convert) ** -->
+    <parameter issimple="1" type="Switch">
+      <name>check_only</name>
+      <attributes>
+        <prompt>Check format (do NOT convert)</prompt>
+        <format>
+          <language>perl</language>
+          <code>""</code>
+        </format>
+        <vdef>
+          <value>0</value>
+        </vdef>
+      </attributes>
+    </parameter>
+
+    <!-- ** Output format conversion ** -->
+    <parameter issimple="1" type="Excl">
+      <name>convert</name>
+      <attributes>
+	<prompt>Convert into format</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -c $value" : ""</code>
+	</format>
+	<vlist>
+	  <value>clustal</value>
+	  <label>Clustal</label>
+          <value>embl</value>
+          <label>Embl</label>
+          <value>fasta</value>
+          <label>Fasta</label>
+          <value>gcg</value>
+          <label>GCG</label>
+          <value>gde</value>
+          <label>GDE</label>
+          <value>genbank</value>
+          <label>Genbank</label>
+          <value>ig</value>
+          <label>Intelligenetics</label>
+          <value>msf</value>
+          <label>MSF</label>
+          <value>nbrf</value>
+          <label>NBRF</label>
+	  <value>nexus</value>
+	  <label>NEXUS</label>
+	  <value>phylip</value>
+	  <label>Phylip</label>
+          <value>pir</value>
+          <label>Pir (codata)</label>
+          <value>raw</value>
+          <label>Raw</label>
+	  <value>swissprot</value>
+	  <label>Swissprot</label>
+	</vlist>
+	<vdef>
+	  <value>fasta</value>
+	</vdef>
+	<group>5</group>
+	<precond>
+	  <language>perl</language>
+	  <code>(! $check_only)</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

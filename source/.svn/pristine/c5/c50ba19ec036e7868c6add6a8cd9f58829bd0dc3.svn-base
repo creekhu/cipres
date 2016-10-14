@@ -1,0 +1,3 @@
+toolId = CLUSTALW
+runtime_=0.25
+actions_=-align

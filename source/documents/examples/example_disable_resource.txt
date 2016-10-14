@@ -1,0 +1,14 @@
+# Be sure to use full 4 character year (2009, not 09).
+#
+# If you omit start and end properties, the resource will be disabled until you remove this file.
+#
+# End Date: make it a day after the resource will be back up. 
+# Start Date: make it  a couple of days before planned outage so user's won't submit jobs
+# that would fail during the outage.
+#
+# Can use <p> in the message.
+#
+#start=9/13/2010
+#end=9/14/2010
+message=XSEDE submissions to Gordon are temporarily halted. We expect the service to return to service within 24 hours. We apologize for any inconvenience. 8:55 AM PDT 6/10/2016
+

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>FAStRNA</title>
+    <description>Very fast identification of RNA motifs in genomic DNA</description>
+    <authors>N. El-Mabrouk</authors>
+    <reference>N. El-Mabrouk and F. Lisacek. Very fast identification of RNA motifs in genomic DNA. Application to tRNA search in the yeast genome. J. Mol.Biol., 264:46-55, November 1996.</reference>
+</head>
+
+
+<command>fastrna</command>
+
+<parameters>
+
+<parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+<name>fastrna</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"$value"</code>
+	</format>
+	<group>0</group>
+	<vlist>
+		<value>FAStRNA-CM</value>
+		<label>FAStRNA-CM: probabilistic model</label>
+		<value>FAStRNA-CLASS</value>
+		<label>FAStRNA-CLASS: pattern-matching approach</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+		<value>13</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<prompt>Result file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>fastrna.res</value></vdef>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

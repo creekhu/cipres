@@ -1,0 +1,923 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY blast_init SYSTEM "XMLDIR/blast_init.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>MEGABLAST</title>
+    <version>1.5.3</version>
+    <description>Paracel version</description>
+    <authors>Altschul, Madden, Schaeffer, Zhang, Miller, Lipman</authors>
+    <reference>Altschul, Stephen F., Thomas L. Madden, Alejandro A. Schaeffer,Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), Gapped BLAST and PSI-BLAST: a new generation of protein database search programs,  Nucleic Acids Res. 25:3389-3402.</reference>
+
+    <doclink>http://bioweb.pasteur.fr/docs/softgen.html#BLAST2</doclink>
+  </head>
+
+  <command>megablastpar</command>
+
+  <parameters>
+
+    &blast_init;
+
+    <parameter ismandatory="1" iscommand="1" ishidden="1" type="String">
+      <name>megablastpar</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"pb --quiet megablast"</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>DNA Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -i $query" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>nucleotid_db</name>
+      <attributes>
+	<prompt>nucleotid db</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>not $list_of_GI</code>
+	</precond>
+	<format>
+	  <language>perl</language>
+	  <code> " -d $value" </code>
+	</format>
+	<vdef><value>embl</value></vdef>
+	<vlist>
+		<value>genbank</value>
+		<label>genbank: Genbank last release + updates</label>
+		<value>genbank_new</value>
+		<label>genbank_new: Genbank updates</label>
+	</vlist>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>filter_opt</name>
+	<prompt>Filtering, masking and other input options</prompt>
+	<group>4</group>
+	<comment>
+	  <value>BLAST 2.0 and 2.1 uses the dust low-complexity filter for blastn and seg for the other programs. Both 'dust' and 'seg' are integral parts of the NCBI toolkit and are accessed automatically.</value>
+	  <value>If one uses '-F T' then normal filtering by seg or dust (for blastn) occurs (likewise '-F F' means no filtering whatsoever). </value>
+	  <value>This options also takes a string as an argument.  One may use such a string to change the specific parameters of seg or invoke other filters. Please see the 'Filtering Strings' section (below) for details.</value>
+	</comment>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>start_region</name>
+	    <attributes>
+	      <prompt>Start of required region in query sequence (-L)</prompt>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>end_region</name>
+	    <attributes>
+	      <prompt>End of required region in query sequence (-L)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -L \"$start_region $value\"": " -L $start_region"</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$start_region</code>
+	      </precond>
+	      <group>5</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>filter</name>
+	    <attributes>
+	      <prompt>Filter query sequence (DUST with blastn, SEG with others) (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? "" : " -F F"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>other_filters</name>
+	    <attributes>
+	      <prompt>Filtering options (-F must be true)</prompt>
+	      <comment><value>The -F argument can take a string as input specifying that seg should be run with certain values or that other non-standard filters should be used.</value>
+		<value> A coiled-coiled filter, based on the work of Lupas et al. (Science, vol 252, pp. 1162-4 (1991)) written by John Kuzio (Wilson et al., J Gen Virol, vol. 76, pp. 2923-32 (1995)), may be invoked specifying: -F 'C'</value>
+		<value> One may also run both seg and coiled-coiled together by using a ';': -F 'C;S'</value>
+		<value> Filtering by dust may also be specified by: -F 'D'</value>
+		<value> It is possible to specify that the masking should only be done during the process of building the initial words by starting the filtering command with 'm', e.g.: -F 'm S' which specifies that seg (with default arguments) should be used for masking, but that the masking should only be done when the words are being built.</value>
+		<value> If the -U option (to mask any lower-case sequence in the input FASTA file) is used and one does not wish any other filtering, but does wish to mask when building the lookup tables then one should specify: -F 'm'</value>
+	      </comment>
+	      <group>4</group>		
+	      <vlist>
+		<value>v1</value>
+		<label>masking instead of filtering (with Seg)</label>
+		<value>v2</value>
+		<label>coiled-coiled filter</label>
+		<value>v3</value>
+		<label>both seg and coiled-coiled filters</label>
+		<value>v4</value>
+		<label>dust filter (DNA query)</label>
+		<value>v5</value>
+		<label>lower-case masking (-U must be true)</label>
+	      </vlist>
+	      <flist>
+		<value>v1</value>
+		<code>" -F \"m S\""</code>
+		<value>v2</value>
+		<code>" -F C"</code>
+		<value>v3</value>
+		<code>" -F \"C;S\""</code>
+		<value>v4</value>
+		<code>" -F D"</code>
+		<value>v5</value>
+		<code>" -F m"</code>
+	      </flist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>lower_case</name>
+	    <attributes>
+        	<prompt>Use lower case filtering (-U)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -U T" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <comment><value> This option specifies that any lower-case letters in the input FASTA file should be masked.</value></comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>masked_query_output</name>
+	    <attributes>
+	      <prompt>Masked query output (-Q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -Q query.masked" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>query_strand</name>
+	    <attributes>
+        	<prompt>Query strands to search against database (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -S $value" : ""</code>
+	      </format>
+	      <vlist>
+		<value>1</value>
+		<label>top</label>
+		<value>2</value>
+		<label>bottom</label>
+		<value>3</value>
+		<label>both</label>
+	      </vlist>
+	      <vdef><value>3</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>selectivity_opt</name>
+	<prompt>Selectivity options</prompt>
+	<group>5</group>
+	<comment>
+	  <value>The programs blastn offers fully gapped alignments. </value>
+	</comment>
+	<parameters>
+
+	  <parameter issimple="1" type="Integer">
+	    <name>Expect</name>
+	    <attributes>
+	      <prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -e $value":""</code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>The statistical significance threshold for reporting matches against database sequences; the default value is 10, such that 10 matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical significance ascribed to a match is greater than the EXPECT threshold, the match will not be reported. Lower EXPECT thresholds are more stringent, leading to fewer chance matches being reported. Fractional values are acceptable. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>dropoff</name>
+	    <attributes>
+
+	      <prompt>X dropoff value for gapped alignment (in bits) (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -X $value":""</code>
+	      </format>
+	      <comment>
+		<value>This is the value that control the path graph region explored by Blast during a gapped extension (Xg in the NAR paper) (default for blastp is 15).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	 
+	  <parameter type="Integer">
+	    <name>dropoff_final</name>
+	    <attributes>
+	      <prompt>X dropoff value for dynamic programming gapped extension (-Z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -Z $value" : ""</code>
+	      </format>
+	      <vdef><value>50</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>dropoff_extent</name>
+	    <attributes>
+	      <prompt>X dropoff value for ungapped extension (-y)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -y $value" : ""</code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>ident_cutoff</name>
+	    <attributes>
+	      <prompt>Identity percentage cut-off (-p)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -p $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>word_size</name>
+	    <attributes>
+	      <prompt>Word Size (length of best perfect match) (-W)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -W $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>28</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>word_len</name>
+	    <attributes>
+	      <prompt>Length of a discontiguous word template (contiguous word if 0) (-t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -t $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>word_type</name>
+	    <attributes>
+	      <prompt>Type of a discontiguous word template (-N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -N $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>0</value>
+                <label>0 - coding</label>
+		<value>1</value>
+                <label>1 - optimal</label>
+		<value>2</value>
+                <label>2 - two simultaneous</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>dist_hits</name>
+	    <attributes>
+	      <prompt>Multiple Hits window size (zero for single hit algorithm) (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -A $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Integer">
+	    <name>keep_hits</name>
+	    <attributes>
+	      <prompt>Number of best hits from region to keep (-K)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -K $value" : ""</code>
+	      </format>
+	      <comment>
+		<value>If this option is used a value of 100 is recommended.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>greedy</name>
+	    <attributes>
+	      <prompt>Use non-greedy (dynamic programming) extension for affine gap scores (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -n" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+	
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scoring_opt</name>
+	<prompt>Scoring options</prompt>
+	<group>4</group>
+	<parameters>
+	
+
+	  <parameter type="Integer">
+	    <name>mismatch</name>
+	    <attributes>
+	      <prompt>Penalty for a nucleotide mismatch (-q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -q $value":""</code>
+	      </format>
+	      <vdef><value>-3</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>match</name>
+	    <attributes>
+	      <prompt>Reward for a nucleotide match (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -r $value":""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Integer">
+	    <name>open_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to open a gap (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -G $value":""</code>
+	      </format>
+	      <comment>
+		<value>default is 5</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>extend_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to extend a gap (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -E $value":""</code>
+	      </format>
+	      <group>5</group>
+	      <comment>
+		<value>default is 2</value>
+		<value>Limited values for gap existence and extension are supported for these three programs. Some supported and suggested values are:</value>
+		<value>Existence Extension</value>
+		<value>10 1</value>
+		<value>10 2</value>
+		<value>11 1</value>
+		<value>8 2</value>
+		<value>9 2</value>
+		<value>(source: NCBI Blast page)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>alig_nb</name>
+	    <attributes>
+	      <prompt>The number of alignments to report per db subject (0 means no limit) (-u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -u $value":""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+	  
+	
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>affichage</name>
+	<prompt>Report options</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>Descriptions</name>
+	    <attributes>
+	      <prompt>How many short descriptions? (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -v $value":""</code>
+	      </format>
+	      <vdef><value>500</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which one-line descriptions will be reported (-v).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Alignments</name>
+	    <attributes>
+	      <prompt>How many alignments? (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -b $value":""</code>
+	      </format>
+	      <vdef><value>250</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which high-scoring segment pairs will be reported (-b).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>min_hit_score</name>
+	    <attributes>
+	      <prompt>Minimal hit score to report (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -s $value":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which high-scoring segment pairs will be reported (-b).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>output_type</name>
+	    <attributes>
+	      <prompt>Type of output (-D)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -D $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>0</value>
+                <label>0 - alignment endpoints and score</label>
+		<value>1</value>
+                <label>1 - all ungapped segments endpoints</label>
+		<value>2</value>
+                <label>2 - traditional BLAST output</label>
+		<value>3</value>
+                <label>3 - tab-delimited one line format [Integer]</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>view_alignments</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$output_type eq "2"</code>
+	      </precond>
+	      <prompt>Alignment view options (traditional BLAST output) (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>0</value>
+		<label>0: pairwise</label>
+		<value>1</value>
+		<label>1: query-anchored showing identities</label>
+		<value>2</value>
+		<label>2: query-anchored no identities</label>
+		<value>3</value>
+		<label>3: flat query-anchored, show identities</label>
+		<value>4</value>
+		<label>4: flat query-anchored, no identities</label>
+		<value>5</value>
+		<label>5: query-anchored no identities and blunt ends</label>
+		<value>6</value>
+		<label>6: flat query-anchored, no identities and blunt ends</label>
+		<value>7</value>
+		<label>7: XML Blast output</label>
+		<value>8</value>
+		<label>8: Tabular output</label>
+		<value>9</value>
+		<label>9: tabular with comment lines</label>
+	      </vlist>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>show_gi</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$protein_db eq "nrprot"</code>
+	      </precond>
+	      <prompt>Show GI's in deflines (only available for NCBI db such as nrprot) (-I)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -I" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <comment>
+		<value>Causes NCBI gi identifiers to be shown in the output, in addition to the accession and/or locus name. </value>
+		<value>Warning: only available for NCBI db such as nrprot.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>show_full_id</name>
+	    <attributes>
+	      <prompt>Show full IDs in the output (default - only GIs or accessions) (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -f" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>report_log</name>
+	    <attributes>
+	      <prompt>Report the log information at the end of output (-R)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -R" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>seqalign_file</name>
+	    <attributes>
+	      <prompt>ASN.1 SeqAlign file (traditional BLAST output) (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -O $value" : ""</code>
+	      </format>
+	      <group>4</group>
+	      <comment>
+		<value>SeqAlign is in ASN.1 format, so that it can be read with NCBI tools (such as sequin). This allows one to view the results in different formats.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$output_type eq "2"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>believe</name>
+	    <attributes>
+	      <prompt>Believe the query defline (-J)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -J":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter> 
+
+	  <parameter type="Switch">
+	    <name>htmloutput</name>
+	    <attributes>
+	      <prompt>Html output (html4blast)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>($_html) &amp;&amp; ($output_type == 2) &amp;&amp; ($view_alignments !~ /^[78]$/)</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " &amp;&amp; html4blast -o megablast.html -g" : ""</code>
+	      </format>
+	      <group>20</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>htmlopt</name>
+	      <prompt>HTML output options (html4blast)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$htmloutput &amp;&amp; ($_html) &amp;&amp; ($output_type == 2) &amp;&amp; ($view_alignments !~ /^[78]$/)</code>
+	      </precond>
+
+	      <parameters>
+		
+		<parameter ishidden="1" type="String">
+		  <name>html4blast_input</name>
+		  <attributes>
+		    <format>
+		      <language>perl</language>
+		      <code>" megablast.txt"</code>
+		    </format>
+		    <group>30</group>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>external_links</name>
+		  <attributes>
+		    <prompt>Use external web sites for databases entries retrieval links (-e instead of -s)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <group>25</group>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -e" : " -s" </code>
+		    </format>
+		    <group>25</group>
+
+		    <comment>
+		      <value>-s option will use SRS for databases entries retrieval links, whereas -e will use the original database site links.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>one_HSP_per_line</name>
+		  <attributes>
+		    <prompt>Draw one HSP per line in image instead of putting all HSP in one line (-l)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <group>25</group>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -l" : "" </code>
+		    </format>
+		    <group>25</group>
+		    <comment>
+		      <value>Useful for genomes searching, where there is only one sequence in the database.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Switch">
+		  <name>image_query</name>
+		  <attributes>
+		    <prompt>Generate images names based on corresponding query (-q)</prompt>
+		    <vdef><value>0</value></vdef>
+		    <group>25</group>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -q" : "" </code>
+		    </format>
+		    <group>25</group>
+		    <comment>
+		      <value>Useful when you only want to keep the image.</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Results">
+		  <name>htmlfile</name>
+		  <attributes>
+		    <filenames>megablast.html</filenames>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+   
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_opt</name>
+	<prompt>Other options</prompt>
+	<group>4</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>queries_len</name>
+	    <attributes>
+	      <prompt>Maximal total length of queries for a single search (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -M $value" : "" </code>
+	      </format>
+	      <vdef>
+		<value>20000000</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>db_len</name>
+	    <attributes>
+	      <prompt>Effective length of the database (-z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -z $value" : "" </code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>hash_pos</name>
+	    <attributes>
+	      <prompt>Maximal number of positions for a hash value (set to 0 to ignore) (-P)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -P $value" : "" </code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>list_of_GI</name>
+	    <attributes>
+	      
+	      <prompt>Restrict search of database to list of GI's (-l)</prompt>
+	      <format>
+		<language>perl</language>
+	  <code>($value &amp;&amp; ($value !~ /,/ || $value =~ s/,/ /g) )? " -l \\"$value\\" " : "" </code>
+	      </format>
+	      <group>3</group>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gen_words</name>
+	    <attributes>
+	      <prompt>Generate words for every base of the database (default is every 4th base) (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -g" : "" </code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+	
+    <parameter ishidden="1" type="String">
+      <name>txtoutput</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; megablast.txt"</code>
+	</format>
+	<precond>
+	  <language>perl</language>
+	  <code>$view_alignments !~ 7</code>
+	</precond>
+	<group>7</group>
+      </attributes>
+    </parameter>
+   
+    <parameter type="Results">
+      <name>tmp_outfile</name>
+      <attributes>
+	<filenames>megablast.txt</filenames>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>$view_alignments !~ [78]</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>masked_query_outfile</name>
+      <attributes>
+	<filenames>query.masked</filenames>
+      </attributes>
+    </parameter>
+
+
+    <parameter type="Results">
+      <name>xmloutput</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; megablast.xml"</code>
+	</format>
+	<precond>
+	  <language>perl</language>
+	  <code>$view_alignments =~ 7</code>
+	</precond>
+	<filenames>megablast.xml</filenames>
+	<group>7</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

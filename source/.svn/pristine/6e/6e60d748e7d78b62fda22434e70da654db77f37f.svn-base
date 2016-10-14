@@ -1,0 +1,6 @@
+toolId = BEAST_TG
+runtime_=0.06
+nu_partitions_=1
+nu_patterns_=100
+spec_seed_=1
+seed_val_=12345

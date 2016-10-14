@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>mreps</title>
+    <version>2.5</version>
+    <description>Algorithm for finding maximal tandem repetitions</description>
+    <authors>G. Kucherov</authors>
+    <reference>R. Kolpakov, G. Kucherov, Finding maximal repetitions in a word in linear time, 1999 Symposium on Foundations of Computer Science (FOCS), New-York (USA), pp. 596-604, IEEE Computer Society </reference>
+    <reference>R. Kolpakov, G. Kucherov, Finding Approximate Repetitions under Hamming Distance, 9-th European Symposium on Algorithms (ESA), Århus (Denmark), Lecture Notes in Computer Science, vol. 2161, pp 170-181.</reference>
+    <category>nucleic:motifs</category>
+    <category>nucleic:repeats</category>
+    <category>motifs</category>
+  </head>
+
+  <command>mreps</command>
+  
+  <parameters>
+
+    <parameter type="String" iscommand="1" ishidden="1" issimple="1">
+      <name>mreps</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>mreps</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Sequence" ismandatory="1" issimple="1">
+      <name>query</name>
+      <attributes>
+	<prompt>Query Sequence file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -fasta $value"</code>
+	</format>
+	<group>20</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>err</name>
+      <attributes>
+	<prompt>Specifies the resolution (error level) (-res)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value ) ? " -res $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>from</name>
+      <attributes>
+	<prompt>Specifies starting position (-from)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -from $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>to</name>
+      <attributes>
+	<prompt>Specifies end position (-to)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -to $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>win</name>
+      <attributes>
+	<prompt>Processes by sliding windows of size 2*n overlaping by n (-win)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -win $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>minsize</name>
+      <attributes>
+	<prompt>Report repetitions whose size is at least n (-minsize)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -minsize $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>maxsize</name>
+      <attributes>
+	<prompt>Report repetitions whose size is at most n (-maxsize)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -maxsize $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>minperiod</name>
+      <attributes>
+	<prompt>Report repetitions whose period is at least n (-minperiod)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -minperiod $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>maxperiod</name>
+      <attributes>
+	<prompt>Report repetitions whose period is at most n (-maxperiod)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -maxperiod $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>exp</name>
+      <attributes>
+	<prompt>Report repetitions whose exponent is at least n (-exp)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -exp $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>small</name>
+      <attributes>
+	<prompt>Output small repeats that can occur randomly (-allowsmall)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -allowsmall" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>noprint</name>
+      <attributes>
+	<prompt>Do not output repetitions sequences (-noprint)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -noprint" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="OutFile">
+      <name>xml</name>
+      <attributes>
+	<prompt>XML format output file name (-xmloutput)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value) ? " -xmloutput $value" : ""</code>
+	</format>
+	<group>10</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

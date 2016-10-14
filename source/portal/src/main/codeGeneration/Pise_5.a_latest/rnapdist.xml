@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>VIENNARNA</title>
+    <version>1.4</version>
+    <description>RNApdist - calculate distances of thermodynamic RNA secondary structures ensembles</description>
+    <authors>Stadler, Hofacker, Bonhoeffer</authors>
+    <reference>Bonhoeffer S, McCaskill J S, Stadler P F, Schuster P, (1993) RNA multistructure landscapes, Euro Biophys J:22,13-24</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#VIENNARNA</doclink>
+  </head>
+  
+<command>rnapdist</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>rnapdist</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"RNApdist"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>RNA Sequences File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" &lt; $value" </code>
+	</format>
+	<group>1000</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>comparison_options</name>
+<prompt>Comparison options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>compare</name>
+	<attributes>
+
+		<prompt>Which comparisons (-X)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -X$value" : ""</code>
+		</format>
+		<vdef><value>p</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>p</value>
+			<label>p: pairwise (1st/2nd, 3rd/4th etc)</label>
+			<value>m</value>
+			<label>m: distance matrix between all structures</label>
+			<value>f</value>
+			<label>f: each structure to the first one</label>
+			<value>c</value>
+			<label>c: continuously, that is i-th with (i+1)th structure</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile">
+	<name>alignment_file</name>
+	<attributes>
+
+		<prompt>Alignment file (-B)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -B $value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Print an 'alignment' with gaps of the structures, to show matching substructures. The aligned structures are written to file, if specified. Otherwise output is written to stdout, unless the -Xm option is set in which case 'backtrack.file' is used.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>others_options</name>
+<prompt>Other options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>temperature</name>
+	<attributes>
+
+		<prompt>Rescale energy parameters to a temperature of temp C. (-T)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -T $value" : ""</code>
+		</format>
+		<vdef><value>37</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>tetraloops</name>
+	<attributes>
+
+		<prompt>Do not include special stabilizing energies for certain tetraloops (-4)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -4" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>dangling</name>
+	<attributes>
+
+		<prompt>How to treat dangling end energies for bases adjacent to helices in free ends and multiloops (-d)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " $value" : ""</code>
+		</format>
+		<vdef><value>""</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value></value>
+			<label>only unpaired bases can participate in at most one dangling end</label>
+			<value>-d</value>
+			<label>-d: ignores dangling ends altogether</label>
+			<value>-d2</value>
+			<label>-d2: the check is ignored, this is the default for partition function folding.</label>
+		</vlist>
+		<comment>
+			<value>How to treat 'dangling end' energies for bases adjacent to helices in free ends and multiloops: Normally only unpaired bases can participate in at most one dangling end. With -d2 this check is ignored, this is the default for partition function folding (-p). -d ignores dangling ends altogether. Note that by default pf and mfe folding treat dangling ends differently, use -d2 (or -d) in addition to -p to ensure that both algorithms use the same energy model. The -d2 options is available for RNAfold, RNAeval, and RNAinverse only.</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>no message</message>
+				<language>perl</language>
+				<code>(! (defined $rnafold || defined $rnaeval || defined $rnainverse) &amp;&amp;   ($dangling eq "-d2")  &amp;&amp; ($dangling = "") &amp;&amp; 0)</code>
+			</ctrl>
+		</ctrls>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>noGU</name>
+	<attributes>
+
+		<prompt>Do not allow GU pairs (-noGU)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -noGU" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>noCloseGU</name>
+	<attributes>
+
+		<prompt>Do not allow GU pairs at the end of helices (-noCloseGU)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -noCloseGU" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>nsp</name>
+	<attributes>
+
+		<prompt>Non standard pairs (comma seperated list) (-nsp)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -nsp $value" : "" </code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Allow other pairs in addition to the usual AU,GC,and GU pairs. pairs is a comma seperated list of additionally allowed pairs. If a the first character is a '-' then AB will imply that AB and BA are allowed pairs. e.g. RNAfold -nsp -GA will allow GA and AG pairs. Nonstandard pairs are given 0 stacking energy.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>parameter</name>
+	<attributes>
+
+		<prompt>Parameter file (-P)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -P $value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Read energy parameters from paramfile, instead of using the default parameter set. A sample parameterfile should accompany your distribution. See the RNAlib documentation for details on the file format.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>energy</name>
+	<attributes>
+
+		<prompt>Energy parameters for the artificial ABCD... alphabet (-e)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -e $value" : ""</code>
+		</format>
+		<group>2</group>
+		<vlist>
+			<value>1</value>
+			<label>1: use energy parameters for GC pairs</label>
+			<value>2</value>
+			<label>2: use energy parameters for AU pairs</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>readseq</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"/local/gensoft/lib/ViennaRNA/readseq  -f=19 -a $seq &gt; $seq.tmp &amp;&amp; (cp $seq $seq.orig &amp;&amp; mv $seq.tmp $seq) ; "</code>
+	</format>
+	<group>-10</group>
+<precond>
+	<language>perl</language>
+	<code>defined $rnafold || defined $rnasubopt</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>psfiles</name>
+<attributes>
+
+	<filenames>*.ps</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

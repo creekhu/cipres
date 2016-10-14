@@ -1,0 +1,23 @@
+You turn off user submissions by using a script in the sdk/script directory called userCanSubmit.
+
+The script takes two arguments, the username of the account and a boolean value that indicates whether or not the user can submit jobs.
+
+To run the script, oo to the sdk/scripts directory on portal2prod.
+
+For user mamiller, type
+
+userCanSubmit  mamiller  false
+
+The application will respond with an acknowledgement:
+
+Task submission disabled for user mamiller
+
+If there is blank space in the user name, you must enclose it in quotes.
+
+userCanSubmit  “Julia Roberts”  false
+
+The utility will throw an exception if the user isn't found in the database.
+
+If you don’t enclose with blank space, and there is a user named Julia, Julia's submission rights get disabled because the utility tries to interpret the second argument as a boolean value. Java handles by considering anything other than the string "true" as false, so the string "Christenson" is interpreted as false. 
+
+If you only give the user name as an argument, the script will print out the user's current submission status. You can use that feature to check for user existence.

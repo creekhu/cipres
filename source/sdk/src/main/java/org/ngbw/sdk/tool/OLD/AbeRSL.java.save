@@ -1,0 +1,134 @@
+/**
+	To do: there's no reason for separate LoneStarRSL and AbeRSL classes - these
+	can be combined.
+*/
+
+package org.ngbw.sdk.tool;
+
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+	Note that pre-ws gram RSL perl script on abe uses host_count and xcount (=ppn, or #mpi processes per host), 
+	but not count.
+*/
+public class AbeRSL extends CipresRSL
+{
+	@SuppressWarnings("unused")
+	private static final Log m_log = LogFactory.getLog(AbeRSL.class.getName());
+
+	private static final int coresPerNode = 8;
+
+	// Note that the mrbayes_xml_abe requires the run time to be between 48 - 168 hrs, so we'll
+	// only use the long Q.  Allowing debugQ here for our own internal debugging.
+
+	// max runtime in debug Q is 30 min.
+	private static final String debugQ = "debug";
+	private static final int debugQRuntime = 30;
+
+	private static final String normalQ="normal";
+	private static final int normalQRuntime = 2880;
+
+	// max time in long q is 168 hrs
+	private static final String longQ = "long";
+	private static final int longQRuntime = 10080;
+
+	private static final int maxCores = 30 * coresPerNode;
+	private static final int defaultCores = coresPerNode;
+
+
+	public AbeRSL(String commandline, String workingDir, String wrapper, String jobHandle, Properties schedulerConf, 
+		String project)
+	{
+		super(commandline, workingDir, wrapper, jobHandle, schedulerConf, project);
+	}
+
+	public String getGT2String()
+	{
+		String rsl = getBasicGT2String();
+
+		int RSLRunMinutes;
+		int RSLNodeCount;
+		int RSLMpiCount;
+		int RSLThreadCount;
+		String RSLQueue;
+
+		// determine run time and queue
+		RSLRunMinutes = runMinutes;
+		if (RSLRunMinutes == 0)
+		{
+			RSLRunMinutes = debugQRuntime;
+		} 
+		if (RSLRunMinutes <= debugQRuntime)
+		{
+			RSLQueue = debugQ;
+		} else if (RSLRunMinutes <= normalQRuntime)
+		{
+			RSLQueue = normalQ;
+		} else if (RSLRunMinutes <= longQRuntime)
+		{
+			RSLQueue = longQ;
+		} else
+		{
+			RSLRunMinutes = longQRuntime;
+			RSLQueue = longQ;
+		}
+
+		rsl += 
+			"(maxWallTime = " +  RSLRunMinutes + ")\n" +
+			"(queue = " + RSLQueue + ")\n" ;
+
+		// determine job type
+		if (jobType.equals(SINGLE))
+		{
+			rsl += "(jobType = " + SINGLE + ")\n" ;
+			return rsl;
+		} 
+
+
+
+		// these will be zero if not specified in the pise xml
+		RSLNodeCount = nodeCount;
+		RSLThreadCount = threadCount; 
+		RSLMpiCount = mpiCount;
+
+		/* 
+			Programs like mrbayes_abe.xml just specify the number of mpi processes they want,
+			not the number of nodes, and they don't necessarily consider the number of cores/node
+			and the fact that we're charged for the full node.  So we modify the number of 
+			mpi processes requested to be a multiple of cores_per_node, by rounding down.
+
+			RSL host_count = number of nodes requested
+			RSL xcount = number of mpi processes per node
+		*/
+		if (RSLThreadCount == 0 && RSLNodeCount == 0)
+		{
+			//Round down to a multiple of cores per node.
+			RSLMpiCount = (RSLMpiCount / coresPerNode) * coresPerNode;
+
+			//Make sure it's >= defaultCores and <= maxCores
+			RSLMpiCount =  Math.min(Math.max(RSLMpiCount, defaultCores), maxCores);
+
+			RSLNodeCount = RSLMpiCount / coresPerNode;
+			rsl +=	"(jobType = mpi)\n" +
+					"(host_count = " + RSLNodeCount + ")\n" +
+					"(xcount = " +   coresPerNode + ")\n" ;
+			return rsl;
+		}
+
+		/*
+			Programs like hybrid raxml 7.2.5 specify nodeCount, threads per node and number of mpi
+			processes.  We'll trust them to do it correctly and not adjust anything here, except for
+			filling in defaults for unspecified parameters.
+		*/
+		RSLNodeCount = (RSLNodeCount == 0) ? 1 : RSLNodeCount;
+		RSLThreadCount = (RSLThreadCount == 0) ? 1 : RSLThreadCount;
+		rsl +=	"(jobType = mpi)\n" +
+				"(host_count = " + RSLNodeCount + ")\n" +
+				"(xcount = " +   RSLMpiCount / RSLNodeCount + ")\n" ;
+		return rsl;
+	}
+
+}

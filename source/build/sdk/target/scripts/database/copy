@@ -1,0 +1,10 @@
+# Drop all tables in ngbwalpha db, then copy all tables
+# from cipres test db to ngbwalpha db.
+
+mysql --defaults-extra-file=~/.myngbwalpha.cnf ngbwalpha < dropall.sql
+
+mysqldump --defaults-extra-file=~/.mynewciprestest.cnf --set-gtid-purged=OFF ciprestest  | \
+mysql --defaults-extra-file=~/.myngbwalpha.cnf ngbwalpha
+
+
+

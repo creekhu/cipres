@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>protal2dna</title>
+    <version>2.0</version>
+    <description>Align DNA sequences corresponding to a protein
+    alignment</description>
+    <authors>K. Schuerer, C. Letondal</authors>
+  </head>
+
+  <command>protal2dna</command>
+  
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>protal2dna</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"protal2dna"</code>
+	</format>
+	<group>0</group>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	
+	<vdef><value>"protal2dna.out"</value></vdef>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>alig</name>
+      <attributes>
+
+	<prompt>Protein alignment</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>100</group>
+	<seqfmt>
+	  <value>100</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>dna</name>
+      <attributes>
+
+	<prompt>DNA Sequences File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>101</group>
+	<comment>
+	  <value>The DNA sequences must contain at least the region coding for each sequence of the protein alignment.</value>
+	</comment>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+
+      </attributes>
+    </parameter>
+
+
+    <parameter ishidden="1" type="String">
+      <name>fasta</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"mv $dna $dna.in ;  fasta2fasta $dna.in &gt; $dna ; "</code>
+	</format>
+	<group>-10</group>
+      </attributes>
+    </parameter>
+
+
+    <parameter issimple="1" type="Switch">
+      <name>same_ids</name>
+      <attributes>
+
+	<prompt>Identify corresponding DNA sequences by same ID or name (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value &amp;&amp; $value ne $vdef) ? " -i" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+	<comment>
+	  <value>The correspondance between protein and DNA sequences may be based on their position in the files or by their name.</value>
+	</comment>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>outformat</name>
+      <attributes>
+
+	<prompt>Output Alignment Format</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value &amp;&amp; $value ne $vdef) ? " -f $value" : ""</code>
+	</format>
+	<vdef><value>clustalw</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>fasta</value>
+	  <label>Pearson/Fasta</label>
+	  <value>pfam</value>
+	  <label>Pfam</label>
+	  <value>msf</value>
+	  <label>MSF</label>
+	  <value>clustalw</value>
+	  <label>Clustalw</label>
+	</vlist>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>genetic</name>
+      <attributes>
+
+	<prompt>Default Genetic Code (-g)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value &amp;&amp; $value ne $vdef) ? " -g $value" : "" </code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>1</value>
+	  <label>Standard</label>
+	  <value>2</value>
+	  <label>Vertebrate Mitochondrial</label>
+	  <value>3</value>
+	  <label>Yeast Mitochondrial</label>
+	  <value>4</value>
+	  <label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+	  <value>5</value>
+	  <label>Invertebrate Mitochondrial</label>
+	  <value>6</value>
+	  <label>Ciliate Macronuclear and Dasycladacean</label>
+	  <value>9</value>
+	  <label>Echinoderm Mitochondrial</label>
+	  <value>10</value>
+	  <label>Euplotid Nuclear</label>
+	  <value>11</value>
+	  <label>Bacterial</label>
+	  <value>12</value>
+	  <label>Alternative Yeast Nuclear</label>
+	  <value>13</value>
+	  <label>Ascidian Mitochondrial</label>
+	  <value>14</value>
+	  <label>Flatworm Mitochondrial</label>
+	  <value>15</value>
+	  <label>Blepharisma Macronuclear</label>
+	</vlist>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="InFile">
+      <name>speccode</name>
+      <attributes>
+
+        <prompt>Special Genetic Code (-G)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value) ? " -G $value" : "" </code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>File containing genetic code numbers of sequences that differs from the default code used. Format: one special code per line with prot-id used in the alignment followed by the code number</value> 
+	</comment>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

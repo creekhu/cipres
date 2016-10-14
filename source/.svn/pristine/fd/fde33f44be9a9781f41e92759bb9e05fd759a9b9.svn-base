@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>VIENNARNA</title>
+    <version>1.4</version>
+    <description>RNAeval - calculate energy of RNA sequences on given secondary structure</description>
+    <authors>Hofacker, Stadler</authors>
+    <reference>I.L. Hofacker, W. Fontana, P.F. Stadler, S. Bonhoeffer, M. Tacker, P. Schuster (1994) Fast Folding and Comparison of RNA Secondary Structures. Monatshefte f. Chemie 125: 167-188</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#VIENNARNA</doclink>
+  </head>
+
+
+<command>rnaeval</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>rnaeval</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"RNAeval"</code>
+	</format>
+	<vdef><value>rnaeval</value></vdef>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>seqstruct</name>
+<attributes>
+
+	<prompt>Sequences/Structures File (output of RNAfold)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" &lt; $value" </code>
+	</format>
+	<group>1000</group>
+	<pipe>
+		<pipetype>rnafold_struct</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>others_options</name>
+<prompt>Other options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>temperature</name>
+	<attributes>
+
+		<prompt>Rescale energy parameters to a temperature of temp C. (-T)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef)? " -T $value" : ""</code>
+		</format>
+		<vdef><value>37</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>tetraloops</name>
+	<attributes>
+
+		<prompt>Do not include special stabilizing energies for certain tetraloops (-4)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -4" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>dangling</name>
+	<attributes>
+
+		<prompt>Don't give stabilizing energies to single stacked bases in dangling ends (-d)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -d" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>Do not give stabilizing energies to unpaired bases adjacent to helices in multiloops and free ends ('dangling ends'). Same as -d0, opposite of -d1 (the default).</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>d2</name>
+	<attributes>
+
+		<prompt>Treat dangling ends as in the partition function algorithm (-d2)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -d2" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>Treat dangling ends as in the partition function algorithm, i.e. bases adjacent to helices in multiloops and free ends give a stabilizing energy contribution, regardless whether they're paired or unpaired.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>logML</name>
+	<attributes>
+
+		<prompt>Let multiloop energies depend logarithmically on the size (-logML)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -logML" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+		<comment>
+			<value>Let multiloop energies depend logarithmically on the size, instead of the usual linear energy function.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>parameter</name>
+	<attributes>
+
+		<prompt>Parameter file (-P)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -P $value" : ""</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>Read energy parameters from paramfile, instead of using the default parameter set. A sample parameterfile should accompany your distribution. See the RNAlib documentation for details on the file format.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>energy</name>
+	<attributes>
+
+		<prompt>Energy parameters for the artificial ABCD... alphabet (-e)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -e $value" : ""</code>
+		</format>
+		<group>2</group>
+		<vlist>
+			<value>1</value>
+			<label>1: use energy parameters for GC pairs</label>
+			<value>2</value>
+			<label>2: use energy parameters for AU pairs</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>repeats</title>
+    <description>search repeats in DNA</description>
+    <authors>G. Benson</authors>
+    <reference>A method for fast database search for all k-nucleotide repeats, by Gary Benson and Michael S. Waterman, Nucleic Acids Research (1994) Vol. 22, No. 22, pp 4828-4836.</reference>
+    <category>motifs</category>
+    <category>nucleic:motifs</category>
+</head>
+
+
+<command>repeats</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>repeats</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>repeats</code>
+		<language>perl</language>
+		<code>"repeats"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>2</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>alpha</name>
+<attributes>
+
+	<prompt>match bonus (input as positive) (Alpha)</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $value"</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>beta</name>
+<attributes>
+
+	<prompt>mismatch penalty (input as positive) (Beta)</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $value"  </code>
+	</format>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>delta</name>
+<attributes>
+
+	<prompt>indel penalty  (Delta)</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $value"  </code>
+	</format>
+	<group>4</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>reportmax</name>
+<attributes>
+
+	<prompt>Score to report an alignment (Reportmax)</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $value"  </code>
+	</format>
+	<group>5</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>Size</name>
+<attributes>
+
+	<prompt>Pattern size (Size)</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $value"  </code>
+	</format>
+	<group>6</group>
+	<comment>
+		<value>A possible repeat is found if *lookcount* characters are repeated at a separation of *size*.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>lookcount</name>
+<attributes>
+
+	<prompt>Number of characters to match to trigger dynamic programming (Lookcount)</prompt>
+	<format>
+		<language>perl</language>
+		<code> " $value"  </code>
+	</format>
+	<group>7</group>
+	<comment>
+		<value>A possible repeat is found if *lookcount* characters are repeated at a separation of *size*.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>noshortperiods</name>
+<attributes>
+
+	<prompt>Patterns with shorter periods are excluded ? (Noshortperiods)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " 1 ":" 0"</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>8</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

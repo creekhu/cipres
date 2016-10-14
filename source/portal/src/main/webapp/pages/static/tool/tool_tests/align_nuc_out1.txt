@@ -1,0 +1,61 @@
+ALIGN calculates a global alignment of two sequences
+ version 2.0uPlease cite: Myers and Miller, CABIOS (1989) 4:11-17
+110005943 Pantholops hodgsonii hemoglobin alpha c   502 nt vs.
+126742336 Ochotona curzoniae hemoglobin alpha cha   429 nt
+scoring matrix: DNA, gap penalties: -16/-4
+73.7% identity;		Global alignment score: 1298
+
+
+                      10        20        30        40        50        60
+110005943 Pa  ACCCACCATGGTGCTGTCTGCCGCCGACAAGTCCAATGTCAAGGCCGCCTGGGGCAAGGT
+                     :::::::::::: :::: :::::: :::: :::::::::::::::::::::::
+126742336 Oc  -------ATGGTGCTGTCTCCCGCTGACAAGGCCAACGTCAAGGCCGCCTGGGGCAAGGT
+                             10        20        30        40        50   
+
+                      70        80        90       100       110       120
+110005943 Pa  TGGCGGCAACGCTGGAGCTTATGGCGCAGAGGCTCTGGAGAGGATGTTCCTGAGCTTCCC
+               :: ::: :::: :: :  :::::::: ::::: ::::::::::::::::::::::::::
+126742336 Oc  CGGGGGCCACGCCGGCGAGTATGGCGCCGAGGCCCTGGAGAGGATGTTCCTGAGCTTCCC
+                   60        70        80        90       100       110   
+
+                     130       140       150       160       170       180
+110005943 Pa  CACCACCAAGACCTACTTCCCCCACTTCGACCTGAGCCACGGCTCCGCCCAGGTCAAGGG
+              ::::::::::::::::::::::::::::::: ::: ::::::::::::::::::::::: 
+126742336 Oc  CACCACCAAGACCTACTTCCCCCACTTCGACGTGACCCACGGCTCCGCCCAGGTCAAGGC
+                  120       130       140       150       160       170   
+
+                     190       200       210       220       230       240
+110005943 Pa  CCACGGCGAGAAGGTGGCCGCCGCGCTGACCAAAGCGGTGGGCCACCTGGACGACCTGCC
+              ::::::: ::::::::::::  :: :: ::: : :  :: : :::: :::::::::::::
+126742336 Oc  CCACGGCAAGAAGGTGGCCGATGCCCTCACCCAGGTCGTCGACCACTTGGACGACCTGCC
+                  180       190       200       210       220       230   
+
+                     250       260       270       280       290       300
+110005943 Pa  CGGTACCCTGTCTGATCTGAGTGACCTGCACGCCCACAAGCTGCGTGTGGACCCGGTCAA
+              :::  ::::::: :  :: :: :::::::::::::: :::::::: :::::::: :: ::
+126742336 Oc  CGGCGCCCTGTCCGCGCTCAGCGACCTGCACGCCCAAAAGCTGCGGGTGGACCCTGTTAA
+                  240       250       260       270       280       290   
+
+                     310       320       330       340       350       360
+110005943 Pa  CTTCAAGCTTCTGAGCCACACCCTGCTGGTGACCCTGGCCTGCCACCTCCCCAATGATTT
+              ::::::::: :::   :::  :::::::::::::::::::  ::::: ::::::::: ::
+126742336 Oc  CTTCAAGCTCCTGGCTCACTGCCTGCTGGTGACCCTGGCCAACCACCACCCCAATGAATT
+                  300       310       320       330       340       350   
+
+                     370       380       390       400       410       420
+110005943 Pa  CACCCCCGCCGTCCACGCCTCCCTGGACAAGTTCTTGGCCAGCGTGGGCACCGTGCTGAC
+              ::: :: :: :: ::::::::::::::::::::: :::::: :::: :::::::::: ::
+126742336 Oc  CACTCCTGCGGTGCACGCCTCCCTGGACAAGTTCCTGGCCAACGTGAGCACCGTGCTCAC
+                  360       370       380       390       400       410   
+
+                     430       440       450       460       470       480
+110005943 Pa  CTCCAAATACCGTTAAGCTGGGGCCTCGACGACCCCCTACCCTGGCCTGGAGCGCCCTTG
+              :::::: :: ::::::                                            
+126742336 Oc  CTCCAAGTATCGTTAA--------------------------------------------
+                  420                                                     
+
+                     490       500  
+110005943 Pa  CGCTCTGCGCACTCTCACCTCC
+                             
+126742336 Oc  ----------------------
+                             

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>TopPred</title>
+    <version>0.01</version>
+    <description>Topology prediction of membrane proteins</description>
+    <authors>Heijne, Wallin, Claros, Deveaud, Schuerer </authors>
+    <reference>von Heijne, G. (1992) Membrane Protein Structure Prediction: Hydrophobicity Analysis and the 'Positive Inside' Rule. J.Mol.Biol. 225, 487-494.</reference>
+    <reference>Claros, M.G., and von Heijne, G. (1994) TopPred II: An Improved Software For Membrane Protein Structure Predictions. CABIOS 10, 685-686.</reference>
+ <reference>Deveaud and Schuerer (Pasteur Institute) new implementation of the original toppred program, based on G. von Heijne algorithm.</reference>
+    <category>protein:2d structure</category>
+<!--    <doclink>http://www.sbc.su.se/~erikw/toppred2/</doclink> -->
+  </head>
+
+
+  <command>toppred</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>toppred</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"toppred"</code>
+	</format>
+	<group>0</group>
+	
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	
+	<prompt>Sequence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<group>10</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch" issimple="1">
+      <name>graph_output</name>
+      <attributes>
+	<prompt>Produce hydrophobicity graph image (-g)</prompt>
+	<vdef><value>1</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch" issimple="1">
+      <name>topo_output</name>
+      <attributes>
+	<prompt>Produce image of each topology (-t)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? "" : " -t none"</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>7</group>
+      </attributes>
+    </parameter>
+
+    
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control</name>
+	<prompt>Control options</prompt>
+	<parameters>
+	  
+	  <parameter type="Excl">
+	   <name>scale</name>
+	   <attributes>
+	     <prompt>Hydrophobicity scale (-H)</prompt>
+	     <vlist>  
+	       <value>KD-scale</value>
+	       <label>KD-scale (Kyte and Doolittle)</label>
+	       <value>GVH-scale</value>
+	       <label>GVH-scale (Gunnar von Heijne)</label>
+		<value>GES-scale</value>
+		<label>GES-scale (Goldman Engelman Steitz)</label>
+	     </vlist>
+	     <vdef>
+	      <value>GES-scale</value>
+	     </vdef>
+	     <format>
+	       <language>perl</language>
+		<code>($value) ? " -H $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      </attributes>
+	    </parameter>
+
+	  <parameter type="Switch">
+	    <name>organism</name>
+	    <attributes>
+	      <prompt>Organism: eukaryot (default is prokaryot) (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -e " : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>certain</name>
+	    <attributes>
+	      <prompt>Upper cutoff (-c)</prompt>
+	      <vdef><value>1.0</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -c $value" : ""</code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>putative</name>
+	    <attributes>
+	      <prompt>Lower cutoff (-p)</prompt>
+	      <vdef><value>0.6</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -p $value" : ""</code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>core</name>
+	    <attributes>
+	      <prompt>Core window size:  (-n)</prompt>
+	      <vdef><value>10</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -n $value" : ""</code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>triangle</name>
+	    <attributes>
+	      <prompt>Wedge window size: (-q)</prompt>
+	      <vdef>
+		<value>5</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -q $value" : ""</code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>loop_length</name>
+	    <attributes>
+	      <prompt>Critical loop length (-s)</prompt>
+	      <vdef>
+		<value>60</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -s $value" :
+"" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Segment_distance</name>
+	    <attributes>
+	      <prompt>Critical transmembrane spacer (-d)</prompt>
+	      <vdef>
+		<value>2</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? " -d $value" :
+"" </code>
+	      </format>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+        <name>output_options</name>
+	<prompt>Output options</prompt>
+	<parameters>
+	
+	  <parameter type="Excl">
+	  <name>outformat</name>
+	  <attributes>
+	     <prompt>Output format (-O)</prompt>
+	     <format>
+	    	<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -O $value" : ""</code>
+	      </format>
+	      <group>5</group>
+	      <vlist>
+		<value>new</value>
+		<label>New: new text output format</label>
+		<value>html</value>
+		<label>HTML</label>
+		<value>old</value>
+		<label>Old : output format of the old toppred implementation</label>
+		<value>xml</value>
+		<label>Xml</label>
+	      </vlist>
+	      <vdef>
+		<value>new</value>
+	      </vdef>
+	  </attributes>
+	  </parameter> 	
+
+	  <parameter type="Excl">
+	    <name>profile_format</name>
+	    <attributes>
+	      <prompt>Hydrophobicity Profile file format</prompt>
+	      <vlist>
+		<value>png</value>
+		<label>PNG output</label>
+		<value>ps</value>
+		<label>PostScript output</label>
+		<value>ppm</value>
+		<label>PPM output</label>
+	      </vlist>
+	      <vdef>
+	        <value>png</value>
+	      </vdef>
+	      <format>
+	        <language>perl</language>
+		<code>($graph_output) ?  " -g $value" : " -g none" </code>
+	      </format>
+	      <group>7</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+     </parameter>
+ 	
+
+
+    <parameter type="Results" ishidden="1" >
+      <name>graphicfiles</name>
+      <attributes>
+	<filenames>*.ps *.ppm *.png *.html</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results" ishidden="1" >
+      <name>outputfiles</name>
+      <attributes>
+	<filenames>*.hydro*</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

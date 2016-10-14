@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+-<beast version="2.0" namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" beautistatus="noAutoSetClockRate" beautitemplate="Standard">
+
+
+-<data id="divtime">
+
+<sequence id="seq_T1" value="CTACGGGAGGGCAACGGGGCTAGATGGTAAACGCGCCATCGATCGCAAGCGGGTCTGCGCGCTTGCTGTCGGACTTGAGGTACGCCAGCTGTTTAGATAACGCTGCCACCATAACGTAGTGATAGCCCGGCCACGGGTGAGCTGCCGGACGGTGGCGCGTAACCCGGGGGGGACGATGGACACGAATTGACAAAATGGCGGCACAAGCAACTTGAGACCTTCACCCACAACGTACAGGGACAGCAGACGCGGTACATCTTCCCGGCACGCCACGTCCGCGAGTAAGTACGACCACATCCCTCGCTGGGGCTGCGCGACTACCGCAGGGCGAAAGGCCCACACCACAACGGCGAGATGACCTAATGGCTTTGGTGTAACAAAATAGAATGCCAATGCTCTGTATAATCAAAGGGCCAATCGCGCCCTATCACAGCTGTCATGCGTGTTAACACGAACTTTCAATGCTGTGCCTTTCGCTCAACCAGCCCACCGCAGCGGCAACGTAGTGTCCATTGTGTATTCACTTGACCATCTTTCAAGAGCGCGCCGGCATGATTTGACCCAGACCCAGGATATCGCATATATTCTTTGGAGAATTATTCATTCATAGTTAAATCAGGTAGGGGTAACATAGTGAAATTCAATAACAAGCAGGGGCAAAGTTGACCGGCTGAACGCTCGTGGGGCCAGGAGGGTGCATCGTGGTAAATGTATCCGACTTATATAAGCGGACACTATCTCTGTAATAAACATAGCTGGGAACGTGATAAATAACATGTAGATGGACGTACTAACTAACCATCCTGGGAGATCTGAAGCTCCTTTTAAACATAGTGCCATGTAAAAATAACAAAATGTCTTTTCTTGACAACTAACCACTAACTCACTGAACCTTATCAAGCGTACTTAGCATCTAACCGTGCGTTGGTAAAAGCGAACAGTGACCCGGTAGCCTGTAATAAATGCTAGTGGAAGTCTTACGCTGCATGCAAAAATCAAT" totalcount="4" taxon="T1"/>
+
+<sequence id="seq_T2" value="CTACGGGAGGGCGACGGGGCTAGATGGTAAACGCGCCCTCGATCGCAAGCGGGTCTGCGCGCTAGCTGTCGGACTTGAGGTACGCCAGCTGTTTAGATAACGCTGCCACCATAACGTACTGATAGCCCGGCCACGGGTGAGCTGCCGGACGGTGGCGCGTAACCCGGGGGGGACGATGGACACGAATTGACAAAATGGCGGCACAAGCTACTTGAGACCTTCACCCACAACGTACAGGGACAGCAGACGCGGTACATCTTCCCGGCACGCCACGTCCGCGAGTAAGTACGACCACATCCCTCGCTGGGGCTGCGCGAGTACCGCAGGGCGAAAGGCCCACACCACAACGGCGAGATGACCTAATGGCTTTGGTGTAACAAAATAGAATGCCAATGCTCTGTATAATCAAAGGGCCAATCGCGCCCTATCACAGCTGTCATGCGTGTTAAAACGAACTTTCAATGCTGTGGCTTTCGCTCAACCAGCCCACCGCAGGGGCAACGTAGTGTCCATTGTCTATTCACTTGACCATCTTTCAAGAGCGCGCCGGCATGATTTGACCCAGACCCAGGATATCGCATATATTCTTTGGAGAATTATTCATTCATAGTTAAATCAGGTAGGGGTAACATAGTGAAATTCAATAACAAGCAGGGGCAAAGTTGACCGGCTGAACGCTCGTGGGGCCAGGAGGGTGCATCGTGGTAAATGTATCCGACTTATATAAGCGGACACTATCTCTGTAATAAACGTAGCTGGGAACGTGATAAATAACATGTAGATGGACTTACTAACTAACCATCCTGGGAGATCTGAAGCTCCTTTTAAACATAGTGCCATGTAAAAATAACAAAATGTCTTTTCTTGACACCTAACCACTAGCTCACTGAACCTTATCAAGCTTACTTAGCATCTAACCGTGCGTTGGTAAAAGCGAACAGTGACCCGTTAGCCTGTAATAAATGCTAGTGGAAGTCTTACGCTGCATGCAAAAATCATT" totalcount="4" taxon="T2"/>
+
+<sequence id="seq_T3" value="CAGCGTGAGGGCCACGGGGCTGGCAGGTACTCCGGCCCACGAGTGGAAGCGCGTTCACGCGCTTACTGTCCGACTGCGCGTACATCGCGAGTTTATATAACACTGACAACATAACGCGCTGAAAGCGCGGCCACGGTTCGGGTGCCGCTGCGTACCGGGTACCCCGGGGTCGACCATGGCTATTCATTAACGATACTCCTGCTCCAGGGACCTCCGGGCTTGCCCCACATCATGCGGGGACGGCGTACACGCTACCTCATGCAGTCACGGCCCGGCCGGGAGTAACTACGAACCGATCCCTGGCTCGGCCAGCGCGAGTACAGCGGGCCGAAAAGCCGTTAATAGCACACCTAGATGACCGATTGTCTTTGGGGACTCAAATTTGAACGCGAATGCTTTGTATACGCCAAGAGCCTATAGCGCTTTTTCACCGCGCTAATACGTGTGAATTCGCAGTTCCAAGCCTCGGGCCTTCGCCCAAGACGCCCGTGGCGGATGGCACTTAGCGACCAGTGTCTCTTCACTACACCATCATACCTTGGCGCGCTGCAGTGATTCTACCCAGGCCCGGGATCTGACATATAGTCTAACGAGTATTCTTAAGTACAAGTTATAAAAGGTGGCGGTAACCTAGTTCAGTCCAAGATCATTAACGAGACAACTGAATCAATCGTTCAATCATGTTGCATTGAACGTTGATCGTGTGATATTTATACCACTTTTTTTGGAAGAGTCTAACTCTCGAATAGATTTAGGGGGGGACCCGATAAATAAAATGTTGCTGGACAATTGGTACTGCCAGGTAGGGGGATCGGCAGATCCCTTTACACATTGGGACGTAGAATCATTAATTAATATCTTTTCGTGTGAGCTAGCCGATAACTCACTCAACCTTAAATAGCGATCTTATCACCAAATTTTGATTTGTTATAAAGCAATGGAGACCCGGTAGCTTGAAATAGATCCTATTAGGATTCTTACCCTGCTTCCAATTAACGAT" totalcount="4" taxon="T3"/>
+
+<sequence id="seq_T4" value="CAGCGTGGGGGCCACGGGGCTAGAAGTTACTCCGGCCCACGAGTGGAAGCGCGTTCACGCGCTTACTGTCCGACTGCGCGTACCTCGCGAGTTTATATAACACTGACAACATAACGCGCTGAAAGCGCGGCCACGGTTCAGGTGCCGCTGCGTACCGGGTACCCCGGGGTCGACCATGGCTATTCATTAACAATACTCCTGCTCGAGGAACCTCCGGGCTTGCCCCACATCATGCGGGGACCGCGTACACGCTACCTCATGCAGTCACCCCCCGCCCGGGAGTAACTACGAACCGATCCGTGGCTCGACCAGCGCGAGTACAGCGGGCCGAAAAGCCGTTAATAGCACTCCTAGATGACCGATTGTCTTTGGGGACTCAAATTTGAACGCGAATGCTGTGTATACGCCAAGAGCCTATAGCGCTTTTTCACCGCGGTAATACGTGTGAATTCGCAGTTCCAAGCCTCGGCCCTTCGCCCTAGACGCCCGTGGCGGATGGGACGTAGTAACCAGTGTCTCTTCACTACACCATCATACCTTGGCGCGCAGCAGTGATTCTACCCAGGCCCGGGATATGACATATAGTCTAACTAGTACTCATAAGTGCAAGTTATAAAAGGTGGCGGTAACCTAGTTAAGTCCAAGATCATTAACGAGACAACTGTATCAAGCGTTCTATCATGTTGCATTGAACGTTGATCGTGTGATATTTATACCACTTTTTTTGGAAGAGACTAGCTCTCGAATAGATTTAGGGGGGGACCCGATAAATAAAATGTTGCTGGACGATTGGTACAGCCAGGTACGGAGATCGGCGGATCCCTTTACACATTGGGACGTAGAATCATTACTTAATATCTTTTCGTGTGAGCTAGCCGATTGGTCACTCAACCTTAATTAGCGATCTTATCACCAAATTTTGATTTGTTATAAAGCAATGCAGACCCGGTAGCTTGAAATAGATCCTACTAGGATTCTTACCCTGCTTCCAATAAGCGAT" totalcount="4" taxon="T4"/>
+
+<sequence id="seq_T5" value="CAGCGTGGGGGCCACGGGGCTAGAAGTTACTCCGGCCCACGAGTGGAAGCGCGTTCACGCGCTTACTGTCCGACTGCGCGTACCTCGCGAGTTTATATAACACTGACAACATAACGCGCTGAAAGCGCGGCCACGGTTCAGGTGCCGCTGCGTACCGGGTACCCCGGGGTCGACCATGGCTATTCATTAACAATACTCCTGCTCGAGGAACCTCCGGGCTTGCCCCACATCATGCGGGGACCGCGTACACGCTACCTCATGCAGTCACCCCCCGCCCGGGAGTAACTACGAACCGATCCGTGGCTCGACCAGCGCGAGTACAGCGGGCCGAAAAGCCGTTAATAGCACTCCTAGATGACCGATTGTCTTTGGGGACTCAAATTTGAACGCGAATGCTGTGTATACGCCAAGAGCCTATAGCGCTTTTTCACCGCGGTAATACGTGTGAATTCGCAGTTCCAAGCCTCGGCCCTTCGCCCTAGACGCCCGTGGCGGATGGGACGTAGGAACCAGTGTCTCTTCACTACACCATCATACCTTGGCGCGCAGCAGTGATTCTACCCAGGCCCGGGATATGACATATAGTCTAACTAGTACTCATAAGTGCAAGTTATAAAAGGTGGCGGTAACCTAGTTAAGTCCAAGATCATTAACGAGACAACTGTATCAAGCGTTCTATCATGTTGCATTGAACGTTGATCGTGTGATATTTATACCACTTTTTTTGGAAGCGACTAGCTCTCGAATAGATTTAGGGGGGGACCCGATAAATAAAATGTTGCTGGACGATTGGTACAGCCAGGTACGGAGATCGGCGGATCCCTTTACACATTGGGACGTAGAATCATTACTTAATATCTTTTCGTGTGAGCTAGCCGATTGGTCACTCAACCTTAATTAGCGATCTTATCACCAAATTTTGATTTGTTATAAAGCAATGCAGACCCGGTAGCTTGAAATAGATCCTACTAGGATTCTTACCCTGCTTCCAATAAGCGAT" totalcount="4" taxon="T5"/>
+
+<sequence id="seq_T6" value="CAGCGAGAAGCCGACGGGGATGGAAGGGACTCAGACGCACGAGTCCATGCGCCTTCAAGCGCTTACAGTCAGACTGAACGTACATCCCGAATTTATATAACACGGAGACCATAACGCACTGAAAGCGGGGCCACGGTTCAGGTGCCGGAGCGTACCGCGTACCGCGGGGTCGACAGTGGGTAATTATTAACAATAGTGCTGCTCGGGCGACGTCCGGGCCTGCCCCAAATCGTGCGGCGACAGCGGACACGCTACCTCATCCGACGACCCCCCACCCGGGAGTACGTACGATCCGAGCCCTGGCTCGAGCGGCCCGAAGACGGCGAGCCCAAAGGCCGGTATTAGCACTACTAGATGACCAATTGTGTTTGGCGACTCAAATTTGAAGGCGAATAATACGTATACGCCAAGACCCGATTGCGCATTTTCACCGCTGTAATACGTCTTACGTGGCATTTCCAAGCCTCCGACCTTCGGCAAAGCGGTCCATCGGAGATCGAACGTTGGTGCCATTGGGTTTTCACAACACCATCAGTCCTAGGCGCGGTGCTGTCATTTATCCCAGTCCCAGGATTACACGTATAGTCTAAGAAGTACTCATATCTGGAAGTTAAAACAGGTGGCTGTCACGAATTAGAATCCAACATCAAAAACGAGTATACTGTCTCAAACGCACTTTCAAGTTCCCTTGTACGTCGATCGTGTGACATTTAAATCACTTCTTTTGGCTGAGATTAACTCTCTAGTAGATATAGGGGGGGACGCGATAACTAAGATGTTAGAGAACTAATGGTGCAGCCAGGTAGGGAGATGGTAAGTTCTCTTTAAATATGTTGATGTAGAAAGATTACTTAGTATTTTTTCGAGGGAACTGGCCGATATCTCATTCAACCTTATTGAACTAACTAATCACCTATGTTTGTTTTGTTAGAAAGGAATGGAGACCCGCTAGCTTGAAATACATTCTAGTCGTATTCTTACCCTGAATCCAAATAGGAAT" totalcount="4" taxon="T6"/>
+
+<sequence id="seq_T7" value="CATCGCGAGGGGGACGGGGCTCGTAGATTATCGTTCATGCAAGCTGAAGCGCCTTCAGGCGCTTACTGTCCGACTCCACGAACATCAGGTGTTTACCTAACAGTAGCAGCATAACGGGCTGTAAGCGCGGCCACGCTTCAGCTGCCGCACGGTACCGCGAACCCAGGGGTCGAGCTTGGGGAATCATTTACGATAGTCCTGCTCGGGCAACGTCTGGCCTTGACCTAAATCAAGCTGGGCCGGCGCACCCGAGAGGTCATCGTGTGATCGTCCGCCCGGGAGTCTGTACGAGCCCAGCCAACGCGCGACCTGAGCGTTTTCCGCGGTGGGAAAAGACGTAAACAGGAGGCCAAGATGACCCACTGTCTTTGGCGAAACAATTTTGAAGCCTAATCCTGTGTGTAGCCCTAGAGCCTATCGCCACGTTTAAGGGGCGTGATACGTTTCGAGCCAAACGTACAACGCTGAGGCGTACGCCGAAACGGCCGATGGCAGAGCGCACTTGGATGCCGACAACTCTTCACTAAAAAAGCTGCCATGGTCGCGCGGAAGTGATTTCACGCAGGTCCCCGATATCACGTAAAATATCTTTAGTCCTAATAGGTAATAGGTGCAAGAAGTCGTCGTAACACTGTTAAGTGCAATACCAAGAACGGGACTAGTGGATCAGTGAGACACTCTTGTTGCCAAGCAAGATGATCGGGTCATATCTATAACACTAATATTGGTTGAGACTAACACTAGAATAGAATTAGGCGGGCACTCGGTAATTAACATGCTACAGAACGGATGATCCCACCGTCTTTGGTGTTCTAACGACCCAGTCGAACATAGAGCGATAGAAACATTACTTACGATCTTTTCTTGTTATACACCCGAGACATCACTCAACCATATCAAACATACATATTAACTACATATGGTTTATTAGAAATTAACCAAGGCCCGGTAGCCTCAAATATATTCGATTCGGAGTCGTATTCAGCTTCCAAAAACCAAT" totalcount="4" taxon="T7"/>
+
+<sequence id="seq_T8" value="CATCGCGAGGGGGACGGGGCTCGTAGTTTATCGTTCAGGCAAGCTGAAGCGCCTTCAGGCGCTTACTGTCCGACTCCACGAACATCAGGTGTTTACCTAACAGTAGCAGCATAACGGGCTGTAAGCGCGGCCACGCTTCAGCTGCCGCACAGTACCGCGAACCCAGGGGTCGAGCTTGGGGAATCATTTACGATAGTCCTGCTCGGGCAACGTCTGGCCTTGACCTAAATCGAGCTGGGACGGCGCACCCGAGAGGTCATCGTTTGATCGTCCGCCCGGGAGTCAGTACGAGCCCAGCCAACGCGCGACCTGAGCGTTTTCCGCGGTGCGAAAAGACGGAAACAGGAGGCCAAGATGACCCACTGTCTTTGGCGAATCAATTTTGAAGCCTAATTCTGTGTATAGCCCTAGAGCCTATCGCCACGTTTAAGGGGCGTGATACGTATCAAGCCAAACGTATAACGCTGAGGGGTACGCCGAAACGGCCGGTAGCAGAGCGGACTTGGATGCCGACAAGTCTTCACTAAAAAAGCTGCCATGGTCGCGCGGAAGTGATTTCACGCAGGTCCCCGATATCACGTAAAATATCTTTAGTCCTAATTGGTAATAGGTGGAAGAAGTCGTCGTAACGCTGTTAAGTGCAATACCAAGAACGGGACTAGTGGATCAGTGAGACCCTCTTGTTGCCAAGCAAGATGATCGGGTCATATCTATAACACTAATATTGGTTGAGACTAACACTAGAATAGAATTAGGCGGGCAATCGGTAATTAACATGGTACAGCACGGATGATCCCACCCTCTTTGGTGTTCTTACGACCCAGTCGAACATAGAGCGATAGATACATTACTTACGATCTTTTCTTGTTAAACACCCGAGACATCACTCAACCATATCAAACATACATATTAACTACCTATGGTTTATTAGAAATGAACCAAGGCCCGGTAGCCTCAAATATATTCGATTCGGATTCGTATTCAGCTTCCAAATACCAAT" totalcount="4" taxon="T8"/>
+
+<sequence id="seq_T9" value="CAGCGTGACCACGACGGGGCTGGGGGTGATTCCCGCTGACAAGATGAAGCGGGTTCAAGCGCTTGCTGTCCGACTCCTCGTGCGTCGGGTGTTTTCCTAACACGGGCACGATGACGGTCTCGAACGGCGGCCACGCTTCAGGTGGCGGACGGGACCGGTAACCCAGGGGACGAGCAAGGGGAATCATTAGCGTTACTCGTGCTGCGGCCTCCTCGGGCCTTAAGCTATATCTAGCGGGGGCGGCGCACCCGATAGCTCATCTTGTGACCCTCCGCCCCGGAGTGCATACGAAATCATCCATCACACGAACCGCGCTGATTCGGCGGTCCGAAGGGACGCCAACGGAAGGCCTAGATTACGGACTGTGTGGGGAGAATCAATTTTGAACCCGAAAGCTGTGTATAGACAAAGAGCCTATCGCTGGTTTTGACCACCGTAATACGTATTAACCCGCAGGTGCAAGGCTGAGACGTTGGCCGAACCGGCCGAGAGCAGATAGTACTTAGGTTCCAACATCTCTTCAGTAAACAAGCTGACTTTGTCGCTCTGAGTTCATTTGACCCAGGCCCAAGATATCAATTATAATATCTTTAGTTTTCACTTAAAAAAGTTGAAACAAGTCGGCGTTACCTAATTGAATACAAGATCATTAACGATTAAAGGGGCTCAAAGATACTCTCGTGTTGCAAAGCACGTTGATCGTATAACATCTATTACACTAATTTTGGCTGAGACTATCACTAGAATAGAACTAGGCGGCCTCGAGATAACTAATATGTTACGGGTCGGACGCAACACCCATCTACGGGGATCAGACGAACCTGTTAATCATAAAGCAATACAAACAATGCATTTGTGCTTTTCTCGTTACTAACCAGAGACCTCACTCAACCTTATGCAACGAACTCTTTAACTATTTCTCTTTTGTGAGATATAAACCAAGGCCCGTTATCAACGAATATATGCTACTGGGATTCGTATTCAGTTTCCATATACCTTT" totalcount="4" taxon="T9"/>
+
+<sequence id="seq_T10" value="CTGCGTGACAACGACGGGGCTGGGAGTTGTTCCCGCTCACAAGAGGAAGCGGGTTCAGGCGCTTGGTGTCCGAGTCATCGAGCGTCGAGTGTTTTCCTAACACGGCCAGCATAACGGTCTCTAACGGCGGCCACGCTTCGGGTGGCGGACCGTACCCCTAACCCAGGGGACGAGCAAGGGGAATCATTAGCGTTACACCTGCTGCGGCCTCCGCGGGCCTTAACCTAAATCATGCAGGGGCAGCGCACCCGATAGGTCATCGTGTGACCCTCCGCCCCGGAGTCCATACGAACTCATCCATCAGCCGAACAGCGCTGGTTCCGCGGTGCGAAAAGACGGCATCAGAATGGCTAGATTACGGACTGTCTTTGGGGTATCAATTTTGAACCCGAATTCTGTGTATAGGCGAAGAGCCTATTGCTGATTTTGACCACCGTAATAGGTATGAAGCCCCACGTGCAAGGCTGCGACGTTGGGCGAACCGGCCGAGAGCAGATGTTACTTGGGTCCCAACATCTCTTCAGTAAAAAAGCTGACTTTGTCGCTCAGAATTCATTTGACCGAGTCCCAAGATATCTCTTATAATATTTTTAGTTTTCAGTTATACCAGTTGGAACAAGTCGGCGTTACCTAGTTCAATACAAGATCATTTACGATTAAAGCGGATCAAAGAGACTCTCTTGTAGCCAACCACGTTGATCGTGTTACATCTATTACACAACTTTTGGATGAGACTAACACTCGAATAGAATTAGGCGGCCTCGAGATAAATAAAAAGTTACGGGTCGGACGGAACAACCATCTAGGGTGACGAGACGGACCAGTTAATCATAAAGCAATACAAACAATGCTTTTGTTCTTTCCTTGTTATTCACCAGAAACCTCACTTTACCTTATGCAACGTACTGTTTAACTAGTTGTATTGTGTTAGAAATAAACCGAGGCCCATTAGCAACGAATATAAGCTAGTGGGATTCGTATTAAGCTTCCATATACCTTT" totalcount="4" taxon="T10"/>
+
+</data>
+
+<map name="Uniform">beast.math.distributions.Uniform</map>
+
+<map name="Exponential">beast.math.distributions.Exponential</map>
+
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+
+<map name="Normal">beast.math.distributions.Normal</map>
+
+<map name="Beta">beast.math.distributions.Beta</map>
+
+<map name="Gamma">beast.math.distributions.Gamma</map>
+
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+
+<map name="prior">beast.math.distributions.Prior</map>
+
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+
+
+-<run id="mcmc" spec="MCMC" sampleFromPrior="true" chainLength="1000000">
+
+
+-<state id="state" storeEvery="5000">
+
+
+-<tree id="Tree.t:divtimeTree" name="stateNode">
+
+
+-<taxonset id="TaxonSet.gene1" spec="TaxonSet">
+
+
+-<alignment id="gene1" spec="FilteredAlignment" filter="1-500">
+
+<data idref="divtime"/>
+
+</alignment>
+
+</taxonset>
+
+</tree>
+
+<parameter id="gammaShape.s:gene1" name="stateNode">1.0</parameter>
+
+<parameter id="rateAC.s:gene1" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateAG.s:gene1" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateAT.s:gene1" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateCG.s:gene1" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateGT.s:gene1" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateAC.s:gene2" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateAG.s:gene2" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateAT.s:gene2" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateCG.s:gene2" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="rateGT.s:gene2" name="stateNode" lower="0.0">1.0</parameter>
+
+<parameter id="gammaShape.s:gene2" name="stateNode">1.0</parameter>
+
+<parameter id="mutationRate.s:gene2" name="stateNode">1.0</parameter>
+
+<parameter id="mutationRate.s:gene1" name="stateNode">1.0</parameter>
+
+<parameter id="ucldStdev.c:divtimeCLock" name="stateNode" lower="0.0" upper="5.0">0.5</parameter>
+
+<stateNode id="rateCategories.c:divtimeCLock" spec="parameter.IntegerParameter" dimension="18">1</stateNode>
+
+<parameter id="ucldMean.c:divtimeCLock" name="stateNode">1.0</parameter>
+
+<parameter id="birthRate2.t:divtimeTree" name="stateNode" lower="0.0" upper="10000.0">1.0</parameter>
+
+<parameter id="relativeDeathRate2.t:divtimeTree" name="stateNode" lower="0.0" upper="1.0">0.5</parameter>
+
+<parameter id="parameter.hyperExponential-mean-mrca1.prior" name="stateNode">30.0</parameter>
+
+<parameter id="freqParameter.s:gene1" name="stateNode" lower="0.0" upper="1.0" dimension="4">0.25</parameter>
+
+<parameter id="freqParameter.s:gene2" name="stateNode" lower="0.0" upper="1.0" dimension="4">0.25</parameter>
+
+</state>
+
+
+-<init id="RandomTree.t:divtimeTree" spec="beast.evolution.tree.RandomTree" taxa="@gene1" initial="@Tree.t:divtimeTree" estimate="false">
+
+
+-<populationModel id="ConstantPopulation0.t:divtimeTree" spec="ConstantPopulation">
+
+<parameter id="randomPopSize.t:divtimeTree" name="popSize">1.0</parameter>
+
+</populationModel>
+
+</init>
+
+
+-<distribution id="posterior" spec="util.CompoundDistribution">
+
+
+-<distribution id="prior" spec="util.CompoundDistribution">
+
+<distribution id="BirthDeath.t:divtimeTree" spec="beast.evolution.speciation.BirthDeathGernhard08Model" tree="@Tree.t:divtimeTree" relativeDeathRate="@relativeDeathRate2.t:divtimeTree" conditionalOnRoot="true" birthDiffRate="@birthRate2.t:divtimeTree"/>
+
+
+-<prior id="BirthRatePrior.t:divtimeTree" name="distribution" x="@birthRate2.t:divtimeTree">
+
+<Uniform id="Uniform.0" name="distr" upper="1000.0"/>
+
+</prior>
+
+
+-<prior id="GammaShapePrior.s:gene1" name="distribution" x="@gammaShape.s:gene1">
+
+
+-<Exponential id="Exponential.0" name="distr">
+
+<parameter id="RealParameter.0" name="mean" lower="0.0" upper="0.0">1.0</parameter>
+
+</Exponential>
+
+</prior>
+
+
+-<prior id="GammaShapePrior.s:gene2" name="distribution" x="@gammaShape.s:gene2">
+
+
+-<Exponential id="Exponential.01" name="distr">
+
+<parameter id="RealParameter.01" name="mean" lower="0.0" upper="0.0">1.0</parameter>
+
+</Exponential>
+
+</prior>
+
+
+-<prior id="HyperPrior.hyperExponential-mean-mrca1.prior" name="distribution" x="@parameter.hyperExponential-mean-mrca1.prior">
+
+
+-<Gamma id="Gamma.0" name="distr">
+
+<parameter id="RealParameter.02" name="alpha" estimate="false">10.0</parameter>
+
+<parameter id="RealParameter.03" name="beta" estimate="false">3.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateACPrior.s:gene1" name="distribution" x="@rateAC.s:gene1">
+
+
+-<Gamma id="Gamma.01" name="distr">
+
+<parameter id="RealParameter.021" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.031" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateACPrior.s:gene2" name="distribution" x="@rateAC.s:gene2">
+
+
+-<Gamma id="Gamma.011" name="distr">
+
+<parameter id="RealParameter.04" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.05" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateAGPrior.s:gene1" name="distribution" x="@rateAG.s:gene1">
+
+
+-<Gamma id="Gamma.02" name="distr">
+
+<parameter id="RealParameter.06" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.07" name="beta" lower="0.0" upper="0.0">20.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateAGPrior.s:gene2" name="distribution" x="@rateAG.s:gene2">
+
+
+-<Gamma id="Gamma.03" name="distr">
+
+<parameter id="RealParameter.08" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.09" name="beta" lower="0.0" upper="0.0">20.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateATPrior.s:gene1" name="distribution" x="@rateAT.s:gene1">
+
+
+-<Gamma id="Gamma.04" name="distr">
+
+<parameter id="RealParameter.010" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.011" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateATPrior.s:gene2" name="distribution" x="@rateAT.s:gene2">
+
+
+-<Gamma id="Gamma.05" name="distr">
+
+<parameter id="RealParameter.012" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.013" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateCGPrior.s:gene1" name="distribution" x="@rateCG.s:gene1">
+
+
+-<Gamma id="Gamma.06" name="distr">
+
+<parameter id="RealParameter.014" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.015" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateCGPrior.s:gene2" name="distribution" x="@rateCG.s:gene2">
+
+
+-<Gamma id="Gamma.07" name="distr">
+
+<parameter id="RealParameter.016" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.017" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateGTPrior.s:gene1" name="distribution" x="@rateGT.s:gene1">
+
+
+-<Gamma id="Gamma.08" name="distr">
+
+<parameter id="RealParameter.018" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.019" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="RateGTPrior.s:gene2" name="distribution" x="@rateGT.s:gene2">
+
+
+-<Gamma id="Gamma.09" name="distr">
+
+<parameter id="RealParameter.020" name="alpha" lower="0.0" upper="0.0">0.05</parameter>
+
+<parameter id="RealParameter.0211" name="beta" lower="0.0" upper="0.0">10.0</parameter>
+
+</Gamma>
+
+</prior>
+
+
+-<prior id="DeathRatePrior.t:divtimeTree" name="distribution" x="@relativeDeathRate2.t:divtimeTree">
+
+<Uniform id="Uniform.01" name="distr"/>
+
+</prior>
+
+
+-<prior id="MeanRatePrior.c:divtimeCLock" name="distribution" x="@ucldMean.c:divtimeCLock">
+
+
+-<Exponential id="Exponential.02" name="distr">
+
+<parameter id="RealParameter.022" name="mean" estimate="false">10.0</parameter>
+
+</Exponential>
+
+</prior>
+
+
+-<prior id="ucldStdevPrior.c:divtimeCLock" name="distribution" x="@ucldStdev.c:divtimeCLock">
+
+
+-<Exponential id="Exponential.021" name="distr">
+
+<parameter id="RealParameter.0221" name="mean" estimate="false">0.3333</parameter>
+
+</Exponential>
+
+</prior>
+
+
+-<distribution id="mrca1.prior" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:divtimeTree" monophyletic="true">
+
+
+-<taxonset id="mrca1" spec="TaxonSet">
+
+<taxon id="T1" spec="Taxon"/>
+
+<taxon id="T2" spec="Taxon"/>
+
+<taxon id="T3" spec="Taxon"/>
+
+<taxon id="T4" spec="Taxon"/>
+
+<taxon id="T5" spec="Taxon"/>
+
+<taxon id="T6" spec="Taxon"/>
+
+</taxonset>
+
+<Exponential id="Exponential.03" name="distr" offset="60.0" mean="@parameter.hyperExponential-mean-mrca1.prior"/>
+
+</distribution>
+
+
+-<distribution id="mrca2.prior" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:divtimeTree" monophyletic="true">
+
+
+-<taxonset id="mrca2" spec="TaxonSet">
+
+<taxon id="T10" spec="Taxon"/>
+
+<taxon id="T7" spec="Taxon"/>
+
+<taxon id="T8" spec="Taxon"/>
+
+<taxon id="T9" spec="Taxon"/>
+
+</taxonset>
+
+
+-<LogNormal id="LogNormalDistributionModel.0" name="distr" offset="40.0">
+
+<parameter id="RealParameter.023" name="M" estimate="false">2.714482</parameter>
+
+<parameter id="RealParameter.024" name="S" lower="0.0" upper="5.0" estimate="false">0.75</parameter>
+
+</LogNormal>
+
+</distribution>
+
+
+-<distribution id="mrca3.prior" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:divtimeTree">
+
+
+-<taxonset id="mrca3" spec="TaxonSet">
+
+<taxon idref="T10"/>
+
+<taxon idref="T9"/>
+
+</taxonset>
+
+<Uniform id="Uniform.02" name="distr" lower="8.0" upper="32.0"/>
+
+</distribution>
+
+
+-<distribution id="rootAge.prior" spec="beast.math.distributions.MRCAPrior" tree="@Tree.t:divtimeTree" monophyletic="true">
+
+
+-<taxonset id="rootAge" spec="TaxonSet">
+
+<taxon idref="T1"/>
+
+<taxon idref="T10"/>
+
+<taxon idref="T2"/>
+
+<taxon idref="T3"/>
+
+<taxon idref="T4"/>
+
+<taxon idref="T5"/>
+
+<taxon idref="T6"/>
+
+<taxon idref="T7"/>
+
+<taxon idref="T8"/>
+
+<taxon idref="T9"/>
+
+</taxonset>
+
+
+-<Normal id="Normal.0" name="distr">
+
+<parameter id="RealParameter.025" name="mean" estimate="false">140.0</parameter>
+
+<parameter id="RealParameter.026" name="sigma" estimate="false">10.0</parameter>
+
+</Normal>
+
+</distribution>
+
+</distribution>
+
+
+-<distribution id="likelihood" spec="util.CompoundDistribution">
+
+
+-<distribution id="treeLikelihood.gene1" spec="TreeLikelihood" tree="@Tree.t:divtimeTree" data="@gene1">
+
+
+-<siteModel id="SiteModel.s:gene1" spec="SiteModel" shape="@gammaShape.s:gene1" mutationRate="@mutationRate.s:gene1" gammaCategoryCount="4">
+
+<parameter id="proportionInvariant.s:gene1" name="proportionInvariant" lower="0.0" upper="1.0" estimate="false">0.0</parameter>
+
+
+-<substModel id="gtr.s:gene1" spec="GTR" rateGT="@rateGT.s:gene1" rateCG="@rateCG.s:gene1" rateAT="@rateAT.s:gene1" rateAG="@rateAG.s:gene1" rateAC="@rateAC.s:gene1">
+
+<parameter id="rateCT.s:gene1" name="rateCT" lower="0.0" estimate="false">1.0</parameter>
+
+<frequencies id="estimatedFreqs.s:gene1" spec="Frequencies" frequencies="@freqParameter.s:gene1"/>
+
+</substModel>
+
+</siteModel>
+
+
+-<branchRateModel id="RelaxedClock.c:divtimeCLock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@Tree.t:divtimeTree" rateCategories="@rateCategories.c:divtimeCLock" clock.rate="@ucldMean.c:divtimeCLock">
+
+
+-<LogNormal id="LogNormalDistributionModel.c:divtimeCLock" name="distr" meanInRealSpace="true" S="@ucldStdev.c:divtimeCLock">
+
+<parameter id="RealParameter.0231" name="M" lower="0.0" upper="1.0" estimate="false">1.0</parameter>
+
+</LogNormal>
+
+</branchRateModel>
+
+</distribution>
+
+
+-<distribution id="treeLikelihood.gene2" spec="TreeLikelihood" tree="@Tree.t:divtimeTree" branchRateModel="@RelaxedClock.c:divtimeCLock">
+
+<data id="gene2" spec="FilteredAlignment" filter="501-1000" data="@divtime"/>
+
+
+-<siteModel id="SiteModel.s:gene2" spec="SiteModel" shape="@gammaShape.s:gene2" mutationRate="@mutationRate.s:gene2" gammaCategoryCount="4">
+
+<parameter id="proportionInvariant.s:gene2" name="proportionInvariant" lower="0.0" upper="1.0" estimate="false">0.0</parameter>
+
+
+-<substModel id="gtr.s:gene2" spec="GTR" rateGT="@rateGT.s:gene2" rateCG="@rateCG.s:gene2" rateAT="@rateAT.s:gene2" rateAG="@rateAG.s:gene2" rateAC="@rateAC.s:gene2">
+
+<parameter id="rateCT.s:gene2" name="rateCT" lower="0.0" estimate="false">1.0</parameter>
+
+<frequencies id="estimatedFreqs.s:gene2" spec="Frequencies" frequencies="@freqParameter.s:gene2"/>
+
+</substModel>
+
+</siteModel>
+
+</distribution>
+
+</distribution>
+
+</distribution>
+
+<operator id="treeScaler.t:divtimeTree" spec="ScaleOperator" tree="@Tree.t:divtimeTree" weight="3.0" scaleFactor="0.5"/>
+
+<operator id="treeRootScaler.t:divtimeTree" spec="ScaleOperator" tree="@Tree.t:divtimeTree" weight="3.0" scaleFactor="0.5" rootOnly="true"/>
+
+<operator id="UniformOperator.t:divtimeTree" spec="Uniform" tree="@Tree.t:divtimeTree" weight="30.0"/>
+
+<operator id="SubtreeSlide.t:divtimeTree" spec="SubtreeSlide" tree="@Tree.t:divtimeTree" weight="15.0"/>
+
+<operator id="narrow.t:divtimeTree" spec="Exchange" tree="@Tree.t:divtimeTree" weight="15.0"/>
+
+<operator id="wide.t:divtimeTree" spec="Exchange" tree="@Tree.t:divtimeTree" weight="3.0" isNarrow="false"/>
+
+<operator id="WilsonBalding.t:divtimeTree" spec="WilsonBalding" tree="@Tree.t:divtimeTree" weight="3.0"/>
+
+
+-<operator id="FixMeanMutationRatesOperator" spec="DeltaExchangeOperator" weight="2.0" delta="0.75">
+
+<parameter idref="mutationRate.s:gene1"/>
+
+<parameter idref="mutationRate.s:gene2"/>
+
+<weightvector id="weightparameter" spec="parameter.IntegerParameter" lower="0" upper="0" dimension="2" estimate="false">500 500</weightvector>
+
+</operator>
+
+<operator id="gammaShapeScaler.s:gene1" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@gammaShape.s:gene1"/>
+
+<operator id="RateACScaler.s:gene1" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateAC.s:gene1"/>
+
+<operator id="RateAGScaler.s:gene1" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateAG.s:gene1"/>
+
+<operator id="RateATScaler.s:gene1" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateAT.s:gene1"/>
+
+<operator id="RateCGScaler.s:gene1" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateCG.s:gene1"/>
+
+<operator id="RateGTScaler.s:gene1" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateGT.s:gene1"/>
+
+<operator id="RateACScaler.s:gene2" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateAC.s:gene2"/>
+
+<operator id="RateAGScaler.s:gene2" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateAG.s:gene2"/>
+
+<operator id="RateATScaler.s:gene2" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateAT.s:gene2"/>
+
+<operator id="RateCGScaler.s:gene2" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateCG.s:gene2"/>
+
+<operator id="RateGTScaler.s:gene2" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@rateGT.s:gene2"/>
+
+<operator id="gammaShapeScaler.s:gene2" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@gammaShape.s:gene2"/>
+
+<operator id="ucldStdevScaler.c:divtimeCLock" spec="ScaleOperator" weight="3.0" scaleFactor="0.5" parameter="@ucldStdev.c:divtimeCLock"/>
+
+<operator id="CategoriesRandomWalk.c:divtimeCLock" spec="IntRandomWalkOperator" weight="10.0" parameter="@rateCategories.c:divtimeCLock" windowSize="1"/>
+
+<operator id="CategoriesSwapOperator.c:divtimeCLock" spec="SwapOperator" weight="10.0" intparameter="@rateCategories.c:divtimeCLock"/>
+
+<operator id="CategoriesUniform.c:divtimeCLock" spec="UniformOperator" weight="10.0" parameter="@rateCategories.c:divtimeCLock"/>
+
+<operator id="ucldMeanScaler.c:divtimeCLock" spec="ScaleOperator" weight="1.0" scaleFactor="0.5" parameter="@ucldMean.c:divtimeCLock"/>
+
+
+-<operator id="relaxedUpDownOperator.c:divtimeCLock" spec="UpDownOperator" weight="3.0" scaleFactor="0.75">
+
+<parameter name="up" idref="ucldMean.c:divtimeCLock"/>
+
+<tree name="down" idref="Tree.t:divtimeTree"/>
+
+</operator>
+
+<operator id="BirthRateScaler.t:divtimeTree" spec="ScaleOperator" weight="3.0" scaleFactor="0.75" parameter="@birthRate2.t:divtimeTree"/>
+
+<operator id="DeathRateScaler.t:divtimeTree" spec="ScaleOperator" weight="3.0" scaleFactor="0.75" parameter="@relativeDeathRate2.t:divtimeTree"/>
+
+<operator id="hyperScaler.hyperExponential-mean-mrca1.prior" spec="ScaleOperator" weight="0.1" scaleFactor="0.5" parameter="@parameter.hyperExponential-mean-mrca1.prior"/>
+
+
+-<operator id="FrequenciesExchanger.s:gene1" spec="DeltaExchangeOperator" weight="0.1" delta="0.01">
+
+<parameter idref="freqParameter.s:gene1"/>
+
+</operator>
+
+
+-<operator id="FrequenciesExchanger.s:gene2" spec="DeltaExchangeOperator" weight="0.1" delta="0.01">
+
+<parameter idref="freqParameter.s:gene2"/>
+
+</operator>
+
+
+-<logger id="tracelog" sort="smart" sanitiseHeaders="true" model="@posterior" logEvery="100" fileName="divtime.log">
+
+<log idref="posterior"/>
+
+<log idref="likelihood"/>
+
+<log idref="prior"/>
+
+<log idref="treeLikelihood.gene2"/>
+
+<log idref="treeLikelihood.gene1"/>
+
+<log id="TreeHeight.t:divtimeTree" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.t:divtimeTree"/>
+
+<parameter name="log" idref="gammaShape.s:gene1"/>
+
+<parameter name="log" idref="rateAC.s:gene1"/>
+
+<parameter name="log" idref="rateAG.s:gene1"/>
+
+<parameter name="log" idref="rateAT.s:gene1"/>
+
+<parameter name="log" idref="rateCG.s:gene1"/>
+
+<parameter name="log" idref="rateGT.s:gene1"/>
+
+<parameter name="log" idref="rateAC.s:gene2"/>
+
+<parameter name="log" idref="rateAG.s:gene2"/>
+
+<parameter name="log" idref="rateAT.s:gene2"/>
+
+<parameter name="log" idref="rateCG.s:gene2"/>
+
+<parameter name="log" idref="rateGT.s:gene2"/>
+
+<parameter name="log" idref="gammaShape.s:gene2"/>
+
+<parameter name="log" idref="mutationRate.s:gene2"/>
+
+<parameter name="log" idref="mutationRate.s:gene1"/>
+
+<parameter name="log" idref="ucldStdev.c:divtimeCLock"/>
+
+<log id="rate.c:divtimeCLock" spec="beast.evolution.branchratemodel.RateStatistic" tree="@Tree.t:divtimeTree" branchratemodel="@RelaxedClock.c:divtimeCLock"/>
+
+<parameter name="log" idref="ucldMean.c:divtimeCLock"/>
+
+<log idref="BirthDeath.t:divtimeTree"/>
+
+<log idref="rootAge.prior"/>
+
+<log idref="mrca1.prior"/>
+
+<parameter name="log" idref="parameter.hyperExponential-mean-mrca1.prior"/>
+
+<prior name="log" idref="HyperPrior.hyperExponential-mean-mrca1.prior"/>
+
+<log idref="mrca2.prior"/>
+
+<log idref="mrca3.prior"/>
+
+<parameter name="log" idref="freqParameter.s:gene1"/>
+
+<parameter name="log" idref="freqParameter.s:gene2"/>
+
+</logger>
+
+
+-<logger id="screenlog" logEvery="1000">
+
+<log idref="posterior"/>
+
+<log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+
+<log idref="likelihood"/>
+
+<log idref="prior"/>
+
+</logger>
+
+
+-<logger id="treelog.t:divtimeTree" logEvery="100" fileName="divtime.trees" mode="tree">
+
+<log id="TreeWithMetaDataLogger.t:divtimeTree" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:divtimeTree" branchratemodel="@RelaxedClock.c:divtimeCLock"/>
+
+</logger>
+
+</run>
+
+</beast>

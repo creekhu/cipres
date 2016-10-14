@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>TipDate</title>
+    <version>1.2</version>
+    <description>Analysis of trees with dated tips</description>
+    <authors>Andrew Rambaut</authors>
+    <reference>Andrew Rambaut, 2000. Estimating the rate of molecular evolution: Incorporating non-contemporaneous sequences into maximum likelihood phylogenies. Bioinformatics.</reference>
+    <category>phylogeny</category>
+  </head>
+  <command>tipdate</command>
+  <parameters>
+
+    <parameter type="Results">
+      <name>outtree</name>
+      <attributes>
+
+	<filenames>tipdate.out</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>! $notrees</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+
+    <parameter type="Sequence" ismandatory="1" issimple="1">
+      <name>alignment</name>
+      <attributes>
+	<prompt>Alignment file</prompt>
+	<group>10</group>
+	<format>
+	  <language>perl</language>
+	  <code>"  &lt; $value"</code>
+	</format>
+	<seqfmt>
+	  <value>11</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>model</name>
+	    <attributes>
+	      <prompt>MODEL (-m)</prompt>
+	      <vlist>
+		<value>F84</value>
+		<label>F84</label>
+		<value>HKY</value>
+		<label>HKY</label>
+		<value>REV</value>
+		<label>REV</label>
+	      </vlist>
+	      <vdef>
+		<value>F84</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -m$value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>constant_rate</name>
+	    <attributes>
+	      <prompt>Molecular clock model (SR model) (-k)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -k" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>change_rate_estim</name>
+	    <attributes>
+	      <prompt>Estimate rate of change of rate (VRDT model:  requires dated tips) (+w)</prompt>
+	      <vlist>
+		<value>+w</value>
+		<label>VRDT model: requires dated tips (+w)</label>
+		<value>+w+</value>
+		<label>Constrain to be +ve only (+w+)</label>
+		<value>+w-</value>
+		<label>Constrain to be -ve only (+w-)</label>
+		<value>-w</value>
+		<label>specify rate of change of rate (-w)</label>
+	      </vlist>
+	      <format>
+		<language>perl</language>
+		<code>($value ne "-w") ? " $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer"  ismandatory="1" >
+	    <name>change_rate_value</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>($change_rate_estim eq "-w")</code>
+	      </precond>
+	      <prompt>You may provide a change rate value (-w #)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>" -w $value"</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>absolute_rate_estim</name>
+	    <attributes>
+	      <prompt>Estimate absolute rate of substitution (SRDT model: requires dated tips) (+s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " +s" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+	  
+	   <parameter type="Float">
+	    <name>absolute_rate_value</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>(! $absolute_rate_estim)</code>
+	      </precond> 
+	      <prompt>You may provide an absolute rate of molecular evolution (requires dated tips) (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -s $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	   <parameter type="Switch">
+	    <name>likelihood_root_estim</name>
+	    <attributes>
+	      <prompt>Estimate maximum likelihood root (requires molecular clock)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " +r" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+	  
+	   <parameter type="Integer">
+	    <name>likelihood_root_value</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>(! $likelihood_root_estim)</code>
+	      </precond> 
+	      <prompt>root with specified outgroup taxa (requires molecular clock) (-r #)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -r $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>(! $estimate_root) and $constant_rate</code>
+	      </precond>
+	      <prompt>Root with specified outgroup taxa (requires molecular clock) (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -r $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>substitution_confidence</name>
+	    <attributes>
+	      <prompt>Estimate confidence intervals for rate of substitution (with +s option) (-is)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -is" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>date_confidence</name>
+	    <attributes>
+	      <prompt>Estimate confidence intervals for date of root of tree (with +s option) (-id)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -id" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>change_confidence</name>
+	    <attributes>
+	      <prompt>Estimate confidence intervals for rate of change of rate of substitution (with +w option) (-iw)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -iw" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>limit</name>
+	    <attributes>
+	      <prompt>Limit to use estimating confidence intervals (-l)</prompt>
+	      <vdef>
+		<value>1.92</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -l $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>codon_categories</name>
+	    <attributes>
+	      <prompt>CODON CATEGORIES = 112, 123, 120, etc. [default: homogeneity] (-p)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -p $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>codon_rate</name>
+	    <attributes>
+	      <prompt>CODON category rates: #1 #2 #3 separated by commas [default = estimate rates] (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c$value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>seperate</name>
+	    <attributes>
+	      <prompt>Estimate seperate models for each site category (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -e" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>gamma</name>
+	    <attributes>
+	      <prompt>Num categories for gamma rate heterogeneity (2 to 32) (-g)</prompt>
+	      <comment>
+		<value>Enter an integer between 2 and 32 that specifies the number of categories to use with the discrete gamma rate heterogeneity model.</value>
+	      </comment>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -g $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>alpha</name>
+	    <attributes>
+		<precond>
+		  <language>perl</language>
+		  <code>$gamma</code>
+		</precond>
+		<prompt>gamma shape (alpha) for site rate heterogeneity (-a)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>(defined $value)? " -a $value" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>datasets</name>
+	    <attributes>
+		<prompt>Number of Datasets (-n)</prompt>
+		<vdef>
+		  <value>1</value>
+		</vdef>
+		<format>
+		  <language>perl</language>
+		  <code>(defined $value and $value != $vdef)? " -n $value" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>user_branch</name>
+	    <attributes>
+	      <prompt>User branch-lengths [default = estimate] (-ul)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($ value) ? " -ul" : "" </code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>treefile</name>
+	    <attributes>
+
+		<prompt>Optional file containing trees</prompt>
+		<format>
+		  <language>perl</language>
+		  <code> ($value)? " $value":""</code>
+		</format>
+		<group>5</group>
+	    </attributes>
+	</parameter>
+
+	  <parameter type="Switch">
+	    <name>equal_freq</name>
+	    <attributes>
+		<prompt>Frequences of bases equal (-f=)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? " -f=" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>freq_bases</name>
+	    <attributes>
+		<precond>
+		  <language>perl</language>
+		  <code>! $equal_freq</code>
+		</precond>
+		<prompt>Frequences of bases: #A #C #G #T separated by commas(-f)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? " -f$value" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>transition_transversion</name>
+	    <attributes>
+		<prompt>Transition/transversion ratio (-t)</prompt>
+		<vdef>
+		  <value>2.0</value>
+		</vdef>
+		<format>
+		  <language>perl</language>
+		  <code>(defined $value and $value != $vdef)? " -t$value" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<group>3</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>branch</name>
+	    <attributes>
+		<prompt>Print final branch lengths (-vb)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? " -vb" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>likelihoods</name>
+	    <attributes>
+		<prompt>Write likelihoods for each Site (-vs)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? " -vs" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>notrees</name>
+	    <attributes>
+		<prompt>Don't Write trees (-vw)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? " -vw" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>memory</name>
+	    <attributes>
+		<prompt>Memory usage information (-vm)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? " -vm" : ""</code>
+		</format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch" ishidden="1">
+	    <name>progress</name>
+	    <attributes>
+		<format>
+		  <language>perl</language>
+		  <code>" -vp"</code>
+		</format>
+	    </attributes>
+	  </parameter>
+	</parameters>
+
+      </paragraph>
+      
+    </parameter>
+
+  </parameters>
+</pise>
+

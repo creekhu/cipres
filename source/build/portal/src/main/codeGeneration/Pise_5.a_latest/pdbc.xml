@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>pdbc</description>
+    <authors>Russell, Barton</authors>
+  </head>
+
+  <command>pdbc</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>pdbc</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>pdbc</code>
+		<language>perl</language>
+		<code>"pdbc"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>code</name>
+<attributes>
+
+	<prompt>4 letter PDB code</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" isstandout="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"pdbc.out"</value></vdef>
+	<pipe>
+		<pipetype>stamp_domains_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>loadresult</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" &gt; load_result"</code>
+	</format>
+	<group>20</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>choice</name>
+<attributes>
+
+	<prompt>Choices</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<vdef><value>-d</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>-m</value>
+		<label>-m minimalist mode (just report file locations)</label>
+		<value>-d</value>
+		<label>-d write in STAMP database format</label>
+		<value>-r</value>
+		<label>-r write out chain, resolution, R-factor, etc.</label>
+		<value>-q</value>
+		<label>-q verbose mode</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter type="InFile">
+<name>domains_file</name>
+<attributes>
+
+	<prompt>Already loaded domains</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "; cat $domains_file load_result" : "; cat load_result" </code>
+	</format>
+	<group>40</group>
+	<comment>
+		<value>You don't need to enter this parameter. </value>
+		<value>This is the intermediate file containing already loaded domains.</value>
+	</comment>
+	<pipe>
+		<pipetype>stamp_domains_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

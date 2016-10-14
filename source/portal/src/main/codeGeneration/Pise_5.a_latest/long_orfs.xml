@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>GLIMMER</title>
+    <version>2.0.2</version>
+    <description>long-orfs - computes positions of the long orfs in the sequence</description>
+    <authors>S. Salzberg</authors>
+    <reference>A.L. Delcher, D. Harmon, S. Kasif, O. White, and S.L. Salzberg. Improved microbial gene identification with GLIMMER. Nucleic Acids Research, 27:23, 4636-4641. </reference>
+    <reference>S. Salzberg, A. Delcher, S. Kasif, and O. White. Microbial gene identification using interpolated Markov models. Nucleic Acids Research 26:2 (1998), 544-548.</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#GLIMMER</doclink>
+  </head>
+
+  <command>long_orfs</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>long_orfs</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"long-orfs"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>genome_sequence</name>
+      <attributes>
+	<prompt>Genome sequence file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>circular</name>
+      <attributes>
+	<prompt>circular genome (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? "" : " -l"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value>If the genome is not circular, do not allow genes to 'wrap around' the end of the genome.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>gene_length</name>
+      <attributes>
+	<prompt>minimum gene length (-g)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -g $value ":""</code>
+	</format>
+	<vdef><value>500</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value> Minimum gene length is the length of the smallest fragment considered to be a gene. The length is measured from the first base of the start codon to the last base *before* the stop codon. This value can be specified when running the program with the -g option. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>overlap_length</name>
+      <attributes>
+	<prompt>minimum overlap length (-o) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -o $value ":""</code>
+	</format>
+	<vdef><value>30</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value> Minimum overlap length is a lower bound on the number of bases overlap between 2 genes that is considered a problem. Overlaps shorter than this are ignored. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>overlap_percent</name>
+      <attributes>
+	<prompt>minimum overlap percent (-p) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value != $vdef)? " -p $value ":""</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value> Minimum overlap percent is another lower bound on the number of bases overlap that is considered a problem. Overlaps shorter than this percentage of *both* genes are ignored. If you *DON'T* want to eliminate overlappinggenes, just use the -p 100 option. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>genome_sequence_as_out</name>
+      <attributes>
+	<vdef><value>$genome_sequence</value></vdef>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>orfs_coord</name>
+      <attributes>
+	<vdef><value>"long_orfs.out"</value></vdef>
+	<group>100</group>
+	<pipe>
+	  <pipetype>glimmer_orfs_list</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<withpipe>
+	  <pipetype>glimmer_orfs_list</pipetype>
+	  <parametername>genome_sequence_as_out=genome_sequence</parametername>
+	</withpipe>
+      </attributes>
+    </parameter>
+
+</parameters>
+</pise>

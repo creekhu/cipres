@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PLSEARCH</title>
+    <version>4.2</version>
+    <description>search protein sequences for similarity to AACC patterns</description>
+    <authors>R. Smith &amp; T. Smit</authors>
+    <reference>Smith, Randall F. and Temple F. Smith (1990).  Automatic generation of diagnostic sequence patterns from sets of related protein sequences.  Proc. Natl. Acad. Sci. USA 87:118-122.</reference>
+    <category>motifs</category>
+    <category>protein:motifs</category>
+  </head>
+  
+
+<command>plsearch</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>plsearch</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"readseq -p -f1 &lt; $protein | IG-to-tbl &gt; tmp; cp tmp $protein; plsearch &lt; params " </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>type</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"1\\n" </code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>no_detach</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"no\\n" </code>
+	</format>
+	<group>5</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>protein</name>
+<attributes>
+
+	<prompt>Protein sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>`basename $value` </code>
+	</format>
+	<group>2</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="OutFile">
+<name>outfile</name>
+<attributes>
+
+	<prompt>Results file</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "$value\\n" : "plsearch.res\\n"</code>
+	</format>
+	<vdef><value>plsearch.res</value></vdef>
+	<group>3</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>max_alignements</name>
+<attributes>
+
+	<prompt>Maximum number of alignments</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "$value\\n":"$vdef\\n"</code>
+	</format>
+	<vdef><value>20</value></vdef>
+	<group>4</group>
+	<comment>
+		<value>This value sets the maximum, however all matches with SDAM values greater than 4.0 will be displayed regardless of the value specified here.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>params</name>
+<attributes>
+
+	<filenames>params</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

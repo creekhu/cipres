@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>MVIEW</title>
+    <version>1.41.10</version>
+    <description>a multiple alignment viewer</description>
+    <category>alignment:multiple</category>
+    <category>display</category>
+    <authors>N. P. Brown</authors>
+    <reference>Brown, N.P., Leroy C., Sander C. (1998). MView: A Web compatible database search or multiple alignment  viewer. Bioinformatics. 14(4):380-381.</reference>
+</head>
+
+
+<command>mview_alig</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>mview_alig</name>
+<attributes>
+	
+	<format>
+		<language>perl</language>
+		<code> "mview" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>alig</name>
+<attributes>
+
+	<prompt>Alignment File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1000</group>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>in</name>
+<attributes>
+
+	<prompt>Type of alignment (-in)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value eq "phylip")? " -in msf " : " -in $value" </code>
+	</format>
+	<vdef><value>clustal</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>pearson</value>
+		<label>Pearson/FASTA</label>
+		<value>msf</value>
+		<label>MSF (GCG)</label>
+		<value>clustal</value>
+		<label>CLUSTAL W</label>
+		<value>phylip</value>
+		<label>PHYLIP</label>
+		<value>hssp</value>
+		<label>MaxHom/HSSP</label>
+		<value>plain</value>
+		<label>plain</label>
+		<value>multas</value>
+		<label>multas: MULTAS/MULTAL </label>
+		<value>mips</value>
+		<label>mips: MIPS-ALN</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>from_phylip</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "fmtseq -p -f17 $alig &gt; $alig.tmp; mv $alig.tmp $alig; "</code>
+	</format>
+	<group>-10</group>
+<precond>
+	<language>perl</language>
+	<code>$in eq "phylip" </code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>main_formatting_options</name>
+<prompt>Main formatting options</prompt>
+<group>2</group>
+<parameters>
+
+	<parameter issimple="1" type="Switch">
+	<name>ruler</name>
+	<attributes>
+
+		<prompt>Attach a ruler (-ruler)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -ruler on":""</code>
+		</format>
+		<group>2</group>
+
+	    </attributes>
+	  </parameter>
+	 
+	  <parameter issimple="1" type="Switch">
+	    <name>alignment</name>
+	    <attributes>
+
+	      <prompt>Show alignment (-alignment)</prompt>
+		<format>
+		<language>perl</language>
+		<code>($value)? " " : " -alignment off"</code>
+	      </format>
+	      <vdef> 
+		<value>1</value>
+	      </vdef>
+	      <group>2</group>
+	      
+	    </attributes>
+	  </parameter> 
+	 
+	<parameter issimple="1" type="Switch">
+	<name>consensus</name>
+	<attributes>
+
+		<prompt>Show consensus (-consensus)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -consensus on":""</code>
+		</format>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter issimple="1" type="Switch">
+	<name>dna</name>
+	<attributes>
+
+		<prompt>Use DNA/RNA colormaps and/or consensus groups (-dna)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -dna":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>2</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>alignment_options</name>
+<prompt>Alignment options</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter issimple="1" type="Excl">
+	<name>coloring</name>
+	<attributes>
+
+		<prompt>Colour scheme (-coloring)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -coloring $value":""</code>
+		</format>
+		<group>3</group>
+		<vlist>
+			<value>any</value>
+			<label>any: colour all the residues</label>
+			<value>consensus</value>
+			<label>consensus: colour only when above a given percent similarity</label>
+			<value>group</value>
+			<label>groups: colours residues by the colour of the class to which they belong</label>
+			<value>identity</value>
+			<label>identity: colouring by identity to the first sequence</label>
+			<value>none</value>
+			<label>none: no colouring</label>
+		</vlist>
+		<comment>
+			<value>-coloring consensus: will colour only those residues that belong to a specified physicochemical class that is conserved in at least a specified percentage of all rows for a given column. This defaults to 70% and and may be set to another threshold, eg., -coloring consensus -threshold 80 would specify 80%. Note that the physicochemical classes in question can be confined to individual residues. </value>
+			<value>-coloring group, is like -coloring consensus, but colours residues by the colour of the class to which they belong.</value>
+			<value>By default, the consensus computation counts gap characters, so that sections of the alignment may be uncolored where the presence of gaps prevents the non-gap count from reaching the threshold. Setting -con_gaps off prevents this, allowing sequence-only based consensus thresholding. </value>
+			<value>The default palette assumes the input alignment is of protein sequences and sets their colours according to amino acid physicochemical properties: another palette should be selected for DNA or RNA alignments. </value>
+			<value>Consensus colouring is complicated and some understanding of palettes and consensus patterns is required first before trying to explain alignment consensus colouring.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Float">
+	<name>threshold</name>
+	<attributes>
+
+		<prompt>Threshold percentage for consensus coloring (-threshold)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -threshold $value":""</code>
+		</format>
+		<vdef><value>70.0</value></vdef>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>ignore</name>
+	<attributes>
+
+		<prompt>Ignore singleton or class group (-ignore)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -ignore $value" : ""</code>
+		</format>
+		<vdef><value>none</value></vdef>
+		<group>3</group>
+		<vlist>
+			<value>class</value>
+			<label>class</label>
+			<value>none</value>
+			<label>none</label>
+			<value>singleton</value>
+			<label>singleton</label>
+		</vlist>
+		<comment>
+			<value>Tip: If you want to see only the conserved residues above the threshold (ie., only one type of conserved residue per column), add the option -ignore class. </value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>consensus_options</name>
+<prompt>Consensus options</prompt>
+<precond>
+	<language>perl</language>
+	<code>$consensus</code>
+</precond>
+<group>3</group>
+<parameters>
+
+	<parameter type="Excl">
+	<name>con_coloring</name>
+	<attributes>
+
+		<prompt>Basic style of coloring (-con_coloring)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -con_coloring $value":""</code>
+		</format>
+		<group>3</group>
+		<vlist>
+			<value>any</value>
+			<label>any: colour all the residues</label>
+			<value>identity</value>
+			<label>identity: colouring by identity to the first sequence</label>
+			<value>none</value>
+			<label>none: no colouring</label>
+		</vlist>
+		<comment>
+			<value>-coloring consensus: will colour only those residues that belong to a specified physicochemical class that is conserved in at least a specified percentage of all rows for a given column. This defaults to 70% and and may be set to another threshold, eg., -coloring consensus -threshold 80 would specify 80%. Note that the physicochemical classes in question can be confined to individual residues. </value>
+			<value>-coloring group, is like -coloring consensus, but colours residues by the colour of the class to which they belong.</value>
+			<value>By default, the consensus computation counts gap characters, so that sections of the alignment may be uncolored where the presence of gaps prevents the non-gap count from reaching the threshold. Setting -con_gaps off prevents this, allowing sequence-only based consensus thresholding. </value>
+			<value>The default palette assumes the input alignment is of protein sequences and sets their colours according to amino acid physicochemical properties: another palette should be selected for DNA or RNA alignments. </value>
+			<value>Consensus colouring is complicated and some understanding of palettes and consensus patterns is required first before trying to explain alignment consensus colouring.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>$consensus</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>con_threshold</name>
+	<attributes>
+
+		<prompt>Consensus line thresholds (in range 50..100) (separated by commas) (-con_threshold)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -con_threshold $value":""</code>
+		</format>
+		<vdef><value>100,90,80,70</value></vdef>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code>$consensus</code>
+	</precond>
+		<size>50</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>con_ignore</name>
+	<attributes>
+
+		<prompt>Ignore singleton or class group (-con_ignore)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -con_ignore $value" : ""</code>
+		</format>
+		<vdef><value>none</value></vdef>
+		<group>3</group>
+		<vlist>
+			<value>class</value>
+			<label>class</label>
+			<value>none</value>
+			<label>none</label>
+			<value>singleton</value>
+			<label>singleton</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$consensus</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>hybrid_alignment_consensus_options</name>
+<prompt>Hybrid alignment and consensus options</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>con_gaps</name>
+	<attributes>
+
+		<prompt>Count gaps during consensus computations (-con_gaps)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -con_gaps off"</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>general_row_column_filters</name>
+<prompt>General row/column filters</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>top</name>
+	<attributes>
+
+		<prompt>Report top N hits (-top)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -top $value":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>range</name>
+	<attributes>
+
+		<prompt>Display column range M..N as numbered by ruler (M,N) (-range)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($value =~ s/,/:/g))? " -range $value":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>maxident</name>
+	<attributes>
+
+		<prompt>Only report sequences with %identity &lt;= N (-maxident)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -maxident $value":""</code>
+		</format>
+		<vdef><value>100</value></vdef>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ref</name>
+	<attributes>
+
+		<prompt>Use row N or row identifier as %id entity reference (-ref)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -ref $value":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>keep_only</name>
+	<attributes>
+
+		<prompt>Keep only the rows from start to end (separated by commas: start,end) (-keep)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($value =~ s/,/../))? " -disc \\"/.*/\\" -keep $value" : "" </code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>disc</name>
+	<attributes>
+
+		<prompt>Discard rows from start to end (separated by commas: start,end) (-disc)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($value =~ s/,/../))? " -disc $value" : "" </code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>nops</name>
+	<attributes>
+
+		<prompt>Display rows unprocessed (separated by commas) (-nops)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -nops $value" : "" </code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>general_formatting_options</name>
+<prompt>General formatting options</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter type="Integer">
+	<name>width</name>
+	<attributes>
+
+		<prompt>Paginate in N columns of alignment (-width)</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " -width $value":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>gap</name>
+	<attributes>
+
+		<prompt>Use this character as the gap (-gap)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -gap $value" : " " </code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>label0</name>
+	<attributes>
+
+		<prompt>Switch off label: row number (-label0)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -label0":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>label1</name>
+	<attributes>
+
+		<prompt>Switch off label: identifier (-label1)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -label1":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>label2</name>
+	<attributes>
+
+		<prompt>Switch off label: description (-label2)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -label2":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>label3</name>
+	<attributes>
+
+		<prompt>Switch off label: scores (-label3)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -label3":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>label4</name>
+	<attributes>
+
+		<prompt>Switch off label: percent identity (-label4)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -label4":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>html_markup_options</name>
+<prompt>HTML markup options</prompt>
+<group>3</group>
+<parameters>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>html_output</name>
+	<attributes>
+
+		<prompt>HTML output</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -html $value"</code>
+		</format>
+		<vdef><value>full</value></vdef>
+		<group>1</group>
+		<vlist>
+			<value>full</value>
+			<label>full</label>
+			<value>head</value>
+			<label>head</label>
+			<value>body</value>
+			<label>body</label>
+			<value>data</value>
+			<label>data</label>
+			<value>css</value>
+			<label>css</label>
+			<value>off</value>
+			<label>off</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code>$_html &amp;&amp; $out eq "html" </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>pagecolor</name>
+	<attributes>
+
+		<prompt>Page backgound color (-pagecolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -pagecolor $value" : ""</code>
+		</format>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>textcolor</name>
+	<attributes>
+
+		<prompt>Page text color (-textcolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -textcolor $value" : ""</code>
+		</format>
+		<vdef><value>black</value></vdef>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>linkcolor</name>
+	<attributes>
+
+		<prompt>Link color (-linkcolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -linkcolor $value" : ""</code>
+		</format>
+		<vdef><value>blue</value></vdef>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>alinkcolor</name>
+	<attributes>
+
+		<prompt>Active link color (-alinkcolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -alinkcolor $value" : ""</code>
+		</format>
+		<vdef><value>red</value></vdef>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>vlinkcolor</name>
+	<attributes>
+
+		<prompt>Visited link color (-vlinkcolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -vlinkcolor $value" : ""</code>
+		</format>
+		<vdef><value>purple</value></vdef>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>alncolor</name>
+	<attributes>
+
+		<prompt>Alignment background color (-alncolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -alncolor $value" : ""</code>
+		</format>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>symcolor</name>
+	<attributes>
+
+		<prompt>Alignment default text color (-symcolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -symcolor $value" : " "</code>
+		</format>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>gapcolor</name>
+	<attributes>
+
+		<prompt>Alignment gap color (-gapcolor)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -gapcolor $value" : ""</code>
+		</format>
+		<group>3</group>
+		<size>20</size>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>bold</name>
+	<attributes>
+
+		<prompt>Use bold emphasis for coloured residues (-bold)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -bold":""</code>
+		</format>
+		<group>3</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>css</name>
+	<attributes>
+
+		<prompt>Use Cascading Style Sheets (-css)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value eq "on")? " -css on" : ""</code>
+		</format>
+		<vdef><value>off</value></vdef>
+		<group>3</group>
+		<vlist>
+			<value>off</value>
+			<label>off</label>
+			<value>on</value>
+			<label>on</label>
+		</vlist>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" isstandout="1" type="OutFile">
+<name>html_output_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" &gt; mview.html"</code>
+	</format>
+	<group>2000</group>
+<precond>
+	<language>perl</language>
+	<code>$_html &amp;&amp; $out eq "html" </code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>html_file</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>$_html &amp;&amp; $out eq "html" </code>
+</precond>
+	<filenames>mview.html</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>alig_file</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>$out eq "msf" || $out eq "pearson" || $out eq "pir"</code>
+</precond>
+	<filenames>mview*.out</filenames>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>out</name>
+<attributes>
+
+	<prompt>Output format (-out)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value eq "html")? "" : " -out $value"</code>
+	</format>
+	<vdef><value>html</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>html</value>
+		<label>HTML</label>
+		<value>msf</value>
+		<label>GCG/MSF</label>
+		<value>pearson</value>
+		<label>Pearson/FASTA</label>
+		<value>pir</value>
+		<label>PIR</label>
+		<value>rdb</value>
+		<label>RDB table for storage/manipulation in relational database form</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

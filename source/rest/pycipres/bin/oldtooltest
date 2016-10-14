@@ -1,0 +1,17 @@
+#!/bin/bash
+# Usage: tooltest <directory> [run | validate]
+
+
+if [[ $# -lt 2  ||    ( "$2" != "run"  &&  "$2" != "validate")  ]] ; then
+    echo "Usage: tooltest <directory> [run | validate]"
+    exit 0
+fi
+testdir=$1
+if [ "$2" == "validate" ] ; then
+    action="v"
+else
+    action="w"
+fi
+
+
+runtemplate -t $testdir -n 1 -$action

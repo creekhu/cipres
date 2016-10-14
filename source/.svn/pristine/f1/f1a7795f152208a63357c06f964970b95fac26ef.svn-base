@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>seqstat - show statistics and format for a sequence file</description>
+    <authors>S. Eddy</authors>
+    <category>information</category>
+  </head>
+
+  <command>seqstat</command>
+  
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>seqstat</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"seqstat"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="Sequence">
+      <name>seqfile</name>
+      <attributes>
+	<prompt>Sequences file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+	  <value>2</value>
+	  <value>4</value>
+	  <value>5</value>
+	  <value>8</value>
+	  <value>15</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>verbose</name>
+      <attributes>
+	<prompt>Show additional verbose information (-a)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -a " : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>a table with one line per sequence showing name, length, and description line. These lines are prefixed with a * character to enable easily grep'ing them out and sorting them.</value>
+	  <value>seqfile</value>
+	  <value>perl</value>
+	  <value>1</value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

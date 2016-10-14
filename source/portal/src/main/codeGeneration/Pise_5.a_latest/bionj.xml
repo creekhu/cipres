@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>BIONJ</title>
+    <description>a version of the NJ algorithm improved for molecular sequences</description>
+    <authors>O. Gascuel</authors>
+    <reference>Gascuel O., 1997, BIONJ: an improved version of the NJ algorithm based on a simple model of sequence data, Molecular Biology and Evolution 14(7):685-695</reference>
+    <category>phylogeny</category>
+  </head>
+  
+  <command>bionj</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>bionj</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>bionj</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	<prompt>Distances matrix File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Enter a matrix in Phylip format.</value>
+	  <value>This algorithm is adapted to evolutive distances calculated from molecular data sequences (O. Gascuel, 1997, MBE 14(7), 685-695).</value>
+	  <value>If only one data matrix is given, then BIONJ returns one tree. When the input file contains several matrices given one after the other, as obtained when combining PHYLIP's SEQBOOT and DNADIST to perform a bootstrap, BIONJ returns the same number of trees, written one after the other in the output file; this file may be given to PHYLIP's CONSENSE to obtain the bootstrap tree.</value>
+	</comment>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="OutFile">
+      <name>treefile</name>
+      <attributes>
+
+	<prompt>Tree File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<vdef><value>treefile</value></vdef>
+	<group>2</group>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,283 @@
+This document contains installation instructions for programmers or system
+administrators who wish to host their own website based on SDSC's Next Generation Biology
+Workbench (NGBW).  If that's you, you should be reasonably familiar with linux, java, maven,
+xml and MySQL or find someone who is to help you.  The code in this distribution contains many
+things that are specific to our installation of NGBW at SDSC; we've tried to point out the
+things you'll need to change, but I'm sure we've missed some too.  Please let us know about
+any errors or ommissions you find and any  suggestions you have for improving these instructions.
+
+1. Install jdk 1.5, maven, ant, MySQL and apache tomcat.  We're currently using
+    - maven 2.0.9
+    - ant 1.6.5
+    - mysql ?
+    - tomcat 5.5.27
+
+2. Set up a MySQL database
+
+The Workbench makes extensive use of a relational database:
+
+  A. the SDK currently assumes that the database server software is MySQL.
+  B. you'll need to create a catalog < catalog name > and an account on the database server
+  that has query and update permissions for that catalog.
+  C. create the table structure in < catalog name > using the SQL schema file
+          misc/trunk/misc/documents/SWAMI_Design/ngbw-tables.sql.
+
+Make note of the url you'll use to access the database, as well as the username and password.
+
+3. Build the local databases for Blast, Fasta, and Lucene
+
+This step is only required if your web site will be letting users run Blast, Fasta and/or text
+searches of sequence databases.  Depending on your internet connection bandwidth, it can take
+around a week to download and process the raw data.   
+
+The indexing utility that creates the databases for Blast, Fasta, and Lucene is a shell script
+and a set of small command line tools, written in C++ and Java. The source code for the utility
+is located in update_dbs. The C++ tools use the Boost libraries, and can be built with the
+Makefile in update_dbs. The Java tool uses the Lucene core jar, which I've included, and can
+be built with the Ant build file in the update_dbs/index-builder directory. I've included a
+script in update_dbs/scripts called cron-update.sh, which can be used to launch the script that
+actually performs the indexing operations, update_dbs/scripts/update-dbs.sh. Cron-update.sh
+assumes that all of the various pieces of the utility and its output are organized with the
+following directory structure:
+
+< root >/
+         \_ data/
+                 \_ raw/
+         \_ update-tools/
+                         \_ bin/
+                         \_ jars/
+                         \_ scripts/
+
+The C++ tools are located in bin/, the index-builder and Lucene jars in jars/, the shell scripts
+in scripts/, and the indexed data will be in data/. Update-dbs.sh also calls one of the tools
+from the NCBI Blast distribution, formatdb. If this isn't located somewhere on the execution
+path, you can stick a copy of it in bin/, which is what we've done on our cluster. You'll need
+to edit cron-update.sh before using it, as the values of some of the variables are specific
+to our environment. At the top of the script, the value of root_dir should be changed to the
+absolute pathname of the root of the installation (the name of < root > above). The value of
+JAVA_HOME should also be changed, and you might want to change the "To" field of the email
+report. You might also want to edit line 308 of update-dbs.sh, where the index-builder tool
+is launched. The "-n" flag instructs the tool to use a certain number of child processes when
+building the Lucene indices. Each child process will use at least 1024MB of memory, so you
+might want to adjust the argument accordingly.
+
+If you don't want to install all the databases, you can comment some out of the update_dbs 
+scripts.  You'll also need to edit files under sdk/src/main/resources/pisexml to remove the
+omitted dbs from the user interface.
+
+
+4. Edit and install the Pise include files
+
+Edit the XML files in sdk/trunk/sdk/src/main/resources/pisexml/XMLDIR so that the values of the
+elements match the locations of the local data. For example, the value of the "code" element in
+blastDBpath.xml should be " -d < root >/data/databases/blast/$value", with the name of < root >
+being the absolute pathname of the root directory specified in step 3. Once this is done, the
+Pise include files should be copied to a directory under the public root of a web server, so that
+they can be accessed via HTTP. All of the Pise files in sdk/trunk/sdk/src/main/resources/pisexml
+should then be edited so that they refer to the URL that locates the include files.
+
+5. Set up a user account for tool execution.
+
+The SDK uses SSH to connect to "an execution host" and run tools using a user account on that
+machine.  The execution host *can* be the same machine that hosts the web server or a different
+machine.  For the sake of discussion let's say the execution host is named "myhost.here.edu",
+the user name (for running tools) is "toolr" and the password is "secret".
+
+    A. Create a directory, owned by the toolr account, that will be used to stage jobs.
+    Say ~/workspace.  Also create ~/workspace/ARCHIVE and ~workspace/FAILED directories.
+
+    B. Install the tools you want to run (eg, clustalw, phylip, muscle, ...).  Start with just
+    a couple.
+
+    C. Add any necessary configuration files to the account's home directory (e.g. .ncbirc for
+    blast), and modify the .bashrc or .cshrc to give the account the required PATH and environment
+    variables (e.g. JAVA_HOME) for running the tools. The login shell can be bash or csh.
+
+    D. Create a temporary directory under the account, put a fasta or other input file in
+    the tmp directory and verify that you can run the tools with ssh, eg,
+
+         ssh toolr@myhost.here.edu "clustalw -infile=~tmp/infile.fasta -align
+         -outfile=outfile.aln"
+
+The SDK can also be configured to submit jobs to a SGE scheduler, but you can configure
+that later.
+
+
+6. Configure maven properties for the SDK build.
+
+We use maven profiles to configure the build for various situations such as debug versus test
+versus production and for different sets of tools (ngbw tools versus cipres phylogenetic tools).
+Each project, sdk, web and wbapplet, has it's own set of profiles in a file under the root
+directory of the project called profiles.xml.  The appropriate profile is specified on the maven
+command line, and it selects one of the entries in profiles.xml.  Once you're familiar with where
+things are located you should create your own profiles for each of the projects, but for now,
+just modify ours.  Have a look now at the "env-dev" profile in sdk/profiles.xml.  The important
+thing to note is that it sets mvn.property.file to ngbw-dev.properties, which means that we'll
+be pulling in other properties for the configuration from sdk/properties/ngbw-dev.properties.
+
+Edit ngbw-dev.properties:
+
+  A. Set tool.registry.home=ngbw  (This means that we'll be using the hosts and tools specified in
+  sdk/src/main/resources/tools/ngbw/tool-resource.cfg.xml.  You can leave tool-resource.cfg.xml
+  alone for now, but this is the file you'll modify if you want to add or remove tools from
+  the website).
+
+  B. Set the "workspace" property to the absolute path of the workspace directory under the
+  toolr account.
+
+  C. Set tool.resource.host=myhost and host=myhost.  
+
+  D. Modify portal.url, portal.name, job.email.from as appropriate for your installation.
+  Setting job.email.enable=true means your web site will send job completion emails to
+  users.  I recommend leaving this off initially as it requires additional configuration (in
+  sdk/src/main/resources/tool/spring-mail.xml).
+
+  E. Set database.url for your database.
+
+
+7. Configure the SDK's ssl.properties.
+
+  Replace the contents of sdk/src/main/resources/ssl.properties with the information for your
+  execution host:
+
+    myhost.host=myhost.here.edu
+    myhost.username=${myhost.username}
+    myhost.password=${myhost.password}
+    myhost.minconn=0
+    myhost.maxconn=0
+    myhost.end
+
+ Note that each property is prefixed with "myhost" the exact same string you assigned to
+ "host" and "tool.resource.host" in sdk/properties/ngbw-dev.properties.
+
+
+8. Modify your maven settings.xml
+
+Add secure information about the execution host and the database to your maven settings.xml
+file, ~/.m2/settings.xml.  If  you've never used maven before you may need to create ~/.m2 and
+settings.xml.  Make sure the permissions on settings.xml is set to rwx------.  Continuing with
+our "myhost" example, and assuming your database username is "db" with password "dbsecure",
+add the following to ~/.m2/settings.xml:
+
+<settings>
+	<activeProfiles>
+		<activeProfile>always</activeProfile>
+	</activeProfiles>
+	<profiles>
+		<profile>
+			<id>always</id>
+			<properties>
+				<myhost.username>toolr</myhost.username> 
+				<myhost.password.>secret</myhost.password> 
+				<db.ngbw.test.username>db</db.ngbw.test.username>
+				<db.ngbw.test.password>dbsecure</db.ngbw.test.password>
+			</properties>
+		</profile>
+	</profiles>
+</settings>
+
+
+9. Compile the SDK
+
+    cd sdk; mvn -Denv=dev install
+
+Note that in the future I recommend that you always build both the sdk and web projects using
+the build.sh script in the web directory but right now we need to build just the sdk
+so that we can use it to set up the database that's used by tests in the web project.
+
+10. Add a test user account to the database.
+
+From the sdk directory, execute the following command:
+
+    mvn -Denv=dev exec:java -Dexec.mainClass="org.ngbw.utils.AddTestUser"
+
+
+11. Build and install ngbw (sdk and web) 
+
+First take a look at web/build.sh and make sure you're comfortable with what it's doing.  Run:
+
+	cd web; sh build.sh
+
+
+12. Build wbapplet
+
+wbapplet is a separate project that's required only for the multiple file upload feature of ngbw.
+You will probably need to build and install it just one time (on the other hand you will probably
+end up tweaking the sdk and web projects quite a bit to suit your needs).  Use the same tomcat 
+server that you use to host the ngbw application.
+
+	sh $CATALINA_HOME/bin/shutdown.sh
+	cd wbapplet; mvn -Denv=dev_mac clean install
+	cp target/wbapplet $CATALINA_HOME/webapps
+	sh $CATALINA_HOME/bin/startup.sh
+
+
+
+13. Once you have your own instance of ngbw basically up and running, do a recursive grep of the
+"web" project directory for "sdsc".   You'll find a number of occurrences that should be changed.
+Please contact us for advice if you can't figure out what to do about them.
+
+
+Running tools on a cluster with a job scheduler
+=========================================================================================
+
+NGBW supports a couple of different ways of submitting jobs to a scheduler.  
+
+A. First way: replace the tools that are run on the execution host with scripts that submit 
+the job to a scheduler (by creating a job submission script that runs the actual tool with the 
+specified parameters, invoking qsub or bsub to submit the job, and polling until the job finishes).  
+If you want, you can modify the pise xml files so that instead of generating a command line like 
+
+	    "clustalw -infile=infile.fasta -align"
+
+they generate something like
+
+		"submit.sh clustalw -infile=infile.fasta -align"
+
+Where submit.sh is a script you write and install on the head node of the cluster.  It uses the
+command line parameters to create a job submission script, submits the job, and polls 
+the scheduler (i.e. qstat or bjobs) periodically until the job is finished.
+
+
+B. Second way: If your web server is running on a machine that is configured as a submission
+host to the cluster, and you're using a scheduler such as SGE, that implements the Drmaa api, you
+can use Drmaa.
+
+If you're using SGE, you'll need to configure the environment for your development account and
+for the web application with this script that sets LD_LIBRARY_PATH:
+
+#!/bin/sh
+
+if [ -z $SGE_ROOT ] || [ -z $SGE_CELL ]; then
+  if [ -f < sge root >/default/common/settings.sh ]; then
+    . < sge root >/default/common/settings.sh
+  fi
+fi
+
+ARCH=`$SGE_ROOT/util/arch`
+shlib_path_name=`$SGE_ROOT/util/arch -lib`
+old_value=`eval echo '$'$shlib_path_name`
+
+if [ x$old_value = x ]; then
+  eval $shlib_path_name=$SGE_ROOT/lib/$ARCH
+else
+  eval $shlib_path_name=$SGE_ROOT/lib/$ARCH:$old_value
+fi
+
+export $shlib_path_name
+unset ARCH shlib_path_name old_value
+
+For any tools you want to run via sge, change the tool's entry in tool-resource.cfg.xml so that
+it specifies tool.resource.cluster rather than tool.resource.host.  You also need to modify
+sdk/properties/ngbw-dev.properties (or whichever properties file you're using), setting:
+
+	tool.resource.cluster to any name you want to use to identify your cluster.
+
+	workspace.cluster to the full path of the workspace directory where jobs will be staged.
+	The directory needs to be writable by the account that runs the web server, and it must
+	contain ARCHIVE and FAILED subdirs.  
+
+In tool-registry.cfg.xml, find the ToolResource entry for tool.resource.cluster.  The "host"
+parameter isn't used.  Change the "rc" parameter to the full path of a script that will be sourced
+before each job to configure the env (PATH, etc) for running tools.  Change the timeout if desired.
+

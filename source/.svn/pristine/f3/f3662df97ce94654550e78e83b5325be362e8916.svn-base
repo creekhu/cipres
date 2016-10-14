@@ -1,0 +1,337 @@
+/**
+ * DrmaaProcessWorker.java
+ */
+
+/**
+	Notes about using DrmaaProcessWorker.  I needed to set up the following
+	in order to run tools on the cluster with this process worker.
+
+	- Installed the tools on the cluster under /projects/cipres/ngbw/contrib/tools
+
+	- Put a script, workbench_cluster.rc, in the tools directory on the cluster
+	that sets the path and other env vars.
+
+	- Created a tool-resource for running on the cluster in the tool-registry-cfg.xml
+
+
+	- Modifed entries for tools I want to run on the cluster (garli, raxml)
+
+		When you want to run tools on the cluster modify the tool registry entries for them to use 
+		ToolResource = CIPRES_CLUSTER. This will only work if you're running on a machine with sge 
+		installed.  When you're running the sdk or webapp locally and don't have sge installed locally,
+		modify them to use 8BALL instead.
+
+	SGE job will be submitted by the user who is running the webapp.
+	This user must have an account on the cluster.   
+
+		- On the machine where the webapp runs, web user must source the sge settings.sh and must set 
+		LD_LIBRARY_PATH for drmaa.  Right now I do this in a script called sge.rc for my "terri" account
+		on 8ball.  Need to talk to Jeremy about how to do this for the test and production webapps.
+		Or maybe we could just set the env for the process that we exec to run DrmaaProcessWorker.java.
+
+		On the cluster, the web application user must have an account. 
+
+
+	- Add ssl.properties for cipres1 to passwords.jar if you're using the SFTPFileHandler, currently
+	we aren't.
+
+
+	================================================================================================
+	Debugging
+	================================================================================================
+	ERROR DrmaaProcessWorker:92 - 
+	09:27:37,280  INFO Tool:52 - Task 990: java.lang.UnsatisfiedLinkError: no drmaa in java.library.path
+
+		Indicates that SGE isn't installed on the machine where the sdk is running (your laptop for instance)
+		or that the LD_LIBRARY_PATH hasn't been set correctly for the user and machine where the sdk is
+		running.
+*/
+package org.ngbw.sdk.tool;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.NDC;
+
+import org.ggf.drmaa.DrmaaException;
+import org.ggf.drmaa.ExitTimeoutException;
+import org.ggf.drmaa.JobInfo;
+import org.ggf.drmaa.JobTemplate;
+import org.ggf.drmaa.Session;
+import org.ggf.drmaa.SessionFactory;
+import org.ngbw.sdk.api.tool.FileHandler;
+import org.ngbw.sdk.core.shared.TaskRunStage;
+import org.ngbw.sdk.database.Statistics;
+
+import org.ngbw.sdk.tool.BaseProcessWorker;
+
+
+/**
+ * DrmaaProcessWorker 
+ * 
+ * Required system properties:
+ * 
+ * <ul>
+ * <li>hostName
+ * </ul>
+ * 
+ * @author Terri Liebowitz <br />
+ *
+ */
+public class DrmaaProcessWorker extends BaseProcessWorker 
+{
+
+	private static final String HOST_NAME = "hostName";
+	private static final String RC = "rc";
+	private static final Log log = LogFactory.getLog(DrmaaProcessWorker.class.getName());
+	private String m_hostName;
+	private String m_gridEngineJobName;
+	private long m_timeout_seconds = m_jobTimeout * 60;
+			//tool-registry specifies timeout in minutes, we need seconds.
+	
+	private static Session m_drmSession;
+	
+	
+	public static void addProperties(Map<String, String> params, List<String> props)
+	{
+		String value = params.get("host");
+
+		if (value != null)
+			props.add("-D" + HOST_NAME + "=" + value);
+	}
+
+
+	public static void main(String args[])
+	{
+		try 
+		{
+			(new DrmaaProcessWorker()).execute();
+		}
+		catch (Throwable thrown) 
+		{
+			log.error("", thrown);
+
+			System.exit(-1);
+		}
+	}
+
+	private DrmaaProcessWorker() throws PropertyException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, Exception
+	{
+		super();
+
+		// host name
+		m_hostName = System.getProperty(HOST_NAME);
+
+		if (m_hostName == null)
+			throw new PropertyException("required property " + HOST_NAME + " is null");
+
+	}
+	
+
+	private String submitJob() throws Exception
+	{
+		
+		Runtime.getRuntime().addShutdownHook(new DrmShutdownHook(m_taskId, m_jobHandle));
+
+		m_drmSession = SessionFactory.getFactory().getSession();
+		m_drmSession.init("");
+
+		m_gridEngineJobName = m_jobHandle.replaceAll("-", "_");
+
+		// Unlike the SSHProcessWorker which runs the command using the login shell of the user we
+		// ssh too, with DrmmaProcessWorker, we specify /bin/sh as the command we want to execute
+		// and pass the rest of the command to "/bin/sh -c", so we don't have to worry about how
+		// to set env vars for both csh and sh.
+		// 
+		// If there's a startup script to source, set commandline to "source <script>; m_commandline",
+		// otherwise, it's just m_commandline.
+		String commandLine = (m_rc == null) ? "" : ("source " + m_rc + "; ");
+		commandLine += ( "export WB_JOBID=" + m_jobHandle + "; " ) ;
+		commandLine +=  m_commandLine;
+
+		log.debug("m_gridEngineJobName is " + m_gridEngineJobName);
+		log.debug("commandLine is: " + m_commandLine);
+		log.debug("working directory is: " + m_workingDir);
+
+		JobTemplate job = m_drmSession.createJobTemplate();
+		try 
+		{
+			String jobID;
+
+			String [] jobArgs = new String[2];
+
+			jobArgs[0] = "-c";
+			jobArgs[1] = commandLine;
+
+			job.setRemoteCommand("/bin/sh");
+			job.setWorkingDirectory(m_workingDir);
+			job.setJobName(m_gridEngineJobName);
+			job.setArgs(jobArgs);
+			job.setNativeSpecification("-l h_rt=" + m_timeout_seconds);
+			jobID = m_drmSession.runJob(job);
+			
+			try
+			{
+				Statistics stat = Statistics.findStatistic(m_taskId, m_jobHandle);
+				stat.setRemoteJobId(jobID);
+				stat.save();
+			}
+			catch(Throwable t)
+			{
+				log.debug("", t);
+			}
+
+			log.debug("Grid engine jobID is " + jobID);
+			
+			return jobID;
+		}
+		finally 
+		{
+			m_drmSession.deleteJobTemplate(job);
+		}
+	}
+	
+	
+
+	/* This is called by BaseProcessWorker's execute() method */
+	protected void executeImpl() throws Exception
+	{
+		
+		//SFTPFileHandler handler = new SFTPFileHandler(m_hostName);
+		FileHandler handler = new LocalFileHandler();
+		
+		boolean waitReturned = false;
+		try 
+		{
+			String statusMessage = null;
+			int exitStatus = 0;
+			
+			String jobID = submitJob();
+
+			JobInfo result = null;
+			try 
+			{
+				result = m_drmSession.wait(jobID, Session.TIMEOUT_WAIT_FOREVER);
+				waitReturned = true;
+			}
+			catch (ExitTimeoutException timeoutErr) 
+			{
+				// We aren't using a timeout right now so this won't happen.
+				log.debug("Timeout waiting for job");
+				m_drmSession.control(jobID, Session.TERMINATE);
+				exitStatus = -1;
+			}
+			// there are other exceptions that Session.wait() can throw.  They'll be caught by the outer
+			// try block.
+
+			if (result != null && result.wasAborted())
+			{
+				log.debug("Job was aborted");
+				throw new Exception("Job was aborted before it could run");
+			}
+			else if (result != null && result.hasSignaled()) 
+			{
+				log.debug("Job was killed by a signal.");
+				String signal = result.getTerminatingSignal();
+				statusMessage = "Job terminated due to signal(" + signal + ").  This may indicate that the run time limit was exceeded.";
+				exitStatus = -1;
+			}
+			else if (result != null && result.hasExited()) 
+			{
+				exitStatus = result.getExitStatus();
+				log.debug("Job terminated with status " + exitStatus);
+			} 
+			else
+			{
+				log.debug("Job terminated abnormally");
+				throw new Exception("Job terminated abnormally");
+			}
+			String stderr = readStdErr(m_gridEngineJobName, jobID, handler);
+			String stdout = readStdOut(m_gridEngineJobName, jobID, handler);
+
+			log.debug("Calling storeTaskResults");
+			storeTaskResults(stdout, stderr, exitStatus, statusMessage, handler);
+		}
+		catch (Throwable thrown) 
+		{
+			if (waitReturned == false)
+			{
+				log.error("An exception from Session.wait(), especially a null pointer exception,  can indicate that " +
+					"the userid that submitted the job doesn't have permission to submit jobs or doesn't have an account " +
+					"on the execution host.", thrown);
+			} else
+			{
+				log.error("", thrown);
+			}
+			log.debug("Calling storeTaskFailure");
+			storeTaskFailure(null, thrown, handler); 
+		}
+	}
+
+	private String readFile(String filename, FileHandler handler)
+	{
+		try
+		{
+			log.debug("Reading file " + filename);
+			byte[] b = handler.readFile(filename);
+			return new String(b);
+		}
+		catch (Throwable t)
+		{
+			log.debug("", t);
+			return null;
+		}
+	}
+
+	private String readStdErr(String gridEngineJobName, String jobID, FileHandler handler)
+	{
+		return readFile( m_workingDir + gridEngineJobName + ".e" + jobID, handler);
+	}
+
+	private String readStdOut(String gridEngineJobName, String jobID, FileHandler handler)
+	{
+		return readFile( m_workingDir + gridEngineJobName + ".o" + jobID, handler);
+	}
+
+	protected FileHandler getFileHandler() throws Exception
+	{
+		return new LocalFileHandler();
+	}
+
+
+	private static class DrmShutdownHook extends Thread
+	{
+		private long taskId;
+		private String jobHandle;
+
+		public DrmShutdownHook(long taskId, String jobHandle)
+		{
+			this.taskId = taskId;
+			this.jobHandle = jobHandle;
+		}
+
+		public void run()
+		{
+			NDC.push("[task=" + taskId + ", job=" + jobHandle + "] ");
+			log.debug("In DrmShutdownHook");
+			try
+			{
+				if (m_drmSession != null)
+				{
+					m_drmSession.exit();
+				}
+			}
+			catch(DrmaaException drmaaErr)
+			{
+				log.error("", drmaaErr);
+			}
+		}
+	}
+	
+}
+

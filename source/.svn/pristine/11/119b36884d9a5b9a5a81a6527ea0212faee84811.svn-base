@@ -1,0 +1,5 @@
+alter table users add ACTIVATION_CODE varchar(50) DEFAULT NULL AFTER UMBRELLA_APPNAME;
+alter table users add ACTIVATION_SENT datetime DEFAULT NULL AFTER ACTIVATION_CODE;
+alter table users add KEY ACTIVATION (ACTIVATION_SENT) ;
+
+

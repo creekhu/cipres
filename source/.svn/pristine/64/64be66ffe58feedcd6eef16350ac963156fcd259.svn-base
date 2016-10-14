@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY glimmer_header SYSTEM "XMLDIR/glimmer_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Glimmer</title>
+    <version>2.02</version>
+    <description>full-run - long ORFs extraction, model building with these ORFs, and search for genes in the same genome</description>
+    &glimmer_header;
+  </head>
+
+
+<command>full_run</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>full_run</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"full-run "</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>genome</name>
+<attributes>
+
+	<prompt>Genome sequence file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value "</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>out_pre</name>
+<attributes>
+
+	<prompt>prefix for output files</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value "</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="Results">
+<name>output_files</name>
+<attributes>
+
+	<filenames>*.coord *.train *.train.deltas.context *.out</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

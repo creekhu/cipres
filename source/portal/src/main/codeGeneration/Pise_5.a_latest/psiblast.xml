@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+]>
+
+<pise>
+
+<head>
+   <title>BLAST2</title>
+   <version>2.2.10</version>
+   <description>psiblast - Position Specific Iterative Blast</description>
+   <authors>Altschul, Madden, Schaeffer, Zhang, Miller, Lipman</authors>
+   <reference>Altschul, Stephen F., Thomas L. Madden, Alejandro A. Schaeffer,Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), Gapped BLAST and PSI-BLAST: a new generation of protein database search programs,  Nucleic Acids Res. 25:3389-3402.</reference>
+</head>
+
+<command>psiblast</command>
+
+<parameters>
+
+    <parameter ishidden="1" iscommand="1" type="String">
+      <name>psiblast</name>
+      <attributes>
+	<format>
+		<language>perl</language>
+		<code>"blastpgp"</code>
+	</format>
+	<group>0</group>
+	<comment>
+		<value>The blastpgp program can do an iterative search in which sequences found in one round of searching are used to build a score model for the next round of searching. In this usage, the program is called Position-Specific Iterated BLAST, or PSI-BLAST. As explained in the accompanying paper, the BLAST algorithm is not tied to a specific score matrix. Traditionally, it has been implemented using an AxA substitution matrix where A is the alphabet size. PSI-BLAST instead uses a QxA matrix, where Q is the length of the query sequence; at each position the cost of a letter depends on the position w.r.t. the query and the letter in the subject sequence.</value>
+		<value>The position-specific matrix for round i+1 is built from a constrained multiple alignment among the query and the sequences found with sufficiently low e-value in round i. The top part of the output for each round distinguishes the sequences into: sequences found previously and used in the score model, and sequences not used in the score model. The output currently includes lots of diagnostics requested by users at NCBI. To skip quickly from the output of one round to the next, search for the string 'producing', which is part of the header for each round and likely does not appear elsewhere in the output. PSI-BLAST 'converges' and stops if all sequences found at round i+1 below the e-value threshold were already in the model at the beginning of the round.</value>
+	</comment>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>Sequence File (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -i $query" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>start_region</name>
+      <attributes>
+	<prompt>Start of required region in query (-S)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value and $value != $vdef) ? " -S $value" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>end_region</name>
+      <attributes>
+	<prompt>End of required region in query (-1 indicates end of query) (-H)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value and $value != $vdef) ? " -H $value" : ""</code>
+	</format>
+	<vdef><value>-1</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>protein_db</name>
+      <attributes>
+	<prompt>protein db (-d )</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " -d $value" </code>
+	</format>
+	<vdef><value>uniprot</value></vdef>
+	<group>2</group>
+	&protdbs;
+	<comment>
+	  <value>Choose a protein db for blastp or blastx.</value>
+	</comment>
+      </attributes>
+    </parameter>
+  
+
+ 
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>filter_opt</name>
+	<prompt>Filtering and masking options</prompt>
+	<group>4</group>
+	<comment>
+	  <value>This options also takes a string as an argument.  One may use such a string to change the specific parameters of seg or invoke other filters. Please see the 'Filtering Strings' section (below) for details.</value>
+	</comment>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>filter</name>
+	    <attributes>
+	      <prompt>Filter query sequence with SEG (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -F T" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>selectivity_opt</name>
+	<prompt>Selectivity options</prompt>
+	<group>5</group>
+	<parameters>
+
+	  <parameter issimple="1" type="Integer">
+	    <name>Expect</name>
+	    <attributes>
+	      <prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -e $value" : ""</code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>The statistical significance threshold for reporting matches against database sequences; the default value is 10, such that 10 matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical significance ascribed to a match is greater than the EXPECT threshold, the match will not be reported. Lower EXPECT thresholds are more stringent, leading to fewer chance matches being reported. Fractional values are acceptable. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>window</name>
+	    <attributes>
+	      <prompt>Multiple hits window size (zero for single hit algorithm) (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -A $value" : ""</code>
+	      </format>
+	      <vdef><value>40</value></vdef>
+	      <comment>
+		<value>When multiple hits method is used, this
+		parameter defines the distance from last hit on the
+		same diagonal to the new one.</value>
+		<value>Zero means single hit algorithm.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	
+	  <parameter type="Integer">
+	    <name>extend_hit</name>
+	    <attributes>
+	      <prompt>Threshold for extending hits (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -f $value" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Blast seeks first short word pairs whose aligned score reaches at least this value (default for blastp is 11) (T in the NAR paper and in Blast 1.4)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>dropoff_y</name>
+	    <attributes>
+	      <prompt>Dropoff for blast ungapped extensions in bits (-y)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -y $value" : ""</code>
+	      </format>
+	      <vdef><value>7.0</value></vdef>
+	      <comment>
+		<value>This parameter controls the dropoff at ungapped extension stage. See also the -X parameter.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gapped_alig</name>
+	    <attributes>
+	      <prompt>Perform gapped alignment (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value) ? "": " -g F"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+  
+	  <parameter type="Integer">
+	    <name>dropoff</name>
+	    <attributes>
+	      <prompt>X dropoff value for gapped alignment (in bits) (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -X $value" : ""</code>
+	      </format>
+	      <vdef><value>15</value></vdef>
+	      <comment>
+		<value>This is the value that control the path graph region explored by Blast during a gapped extension (Xg in the NAR paper).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	
+	  <parameter type="Integer">
+	    <name>dropoff_z</name>
+	    <attributes>
+	      <prompt>X dropoff value for final gapped alignment (in bits) (-Z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -Z $value" : ""</code>
+	      </format>
+	      <vdef><value>25</value></vdef>
+	      <comment>
+		<value>This parameter controls the dropoff for the final reported alignment. See also the -X parameter.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scoring</name>
+	<prompt>Scoring option</prompt>
+	<group>4</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>matrix</name>
+	    <attributes>
+	      <prompt>Matrix (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef) ? " -M $value" : ""</code>
+	      </format>
+	      <vdef><value>BLOSUM62</value></vdef>
+	      <group>5</group>
+	      <vlist>
+		<value>PAM30</value>
+		<label>PAM30</label>
+		<value>PAM70</value>		
+		<label>PAM70</label>
+		<value>BLOSUM80</value>
+		<label>BLOSUM80</label>
+		<value>BLOSUM62</value>
+		<label>BLOSUM62</label>
+		<value>BLOSUM45</value>
+		<label>BLOSUM45</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>open_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to open a gap (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -G $value" : ""</code>
+	      </format>
+	      <vdef><value>11</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>extend_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to extend a gap (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -E $value" : ""</code>
+	      </format>
+	      <group>5</group>
+	      <vdef><value>1</value></vdef>
+	      <comment>
+		<value>Limited values for gap existence and extension are supported for these three programs. Some supported and suggested values are:</value>
+		<value>Existence Extension</value>
+		<value>10 1</value>
+		<value>10 2</value>
+		<value>11 1</value>
+		<value>8 2</value>
+		<value>9 2</value>
+		<value>(source: NCBI Blast page)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>psi_spec_opt</name>
+	<prompt>PSI-Blast specific selectivity options</prompt>
+	<group>5</group>
+
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>max_passes</name>
+	    <attributes>
+	      <prompt>Maximum number of passes to use in  multipass version (-j)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -j $value" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>expect_in_multipass</name>
+	    <attributes>
+	      <prompt>e-value threshold for inclusion in multipass model (-h)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -h $value" : ""</code>
+	      </format>
+	      <vdef><value>0.01</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>pseudocounts</name>
+	    <attributes>
+	      <prompt>Constant in pseudocounts for multipass version (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -c $value" : ""</code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	      <comment>
+		<value>This constant is the weight given to a pre-calculated residue target frequency (versus the observed one) in a column of the position specific matrix. The larger its value, the greater the emphasis given to prior knowledge of residue relationships vis a vis observed residue frequencies (beta constant in NAR paper).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	 
+	  <parameter type="Float">
+	    <name>trigger</name>
+	    <attributes>
+	      <prompt>Number of bits to trigger gapping (-N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -N $value" : ""</code>
+	      </format>
+	      <vdef><value>22.0</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Blast does first an ungapped extension of the hit to make an HSP. The gapped extension is triggered when the HSP score reaches this value (Sg in the NAR paper).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+   
+
+   <parameter type="Paragraph">
+      <paragraph>
+	<name>affichage</name>
+	<prompt>Report options</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>Descriptions</name>
+	    <attributes>
+	      <prompt>How many short descriptions? (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -v $value" : ""</code>
+	      </format>
+	      <vdef><value>500</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which one-line descriptions will be reported (-v).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Alignments</name>
+	    <attributes>
+	      <prompt>How many alignments? (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -b $value" : ""</code>
+	      </format>
+	      <vdef><value>250</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which high-scoring segment pairs will be reported (-b).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>view_alignments</name>
+	    <attributes>
+	      <prompt>Alignment view options  (not with blastx/tblastx) (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>0</value>
+		<label>0: pairwise</label>
+		<value>1</value>
+		<label>1: query-anchored showing identities</label>
+		<value>2</value>
+		<label>2: query-anchored no identities</label>
+		<value>3</value>
+		<label>3: flat query-anchored, show identities</label>
+		<value>4</value>
+		<label>4: flat query-anchored, no identities</label>
+		<value>5</value>
+		<label>5: query-anchored no identities and blunt ends</label>
+		<value>6</value>
+		<label>6: flat query-anchored, no identities and blunt ends</label>
+		<value>7</value>
+		<label>7: XML Blast output</label>
+		<value>8</value>
+		<label>8: Tabular output</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>htmloutput</name>
+	    <attributes>
+	      <prompt>HTML output</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$view_alignments !~ /^[78]$/</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code> " &amp;&amp; html4blast -o psiblast.html -s -g psiblast.txt" </code>
+	      </format>
+	      <group>51</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Pasteur databases does not use GI ** -->
+	  <!--
+	  <parameter type="Switch">
+	    <name>show_gi</name>
+	    <attributes>
+	      <prompt>Show GI's in deflines (-I)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -I" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <comment>
+		<value>Causes NCBI gi identifiers to be shown in the output, in addition to the accession and/or locus name. </value>
+		<value>Warning: not yet implemented on this server.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  -->
+
+	  <parameter type="OutFile">
+	    <name>seqalign_file</name>
+	    <attributes>
+	      <prompt>SeqAlign file (-J option must be true) (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -O $value" : ""</code>
+	      </format>
+	      <group>4</group>
+	      <comment>
+		<value>SeqAlign is in ASN.1 format, so that it can be read with NCBI tools (such as sequin). This allows one to view the results in different formats.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$believe</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>believe</name>
+	    <attributes>
+	      <prompt>Believe the query defline (-J)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -J":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>save_matrix</name>
+	    <attributes>
+	      <prompt>Save PSI-Blast Matrix to file (-C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -C $save_matrix" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$max_passes > 1</code>
+	      </precond>
+	      <pipe>
+		<pipetype>psiblast_matrix</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+	      <withpipe>
+		<pipetype>psiblast_matrix</pipetype>
+		<parametername>query</parametername>
+	      </withpipe>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>save_txt_matrix</name>
+	    <attributes>
+	      <prompt>Save PSI-BLAST Matrix as text to file (-Q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -Q $save_txt_matrix" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$max_passes > 1</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Results">
+      <name>html_file</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$htmloutput</code>
+	</precond>
+	<filenames>psiblast.html</filenames>
+      </attributes>
+    </parameter>
+    
+     <parameter type="Results">
+      <name>txt_output</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; psiblast.txt"</code>
+	</format>
+	<filenames>psiblast.txt</filenames>
+	<group>50</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Integer">
+      <name>nb_proc</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -a 2"</code>
+	</format>
+	<group>6</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

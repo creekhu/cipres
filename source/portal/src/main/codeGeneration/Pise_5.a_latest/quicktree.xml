@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>QuickTree</title>
+    <version>1</version>
+    <description>Rapid reconstruction of phylogenies by the Neighbor-Joining method</description>
+    <authors>Kevin Howe, Alex Bateman, Richard Durbin</authors>
+    <reference>Kevin Howe, Alex Bateman and Richard Durbin  (2002). QuickTree: building huge Neighbour-Joining trees of protein sequences. Bioinformatics 18(11):1546-1547.</reference>
+    <category>phylogeny</category>
+  </head>
+
+  <command>quicktree</command>
+
+  <parameters>
+
+    <parameter ishidden="1" iscommand="1" type="String">
+      <name>quicktree</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>($distfile) ? "quicktree -in m" : "quicktree -in a"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <parameter issimple="1" type="InFile">
+      <name>distfile</name>
+      <attributes>
+	<prompt>Distance matrix (-in m)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>10</group>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<ctrls>
+	  <ctrl>
+	    <message>You must enter either a distance matrix or a  protein alignment</message>
+	    <language>perl</language>
+	    <code>! $distfile &amp;&amp; ! $aligfile</code>
+	  </ctrl>
+	  <ctrl>
+	    <message>Distance matrix and Protein alignment are mutually exclusive</message>
+	    <language>perl</language>
+	    <code>$distfile and $aligfile</code>
+	  </ctrl>
+	</ctrls>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Excl">
+      <name>out</name>
+      <attributes>
+	<prompt>Output (-out)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value &amp;&amp; $value ne $vdef) ? " -out $value" : ""</code>
+	</format>
+	<vdef><value>t</value></vdef>
+	<vlist>
+	  <value>m</value>
+	  <label>distance matrix in Phylip format(m)</label>
+	  <value>t</value>
+	  <label>tree in New Hampshire format (t)</label>
+	</vlist>
+	<group>3</group>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>treeopt</name>
+	<prompt>Tree output options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>upgma</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$out ne "m"</code>
+	      </precond>
+	      <prompt>Use the UPGMA method to construct the tree (-upgma)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -upgma" : ""</code>
+	      </format>
+	      <group>3</group>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>aligopt</name>
+	<prompt>Alignment options</prompt>
+	<parameters>
+	  <parameter type="InFile">
+	    <name>aligfile</name>
+	    <attributes>
+	      <prompt>Protein alignment file (instead of distance matrix) (-in a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " $value.stockholm" : ""</code>
+	      </format>
+	      <group>10</group>
+	      <pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>boot</name>
+	    <attributes>
+	      <prompt>Calculate bootstrap values with n iterations (-boot)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -boot $value" : ""</code>
+	      </format>
+	      <group>3</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Bootstrapping is not available for a matrix output</message>
+		  <language>perl</language>
+		  <code>$value &amp;&amp; $out eq "m"</code>
+		</ctrl>
+		<ctrl>
+		  <message>Bootstrapping is not available for a matrix input</message>
+		  <language>perl</language>
+		  <code>$value &amp;&amp; $distfile &amp;&amp; (!$aligfile) </code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>kimura</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$aligfile ne ""</code>
+	      </precond>
+	      <prompt>Use the kimura translation for pairwise distances (-kimura)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -kimura" : ""</code>
+	      </format>
+	      <group>3</group>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter iscommand="1" ishidden="1" type="String">
+	    <name>fastdnaml</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>($aligfile)? "readseq -p -f8 $aligfile &gt; $aligfile.fasta ; sreformat stockholm $aligfile.fasta &gt; $aligfile.stockholm; rm $aligfile.fasta ; " :"" </code>
+	      </format>
+	      <group>-10</group>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	<precond>
+          <language>perl</language>
+	  <code>$out ne "m"</code>
+	</precond>
+	<filenames>quicktree.out</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>distoutfile</name>
+      <attributes>
+	<precond>
+          <language>perl</language>
+	  <code>$out eq "m"</code>
+	</precond>
+	<filenames>quicktree.out</filenames>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>stockholmfile</name>
+      <attributes>
+	<precond>
+          <language>perl</language>
+	  <code>$aligfile</code>
+	</precond>
+	<filenames>"$aligfile.stockholm"</filenames>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

@@ -1,0 +1,44 @@
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+RAxML Bipartition Computation: Drawing support values from trees in file RAxML_bootstrap.testS onto tree in file RAxML_bestTree.testZ
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 6 -f b -t RAxML_bestTree.testZ -z RAxML_bootstrap.testS -m GTRGAMMA -s infile.txt -n testout -O -o mycobac_01 
+
+
+
+
+Found 1 tree in File RAxML_bestTree.testZ
+
+
+
+Found 100 trees in File RAxML_bootstrap.testS
+
+
+
+Found 1 tree in File RAxML_bestTree.testZ
+
+
+
+Time for Computation of Bipartitions 0.133134
+Tree with bipartitions written to file:  /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-42680FE7CE894B5FA2B08B74DDD556B2/RAxML_bipartitions.testout
+Tree with bipartitions as branch labels written to file:  /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-42680FE7CE894B5FA2B08B74DDD556B2/RAxML_bipartitionsBranchLabels.testout
+Execution information file written to :  /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-42680FE7CE894B5FA2B08B74DDD556B2/RAxML_info.testout

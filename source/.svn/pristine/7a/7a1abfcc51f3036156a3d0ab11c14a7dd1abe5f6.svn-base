@@ -1,0 +1,11 @@
+Usage Notice From CIPRES Science Gateway
+
+Dear CIPRES Science Gateway User: {{username}},
+
+This is a courtesy notice to let you know that you have now used {{hours_used}} CPU hours of XSEDE computational time. XSEDE fair use policies ( {{portal_url}}/portal/use_policy) allow us to provide all users with access to up to 30,000 CPU hours of XSEDE computational time from the CIPRES Community Account, and up to 50,000 cpu hrs for researchers at an institution in the United States. Further submissions from your account will be blocked once you reach the limit allowed by policy. Users conducting research in the USA, or collaborating with a researcher in the USA are eligible to use the CIPRES Science Gateway beyond the 50,000 CPU hr limit by establishing an individual XSEDE Allocation (please see https://portal.xsede.org/allocations-overview). 
+You can find tools for creating an allocation request at this location: {{portal_url}}/help/request_allocation. If you are not a US researcher, and do not have a US collaborator, we may be able to assist you on a fee for service basis. 
+
+Please contact us at {{email}} if you require more information or need support in preparing an allocation request.
+
+Sincerely,
+Mark Miller

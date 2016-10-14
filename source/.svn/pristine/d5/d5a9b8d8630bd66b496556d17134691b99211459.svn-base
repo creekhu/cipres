@@ -1,0 +1,55 @@
+ML rapid bootstrap search: One step
+raxmlHPC-PTHREADS.exe -T 2 -f a -x 177 -k -m PROTGAMMABLOSUM62F -p 739 -N 100 -o 1_Euglena_gracilis -s infile2.txt -n infile2.tre  -O
+
+NGBW-JOB-RAXMLHPC8_REST_XSEDE-0273B9FB9C58437BBC42EB46DC366418 (saved)
+
+this is the command line raxmlgui makes: raxmlHPC-HYBRID -f a  -n outfile.tre -s infile.txt -N 100 -p 362  -m PROTGAMMABLOSUM62F -k  -x 12345 -o Cirrospilus_variegatus_BOL_D3753_ABCH_F -O
+
+RAXMLHPC8_XSEDE
+This test:
+toolId=RAXMLHPC8_XSEDE
+runtime_=0.50
+select_analysis_=fa	 (default is fd)
+choose_bootstrap_=x  (set rapid boostrapping, otherwise "b")
+seed_value=12345     (set the boostrap seed, default 12345, so it isnt required to set it)
+printbrlength_=1     (default is 0 -k option)
+datatype_=protein	 (choose the data type, dna is default)
+prot_sub_model_=PROTGAMMA (PROTCAT is default)
+prot_matrix_spec_=BLOSUM62 (DAYHOFF is default)
+use_emp_freqs_=F     (default is null)
+parsimony_seed_val_=362 (set the parsimony value for the starting tree, turned off for -f a or if a tree is supplied using treeetop)
+choose_bootstop_=specify (the default, otherwise "bootstop"
+boostrap_value_=100 (100 is default)
+outgroup_=1_Euglena_gracilis (default is off)
+outsuffix_=outfile.tre
+disable_seqcheck_=1 (sets the -O value, default is off)
+
+Job is OK, command line is 
+this is the command line we make: raxmlHPC-HYBRID (-T 32) -f a -x 12345  -k -m PROTGAMMABLOSUM62F -p 362  -N 100 -o 1_Euglena_gracilis -s infile.txt -n outfile.tre -O'
+
+Test passed
+
+select_analysis: use this to choose the main analysis. if the option is -f a, the value is fa; if -f o, fo, and so forth.
+
+other model options:
+If not DNA , set datatype_=(protein/rna/binary/multi) then set this parameter
+(GTRCAT default;  prot_sub_model_=PROTGAMMA/PROTCAT; rna_model_ ;bin_model_=BINCAT/BINGAMMA; multi_model_=MULTICAT/MULTIGAMMA)
+Then set sub_parameters for protein:
+prot_matrix_spec_= (DAYHOFF is default)
+
+other modifiers can be set:
+invariable_= - switch - Estimate proportion of invariable sites (GTRGAMMA + I)
+ascertainment_= switch -
+ascertainment_corr_= excl - sets the kind of correction used
+use_emp_freqs_= to use empirical frequencies, protein only 
+
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+
+upload modifying files
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+
+printbrlength_ - Switch - Print branch lengths (-k)
+

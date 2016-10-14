@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Pyramids</title>
+    <description>drawpyr - pyramidal analysis tool for sequence  clustering</description>
+    <authors>JC AUDE</authors>
+    <category>phylogeny</category>
+</head>
+
+
+<command>drawpyr</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>drawpyr</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>drawpyr</code>
+		<language>perl</language>
+		<code>"drawpyr"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>infile</name>
+<attributes>
+
+	<prompt>Pyramidal representations file (.pyr or .pyt)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>3</group>
+	<pipe>
+		<pipetype>pyramid_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Excl">
+<name>image_format</name>
+<attributes>
+
+	<prompt>Image format (-F)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -F $value"</code>
+	</format>
+	<vdef><value>GIF</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>GIF</value>
+		<label>gif</label>
+		<value>PS</value>
+		<label>Postscript</label>
+		<value>EPS</value>
+		<label>Encapsulated postscript</label>
+		<value>GW3</value>
+		<label>gif for web usage [800x1200]</label>
+		<value>FIG</value>
+		<label>fig (Xfig 3.1 format)</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>qual</name>
+<attributes>
+
+	<prompt>Display quality information (-Q)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -Q" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>out_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" image"</code>
+	</format>
+	<vdef><value>image</value></vdef>
+	<group>4</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>res</name>
+<attributes>
+
+	<filenames>*.gif *.*ps *.fig</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

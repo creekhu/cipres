@@ -1,0 +1,159 @@
+=======================================================================================================
+How to set up your development environment, build and deploy a test version of the workbench.
+This document is for ngbw developers.
+=======================================================================================================
+
+Tue Sep 13 05:55:01 PDT 2011
+	This document is sorely out of date.  We no longer do active development
+	of the ngbw web site, and many changes have been made to the cipres web
+	site that render these instructions incorrect.  For example, the build and
+	deployment process consists of a specific directory structure and shell
+	scripts.  We no longer maintain eclipse projects and we don't deploy using
+	maven.
+
+	Please see new_developer_2011.txt.
+
+=======================================================================================================
+HARDWARE
+=======================================================================================================
+- Get yourself a mac. The software needs to run on linux so you could work on linux too.  We have
+one developer using windows, the rest of us are using macs.
+
+=======================================================================================================
+ACCOUNTS
+=======================================================================================================
+- Get yourself some accounts (ask Mark Miller, mmiller@sdsc.edu):
+
+    * Our twiki, home of some of our documentation is http://cipres.sdsc.edu/twiki/bin/viewauth/Ngbwdev/WebHome
+
+	* Our svn repository: https://svn.sdsc.edu/repo/NGBW/
+	   (this document lives at https://svn.sdsc.edu/repo/NGBW/trunk/documents/for_developers/how_to_build.txt)
+
+	* Ask for an account on 8ball.sdsc.edu that is in the ngbw group
+	    Currently 8ball.sdsc.edu is our "test" server and snooker.sdsc.edu is our production server.
+		They share some nfs filesystems, including the place where we install the tools that the web
+		application runs, the place where you can find the passwords jar, and the place where our
+		public (blastable) data is stored.
+
+	Depending on your level of involvement in the project you may be able to get by with using read-only
+	guest access to the svn repository and not needing an account on 8ball.
+
+=======================================================================================================
+TOOLS
+=======================================================================================================
+ - We use java 5, maven 2.0.9, tomcat 5.5, eclipse with wtp and svn.  These instructions assume you have 
+ java 5, maven, tomcat and a command line subversion client (svn) installed.  Download and install any 
+ that you're missing before continuing.
+
+ - The canononical build uses maven, but we also use eclipse for development and debugging, so
+ you'll need a copy of eclipse 3.2 with wtp (see: http://www.eclipse.org/downloads/moreinfo/jee.php).
+ We haven't been successful using earlier versions of eclipse and wtp.  Nor have we had any luck trying
+ to add the wtp tools to an existing eclipse installation: get a version of eclipse that comes packaged
+ with wtp.
+
+ - Install the subclipse eclipse plugin if you don't already have it
+ (http://subclipse.tigris.org/install.html)
+
+ - Get a copy of the "passwords jar" from /isilon/ngbw/passwords-jar/passwords-1.0-dev.jar,
+ which is accessible from 8ball.sdsc.edu, and deploy it to your *local* repository.  The property 
+ files in this jar have the info for connecting to the test databases and test server (on 8ball).
+	mvn install:install-file \
+		-DgroupId=org.ngbw\
+		-DartifactId=passwords \
+		-Dversion=1.0 \
+		-Dpackaging=jar \
+		-Dfile=passwords-1.0-dev.jar
+
+=======================================================================================================
+BUILDING
+=======================================================================================================
+- Create a directory to work in, for example:
+	mkdir ~/Documents/wb_workspace
+
+- Working from the command line, retrieve the web, sdk and documents projects from svn: 
+	cd ~/Documents/wb_workspace
+ 	svn checkout https://svn.sdsc.edu/repo/NGBW/trunk/web 
+ 	svn checkout https://svn.sdsc.edu/repo/NGBW/trunk/sdk 
+ 	svn checkout https://svn.sdsc.edu/repo/NGBW/trunk/documents 
+
+- Build
+	cd sdk; mvn clean install
+	cd web; mvn clean install
+ 		If this fails due to a "test" failure", remove src/main/test and try again.  I'm not sure why this 
+		works for some of our developers and fails for others.
+
+- Deploy to web/target/web.war to your tomcat server
+	$CATALINA_HOME/bin/shutdown.sh
+	rm $CATALINA_HOME/catalina.out
+	rm $CATALINA_HOME/webapps/web $CATALINA_HOME/webapps/web.war
+	cp web/target/web.war $CATALINA_HOME/webapps
+	$CATALINA_HOME/bin/startup.sh
+
+- See it running at http://localhost:8080/web.
+
+
+=======================================================================================================
+DEBUGGING (setting up eclipse)
+=======================================================================================================
+ - To avoid confusion, if you're going to build in eclipse, clean up the stuff that was already
+ generated by the command line build:
+ 	cd sdk; mvn clean
+	cd web; mvn clean
+
+ - Copy the template versions of the eclipse project files to their "real" names:
+ 	cd sdk
+	cp eclipse.classpath .classpath
+	cp -r eclipse.settings .settings
+	cp eclipse.project .project
+	cd web
+	cp eclipse.classpath .classpath
+	cp -r eclipse.settings .settings
+	cp eclipse.project .project
+
+- Open eclipse and create the sdk and web projects from the source you already checked out:
+	File->New->Project->Java Project->Create Project from existing source
+
+- Add the tomcat Server on your localhost, and add the web project to the server.
+
+- Try it out: 
+
+	build
+
+	set a breakpoint somewhere in the web project code, for example, in 
+	org.ngbw.actions.Login.execute(), on the line that calls getWorkBench().
+
+	Right click on the web project, choose Debug As, Debug On Server
+
+	The web app should be launched and a browser like window displays it in eclipse.
+	When you try to login to the webapp you should hit your breakpoint.  You
+	should be able to step into the getWorkbench method and from there into the
+	Workbench.java class in the sdk.
+
+- If you have problems with the eclipse project files (eclipse.classpath, eclipse.project, etc)
+or if you need to add or modify project files, we create them from the pom file by running
+		mvn eclipse:clean
+		mvn -Dwtpversion=1.5 eclipse:eclipse
+in the sdk and web directories.  Then we modify the build path in the web project to depend on the
+sdk project rather than the sdk jar.
+
+=======================================================================================================
+PLEASE NOTE
+=======================================================================================================
+The info in passwords.jar, and possibly info in svn all point to the test 
+environment, so you don't need to make any changes to run in test mode.   You'll be 
+running the web application on your own local tomcat server and it will be running
+the tools remotely on 8ball and using the remote test database.  You can't run tools
+that are configured (in tool-registry.cfg.xml) to run on the cipres cluster however,
+since your computer isn't configured as an sge submission host for the cluster.
+
+We have a limited number of connections available to the database.  Each instance
+of the web application that's running eats up a few.  Multiple that by a bunch of
+developers, add in the connections used by the live site and we get into trouble!
+So try not to install and run the web app all over the place.  Shutdown your
+tomcat when not in use.
+
+You may end up with a bunch of warnings in eclipse such as "Classpath entry 
+M2_REPO/<path to jar> will not be exported or published".  I have no idea when this occurs
+or how to get rid of the warning.  The web application still seems to run OK in eclipse.
+
+

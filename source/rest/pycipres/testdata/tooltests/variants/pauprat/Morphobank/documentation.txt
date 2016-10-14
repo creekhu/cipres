@@ -1,0 +1,19 @@
+PAUPRAT:
+
+Morphobank sets these parameters:
+testParam.properties
+Parameters: 
+# of chars = 315
+runtime = 1
+Number of Iterations = 100; 
+% data to permute = 2; 
+Branch-swapping algorithm = tbr 
+
+toolId=PAUPRAT
+runtime_=1
+specify_nchar_=315
+ratchet_params_=20
+specify_pct_=2
+paup_branchalg_=tbr(default),spr,nni
+
+Job is OK, command line is 'pauprat setup.nex && paup -n < paup_commands.txt'

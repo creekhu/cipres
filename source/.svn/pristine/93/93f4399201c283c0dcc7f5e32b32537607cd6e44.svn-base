@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PAM</title>
+    <description>Generate a PAM matrix</description>
+  </head>
+
+
+<command>pam</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>pam</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>pam</code>
+		<language>perl</language>
+		<code>"pam"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Float">
+<name>scale</name>
+<attributes>
+
+	<prompt>Scale 0. &lt; scale &lt;= 1000 (-s)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -s $value" : "" </code>
+	</format>
+	<group>1</group>
+	<comment>
+		<value>An optional floating-point scale for the log-odds matrix in the range 0 &lt; scale &lt;= 1000</value>
+	</comment>
+	<ctrls>
+		<ctrl>
+		<message>0 &lt; scale &lt;= 1000</message>
+			<language>perl</language>
+			<code>(defined $scale) &amp;&amp; ($value &lt;=0 || $value &gt; 1000)</code>
+		</ctrl>
+	</ctrls>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>x</name>
+<attributes>
+
+	<prompt>Substitution value for X with any other letter (-x)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -x $value" : "" </code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>distance</name>
+<attributes>
+
+	<prompt>PAM distance (from 2 to 511)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " $value" : "" </code>
+	</format>
+	<group>3</group>
+	<ctrls>
+		<ctrl>
+		<message>2 &lt;= pam distance &lt;= 511</message>
+			<language>perl</language>
+			<code>$value &lt; 2 || $value &gt; 511</code>
+		</ctrl>
+	</ctrls>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

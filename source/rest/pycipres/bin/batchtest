@@ -1,0 +1,89 @@
+#!/bin/bash
+
+config()
+{
+	set -a
+	source $SDK_VERSIONS/testdata/pycipres.conf
+	set +a
+}
+
+config
+export NUMBER=1
+export TT=${TESTDATA}/tooltests
+
+
+test1()
+{
+runtemplate \
+	-u $PYCIPRES_EU \
+	-p $TESTPASS \
+	-t  $TT/CLUSTALW/ \
+	-n $NUMBER \
+	-w \
+	> t1.txt 2>&1 &
+}
+
+test2()
+{
+runtemplate\
+	-u $PYCIPRES_EU \
+	-p $TESTPASS \
+	-t  $TT/READSEQ/ \
+	-n $NUMBER \
+	-w \
+	> t2.txt 2>&1 &
+}
+
+test3()
+{
+runtemplate\
+	-u $PYCIPRES_EU \
+	-p $TESTPASS \
+	-t  $TT/CLUSTALW/ \
+	-n $NUMBER \
+	-w \
+	> t3.txt 2>&1 &
+}
+
+test4()
+{
+runtemplate\
+	-u $PYCIPRES_EU \
+	-p $TESTPASS \
+	-t  $TT/BEAST_TG/ \
+	-n $NUMBER \
+	-w \
+	> t4.txt 2>&1 &
+}
+
+test5()
+{
+runtemplate\
+	-u $PYCIPRES_EU \
+	-p $TESTPASS \
+	-t  $TT/SLEEP/ \
+	-n $NUMBER \
+	-w \
+	> t5.txt 2>&1 &
+}
+
+test6()
+{
+runtemplate\
+	-u $PYCIPRES_EU \
+	-p $TESTPASS \
+	-t  $TT/RAXMLHPC2BB/ \
+	-n $NUMBER \
+	-w \
+	> t6.txt 2>&1 &
+}
+
+# test1
+test2
+# test3
+test4
+test5
+test6
+
+# Remove the wait if you don't want to wait for the above to finish.
+wait

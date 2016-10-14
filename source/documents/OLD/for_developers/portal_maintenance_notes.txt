@@ -1,0 +1,144 @@
+Tgusage:
+	To import tgusage records to our database, log into portal2prod@qball2.sdsc.e and run
+	tgusage.sh begin-date end-date, for example, "tgusage.sh 3-1-2011 5-1-2011"
+	it's ok, if you overlap dates that have already been imported and if you specify and end date
+	beyond the current date.
+
+	As a side effect, tgusage_report.txt and tgusage_log.txt are created in the current dir.
+	The first has the actual data to be imported and the second, the log, tells how many rows
+	were imported and what errors if any were encountered.
+
+	Now that our db is up to date, next step is to run a query that links our statistics table
+	rows (or our running task table rows) with the rows in our tgusage table.  See the example
+	queries in documents/SWAMI_Design/tgusage.sql.  I run the queries from my laptop using MySql Query Browser.
+
+Gateway User Count 
+	Nancy requests this quarterly.  See sample queriers in documents/SWAMI_Design/tg-users-query2.sql.
+
+The allocation year changed on 7/1/2012.  Here are the files I needed to update:
+	sdk/properties/cipres-*.properties: accounting_period_start
+	sdk/scripts/usage.py: startOfPeriod
+	manually copy sdk/scripts/usage.py portal2prod@qball2.sdsc.edu:~/scripts 
+
+
+Disabled Resource Directory, path is specified in properties file.  Contents:
+
+Resources can be disabled by placing a file in this directory.  Filename is name of the resource in the tool_registry.cfg.xml.
+I'm not sure whether case is important.   Here's an example:
+
+	# Be sure to use full 4 character year (2009, not 09).
+	#
+	# If you omit start and end properties, the resource will be disabled until you remove this file.
+	#
+	# End Date: make it a day after the resource will be back up.
+	# Start Date: make it  a couple of days before planned outage so user's won't submit jobs
+	# that would fail during the outage.
+	#
+	# Can use <p> in the message.
+	#
+	#start=9/13/2010
+	#end=9/14/2010
+	message=The Gridftp system is experiencing problems. We hope to be back in an hour or two. Sorry for any inconvenience. 11:36 am Pacific, 7/17/2012.
+
+
+Disabling individual tools, temporarily, without rebuilding or restarting the web application, via the 
+disabled_resources directory is a feature I just added recently.  
+
+We normally charge xsede jobs to the cipres community allocation.  However, users can also log in with their iplant 
+credentials, and in that case we charge xsede jobs to iplant's allocation.  Also, user's who have used up a certain number 
+of cipres's hours are required to get their own individual allocation which we then charge to.  Here are the 
+naming conventions for disabling a tool for these different categories of users: 
+
+1. RAXMLHP2CBB to disable that tool for everyone
+2. RAXMLHPC2BB.CIPRES to disable it for community users only
+3. RAXMLHPC2BB.IPLANT to disable it for iplant users only
+4. RAXMLPC2BB.INDIVIDUAL to disable it for individual users only.
+
+The contents are just a line that looks like:
+    message=whatever you want to tell users
+	The date range that's used for disabling resources isn't supported for disabling tools.
+
+The name of the file (eg. RAXMLHP2CBB) is the same as the name as the pise xml file, but all uppercase and without the .xml extension.
+I believe this is also the value of the Tool id attribute in tool-registry.cfg.xml.
+
+
+File upload size is limited by 2 settings in struts.xml: struts.multipart.maxSize and maximumSize in the fileUpload interceptor.
+At the moment they're set to 367001600 bytes which is 350 megabytes.  However, it looks like we try to read the whole uploaded
+file into memory so can fail with an out of heap error with much smaller upload.  The stack trace looks like:
+
+Jul 20 2012 08:40:24 [essor1] DEBUG -               NgbwSupport:844    | chrisbarton303 - Error saving data items: java.lang.OutOfMemoryError: Java heap space
+java.lang.OutOfMemoryError: Java heap space
+at java.lang.AbstractStringBuilder.expandCapacity(AbstractStringBuilder.java:99)
+at java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:393)
+at java.lang.StringBuffer.append(StringBuffer.java:225)
+at org.ngbw.web.actions.NgbwSupport.getEncodedData(NgbwSupport.java:960)
+at org.ngbw.web.actions.CreateData.saveDataItems(CreateData.java:420)
+at org.ngbw.web.actions.CreateData.execute(CreateData.java:179)
+at org.ngbw.web.actions.CreateData.executePaste(CreateData.java:159)
+at sun.reflect.GeneratedMethodAccessor760.invoke(Unknown Source)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+at java.lang.reflect.Method.invoke(Method.java:592)
+at com.opensymphony.xwork2.DefaultActionInvocation.invokeAction(DefaultActionInvocation.java:452)
+at com.opensymphony.xwork2.DefaultActionInvocation.invokeActionOnly(DefaultActionInvocation.java:291)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:254)
+at org.ngbw.web.interceptors.AuthenticationInterceptor.intercept(AuthenticationInterceptor.java:34)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at com.opensymphony.xwork2.interceptor.DefaultWorkflowInterceptor.doIntercept(DefaultWorkflowInterceptor.java:176)
+at com.opensymphony.xwork2.interceptor.MethodFilterInterceptor.intercept(MethodFilterInterceptor.java:98)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at com.opensymphony.xwork2.validator.ValidationInterceptor.doIntercept(ValidationInterceptor.java:263)
+at org.apache.struts2.interceptor.validation.AnnotationValidationInterceptor.doIntercept(AnnotationValidationInterceptor.java:68)
+at com.opensymphony.xwork2.interceptor.MethodFilterInterceptor.intercept(MethodFilterInterceptor.java:98)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at com.opensymphony.xwork2.interceptor.ConversionErrorInterceptor.intercept(ConversionErrorInterceptor.java:133)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at com.opensymphony.xwork2.interceptor.ParametersInterceptor.doIntercept(ParametersInterceptor.java:207)
+at com.opensymphony.xwork2.interceptor.MethodFilterInterceptor.intercept(MethodFilterInterceptor.java:98)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at com.opensymphony.xwork2.interceptor.StaticParametersInterceptor.intercept(StaticParametersInterceptor.java:190)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at org.apache.struts2.interceptor.CheckboxInterceptor.intercept(CheckboxInterceptor.java:94)
+at com.opensymphony.xwork2.DefaultActionInvocation.invoke(DefaultActionInvocation.java:248)
+at org.apache.struts2.interceptor.FileUploadInterceptor.intercept(FileUploadInterceptor.java:314)
+Jul 20 2012 08:40:24 [essor1] INFO  -     FileUploadInterceptor:42     | Removing file upload /scratch/slocal/cipres/cipres/install-workspace/apache-tomcat-5.5.27/work/Catalina/localhost/portal2/upload_45ae06ce_138a36f5e6e__8000_00000644.tmp
+
+
+We currently (8/2012) use 3 different types of ProcessWorkers:
+
+* SSHExecProcessWorker - uses RunningTask table.  Used for xsede jobs. 
+
+* SSHLongProcessWorker - uses RunningTask table.  Used for jobs that are submitted to scheduler on triton.
+
+* SSHProcessWorker - doesn't use RunningTask table. Instead is run in process exec'd by the web app.  The 
+process doesn't exit until the job is done and the results have been copied back.  For quick jobs like 
+NCLConverter that are run on snooker.
+
+
+Debugging ThreadPoolExhaustion
+	1. You need to make sure you know where org.apache.tomcat.jdbc JULI logging is going.  Probably to stdout by default.
+	To control it, add "-Djava.util.logging.config.file=$HOME/juli.properties" to the programs command line
+	(see submitJobD) and create $HOME/juli.properties with:
+
+	handlers=org.apache.juli.FileHandler
+	org.apache.tomcat.jdbc.level=FINEST
+	org.apache.juli.FileHandler.directory =/users/u4/terri/cipres_data
+	org.apache.juli.FileHandler.prefix = juli.log.
+
+	2. It's helpful to set database property removeAbandoned=true, also need logAbandonded=true and
+	check the removeAbandoned timeout.  When a connection sits in the pool longer than this amount
+	of time, a stack trace, from where the connection was opened will be printed.  Can help you who opens
+	connections that aren't closed or that are taking a long time or that are the source of deadlock.
+	The connection will also be forced close so this will probably cause failures in the program with code
+	that uses the connection, so this is just for debugging
+
+	3. Remember that many of our db methods open a connection and then in a nested way, open another connection
+	before releasing the first.  I don't know if we ever nest more than 2 deep.  But this means we need at 
+	at least 1 connection per thread plus 1 more, to avoid deadlock. You will encounter
+	deadlock if you've got 5 threads executing db methods that require more than one connection and the thread  
+	pool max size is 5.  Shows up as PoolExhausted exception.
+
+	4. We also seem to need 2 SSLConnectionManager connections per thread when we use SFTPFileHandler.
+
+
+
+

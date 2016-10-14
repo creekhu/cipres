@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>satellites</title>
+    <version>0.2</version>
+    <description>identifying satellites and periodic repetitions in biological sequence s (constrained version)</description>
+    <authors>MF. Sagot, G. Myers, E. Poiret</authors>
+  </head>
+
+
+<command>satellites</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>satellites</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "sat -p params" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>param</name>
+<attributes>
+
+	<filenames>params</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -f $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>alphabet</name>
+<attributes>
+
+	<prompt>Alphabets and score system (-a)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -a /local/gensoft/lib/satellites/alphabets/$value"</code>
+	</format>
+	<vdef><value>dna.alphab</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>dna.alphab</value>
+		<label>DNA</label>
+		<value>prot.alphab</value>
+		<label>protein identity</label>
+		<value>blosum62.alphab</value>
+		<label>blosum62</label>
+		<value>pam250.alphab</value>
+		<label>pam250</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>outputbase</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "outputbase: results\\n" </code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>scoreN</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "scoreN: 0\\n" </code>
+	</format>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>maxsym</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "maxsym: 0\\n" </code>
+	</format>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>resultsfiles</name>
+<attributes>
+
+	<filenames>results*</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>range</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "minrange: $minlen\\nmaxrange: $maxlen\\n" </code>
+	</format>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="Integer">
+<name>gap</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"gap: $maxerr\\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>minlen</name>
+<attributes>
+
+	<prompt>Minimum length of repeats (minlen)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"minlen: $value\\n"</code>
+	</format>
+	<vdef><value>3</value></vdef>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>maxlen</name>
+<attributes>
+
+	<prompt>Maximum length of repeats (maxlen)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"maxlen: $value\\n"</code>
+	</format>
+	<vdef><value>10</value></vdef>
+	<ctrls>
+		<ctrl>
+		<message>Maximum value : 50</message>
+			<language>perl</language>
+			<code>$maxlen &gt; 50</code>
+		</ctrl>
+	</ctrls>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>maxerr</name>
+<attributes>
+
+	<prompt>Maximum number of errors allowed between each repeat and the model for a satellite (not more than 10% of the model length) (maxerr)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"maxerr: $value\\n"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<ctrls>
+		<ctrl>
+		<message>The number of errors may not be more than 10% of the model length</message>
+			<language>perl</language>
+			<code>($maxlen &gt; 10 &amp;&amp; $maxerr &gt; (($maxlen / 100) * 10)) || ($maxlen &lt;= 10 &amp;&amp; $maxerr &gt; 1)</code>
+		</ctrl>
+	</ctrls>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>indel</name>
+<attributes>
+
+	<prompt>Insertions and deletions allowed (indel)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "indel: 1\\n" : "indel: 0\\n" </code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>maxjump</name>
+<attributes>
+
+	<prompt>Maximum number of 'bad' repeats between 2 'good' ones (not more than 5) (maxjump)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"maxjump: $value\\n"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<comment>
+		<value>i.e having more than the maximum number of errors allowed</value>
+	</comment>
+	<ctrls>
+		<ctrl>
+		<message>The number of 'bad' repeats may not be more than 5</message>
+			<language>perl</language>
+			<code>$maxjump &gt; 5</code>
+		</ctrl>
+	</ctrls>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>quorum</name>
+<attributes>
+
+	<prompt>Minimum number of repeats a satellite must have (quorum)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"quorum: $value\\n"</code>
+	</format>
+	<vdef><value>20</value></vdef>
+	<comment>
+		<value>Corresponds to min_repeat in the paper</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>usematrix</name>
+<attributes>
+
+	<prompt>Use scores instead of matrix (usematrix)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "usematrix: 0\\n" : "usematrix: 1\\n"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<comment>
+		<value>If unset, will use the score matrix, otherwise will use scorematch and scoresub.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>scorematch</name>
+<attributes>
+
+	<prompt>Score attributed to a match for the final scoring of a model (scorematch)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"scorematch: $value\\n"</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<comment>
+		<value>Suggestion: 1</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>scoresub</name>
+<attributes>
+
+	<prompt>Score attributed to a substitution for the final scoring of a model (scoresub)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"scoresub: $value\\n"</code>
+	</format>
+	<vdef><value>-1</value></vdef>
+	<comment>
+		<value>Suggestion: -1</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>scoregap</name>
+<attributes>
+
+	<prompt>Score attributed to an indel for the final scoring of a model (scoregap)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"scoregap: $value\\n"</code>
+	</format>
+	<vdef><value>-2</value></vdef>
+	<comment>
+		<value>Suggestion: -2</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>threshold</name>
+<attributes>
+
+	<prompt>Filter threshold (threshold)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"threshold: $value\\n"</code>
+	</format>
+	<vdef><value>800</value></vdef>
+	<comment>
+		<value>Set it to 0 for guaranteed exhaustive search.</value>
+		<value>Suggestion: set it to 800 for 10%-15% error rate.</value>
+	</comment>
+	<ctrls>
+		<ctrl>
+		<message>please enter a non-negative integer value</message>
+			<language>perl</language>
+			<code>$value &lt; 0</code>
+		</ctrl>
+	</ctrls>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Integer">
+<name>threscore</name>
+<attributes>
+
+	<prompt>Print threshold (i.e minimum score for printing a model) (threscore)</prompt>
+	<format>
+		<language>perl</language>
+		<code>"threscore: $value\\n"</code>
+	</format>
+	<vdef><value>50</value></vdef>
+	<comment>
+		<value>Suggestion: for a flexible search, if the scoring values are the ones suggested, set it to 50.</value>
+		<value>For a more pertinent search, set it to 100.</value>
+	</comment>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>inverted</name>
+<attributes>
+
+	<prompt>Inverted occurences allowed (inverted)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "inverted: 1\\n" : "inverted: 0\\n" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>ngroup</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "ngroup: 27\\n1 A\\n2 B\\n3 C\\n4 D\\n5 E\\n6 F\\n7 G\\n8 H\\n9 I\\n10 J\\n11 K\\n12 L\\n13 M\\n14 N\\n15 O\\n16 P\\n17 Q\\n18 R\\n19 S\\n20 T\\n21 U\\n22 V\\n23 W\\n24 X\\n25 Y\\n26 Z\\n27 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\\n" </code>
+	</format>
+	<group>100</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>xml</name>
+<attributes>
+
+	<prompt>XML output (xml)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "xml: 1\\n" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>xmldtdcopy</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"; cp /local/gensoft/lib/satellites/satellites.dtd ."</code>
+	</format>
+	<group>100</group>
+<precond>
+	<language>perl</language>
+	<code>$xml</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>dtdfile</name>
+<attributes>
+
+<precond>
+	<language>perl</language>
+	<code>$xml</code>
+</precond>
+	<filenames>satellites.dtd</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

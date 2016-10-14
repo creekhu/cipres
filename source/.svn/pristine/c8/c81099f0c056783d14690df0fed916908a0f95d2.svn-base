@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>dnadist - Compute distance matrix from nucleotide sequences</description>
+    &phylip_header;
+  </head>
+
+
+  <command>dnadist</command>
+
+    <parameters>
+
+     <parameter iscommand="1" ishidden="1" type="String">
+<name>dnadist</name>
+     <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code> "dnadist &lt; params" </code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>infile</name>
+      <attributes>
+	
+	<prompt>Alignment File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -s $infile infile; "</code>
+	</format>
+	<group>-10</group>
+	<seqfmt>
+	  <value>12</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>dnadist_opt</name>
+	<prompt>dnadist options</prompt>
+	<parameters>
+	  
+	  <parameter type="Excl">
+	    <name>distance</name>
+	    <attributes>
+	      
+	      <prompt>Distance (D)</prompt>
+	      <vdef><value>F84</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>F84</value>
+		<label>F84</label>
+		<value>K</value>
+		<label>Kimura 2-parameter</label>
+		<value>JC</value>
+		<label>Jukes-Cantor</label>
+		<value>LogDet</value>
+		<label>LogDet</label>
+		<value>Similarity</value>
+		<label>Similarity table</label>
+	      </vlist>
+	      <flist>
+		<value></value>
+		<code></code>
+		<value>F84</value>
+		<code></code>
+		<value>K</value>
+		<code>"D\\n"</code>
+		<value>JC</value>
+		<code>"D\\nD\\n"</code>
+		<value>LogDet</value>
+		<code>"D\\nD\\nD\\n"</code>
+		<value>Similarity</value>
+		<code>"D\\nD\\nD\\nD\\n"</code>
+	      </flist>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>ratio</name>
+	    <attributes>
+	      
+	      <prompt>Transition/transversion ratio (T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? "T\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>2.0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <precond>
+		<language>perl</language>
+		<code>$distance eq "F84" || $distance eq "K"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>gamma</name>
+	    <attributes>
+	      
+	      <prompt>Gamma distributed rates across sites (G)</prompt>
+	      <vdef><value>0</value></vdef>
+	      <group>5</group>
+	      <vlist>
+		<value>0</value>
+		<label>No</label>
+		<value>1</value>
+		<label>Yes</label>
+		<value>GI</value>
+		<label>Gamma+Invariant</label>
+	      </vlist>
+	      <flist>
+		<value></value>
+		<code></code>
+		<value>0</value>
+		<code></code>
+		<value>1</value>
+		<code>"G\\n"</code>
+		<value>GI</value>
+		<code>"G\\nG\\n"</code>
+	      </flist>
+	      <paramfile>params</paramfile>
+	      <precond>
+		<language>perl</language>
+		<code>$distance eq "F84" || $distance eq "K" || $distance eq "JC"</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Float">
+	    <name>variation_coeff</name>
+	    <attributes>
+	      
+	      <prompt>Coefficient of variation of substitution rate among sites (must be positive) (if Gamma)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "$value\\n" : ""</code>
+	      </format>
+	      <group>1010</group>
+	      <paramfile>params</paramfile>
+	      <precond>
+		<language>perl</language>
+		<code>$gamma</code>
+	      </precond>
+	      <comment>
+		<value>In gamma distribution parameters, this is 1/(square root of alpha)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Float">
+	    <name>invariant_sites</name>
+	    <attributes>
+	      
+	      <prompt>Fraction of invariant sites (if Gamma)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "$value\\n" : ""</code>
+	      </format>
+	      <group>1011</group>
+	      <paramfile>params</paramfile>
+	      <precond>
+		<language>perl</language>
+		<code>$gamma eq "GI"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>empirical_frequencies</name>
+	    <attributes>
+	      
+	      <prompt>Use empirical base frequencies (F)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "F\\n"</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="String">
+	    <name>base_frequencies</name>
+	    <attributes>
+	      
+	      <prompt>Base frequencies for A, C, G, T/U (if not empirical) (separated by commas)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>2</group>
+	      <ctrls>
+		<ctrl>
+		  <message></message>
+		  <language>perl</language>
+		  <code>($base_frequencies =~ s/,/ /g ) &amp;&amp; 0</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>! $empirical_frequencies</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>categ_opt</name>
+	<prompt>Categories options</prompt>
+	<comment>
+	  <value>The alignment file MUST contain a C on the first line and the description of the categories of each site on the following line. Here is a toy example of a file of 5 species with 12 sites, and 2 different categories (first 2 lines):</value>
+	  <value>5 12 C</value>
+	  <value>CATEGORIES 111111222222</value>
+	</comment>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>one_category</name>
+	    <attributes>
+	      
+	      <prompt>One category of substitution rates (C)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(! $one_category)? "C\\n$n_categ\\n$categ_rates\\n" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>3</group>
+	      <paramfile>params</paramfile>
+	      <precond>
+		<language>perl</language>
+		<code>$distance eq "F84" || $distance eq "K" || $distance eq "JC"</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Integer">
+	    <name>n_categ</name>
+	    <attributes>
+	      
+	      <prompt>Number of categories (1 to 9)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>2</group>
+	      <ctrls>
+		<ctrl>
+		  <message>there must be no more than 9 categories</message>
+		  <language>perl</language>
+		  <code>$value &gt; 9</code>
+		</ctrl>
+		<ctrl>
+		  <message>there must be at least one category</message>
+		  <language>perl</language>
+		  <code>$value &lt; 1</code>
+		  </ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>! $one_category</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="String">
+	    <name>categ_rates</name>
+	    <attributes>
+	      
+	      <prompt>Rate for each category (separated by commas)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>3</group>
+	      <ctrls>
+		<ctrl>
+		  <message></message>
+		  <language>perl</language>
+		  <code>($categ_rates =~ s/,/ /g ) &amp;&amp; 0</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>! $one_category</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>weight_opt</name>
+	<prompt>Weight options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>weights</name>
+	    <attributes>
+	      
+	      <prompt>Use weights for sites (W)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "W\\n" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile">
+	    <name>weights_file</name>
+	    <attributes>
+	      
+	      <prompt>Weights file</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "ln -s $weights_file weights; " : ""</code>
+	      </format>
+	      <group>-1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$weights</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>bootstrap</name>
+	<prompt>Bootstrap options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>seqboot</name>
+	    <attributes>
+	      
+	      <prompt>Perform a bootstrap before analysis</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "seqboot &lt; seqboot.params &amp;&amp; mv outfile infile &amp;&amp;" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>-5</group>
+	      <comment>
+		<value>By selecting this option, the bootstrap will be performed on your sequence file. So you don't need to perform a separated seqboot before.</value>
+		<value>Don't give an already bootstrapped file to the program, this won't work!</value>
+	      </comment>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Excl">
+	    <name>method</name>
+	    <attributes>
+	      
+	      <prompt>Resampling methods</prompt>
+	      <vdef><value>bootstrap</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>bootstrap</value>
+		<label>Bootstrap</label>
+		<value>jackknife</value>
+		<label>Delete-half jackknife</label>
+		<value>permute</value>
+		<label>Permute species for each character</label>
+	      </vlist>
+	      <flist>
+		<value>permute</value>
+		<code>"J\\nJ\\n"</code>
+		<value>bootstrap</value>
+		<code>""</code>
+		<value>jackknife</value>
+		<code>"J\\n"</code>
+	      </flist>
+	      <comment>
+		<value>1. The bootstrap. Bootstrapping was invented by Bradley Efron in 1979, and its use in phylogeny estimation was introduced by me (Felsenstein, 1985b). It involves creating a new data set by sampling N characters randomly with replacement, so that the resulting data set has the same size as the original, but some characters have been left out and others are duplicated. The random variation of the results from analyzing these bootstrapped data sets can be shown statistically to be typical of the variation that you would get from collecting new data sets. The method assumes that the characters evolve independently, an assumption that may not be realistic for many kinds of data.</value>
+		<value>2. Delete-half-jackknifing. This alternative to the bootstrap involves sampling a random half of the characters, and including them in the data but dropping the others. The resulting data sets are half the size of the original, and no characters are duplicated. The random variation from doing this should be very similar to that obtained from the bootstrap. The method is advocated by Wu (1986).</value>
+		<value>3. Permuting species within characters. This method of resampling (well, OK, it may not be best to call it resampling) was introduced by Archie (1989) and Faith (1990; see also Faith and Cranston, 1991). It involves permuting the columns of the data matrix separately. This produces data matrices that have the same number and kinds of characters but no taxonomic structure. It is used for different purposes than the bootstrap, as it tests not the variation around an estimated tree but the hypothesis that there is no taxonomic structure in the data: if a statistic such as number of steps is significantly smaller in the actual data than it is in replicates that are permuted, then we can argue that there is some taxonomic structure in the data (though perhaps it might be just a pair of sibling species).</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$seqboot</code>
+	      </precond>
+	      <paramfile>seqboot.params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Integer">
+	    <name>seqboot_seed</name>
+	    <attributes>
+	      
+	      <prompt>Random number seed (must be odd)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	      </format>
+	      <group>1000</group>
+	      <ctrls>
+		<ctrl>
+		  <message>Random number seed must be odd</message>
+		  <language>perl</language>
+		  <code>$value &lt;= 0 || (($value % 2) == 0)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$seqboot</code>
+	      </precond>
+	      <paramfile>seqboot.params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="Integer">
+	    <name>replicates</name>
+	    <attributes>
+	      
+	      <prompt>How many replicates</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? "R\\n$value\\n" : ""</code>
+	      </format>
+	      <vdef><value>100</value></vdef>
+	      <group>1</group>
+	      <ctrls>
+		<ctrl>
+		  <message>this server allows no more than 1000 replicates</message>
+		  <language>perl</language>
+		  <code>$replicates &gt; 1000</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$seqboot</code>
+	      </precond>
+	      <paramfile>seqboot.params</paramfile>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <parameter type="Paragraph">
+	<paragraph>
+	  <name>output</name>
+	  <prompt>Output options</prompt>
+	  <parameters>
+
+	    <parameter type="Switch">
+	      <name>matrix_form</name>
+	      <attributes>
+
+		<prompt>Lower-triangular distance matrix (L)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? "L\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+		<paramfile>params</paramfile>
+
+	      </attributes>
+	    </parameter>
+
+	    <parameter type="Switch">
+	      <name>printdata</name>
+	      <attributes>
+
+		<prompt>Print out the data at start of run (1)</prompt>
+		<format>
+		  <language>perl</language>
+		  <code>($value)? "1\\n" : ""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+		<paramfile>params</paramfile>
+
+	      </attributes>
+	    </parameter>
+
+	  </parameters>
+	</paragraph>
+
+      </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	
+	<filenames>outfile</filenames>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	
+	<filenames>params</filenames>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+	
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>terminal_type</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<group>-1</group>
+	<paramfile>params</paramfile>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>multiple_dataset</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"M\\nD\\n$replicates\\n"</code>
+	</format>
+	<group>1</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$seqboot</code>
+	</precond>
+	<paramfile>params</paramfile>
+	
+	</attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>seqboot_confirm</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"y\\n"</code>
+	</format>
+	<group>100</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$seqboot</code>
+	</precond>
+	<paramfile>seqboot.params</paramfile>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>seqboot_terminal_type</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<group>-1</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$seqboot</code>
+	</precond>
+	<paramfile>seqboot.params</paramfile>
+	
+	</attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>tmp_params</name>
+      <attributes>
+	<filenames>*.params</filenames>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

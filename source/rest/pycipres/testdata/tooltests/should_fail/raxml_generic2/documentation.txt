@@ -1,0 +1,10 @@
+Using raxml generic_ parameter.
+
+User can enter anything in whitelist chars, except our validation
+for generic parameter makes sure each arg is entered separately
+with a hyphen or double hyphen and we don't allow -w and -T.
+
+This test gives an error message because we set generic_=-ab.
+In other words the arguments aren't given separately, 2 are clumped together. 
+
+

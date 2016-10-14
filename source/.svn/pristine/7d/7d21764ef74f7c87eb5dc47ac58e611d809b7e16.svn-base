@@ -1,0 +1,1108 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>BOXSHADE</title>
+    <version>3.33</version>
+    <description>printouts from multiple-aligned protein or DNA sequences</description>
+    <authors>Hofmann, Baron</authors>
+    <category>alignment:multiple</category>
+    <category>display</category>
+  </head>
+
+  <command>boxshade</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>boxshade</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code> "boxshade &lt; params" </code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>alignment</name>
+      <attributes>
+
+	<prompt>Alignment File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>100</value>
+	</seqfmt>
+	<paramfile>params</paramfile>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>input_format</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"2\\n"</code>
+	</format>
+	<group>2</group>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_params</name>
+	<prompt>Output parameters</prompt>
+	<parameters>
+
+	  <parameter ismandatory="1" type="Excl">
+	    <name>output_format</name>
+	    <attributes>
+
+	      <prompt>Output format</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	      </format>
+	      <vdef><value>e</value></vdef>
+	      <group>3</group>
+	      <vlist>
+		<value>1</value>
+		<label>( 1) POSTSCRIPT</label>
+		<value>2</value>
+		<label>( 2) encapsulated POSTSCRIPT</label>
+		<value>3</value>
+		<label>( 3) HPGL</label>
+		<value>4</value>
+		<label>( 4) RTF (Rich Text Format)</label>
+		<value>6</value>
+		<label>( 6) ANSI-screen (PC-version)</label>
+		<value>7</value>
+		<label>( 7) VT100-screen (DEC-version)</label>
+		<value>8</value>
+		<label>( 8) ReGIS-screen (25 lines each)</label>
+		<value>9</value>
+		<label>( 9) ReGIS-file (without breaks)</label>
+		<value>a</value>
+		<label>( a) LJ250-printer file</label>
+		<value>c</value>
+		<label>( c) FIG file (for XFIG)</label>
+		<value>d</value>
+		<label>( d) PICT file</label>
+		<value>e</value>
+		<label>( e) HTML</label>
+	      </vlist>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_name</name>
+	    <attributes>
+
+	      <prompt>Should sequence name be printed</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n" : "n\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>13</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>ruler</name>
+	    <attributes>
+
+	      <prompt>Display ruler line</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n" : "n\\n" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>6</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>space_between_name_sequence</name>
+	    <attributes>
+
+	      <prompt>How many spaces between name and sequence</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>15</group>
+	      <precond>
+		<language>perl</language>
+		<code>$print_name</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>ignored_gaps</name>
+	    <attributes>
+
+	      <prompt>Number of gaps to be ignored when shading (-1: none)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "$value\\n" : "\\n"</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>11</group>
+	      <precond>
+		<language>perl</language>
+		<code>$output_format ne "b"</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>sequence_characters</name>
+	    <attributes>
+
+	      <prompt>How many sequence characters per line</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	      </format>
+	      <vdef><value>60</value></vdef>
+	      <group>12</group>
+	      <paramfile>params</paramfile>
+	      <ctrls>
+		<ctrl>
+		  <message>maximum is 254</message>
+		  <language>perl</language>
+		  <code>$value &gt; 254</code>
+		</ctrl>
+	      </ctrls>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>lines</name>
+	    <attributes>
+
+	      <prompt>How many lines between two sequence blocks</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>17</group>
+	      <paramfile>params</paramfile>
+	      <ctrls>
+		<ctrl>
+		  <message>Enter a value &gt; 0</message>
+		  <language>perl</language>
+		  <code>defined $value &amp;&amp; $value &lt; 1</code>
+		</ctrl>
+	      </ctrls>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>character_size</name>
+	    <attributes>
+
+	      <prompt>Character size in Points (except for HTML and ASCII output formats)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "$value\\n" : "\\n"</code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	      <group>28</group>
+	      <precond>
+		<language>perl</language>
+		<code>$output_format ne "b" &amp;&amp; $output_format ne "e"</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Excl">
+	    <name>save_shading</name>
+	    <attributes>
+
+	      <prompt>Save Shading/Text</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	      </format>
+	      <vdef><value>T</value></vdef>
+	      <group>29</group>
+	      <vlist>
+		<value>S</value>
+		<label>Save shading (S)</label>
+		<value>T</value>
+		<label>Save Shading+Text (T)</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$output_format eq "d"</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>rotate</name>
+	    <attributes>
+
+	      <prompt>Rotate plot</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n" : "n\\n" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>31</group>
+	      <precond>
+		<language>perl</language>
+		<code>$output_format eq "1" || $output_format eq "3" || $output_format eq "d" </code>
+	      </precond>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>sequence_params</name>
+	<prompt>Sequence properties</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>label_similar</name>
+	    <attributes>
+
+	      <prompt>Special label for similar residues</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n" : "n\\n" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>18</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>label_identical</name>
+	    <attributes>
+
+	      <prompt>Special label for identical residues in all sequences</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n" : "n\\n" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>19</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>consensus</name>
+	    <attributes>
+
+	      <prompt>Display consensus line</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n .*\\n" : "n\\n" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>5</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>threshold</name>
+	    <attributes>
+
+	      <prompt>Identity threshold</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? "$value\\n" : "\\n"</code>
+	      </format>
+	      <vdef><value>0.50</value></vdef>
+	      <group>10</group>
+	      <comment>
+		<value>The threshold is the fraction of residues that must be identical or similar for shading to occur.</value>
+	      </comment>
+	      <ctrls>
+		<ctrl>
+		  <message>The fraction must be between 0 and 1</message>
+		  <language>perl</language>
+		  <code>defined $value &amp;&amp; ($threshold &lt;= 0 || $threshold &gt; 1)</code>
+		</ctrl>
+	      </ctrls>
+	      <precond>
+		<language>perl</language>
+		<code>$output_format ne "b"</code>
+	      </precond>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>letters</name>
+	      <prompt>Letters foreground and background colors</prompt>
+	      <parameters>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>different_background</name>
+		  <attributes>
+
+		    <prompt>Background for different residues</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>W</value></vdef>
+		    <group>20</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 (darkest)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$output_format ne "b"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>different_foreground</name>
+		  <attributes>
+
+		    <prompt>Foreground for different residues (lowercase choices mean lowercase letters in the sequence)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>B</value></vdef>
+		    <group>21</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>b</value>
+		      <label>(b) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>w</value>
+		      <label>(w) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 = darkest</label>
+		      <value>5</value>
+		      <label>gray value: 5 (lowercase)</label>
+		      <value>6</value>
+		      <label>gray value: 6 (lowercase)</label>
+		      <value>7</value>
+		      <label>gray value: 7 (lowercase)</label>
+		      <value>8</value>
+		      <label>gray value: 8 = darkest (lowercase)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>r</value>
+		      <label>(r) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>g</value>
+		      <label>(g) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>l</value>
+		      <label>(l) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>y</value>
+		      <label>(y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>m</value>
+		      <label>(m) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		      <value>c</value>
+		      <label>(c) Cyan</label>
+		    </vlist>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>identical_background</name>
+		  <attributes>
+
+		    <prompt>Background for identical residues</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>B</value></vdef>
+		    <group>22</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 (darkest)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$output_format ne "b"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>identical_foreground</name>
+		  <attributes>
+
+		    <prompt>Foreground for identical residues (lowercase choices mean lowercase letters in the sequence)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>W</value></vdef>
+		    <group>23</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>b</value>
+		      <label>(b) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>w</value>
+		      <label>(w) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 = darkest</label>
+		      <value>5</value>
+		      <label>gray value: 5 (lowercase)</label>
+		      <value>6</value>
+		      <label>gray value: 6 (lowercase)</label>
+		      <value>7</value>
+		      <label>gray value: 7 (lowercase)</label>
+		      <value>8</value>
+		      <label>gray value: 8 = darkest (lowercase)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>r</value>
+		      <label>(r) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>g</value>
+		      <label>(g) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>l</value>
+		      <label>(l) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>y</value>
+		      <label>(y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>m</value>
+		      <label>(m) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		      <value>c</value>
+		      <label>(c) Cyan</label>
+		    </vlist>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>similar_background</name>
+		  <attributes>
+
+		    <prompt>Background for similar residues</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>24</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 (darkest)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$label_similar &amp;&amp; $output_format ne "b"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>similar_foreground</name>
+		  <attributes>
+
+		    <prompt>Foreground for similar residues (lowercase choices mean lowercase letters in the sequence)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>B</value></vdef>
+		    <group>25</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>b</value>
+		      <label>(b) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>w</value>
+		      <label>(w) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 = darkest</label>
+		      <value>5</value>
+		      <label>gray value: 5 (lowercase)</label>
+		      <value>6</value>
+		      <label>gray value: 6 (lowercase)</label>
+		      <value>7</value>
+		      <label>gray value: 7 (lowercase)</label>
+		      <value>8</value>
+		      <label>gray value: 8 = darkest (lowercase)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>r</value>
+		      <label>(r) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>g</value>
+		      <label>(g) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>l</value>
+		      <label>(l) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>y</value>
+		      <label>(y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>m</value>
+		      <label>(m) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		      <value>c</value>
+		      <label>(c) Cyan</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$label_similar</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>conserved_background</name>
+		  <attributes>
+
+		    <prompt>Background for conserved residues (if special label for identical residues)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>26</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 (darkest)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$label_identical &amp;&amp; $output_format ne "b"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Excl">
+		  <name>conserved_foreground</name>
+		  <attributes>
+
+		    <prompt>Foreground for conserved residues (lowercase choices mean lowercase letters in the sequence)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>B</value></vdef>
+		    <group>27</group>
+		    <vlist>
+		      <value>B</value>
+		      <label>(B) black</label>
+		      <value>b</value>
+		      <label>(b) black</label>
+		      <value>W</value>
+		      <label>(W) white</label>
+		      <value>w</value>
+		      <label>(w) white</label>
+		      <value>1</value>
+		      <label>gray value: 1</label>
+		      <value>2</value>
+		      <label>gray value: 2</label>
+		      <value>3</value>
+		      <label>gray value: 3</label>
+		      <value>4</value>
+		      <label>gray value: 4 = darkest</label>
+		      <value>5</value>
+		      <label>gray value: 5 (lowercase)</label>
+		      <value>6</value>
+		      <label>gray value: 6 (lowercase)</label>
+		      <value>7</value>
+		      <label>gray value: 7 (lowercase)</label>
+		      <value>8</value>
+		      <label>gray value: 8 = darkest (lowercase)</label>
+		      <value>R</value>
+		      <label>(R) Red</label>
+		      <value>r</value>
+		      <label>(r) Red</label>
+		      <value>G</value>
+		      <label>(G) Green</label>
+		      <value>g</value>
+		      <label>(g) Green</label>
+		      <value>L</value>
+		      <label>(L) Blue</label>
+		      <value>l</value>
+		      <label>(l) Blue</label>
+		      <value>Y</value>
+		      <label>(Y) Yellow</label>
+		      <value>y</value>
+		      <label>(y) Yellow</label>
+		      <value>M</value>
+		      <label>(M) Magenta</label>
+		      <value>m</value>
+		      <label>(m) Magenta</label>
+		      <value>C</value>
+		      <label>(C) Cyan</label>
+		      <value>c</value>
+		      <label>(c) Cyan</label>
+		    </vlist>
+		    <precond>
+		      <language>perl</language>
+		      <code>$label_identical</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>single_comparison</name>
+	      <prompt>Comparison to a single sequence</prompt>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>single</name>
+		  <attributes>
+
+		    <prompt>Similarity to a single sequence</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "y\\n" : "n\\n" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>4</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$output_format ne "b"</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter ismandatory="1" type="Integer">
+		  <name>seq_no</name>
+		  <attributes>
+
+		    <prompt>Which sequence (give its number)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>"$value\\n"</code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>40</group>
+		    <ctrls>
+		      <ctrl>
+			<message>Give a sequence NUMBER</message>
+			<language>perl</language>
+			<code>($value !~ /^\\d+$/)</code>
+			<language>tcl</language>
+			<code>[regexp {/^\\d+$/} $value match]</code>
+		      </ctrl>
+		      <ctrl>
+			<message>Give a sequence NUMBER</message>
+			<language>perl</language>
+			<code>($value !~ /^\\d+$/)</code>
+			<language>tcl</language>
+			<code>[regexp {/^\\d+$/} $value match]</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$single</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>hide</name>
+		  <attributes>
+
+		    <prompt>Hide this sequence</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "y\\n" : "n\\n" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>41</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$single</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>show_normal</name>
+		  <attributes>
+
+		    <prompt>Show this sequence in all-normal rendition</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? "y\\n" : "n\\n" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>42</group>
+		    <precond>
+		      <language>perl</language>
+		      <code>$single</code>
+		    </precond>
+		    <paramfile>params</paramfile>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>matrix</name>
+	    <attributes>
+
+	      <prompt>Create identity / similarity matrix</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "y\\n" : "n\\n" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>34</group>
+	      <paramfile>params</paramfile>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="Excl">
+      <name>print_position</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"0\\n"</code>
+	</format>
+	<group>14</group>
+	<precond>
+	  <language>perl</language>
+	  <code>! $ruler</code>
+	</precond>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" ishidden="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"boxshade.result\\n"</code>
+	</format>
+	<vdef><value>"boxshade.result"</value></vdef>
+	<group>32</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$output_format ne "1" &amp;&amp; $output_format ne "e"  &amp;&amp; $output_format ne "2" &amp;&amp; $output_format ne "d"</code>
+	</precond>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>psfile</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"boxshade.ps\\n"</code>
+	</format>
+	<vdef><value>"boxshade.ps"</value></vdef>
+	<group>33</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$output_format eq "1" || $output_format eq "2"</code>
+	</precond>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>htmlfile</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"boxshade.html\\n"</code>
+	</format>
+	<vdef><value>"boxshade.html"</value></vdef>
+	<group>33</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$output_format eq "e" </code>
+	</precond>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>pictfile</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"boxshade.pict\\n"</code>
+	</format>
+	<vdef><value>"boxshade.pict"</value></vdef>
+	<group>33</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$output_format eq "d"</code>
+	</precond>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="OutFile">
+      <name>matrixfile</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>"boxshade.matrix\\n"</code>
+	</format>
+	<vdef><value>"boxshade.matrix"</value></vdef>
+	<group>35</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$matrix</code>
+	</precond>
+	<paramfile>params</paramfile>
+
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>tmp_params</name>
+      <attributes>
+
+	<filenames>params *.result *.pict</filenames>
+
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

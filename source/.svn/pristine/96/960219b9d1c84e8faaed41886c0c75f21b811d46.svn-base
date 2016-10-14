@@ -1,0 +1,45 @@
+registrationAppUrl=${registrationAppUrl}
+TESTDATA=${testdata}
+
+TESTPASS=${testpass}
+PYCIPRES_ADMIN=${pycipres_admin}
+PYCIPRES_APP=${pycipres_app}
+PYCIPRES2_APP=${pycipres2_app}
+PYCIPRES_EU=${pycipres_eu}
+PYCIPRES_EU2=${pycipres_eu2}
+
+GUIDEMO_ADMIN=${guidemo_admin}
+GUIDEMO_APP=${guidemo_app}
+
+GUIDEMO2_ADMIN=${guidemo2_admin}
+GUIDEMO2_APP=${guidemo2_app}
+
+adminUsername=${admin.username}
+adminPassword=${admin.password}
+
+
+# START: These are the properties that rest_client_examples/python_cipres needs.
+# testAndDemoAccounts will fill in the APPID
+URL=${rest_url}
+APPNAME=${pycipres_app}
+APPID=
+USERNAME=${pycipres_eu}
+PASSWORD=${testpass}
+
+# To disable verbosity, remove this property or set it to nothing: i.e. VERBOSE=
+# Anything else evalutes to true.
+# VERBOSE=True
+# END: These are the properties that rest_client_examples/python_cipres needs.
+
+
+
+
+# START: These are the properties that rest_client_examples/java_umbrella needs, in addition to "URL".
+# testAndDemoAccounts will fill in UMBRELLA_APPID
+UMBRELLA_APPNAME=${guidemo_app}
+UMBRELLA_APPID=
+ADMIN_USERNAME=${guidemo_admin}
+ADMIN_PASSWORD=${testpass}
+# END: These are the properties that rest_client_examples/java_umbrella needs.
+
+

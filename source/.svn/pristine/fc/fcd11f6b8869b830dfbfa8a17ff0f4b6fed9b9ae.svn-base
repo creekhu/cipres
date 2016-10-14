@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+  <head>
+    <title>MSPcrunch</title>
+    <version>2.4a</version>
+    <description>a BLAST post-processing filter</description>
+    <authors>Sonnhammer, Durbin</authors>
+  </head>
+  
+  <command>mspcrunch</command>
+  
+  <parameters>
+    
+    <!-- ** Command ** -->
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>mspcrunch</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"MSPcrunch"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <!-- ** Input file, blast results ** -->
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>blast_output</name>
+      <attributes>
+	<prompt>BLAST output File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <!-- ** Output options ** -->
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output Options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <!-- ** Outfile name ** -->
+	  <parameter isstandout="1" type="OutFile">
+	    <name>outfile</name>
+	    <attributes>
+	      <prompt>Result file</prompt>
+	      <format>
+		<language>perl</language>
+		<code> " &gt; $value " </code>
+	      </format>
+	      <vdef><value>mspcrunch.txt</value></vdef>
+	      <group>1000</group>
+<!--	      <pipe>
+		<pipetype>mspcrunch_output</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+-->
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Gapped ** -->
+	  <parameter type="Switch">
+	    <name>gapped</name>
+	    <attributes>
+	      <prompt>Make gapped alignment of ungapped-MSP contigs (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -G" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Picture ** -->
+	  <parameter type="Switch">
+	    <name>big_pict</name>
+	    <attributes>
+	      <prompt>Big Picture (-P)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -P" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** SFS output ** -->
+	  <parameter type="Switch">
+	    <name>sfs</name>
+	    <attributes>
+	      <prompt>Produce SFS    output (-H)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -H" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Blixem output ** -->
+	  <parameter type="Switch">
+	    <name>seqbl</name>
+	    <attributes>
+	      <prompt>Produce seqbl  output (for Blixem) (-q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -q" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** ACE output ** -->
+	  <parameter type="Switch">
+	    <name>ace</name>
+	    <attributes>
+	      <prompt>Produce .ace   output (for ACEDB 4) (-4)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -4" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** EXBLX output ** -->
+	  <parameter type="Switch">
+	    <name>exblx</name>
+	    <attributes>
+	      <prompt>Produce exblx  output (for easy parsing) (-x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -x" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** EXBLDB output ** -->
+	  <parameter type="Switch">
+	    <name>exbldb</name>
+	    <attributes>
+	      <prompt>Produce exbldb output (as exblx with query names) (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -d" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Fasta output ** -->
+	  <parameter type="Switch">
+	    <name>fasta</name>
+	    <attributes>
+	      <prompt>Produce fasta  output (unaligned, for mult.alignm.) (-2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -2" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Frames ** -->
+	  <parameter type="Switch">
+	    <name>three_frame</name>
+	    <attributes>
+	      <prompt>Print 3 frame translation (blastn only) (-3)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -3" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Footer ** -->
+	  <parameter type="Switch">
+	    <name>footer</name>
+	    <attributes>
+	      <prompt>Print footer with parameters and stats (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -f" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** One subject line ** -->
+	  <parameter type="Switch">
+	    <name>matches_one_line</name>
+	    <attributes>
+	      <prompt>For -P output, force all matches to the same subject on one line (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -F" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$big_pict</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Identity ** -->
+	  <parameter type="Switch">
+	    <name>percentage_id</name>
+	    <attributes>
+	      <prompt>Print percentage identity (seqbl output only) (-i)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -i" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$seqbl</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Stat file ** -->
+	  <parameter type="OutFile">
+	    <name>stats_file</name>
+	    <attributes>
+	      <prompt>Output coverage stats to file (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -o $value" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Domainer ** -->
+	  <parameter type="Switch">
+	    <name>domainer</name>
+	    <attributes>
+	      <prompt>Produce output for Domainer (trim overlaps) (-D)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -D" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Silent mutations ** -->
+	  <parameter type="Switch">
+	    <name>silent_mutations</name>
+	    <attributes>
+	      <prompt>Do Statistics of Silent mutations (only cDNA!) (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -S" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Scores ** -->
+	  <parameter type="Switch">
+	    <name>all_expected</name>
+	    <attributes>
+	      <prompt>Print all Expected scores (default only when positive) (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -X" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Matrix stats ** -->
+	  <parameter type="Switch">
+	    <name>matrix_stats</name>
+	    <attributes>
+	      <prompt>Print statistics on used matrices (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -E" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+
+	   <!-- ** recalculated stats ** -->
+	  <parameter type="Switch">
+	    <name>stats_without_X</name>
+	     <attributes>
+	      <prompt>Recalculate percentage identity, ignoring X residues. (-j)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -j" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	   
+	   <!-- ** ignore hits ** -->
+	  <parameter type="Switch">
+	    <name>ignore_hits</name>
+	    <attributes>
+	      <prompt>Ignore hits to earlier seqnames (for All-vs-All). (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -A" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Line length ** -->
+	  <parameter type="Integer">
+	    <name>line_length</name>
+	    <attributes>
+	      <prompt>Line length of Wrapped alignment (0 -&gt; no wrapping) (-W)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -W $value" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	   <!-- ** numbered query insertion  ** -->
+	  <parameter type="Switch">
+	    <name>wublast_numbered</name>
+	    <attributes>
+	      <prompt>indicate query insertions with numbers (For seqbl output from Wublast) (-N)</prompt>
+	      <format>
+	        <language>perl</language>
+		<code>($value) ? " -N" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>	
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <!-- ** Control Options ** -->
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control Options</prompt>
+	<group>1</group>
+	<parameters>
+	  
+	  <!-- ** MSP reject ** -->
+	  <parameter type="Switch">
+	    <name>dont_reject</name>
+	    <attributes>
+	      <prompt>Don't reject any MSPs (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -w" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** MSP reject ** -->
+	  <parameter type="Switch">
+	    <name>report_rejected</name>
+	    <attributes>
+	      <prompt>Report only rejected MSPs (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -r" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Threshold ** -->
+	  <parameter type="Float">
+	    <name>threshold</name>
+	    <attributes>
+	      <prompt>Reject all matches with less than this % identity (-I)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -I $value" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Expect value ** -->
+	  <parameter type="Float">
+	    <name>expect</name>
+	    <attributes>
+	      <prompt>Reject all matches with E-value higher than this value (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -e $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Contig ** -->
+	  <parameter type="Switch">
+	    <name>whole_contig</name>
+	    <attributes>
+	      <prompt>Coverage limitation requires whole contig to be covered (always for Blastp) (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -a" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Hits ** -->
+	  <parameter type="Switch">
+	    <name>hits_to_self</name>
+	    <attributes>
+	      <prompt>Accept hits to self (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -s" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Hits ** -->
+	  <parameter type="Switch">
+	    <name>no_hits_to_earlier</name>
+	    <attributes>
+	      <prompt>Ignore hits to earlier seqnames (for All-vs-All) (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -A" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** ACE ** -->
+	  <parameter type="Switch">
+	    <name>dont_mirror</name>
+	    <attributes>
+	      <prompt>Don't mirror (i.e. print the subject object) in ACE4 format (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -M" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>$ace</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	   <!-- ** old cutoff ** -->
+	  <parameter type="Switch">
+	    <name>old_cutoff</name>
+	    <attributes>
+	      <prompt> Use old step cutoffs for adjacency instead of the new continuous system. (-O)</prompt>
+	      <format>
+	        <language>perl</language>
+		<code>($value) ? " -O" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>	     
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <!-- ** Input Options ** -->
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>input_options</name>
+	<prompt>Input Options</prompt>
+	<group>1</group>
+	<parameters>
+	  
+	  <!-- ** Blast type ** -->
+	  <parameter type="Switch">
+	    <name>force_blastp</name>
+	    <attributes>
+	      <prompt>Force Blastp mode (default Blastx) (-p)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -p" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Blast type ** -->
+	  <parameter type="Switch">
+	    <name>force_blastn</name>
+	    <attributes>
+	      <prompt>Force Blastn mode (default Blastx) (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -n" : "" </code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Matrix ** -->
+	  <parameter type="String">
+	    <name>matrix</name>
+	    <attributes>
+	      <prompt>Scoring matrix (PAM or BLOSUM, see help) (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value)?" -m /local/gensoft/lib/MSPcrunch/matrix/$value":""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>You can give the name of:</value>
+		<value>. a PAM matrix : PAMxxx, where xxx ranges from 10 to 500, with a step of 10</value>
+		<value>. a BLOSUM matrix : BLOSUMxxx, where xxx ranges from 30 to 100, with a step of 5 - with the exception of BLOSUM62 which is the default scoring matrix</value>
+		<value>Several PAM (point accepted mutations per 100 residues) amino acid scoring matrices are provided in the BLAST software distribution, including the PAM40, PAM120, and PAM250. While the BLOSUM62 matrix is a good general purpose scoring matrix and is the default matrix used by the BLAST programs, if one is restricted to using only PAM scoring matrices, then the PAM120 is recommended for general protein similarity searches (Altschul, 1991). The pam(1) program can be used to produce PAM matrices of any desired iteration from 2 to 511. Each matrix is most sensitive at finding similarities at its particular PAM distance. For more thorough searches, particularly when the mutational distance between potential homologs is unknown and the significance of their similarity may be only marginal, Altschul (1991, 1992) recommends performing at least three searches, one each with the PAM40, PAM120 and PAM250 matrices.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <!-- ** Sequence ** -->
+	  <parameter type="Sequence">
+	    <name>query</name>
+	    <attributes>
+	      <prompt>Read in query seq (for rereading .seqbl files) (-Q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -Q $query" : "" </code>
+	      </format>
+	      <group>1</group>
+	      <seqfmt>
+		<value>8</value>
+	      </seqfmt>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    
+  </parameters>
+</pise>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PYRAMIDS</title>
+    <description>pyreval - pyramidal analysis tool for sequence clustering</description>
+    <authors>JC AUDE</authors>
+    <category>phylogeny</category>
+  </head>
+
+<command>pyreval</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>pyreval</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>pyreval</code>
+		<language>perl</language>
+		<code>"pyreval"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>pyr_file</name>
+<attributes>
+
+	<prompt>Pyramidal representations file (.pyr or .pyt)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>pyramid_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<withpipe>
+		<pipetype>pyramid_file</pipetype>
+			<parametername>uti_file</parametername>
+	</withpipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>uti_file</name>
+<attributes>
+
+	<prompt>Pyramids informations file (.uti)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

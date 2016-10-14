@@ -1,0 +1,61 @@
+#!/bin/bash
+
+class=org.ngbw.sdk.clients.Client
+action=create
+
+usage()
+{
+	echo
+	echo "Creates a cipres administrator account. Keep the password private, this account has"
+	echo "a lot of priveleges!"
+	echo
+	echo "Usage: $0 -u <username> -p <password> -e <email>" 
+	echo or
+	echo "$0: -l" to list the cipres administrators.  Exits 1 if none exist.
+	echo
+	echo "Use 'userDelete <username> account' to delete a user.  Be careful, there's no going back."
+	echo
+	exit 1
+}
+if [[ $# < 1 ]] ; then
+	usage
+	exit 1
+fi
+
+while [[ $# > 0 ]]
+do
+	key="$1"
+	shift
+
+	case $key in
+		-u)
+			username="$1"
+			shift
+			;;
+		-p)
+			password="$1"
+			shift
+			;;
+		-e)
+			email="$1"
+			shift
+			;;
+		-l)
+			list="true"
+			;;
+		*)
+			usage
+			;;
+	esac
+done
+
+if [[ "$list" == "true" ]] ; then
+	sdkrun -Dlist $class 
+	exit $?
+fi
+
+if [[ -z $username || -z $password || -z $email ]] ; then
+	usage
+fi 
+
+sdkrun -Dusername=$username -Dpassword=$password -Demail=$email $class 

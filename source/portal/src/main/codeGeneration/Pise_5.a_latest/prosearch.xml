@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Prosearch</title>
+    <version>2.1</version>
+    <description>search Prosite patterns in a sequence</description>
+    <authors>F. Kolakowski</authors>
+    <reference>Kolakowski LF Jr, Leunissen JA, Smith JE. ProSearch: fast searching of protein sequences with regular expression patterns related to protein structure and function. Biotechniques. 1992 Dec;13(6):919-21.</reference>
+  </head>
+
+
+<command>prosearch</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>prosearch</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>prosearch</code>
+		<language>perl</language>
+		<code>"prosearch"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>protein</name>
+<attributes>
+
+	<prompt>Protein sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value" </code>
+	</format>
+	<group>3</group>
+	<comment>
+		<value>Prosearch searchs the contents of the sequence for regular expression patterns described in the Prosite Database.</value>
+	</comment>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>sites</name>
+<attributes>
+
+	<prompt>Display the sites in the target protein (-s)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -s":""</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>If the -s(ites) option is specified, the amino acid sequence in the target protein and the regular expression are displayed.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>doc</name>
+<attributes>
+
+	<prompt>Display ProSite documentation for each found pattern (-d)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -d":""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

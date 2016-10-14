@@ -1,0 +1,35 @@
+PAUPRAT
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+specify_nchar_ - Integer - How many characters in your matrix?
+Section: ****************************************************************************
+ratchet_params
+*************************************************************************************
+specify_nreps_ - Integer - How many ratchet reps should be run?
+specify_seed_ - Integer - Set seed value
+specify_pct_ - Integer - Specify the percentage of characters to perturb (-pct)
+specify_mod_ - Integer - Specify the absolute number of characters to perturb (-nmod)
+specify_wtmode_ - Excl - Set the weighting mode (-wtmode)
+specify_verbose_ - Excl - Verbose or Terse output?
+setup_increase_ - Excl - Increase
+setup_nrep_ - Integer - How Many Reps (nrep=)
+Section: ****************************************************************************
+paup_params
+*************************************************************************************
+setup_hidden4_ - Switch - Treat multistate taxa as uncertain
+paup_branchalg_ - Excl - Branch Swapping Algorithm (swap)
+set_multrees_ - Excl - Save all optimal trees? (multrees)
+set_rearrlimit_ - Integer - Specify a rearrangement limit
+set_timelimit_ - Integer - Specify a time limit (in seconds)
+set_reconlimit_ - Integer - Specify a reconnection limit for PAUP
+set_maxtrees_ - Integer - Maximum number of trees saved (maxtrees)
+set_autoincrease_ - Excl - Automatically increase the number of trees in memory
+set_increaseval_ - Integer - Auto-increase amount (AutoInc).
+set_outgroup_ - Switch - Specify an Outgroup
+set_outgroupb_ - String - Enter Your Outgroup Here
+result_file_ - Results -
+best_tree_file_ - Results -
+run_data_ - Results -
+run_logs_ - Results -
+all_commandline_ - Results -
+

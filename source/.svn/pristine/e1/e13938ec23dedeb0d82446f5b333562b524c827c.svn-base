@@ -1,0 +1,12 @@
+This is test covers the ViPR use case where bootstrapping is used, and DNA data:
+
+tool=RAXMLHPC2_TGB
+vparam.runtime_=168 (we use cipres run wall time as suggested by you)
+vparam.bootstrap_seed_=1 (we use bootstrap_seed to indicates bootstrapping)
+vparam.bootstop_=50 <boot strap number that user specified from web interface if it's not 100>
+vparam.dna_gtrcat_=GTRGAMMA for dna sequences; for protein sequences, we use the following two:
+
+
+Generates this command line:
+'raxmlHPC-HYBRID  -n result -s infile.txt -x 12345  -N 50   -p 12345 -f a -m GTRGAMMA '
+

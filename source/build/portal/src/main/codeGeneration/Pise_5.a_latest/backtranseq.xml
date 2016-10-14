@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>BACKTRANSEQ</title>
+<description>Back translate a protein sequence (EMBOSS)</description>
+<category>nucleic:translation</category>
+<category>protein:composition</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/backtranseq.html</doclink>
+</head>
+
+<command>backtranseq</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapprotein [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapprotein</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>cfile</name>
+	<attributes>
+		<prompt>cfile [codon usage table name] (-cfile)</prompt>
+			<vlist>
+				<value>Ebmo.cut</value>
+				<label>Ebmo.cut</label>
+				<value>Etom.cut</value>
+				<label>Etom.cut</label>
+				<value>Erat.cut</value>
+				<label>Erat.cut</label>
+				<value>Ebsu.cut</value>
+				<label>Ebsu.cut</label>
+				<value>Echicken.cut</value>
+				<label>Echicken.cut</label>
+				<value>Etob.cut</value>
+				<label>Etob.cut</label>
+				<value>Echnt.cut</value>
+				<label>Echnt.cut</label>
+				<value>Eyscmt.cut</value>
+				<label>Eyscmt.cut</label>
+				<value>Ehin.cut</value>
+				<label>Ehin.cut</label>
+				<value>Echmp.cut</value>
+				<label>Echmp.cut</label>
+				<value>Ecal.cut</value>
+				<label>Ecal.cut</label>
+				<value>Evco.cut</value>
+				<label>Evco.cut</label>
+				<value>Epfa.cut</value>
+				<label>Epfa.cut</label>
+				<value>Esty.cut</value>
+				<label>Esty.cut</label>
+				<value>Echk.cut</value>
+				<label>Echk.cut</label>
+				<value>Eaidlav.cut</value>
+				<label>Eaidlav.cut</label>
+				<value>Esgi.cut</value>
+				<label>Esgi.cut</label>
+				<value>Emtu.cut</value>
+				<label>Emtu.cut</label>
+				<value>Ersp.cut</value>
+				<label>Ersp.cut</label>
+				<value>Esco.cut</value>
+				<label>Esco.cut</label>
+				<value>Ebna.cut</value>
+				<label>Ebna.cut</label>
+				<value>Ehuman.cut</value>
+				<label>Ehuman.cut</label>
+				<value>Eacc.cut</value>
+				<label>Eacc.cut</label>
+				<value>Eyeastcai.cut</value>
+				<label>Eyeastcai.cut</label>
+				<value>Eratsp.cut</value>
+				<label>Eratsp.cut</label>
+				<value>Ehma.cut</value>
+				<label>Ehma.cut</label>
+				<value>Erabbit.cut</value>
+				<label>Erabbit.cut</label>
+				<value>Erab.cut</value>
+				<label>Erab.cut</label>
+				<value>Emac.cut</value>
+				<label>Emac.cut</label>
+				<value>Eysc.cut</value>
+				<label>Eysc.cut</label>
+				<value>Emze.cut</value>
+				<label>Emze.cut</label>
+				<value>Espi.cut</value>
+				<label>Espi.cut</label>
+				<value>Epea.cut</value>
+				<label>Epea.cut</label>
+				<value>Ekla.cut</value>
+				<label>Ekla.cut</label>
+				<value>Eeca.cut</value>
+				<label>Eeca.cut</label>
+				<value>Echzmrubp.cut</value>
+				<label>Echzmrubp.cut</label>
+				<value>Eanidmit.cut</value>
+				<label>Eanidmit.cut</label>
+				<value>Esv40.cut</value>
+				<label>Esv40.cut</label>
+				<value>Epsy.cut</value>
+				<label>Epsy.cut</label>
+				<value>Eysc_h.cut</value>
+				<label>Eysc_h.cut</label>
+				<value>Eadenovirus5.cut</value>
+				<label>Eadenovirus5.cut</label>
+				<value>Espo_h.cut</value>
+				<label>Espo_h.cut</label>
+				<value>Eatu.cut</value>
+				<label>Eatu.cut</label>
+				<value>Eneu.cut</value>
+				<label>Eneu.cut</label>
+				<value>Epot.cut</value>
+				<label>Epot.cut</label>
+				<value>Edro_h.cut</value>
+				<label>Edro_h.cut</label>
+				<value>Ephix174.cut</value>
+				<label>Ephix174.cut</label>
+				<value>Epet.cut</value>
+				<label>Epet.cut</label>
+				<value>Ekpn.cut</value>
+				<label>Ekpn.cut</label>
+				<value>Ebme.cut</value>
+				<label>Ebme.cut</label>
+				<value>Ebovsp.cut</value>
+				<label>Ebovsp.cut</label>
+				<value>Esma.cut</value>
+				<label>Esma.cut</label>
+				<value>Etetsp.cut</value>
+				<label>Etetsp.cut</label>
+				<value>Ephy.cut</value>
+				<label>Ephy.cut</label>
+				<value>Exenopus.cut</value>
+				<label>Exenopus.cut</label>
+				<value>Eoncsp.cut</value>
+				<label>Eoncsp.cut</label>
+				<value>Exel.cut</value>
+				<label>Exel.cut</label>
+				<value>Esus.cut</value>
+				<label>Esus.cut</label>
+				<value>Eter.cut</value>
+				<label>Eter.cut</label>
+				<value>Epig.cut</value>
+				<label>Epig.cut</label>
+				<value>Erabsp.cut</value>
+				<label>Erabsp.cut</label>
+				<value>Espu.cut</value>
+				<label>Espu.cut</label>
+				<value>Ef1.cut</value>
+				<label>Ef1.cut</label>
+				<value>Erhm.cut</value>
+				<label>Erhm.cut</label>
+				<value>Emussp.cut</value>
+				<label>Emussp.cut</label>
+				<value>Engo.cut</value>
+				<label>Engo.cut</label>
+				<value>Emus.cut</value>
+				<label>Emus.cut</label>
+				<value>Eppu.cut</value>
+				<label>Eppu.cut</label>
+				<value>Ecre.cut</value>
+				<label>Ecre.cut</label>
+				<value>Esalsp.cut</value>
+				<label>Esalsp.cut</label>
+				<value>Easn.cut</value>
+				<label>Easn.cut</label>
+				<value>Esmi.cut</value>
+				<label>Esmi.cut</label>
+				<value>Eccr.cut</value>
+				<label>Eccr.cut</label>
+				<value>Emva.cut</value>
+				<label>Emva.cut</label>
+				<value>Esynsp.cut</value>
+				<label>Esynsp.cut</label>
+				<value>Espn.cut</value>
+				<label>Espn.cut</label>
+				<value>Etobcp.cut</value>
+				<label>Etobcp.cut</label>
+				<value>Ebja.cut</value>
+				<label>Ebja.cut</label>
+				<value>Ephv.cut</value>
+				<label>Ephv.cut</label>
+				<value>Echi.cut</value>
+				<label>Echi.cut</label>
+				<value>Efish.cut</value>
+				<label>Efish.cut</label>
+				<value>Epombecai.cut</value>
+				<label>Epombecai.cut</label>
+				<value>Eanasp.cut</value>
+				<label>Eanasp.cut</label>
+				<value>Eyen.cut</value>
+				<label>Eyen.cut</label>
+				<value>Ewht.cut</value>
+				<label>Ewht.cut</label>
+				<value>Ehum.cut</value>
+				<label>Ehum.cut</label>
+				<value>Etcr.cut</value>
+				<label>Etcr.cut</label>
+				<value>Emzecp.cut</value>
+				<label>Emzecp.cut</label>
+				<value>Esli.cut</value>
+				<label>Esli.cut</label>
+				<value>Ezebrafish.cut</value>
+				<label>Ezebrafish.cut</label>
+				<value>Emouse.cut</value>
+				<label>Emouse.cut</label>
+				<value>Esoy.cut</value>
+				<label>Esoy.cut</label>
+				<value>Eham.cut</value>
+				<label>Eham.cut</label>
+				<value>Esyhsp.cut</value>
+				<label>Esyhsp.cut</label>
+				<value>Eddi.cut</value>
+				<label>Eddi.cut</label>
+				<value>Emaize.cut</value>
+				<label>Emaize.cut</label>
+				<value>Emixlg.cut</value>
+				<label>Emixlg.cut</label>
+				<value>Eric.cut</value>
+				<label>Eric.cut</label>
+				<value>Esta.cut</value>
+				<label>Esta.cut</label>
+				<value>Eani.cut</value>
+				<label>Eani.cut</label>
+				<value>Epolyomaa2.cut</value>
+				<label>Epolyomaa2.cut</label>
+				<value>Ecac.cut</value>
+				<label>Ecac.cut</label>
+				<value>Eani_h.cut</value>
+				<label>Eani_h.cut</label>
+				<value>Echisp.cut</value>
+				<label>Echisp.cut</label>
+				<value>Ehha.cut</value>
+				<label>Ehha.cut</label>
+				<value>Ecel.cut</value>
+				<label>Ecel.cut</label>
+				<value>Encr.cut</value>
+				<label>Encr.cut</label>
+				<value>Epae.cut</value>
+				<label>Epae.cut</label>
+				<value>Eslm.cut</value>
+				<label>Eslm.cut</label>
+				<value>Ebsu_h.cut</value>
+				<label>Ebsu_h.cut</label>
+				<value>Eysp.cut</value>
+				<label>Eysp.cut</label>
+				<value>Echos.cut</value>
+				<label>Echos.cut</label>
+				<value>Etbr.cut</value>
+				<label>Etbr.cut</label>
+				<value>Edrosophila.cut</value>
+				<label>Edrosophila.cut</label>
+				<value>Erca.cut</value>
+				<label>Erca.cut</label>
+				<value>Ebov.cut</value>
+				<label>Ebov.cut</label>
+				<value>Eyeast.cut</value>
+				<label>Eyeast.cut</label>
+				<value>Emta.cut</value>
+				<label>Emta.cut</label>
+				<value>Epombe.cut</value>
+				<label>Epombe.cut</label>
+				<value>Esmu.cut</value>
+				<label>Esmu.cut</label>
+				<value>Etrb.cut</value>
+				<label>Etrb.cut</label>
+				<value>Ebst.cut</value>
+				<label>Ebst.cut</label>
+				<value>Erme.cut</value>
+				<label>Erme.cut</label>
+				<value>Eath.cut</value>
+				<label>Eath.cut</label>
+				<value>Efmdvpolyp.cut</value>
+				<label>Efmdvpolyp.cut</label>
+				<value>Ectr.cut</value>
+				<label>Ectr.cut</label>
+				<value>Emam_h.cut</value>
+				<label>Emam_h.cut</label>
+				<value>Eadenovirus7.cut</value>
+				<label>Eadenovirus7.cut</label>
+				<value>Ecpx.cut</value>
+				<label>Ecpx.cut</label>
+				<value>Eshpsp.cut</value>
+				<label>Eshpsp.cut</label>
+				<value>Espo.cut</value>
+				<label>Espo.cut</label>
+				<value>Emsa.cut</value>
+				<label>Emsa.cut</label>
+				<value>Eecoli.cut</value>
+				<label>Eecoli.cut</label>
+				<value>Edro.cut</value>
+				<label>Edro.cut</label>
+				<value>Ebly.cut</value>
+				<label>Ebly.cut</label>
+				<value>Eavi.cut</value>
+				<label>Eavi.cut</label>
+				<value>Epse.cut</value>
+				<label>Epse.cut</label>
+				<value>Epvu.cut</value>
+				<label>Epvu.cut</label>
+				<value>Eeco_h.cut</value>
+				<label>Eeco_h.cut</label>
+				<value>Erle.cut</value>
+				<label>Erle.cut</label>
+				<value>Ella.cut</value>
+				<label>Ella.cut</label>
+				<value>Edayhoff.cut</value>
+				<label>Edayhoff.cut</label>
+				<value>Eshp.cut</value>
+				<label>Eshp.cut</label>
+				<value>Emse.cut</value>
+				<label>Emse.cut</label>
+				<value>Ezma.cut</value>
+				<label>Ezma.cut</label>
+				<value>Eddi_h.cut</value>
+				<label>Eddi_h.cut</label>
+				<value>Esau.cut</value>
+				<label>Esau.cut</label>
+				<value>Echzm.cut</value>
+				<label>Echzm.cut</label>
+				<value>Edog.cut</value>
+				<label>Edog.cut</label>
+				<value>Ecrisp.cut</value>
+				<label>Ecrisp.cut</label>
+				<value>Eeco.cut</value>
+				<label>Eeco.cut</label>
+			</vlist>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -cfile=$value" : ""</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile -- gapnucleotide (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>3</group>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outfile_sformat</name>
+	<attributes>
+		<prompt>Output format for: outfile -- gapnucleotide</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>5</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

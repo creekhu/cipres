@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+]>
+
+<pise>
+
+<head>
+      <title>FASTASPLITTER</title>
+	<description>FASTA file splitter</description>
+	<authors>J. Weiner</authors>
+	<category>edit</category>
+</head>
+
+<command>fastasplitter</command>
+
+<parameters>
+
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>Sequences file</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>number</name>
+	<attributes>
+		<prompt>Number of sequences by produced file</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<group>2</group>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+    <parameter type="Results">
+      <name>outfiles</name>
+      <attributes>
+	
+	<filenames>*.[1-9]*</filenames>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+
+</parameters>
+</pise>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLRecordFilterConfig>
+	<DataFormat id="UNIPROT_XML" recordNode="entry"/>
+	<DataFormat id="EMBL_XML" recordNode="entry"/>
+</XMLRecordFilterConfig>

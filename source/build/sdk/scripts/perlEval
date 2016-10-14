@@ -1,0 +1,27 @@
+#!/bin/sh
+class=org.ngbw.pise.commandrenderer.PerlEval 
+# log4j=-Dlog4j.configuration=loadResults_log4j.xml
+
+
+# Figure out which directory this script is in.
+whereami()
+{
+	program="$0"
+	while [ -h "$program" ]; do
+		link=`ls -ld "$program"`
+		link=`expr "$link" : '.*-> \(.*\)'`
+		if [ "`expr "$link" : '/.*'`" = 0 ]; then
+			dir=`dirname "$program"`
+			program="$dir/$link"
+		else
+			program="$link"
+		fi
+	done
+	dir=`dirname $program`
+	echo `cd $dir && /bin/pwd`
+}
+
+dir=`whereami`
+java $log4j -cp $dir/../target/sdk*depend* "$@" $class
+
+

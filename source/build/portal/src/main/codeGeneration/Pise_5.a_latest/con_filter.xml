@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>CONSENSUS</title>
+    <description>con-filter - filters consensus ouput</description>
+    <authors>Hertz, Stormo</authors>
+  </head>
+
+<command>con_filter</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>con_filter</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"con-filter "</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>consensus_results</name>
+<attributes>
+
+	<prompt>consensus results file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>consensus_results</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Excl">
+<name>header</name>
+<attributes>
+
+	<prompt>Heading (-nh or -oh)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " $value" : ""</code>
+	</format>
+	<group>1</group>
+	<vlist>
+		<value>-nh</value>
+		<label>-nh: do not print the output heading</label>
+		<value>-oh</value>
+		<label>-oh: print only the output heading</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

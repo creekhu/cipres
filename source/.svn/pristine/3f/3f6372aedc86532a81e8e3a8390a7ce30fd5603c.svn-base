@@ -1,0 +1,4 @@
+#!/bin/sh
+
+class=org.ngbw.utils.ImportTgusage
+sdkrun $class "$@"

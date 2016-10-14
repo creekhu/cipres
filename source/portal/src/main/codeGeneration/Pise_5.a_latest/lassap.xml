@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>LASSAP</title>
+    <version>1.0a</version>
+    <description>LArge Scale Sequence compArison Package</description>
+    <authors>Glemet, Codani</authors>
+  </head>
+
+  <command>lassap</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>lassap</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"lspcalc-1.0a"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>method</name>
+      <attributes>
+	<prompt>Comparison method</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " -M $value" </code>
+	</format>
+	<vdef><value>SW</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>BLAST</value>
+	  <label>BLAST: blast (1.4)</label>
+	  <value>BLSW</value>
+	  <label>BLSW: a mix of blast and smith/waterman</label>
+	  <value>FASTA</value>
+	  <label>FASTA: fasta (2.0)</label>
+	  <value>BM</value>
+	  <label>BM: boyer-moore fast substring searches algorithm</label>
+	  <value>SW</value>
+	  <label>SW: Smith/Waterman</label>
+	  <value>NW</value>
+	  <label>NW: Needelman/Wunsh</label>
+	  <value>SWR</value>
+	  <label>SWR: Randomized SW (shuffling)</label>
+	  <value>KBEST</value>
+	  <label>KBEST: K best local alignments</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Switch">
+      <name>dna_comp</name>
+      <attributes>
+	<prompt>nucleic/nucleic comparison</prompt>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query1</name>
+      <attributes>
+	<prompt>First sequence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $query1" </code>
+	</format>
+	<group>10</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query2</name>
+      <attributes>
+	<prompt>Second sequence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $query2" </code>
+	</format>
+	<group>15</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>dr1</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -dr "</code>
+	</format>
+	<group>7</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>dr2</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -dr "</code>
+	</format>
+	<group>12</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control options</prompt>
+	<parameters>
+
+	  <parameter ismandatory="1" type="Excl">
+	    <name>matrix</name>
+	    <attributes>
+	      <prompt>Scoring matrix</prompt>
+	      <vdef><value>BLOSUM62</value></vdef>
+	      <group>6</group>
+	      <vlist>
+		<value>NUC.4.4</value>
+		<label>NUC.4.4 (nucleotides)</label>
+		<value>BLOSUM50</value>
+		<label>BLOSUM50 (proteins)</label>
+		<value>BLOSUM62</value>
+		<label>BLOSUM62 (proteins)</label>
+		<value>PAM120</value>
+		<label>PAM120 (proteins)</label>
+		<value>PAM250</value>
+		<label>PAM250 (proteins)</label>
+	      </vlist>
+	      <flist>
+		<value>PAM120</value>
+		<code>" -mp Pam/PAM120"</code>
+		<value>NUC.4.4</value>
+		<code>" -mn NUC.4.4"</code>
+		<value>BLOSUM62</value>
+		<code>" -mp Blosum/BLOSUM62"</code>
+		<value>PAM250</value>
+		<code>" -mp Pam/PAM250"</code>
+		<value>BLOSUM50</value>
+		<code>" -mp Blosum/BLOSUM50"</code>
+	      </flist>
+	      <ctrls>
+		<ctrl>
+		  <message>no message</message>
+		  <language>perl</language>
+		  <code>$dna_comp &amp;&amp; ($matrix = "NUC.4.4") &amp;&amp; 0</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>gap_options</name>
+	      <prompt>Gap and cutoff options</prompt>
+	      <group>3</group>
+	      <parameters>
+		
+		<parameter type="Integer">
+		  <name>gapo</name>
+		  <attributes>
+		    <prompt>Gap open penalty</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value ne $vdef)? " -gapo $value" : "" </code>
+		    </format>
+		    <vdef><value>10</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0</code>
+		      </ctrl>
+		    </ctrls>
+		    
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Integer">
+		  <name>gape</name>
+		  <attributes>
+
+		    <prompt>Gap extension penalty</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value ne $vdef)? " -gape $value" : "" </code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef&amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>cutoff</name>
+		  <attributes>
+
+		    <prompt>Cutoff</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value ne $vdef)? " -cutoff $value" : "" </code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef&amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>blast_options</name>
+	      <prompt>Blast options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$method eq "BLAST"</code>
+	      </precond>
+	      <group>3</group>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>Expect</name>
+		  <attributes>
+
+		    <prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (E)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef )? " -E $value":""</code>
+		    </format>
+		    <vdef><value>10</value></vdef>
+		    <group>3</group>
+		    <comment>
+		      <value>The parameter Expect (E) establishes a statistical significance threshold for reporting database sequence matches. E is interpreted as the upper bound on the expected frequency of chance occurrence of an HSP (or set of HSPs) within the context of the entire database search. Any database sequence whose matching satisfies E is subject to being reported in the program output. If the query sequence and database sequences follow the random sequence model of Karlin and Altschul (1990), and if sufficiently sensitive BLAST algorithm parameters are used, then E may be thought of as the number of matches one expects to observe by chance alone during the database search. The default value for E is 10, while the permitted range for this Real valued parameter is 0 &lt; E &lt;= 1000.</value>
+		    </comment>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BLAST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>E2</name>
+		  <attributes>
+
+		    <prompt>E2 (expected number of HSPs that will be found when comparing two sequences that each have the same length)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $E2)? " -E2 $value":""</code>
+		    </format>
+		    <group>3</group>
+		    <comment>
+		      <value>E2 is interpreted as the expected number of HSPs that will be found when comparing two sequences that each have the same length -- either 300 amino acids or 1000 nucleotides, whichever is appropriate for the particular program being used.</value>
+		      <value>The default value for E2 is typically about 0.15 but may vary from version to version of each program.</value>
+		    </comment>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $E2 &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BLAST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>S2</name>
+		  <attributes>
+
+		    <prompt>S2 (cutoff score which defines HSPs)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " -S2 $value":""</code>
+		    </format>
+		    <group>3</group>
+		    <comment>
+		      <value>S2 may be thought of as the score expected for the MSP between two sequences that each have the same length -- either 300 amino acids or 1000 nucleotides, whichever is appropriate for the particular program being used.</value>
+		      <value>The default value for S2 will be calculated from E2 and, like the relationship between E and S, is dependent on the residue composition of the query sequence and the scoring system employed, as conveyed by the Karlin-Altschul K and Lambda statistics.</value>
+		    </comment>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BLAST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>W</name>
+		  <attributes>
+
+		    <prompt>W (length of words identified in the query sequence)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " -W $value":""</code>
+		    </format>
+		    <group>3</group>
+		    <comment>
+		      <value>The task of finding HSPs begins with identifying short words of length W in the query sequence that either match or satisfy some positive-valued threshold score T when aligned with a word of the same length in a database sequence. T is referred to as the neighborhood word score threshold (Altschul et al., 1990). These initial neighborhood word hits act as seeds for initiating searches to find longer HSPs containing them. The word hits are extended in both directions along each sequence for as far as the cumulative alignment score can be increased. Extension of the word hits in each direction are halted when: the cumulative alignment score falls off by the quantity X from its maximum achieved value; the cumulative score goes to zero or below, due to the accumulation of one or more negative-scoring residue alignments; or the end of either sequence is reached.</value>
+		    </comment>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BLAST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>T</name>
+		  <attributes>
+
+		    <prompt>T (neighborhood word score threshold)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value )? " -T $value":""</code>
+		    </format>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BLAST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>X</name>
+		  <attributes>
+
+		    <prompt>X (word hit extension drop-off score)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " -X $value":""</code>
+		    </format>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BLAST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>fasta_options</name>
+	      <prompt>FASTA options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$method eq "FASTA"</code>
+	      </precond>
+	      <group>3</group>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>ktup</name>
+		  <attributes>
+
+		    <prompt>ktup : sensitivity and speed of the search</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value ne $vdef)? " -ktup $value":""</code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>3</group>
+		    <comment>
+		      <value>ktup sets the sensitivity and speed of the search. If ktup=2, similar regions in the two sequences being compared are found by looking at pairs of aligned residues; if ktup=1, single aligned amino acids are examined. ktup can be set to 2 or 1 for protein sequences, or from 1 to 6 for DNA sequences. The default if ktup is not specified is 2 for proteins and 6 for DNA.</value>
+		    </comment>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "FASTA"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>init1</name>
+		  <attributes>
+
+		    <prompt>sequences ranked by the z-score based on the init1 score</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -1":""</code>
+		    </format>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "FASTA"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>noopt</name>
+		  <attributes>
+
+		    <prompt>no limited optimization</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -o":""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "FASTA"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>linlen</name>
+		  <attributes>
+
+		    <prompt>output line length for sequence alignments (&lt; 200)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value ne $vdef)? " -w $value":""</code>
+		    </format>
+		    <vdef><value>32</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "FASTA"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>SWR_options</name>
+	      <prompt>SWR (Smith-Waterman randomized) options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$method eq "SWR"</code>
+	      </precond>
+	      <group>3</group>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>ran</name>
+		  <attributes>
+
+		    <prompt>How many randomizations</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value ne $vdef)? " -ran $value":""</code>
+		    </format>
+		    <vdef><value>10</value></vdef>
+		    <group>3</group>
+		    <comment>
+		      <value>This is a method for calculating Z-score = (S - Smean) / (std-deviation(S))</value>
+		    </comment>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "SWR"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>BM_options</name>
+	      <prompt>BM (Boyer-Moore) options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$method eq "BM"</code>
+	      </precond>
+	      <group>3</group>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>swap</name>
+		  <attributes>
+
+		    <prompt>Don't test for inclusion of query1 into query2</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -swap":""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>($value &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "BM"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>KBEST_options</name>
+	      <prompt>KBEST (K best alignments) options</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$method eq "KBEST"</code>
+	      </precond>
+	      <group>3</group>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>k</name>
+		  <attributes>
+
+		    <prompt>How many best alignments</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value &amp;&amp; $value ne $vdef)? " -K $value":""</code>
+		    </format>
+		    <vdef><value>10</value></vdef>
+		    <group>3</group>
+		    <ctrls>
+		      <ctrl>
+			<message>no message</message>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef &amp;&amp; ($algo_opt=1) &amp;&amp; 0)</code>
+		      </ctrl>
+		    </ctrls>
+		    <precond>
+		      <language>perl</language>
+		      <code>$method eq "KBEST"</code>
+		    </precond>
+
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>frames_options</name>
+	<prompt>Frames options</prompt>
+	<comment>
+	  <value>If you compare 2 nucleic sequences, you can choose the reverse strand for one of them.</value>
+	  <value>When comparing a nucleic sequence with a proteic sequence, you can specify the frame to be translated.</value>
+	</comment>
+	<parameters>
+
+	  <parameter type="List">
+	    <name>frame_query1</name>
+	    <attributes>
+
+	      <prompt>First sequence frames</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? "-f $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>1</value>
+
+	      </vdef>
+	      <group>8</group>
+	      <vlist>
+		<value>r</value>
+		<label>reverse strand (if nucleic-nucleic alignemnt)</label>
+		<value>a</value>
+		<label>all (6 frames) (if nucleic-protein)</label>
+		<value>t,</value>
+		<label>top (1,2,3) ("")</label>
+		<value>b,</value>
+		<label>bottom (-1, -2, -3) ("")</label>
+		<value>1,</value>
+		<label>1: first frame ("")</label>
+		<value>2,</value>
+		<label>2: second frame ("")</label>
+		<value>3,</value>
+		<label>3: third frame ("")</label>
+		<value>-1,</value>
+		<label>-1: first frame on reverse strand ("")</label>
+		<value>-2,</value>
+		<label>-2: second frame on reverse strand ("")</label>
+		<value>-3,</value>
+		<label>-3: third frame on reverse strand ("")</label>
+	      </vlist>
+	      <separator>'" "'</separator>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="List">
+	    <name>frame_query2</name>
+	    <attributes>
+
+	      <prompt>Second sequence frames</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? "-f $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>1</value>
+
+	      </vdef>
+	      <group>13</group>
+	      <vlist>
+		<value>r</value>
+		<label>reverse strand (if nucleic-nucleic alignemnt)</label>
+		<value>a</value>
+		<label>all (6 frames) (if nucleic-protein)</label>
+		<value>t,</value>
+		<label>top (1,2,3) ("")</label>
+		<value>b,</value>
+		<label>bottom (-1, -2, -3) ("")</label>
+		<value>1,</value>
+		<label>1: first frame ("")</label>
+		<value>2,</value>
+		<label>2: second frame ("")</label>
+		<value>3,</value>
+		<label>3: third frame ("")</label>
+		<value>-1,</value>
+		<label>-1: first frame on reverse strand ("")</label>
+		<value>-2,</value>
+		<label>-2: second frame on reverse strand ("")</label>
+		<value>-3,</value>
+		<label>-3: third frame on reverse strand ("")</label>
+	      </vlist>
+	      <separator>'" "'</separator>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>gc</name>
+	    <attributes>
+
+	      <prompt>Genetic Code</prompt>
+	      <format>
+		<language>perl</language>
+		<code> ($value &amp;&amp; $value ne $vdef)? " -gc $value" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>9</group>
+	      <vlist>
+		<value>1</value>
+		<label>Standard</label>
+		<value>2</value>
+		<label>Vertebrate Mitochondrial</label>
+		<value>3</value>
+		<label>Yeast Mitochondrial</label>
+		<value>4</value>
+		<label>Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+		<value>5</value>
+		<label>Invertebrate Mitochondrial</label>
+		<value>6</value>
+		<label>Ciliate Macronuclear and Dasycladacean</label>
+		<value>9</value>
+		<label>Echinoderm Mitochondrial</label>
+		<value>10</value>
+		<label>Euplotid Nuclear</label>
+		<value>11</value>
+		<label>Bacterial</label>
+		<value>12</value>
+		<label>Alternative Yeast Nuclear</label>
+		<value>13</value>
+		<label>Ascidian Mitochondrial</label>
+		<value>14</value>
+		<label>Flatworm Mitochondrial</label>
+		<value>15</value>
+		<label>Blepharisma Macronuclear</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$frame_query1 &amp;&amp; $frame_query1 ne "r"</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output options</prompt>
+	<parameters>
+
+	  <parameter issimple="1" type="Switch">
+	    <name>view_alignment</name>
+	    <attributes>
+
+	      <prompt>View alignment (not available for all methods)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -a" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>20</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>scut</name>
+	    <attributes>
+
+	      <prompt>Score cutoff</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -scut $value" : "" </code>
+	      </format>
+	      <group>20</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>pcut</name>
+	    <attributes>
+
+	      <prompt>Probability cutoff</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -pcut $value" : "" </code>
+	      </format>
+	      <group>20</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>max</name>
+	    <attributes>
+
+	      <prompt>Maximum retained</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -max $value" : "" </code>
+	      </format>
+	      <group>20</group>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>flag_algo_opt</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>($algo_opt)? " -O [ " : ""</code>
+	</format>
+	<group>2</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>flag_algo_opt2</name>
+      <attributes>
+
+	<format>
+	  <language>perl</language>
+	  <code>($algo_opt)? " ] " : ""</code>
+	</format>
+	<group>4</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>gc2</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -gc $gc"</code>
+	</format>
+	<group>14</group>
+	<precond>
+	  <language>perl</language>
+	  <code>$frame_query2 &amp;&amp; $frame_query2 ne "r" &amp;&amp; $gc</code>
+	</precond>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

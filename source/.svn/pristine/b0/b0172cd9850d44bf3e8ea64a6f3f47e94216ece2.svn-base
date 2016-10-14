@@ -1,0 +1,10 @@
+This test fails because it sets two mutually exclusive switches:
+
+auto_analysis=0
+configure_analysis_=1
+
+We require that all user supplied parameters end up being enabled 
+(because it would be difficult to know, when one ends up disabled,
+whether it does what the user intended or not).  In this case, the
+user can achieve what he wants by simply turning on the switch
+he wants to use: configure_analysis_=1 and omitting the other.

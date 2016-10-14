@@ -1,0 +1,38 @@
+#!/bin/sh
+#PBS -q normal
+#PBS -N NGBW-JOB-RAXMLHPC2_WORKFLOW-9CB8D66207084E79AA346309F61CC750
+#PBS -l walltime=00:30:00
+#PBS -l epilogue=/projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-9CB8D66207084E79AA346309F61CC750/epilogue.sh
+#PBS -o scheduler_stdout.txt
+#PBS -e scheduler_stderr.txt
+#PBS -W umask=0007
+##PBS -V
+
+#PBS -v QOS=2
+
+#PBS -M  terri@sdsc.edu,mmiller@sdsc.edu
+#PBS -m ae
+#PBS -A TG-DEB090011
+
+#PBS -l nodes=1:ppn=32
+cd /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-9CB8D66207084E79AA346309F61CC750
+
+source /etc/profile.d/modules.sh
+
+SDSC-gateway-submit-attributes $PBS_JOBID $(sed -n '/^email=/ {s/email=//; p;}' _JOBINFO.TXT)
+
+date +'%s %a %b %e %R:%S %Z %Y' > start.txt
+
+curl -k -K ~/.jobcurl.rc https://bumper.sdsc.edu/cipresrest/v1/admin/updateJob?taskId=449\&jh=NGBW-JOB-RAXMLHPC2_WORKFLOW-9CB8D66207084E79AA346309F61CC750\&status=START
+
+export CIPRES_THREADSPP=6
+export CIPRES_NP=5
+
+./batch_command.cmdline 1>stdout.txt 2>stderr.txt
+retval=$?
+
+date +'%s %a %b %e %R:%S %Z %Y' > done.txt
+qstat -f $PBS_JOBID | grep Job
+qstat -f $PBS_JOBID | grep resources
+curl -k -K ~/.jobcurl.rc https://bumper.sdsc.edu/cipresrest/v1/admin/updateJob?taskId=449\&jh=NGBW-JOB-RAXMLHPC2_WORKFLOW-9CB8D66207084E79AA346309F61CC750\&status=DONE
+exit $retval

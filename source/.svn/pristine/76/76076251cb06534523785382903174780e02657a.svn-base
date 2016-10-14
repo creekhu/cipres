@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>scan_for_matches</title>
+    <description>Scan Nucleotide or Protein Sequences for Matching Patterns</description>
+    <category>motifs</category>
+    <category>nucleic:motifs</category>
+    <category>protein:motifs</category>
+  </head>
+  
+  <command>scan_for_matches</command>
+  
+  <parameters>
+    
+    <parameter ismandatory="1" iscommand="1" type="String" ishidden="1">
+      <name>scan_for_matches</name>
+      <attributes>
+	
+	<format>
+	  <language>perl</language>
+	  <code>($user_pattern_file)? "scan_for_matches $user_pattern_file" : "scan_for_matches pattern_file"</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>pattern_file</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>! $user_pattern_file</code>
+	</precond>
+	<filenames>pattern_file</filenames>
+      </attributes>
+    </parameter>
+ 
+    <parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+      <name>sequence</name>
+      <attributes>
+	<prompt>Input sequence</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" &lt; $value"</code>
+	</format>
+	<group>100</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>pattern_options</name>
+	<prompt>Pattern options</prompt>
+	<parameters>
+
+	  <parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	    <name>pattern</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>! $user_pattern_file</code>
+	      </precond>
+	      <prompt>Search pattern</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value"</code>
+	      </format>
+	      <paramfile>pattern_file</paramfile>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	    <name>mismatches</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>! $user_pattern_file</code>
+	      </precond>
+	      <prompt>Number of mismatches</prompt>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>"[$value,"</code>
+	      </format>
+	      <paramfile>pattern_file</paramfile>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	    <name>deletions</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>! $user_pattern_file</code>
+	      </precond>
+	      <prompt>Number of deletions</prompt>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>"$value,"</code>
+	      </format>
+	      <paramfile>pattern_file</paramfile>
+	      <group>3</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	    <name>insertions</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>! $user_pattern_file</code>
+	      </precond>
+	      <prompt>Number of insertions</prompt>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>"$value]"</code>
+	      </format>
+	      <paramfile>pattern_file</paramfile>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Label" ismandatory="0" issimple="0" ishidden="0">
+	    <name>info_user_pattern_file</name>
+	    <attributes>
+	      <prompt>Please look at the documentation for using your own patterns.</prompt>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="InFile" ismandatory="0" issimple="0" ishidden="0">
+	    <name>user_pattern_file</name>
+	    <attributes>
+	      <prompt>You may give your own patterns</prompt>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group> -1</group>
+	      <comment>
+		<value>Please look at the documentation.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control options</prompt>
+	<group>2</group>
+	<parameters>
+	  <parameter type="Switch">
+	    <name>complementary_strand</name>
+	    <attributes>
+	      <prompt>Search complementary strand</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>protein</name>
+	    <attributes>
+	      <prompt>Protein</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -p" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>stop_after_n_misses</name>
+	    <attributes>
+	      <prompt>Stop after n misses</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -n$value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+  </parameters>
+</pise>

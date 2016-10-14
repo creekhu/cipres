@@ -1,0 +1,136 @@
+
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_40b675a2f4d082d2398956c3f1c2be71040a751b" entityID="https://billiards.sdsc.edu/shibboleth-sp">
+
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:1.0:protocol">
+    <md:Extensions>
+      <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://billiards.sdsc.edu/Shibboleth.sso/Login"/>
+    </md:Extensions>
+    <md:KeyDescriptor>
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>billiards</ds:KeyName>
+        <ds:X509Data>
+          <ds:X509SubjectName>CN=billiards</ds:X509SubjectName>
+          <ds:X509Certificate>MIIC4jCCAcqgAwIBAgIJAN8rwC4QdauGMA0GCSqGSIb3DQEBBQUAMBQxEjAQBgNV
+BAMTCWJpbGxpYXJkczAeFw0xMTEwMjYyMjIxMTVaFw0yMTEwMjMyMjIxMTVaMBQx
+EjAQBgNVBAMTCWJpbGxpYXJkczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+ggEBAMHEYotf1QYSYIXfwZKC6Vz8IcY5uH+oli4kkUJLzP0wThg/NsL8/aQDoiE8
+45cL+zbwMWlVppbpk0NLwUPWEtLOp0iFc5nkx7iOAF6mXnUUfEpIqclQ+ZtLrz99
+grhN6ChmOm5Ta8QI2q5Ptqs+NUYjru4nXhpKUGUj2bTMDQ0FugAolJg+UEQbRYt7
+8ze77zom83ahYiDR9N+cmLpY7xIVhs1IYPKZyTFe7I5PPTJ4D/4sAnuifFb1ec2g
+XKIFrlCkrlsXUj0Hb80ndvzwZff88jzXXB20T6lBQpNjVDAMmQQi6KcEGNspqWnf
+me/FWZ+7RWyTmlPnUqNBQXSps4UCAwEAAaM3MDUwFAYDVR0RBA0wC4IJYmlsbGlh
+cmRzMB0GA1UdDgQWBBRO/dVIKWuXfJhPAuPG+5Fm9n7kTTANBgkqhkiG9w0BAQUF
+AAOCAQEAN78V/iKM0UTSNuO0VlAt1PKzLK2k1Qr3RlwihW/zW0LyGo/cPIDeUdJa
+Km7KwgAH5fTX8c3uBaDj7ofN71iR17EPTkTVIGRgTjbcLmGkylMv2ni3kr8jzhJo
+/kNMueuhc9Js3e3rgdN4+CO55K9Px9fF5pBJ7w7FaYZjr8a+C1Q/f9dGfbdI+y2B
+Epo2t2SD3IX55x7nrJPK/DNq8lbaj+cK6mtrByTqtfMJJsNsQJUGkhKgwtrpe+X0
+QGb+fYaQHBU7ZdcpC38NPF4ejOvBS5vjOSMYfIsghi0ePhP8aGWdROjY08nYgW5i
+AmqyIAi5jR6ygzNevnpH7Xtw6w4AxQ==
+</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://billiards.sdsc.edu/Shibboleth.sso/Artifact/SOAP" index="0"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://billiards.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://billiards.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://billiards.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://billiards.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SLO/Artifact"/>
+
+
+
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards.sdsc.edu/Shibboleth.sso/SAML2/POST" index="0"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://billiards.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="1"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="2"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://billiards.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="3"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://billiards.sdsc.edu/Shibboleth.sso/SAML/POST" index="4"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="https://billiards.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="5"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SAML2/POST" index="6"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="7"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="8"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="9"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SAML/POST" index="10"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="https://billiards1.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="11"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SAML2/POST" index="12"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="13"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="14"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="15"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SAML/POST" index="16"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="https://billiards2.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="17"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SAML2/POST" index="18"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="19"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="20"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="21"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SAML/POST" index="22"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="https://billiards3.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="23"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards.sdsc.edu/Shibboleth.sso/SAML2/POST" index="30"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="http://billiards.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="31"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="32"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="http://billiards.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="33"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="http://billiards.sdsc.edu/Shibboleth.sso/SAML/POST" index="34"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="http://billiards.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="35"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SAML2/POST" index="36"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="37"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="38"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="39"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SAML/POST" index="40"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="http://billiards1.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="41"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SAML2/POST" index="42"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="43"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="44"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="45"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SAML/POST" index="46"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="http://billiards2.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="47"/>
+
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SAML2/POST" index="48"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SAML2/POST-SimpleSign" index="49"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SAML2/Artifact" index="50"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SAML2/ECP" index="51"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SAML/POST" index="52"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="http://billiards3.sdsc.edu/Shibboleth.sso/SAML/Artifact" index="53"/>
+
+  </md:SPSSODescriptor>
+
+</md:EntityDescriptor>

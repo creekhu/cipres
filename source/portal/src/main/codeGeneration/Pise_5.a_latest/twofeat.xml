@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>TWOFEAT</title>
+<description>Finds neighbouring pairs of features in sequences (EMBOSS)</description>
+<category>feature tables</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/twofeat.html</doclink>
+</head>
+
+<command>twofeat</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- any [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>2</value>
+			<value>4</value>
+			<value>14</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>afeaturesection</name>
+		<prompt>First feature options</prompt>
+
+	<parameters>
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>asource</name>
+		<attributes>
+			<prompt>Source of first feature (-asource)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -asource=$value" : ""</code>
+			</format>
+			<group>2</group>
+			<comment>
+				<value>By default any feature source in the feature table is allowed. You can set this to match any feature source you wish to allow. &lt;BR&gt; The source name is usually either the name of the program that detected the feature or it is the feature table (eg: EMBL) that the feature came from. &lt;BR&gt; The source may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one source, separate their names with the character '|', eg: &lt;BR&gt; gene* | embl</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>atype</name>
+		<attributes>
+			<prompt>Type of first feature (-atype)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -atype=$value" : ""</code>
+			</format>
+			<group>3</group>
+			<comment>
+				<value>By default every feature in the feature table is allowed. You can set this to be any feature type you wish to allow. &lt;BR&gt; See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature types and see Appendix A of the Swissprot user manual in http://www.expasy.ch/txt/userman.txt for a list of the Swissprot feature types. &lt;BR&gt; The type may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one type, separate their names with the character '|', eg: &lt;BR&gt; *UTR | intron</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>asense</name>
+		<attributes>
+			<prompt>Sense of first feature -- Sense of first feature (-asense)</prompt>
+				<vlist>
+					<value>0</value>
+					<label>Any sense</label>
+					<value>+</value>
+					<label>Forward sense</label>
+					<value>-</value>
+					<label>Reverse sense</label>
+				</vlist>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -asense=$value"</code>
+			</format>
+			<group>4</group>
+			<comment>
+				<value>By default any feature sense is allowed. You can set this to match the required sense.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>aminscore</name>
+		<attributes>
+			<prompt>Minimum score of first feature (-aminscore)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -aminscore=$value" : ""</code>
+			</format>
+			<group>5</group>
+			<comment>
+				<value>If this is greater than or equal to the maximum score, then any score is allowed.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>amaxscore</name>
+		<attributes>
+			<prompt>Maximum score of first feature (-amaxscore)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -amaxscore=$value" : ""</code>
+			</format>
+			<group>6</group>
+			<comment>
+				<value>If this is less than or equal to the maximum score, then any score is permitted.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>atag</name>
+		<attributes>
+			<prompt>Tag of first feature (-atag)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -atag=$value" : ""</code>
+			</format>
+			<group>7</group>
+			<comment>
+				<value>Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Some of these tags also have values, for example '/gene' can have the value of the gene name. &lt;BR&gt; By default any feature tag in the feature table is allowed. You can set this to match any feature tag you wish to allow. &lt;BR&gt; The tag may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one tag, separate their names with the character '|', eg: &lt;BR&gt; gene | label</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>avalue</name>
+		<attributes>
+			<prompt>Value of first feature's tags (-avalue)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -avalue=$value" : ""</code>
+			</format>
+			<group>8</group>
+			<comment>
+				<value>Tag values are the values associated with a feature tag. Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Only some of these tags can have values, for example '/gene' can have the value of the gene name. By default any feature tag value in the feature table is allowed. You can set this to match any feature tag value you wish to allow. &lt;BR&gt; The tag value may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one tag value, separate their names with the character '|', eg: &lt;BR&gt; pax* | 10</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>bfeaturesection</name>
+		<prompt>Second feature options</prompt>
+
+	<parameters>
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>bsource</name>
+		<attributes>
+			<prompt>Source of second feature (-bsource)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -bsource=$value" : ""</code>
+			</format>
+			<group>9</group>
+			<comment>
+				<value>By default any feature source in the feature table is allowed. You can set this to match any feature source you wish to allow. &lt;BR&gt; The source name is usually either the name of the program that detected the feature or it is the feature table (eg: EMBL) that the feature came from. &lt;BR&gt; The source may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one source, separate their names with the character '|', eg: &lt;BR&gt; gene* | embl</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>btype</name>
+		<attributes>
+			<prompt>Type of second feature (-btype)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -btype=$value" : ""</code>
+			</format>
+			<group>10</group>
+			<comment>
+				<value>By default every feature in the feature table is allowed. You can set this to be any feature type you wish to allow. &lt;BR&gt; See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature types and see Appendix A of the Swissprot user manual in http://www.expasy.ch/txt/userman.txt for a list of the Swissprot feature types. &lt;BR&gt; The type may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one type, separate their names with the character '|', eg: &lt;BR&gt; *UTR | intron</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>bsense</name>
+		<attributes>
+			<prompt>Sense of second feature -- Sense of second feature (-bsense)</prompt>
+				<vlist>
+					<value>0</value>
+					<label>Any sense</label>
+					<value>+</value>
+					<label>Forward sense</label>
+					<value>-</value>
+					<label>Reverse sense</label>
+				</vlist>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -bsense=$value"</code>
+			</format>
+			<group>11</group>
+			<comment>
+				<value>By default any feature sense is allowed. You can set this to match the required sense.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>bminscore</name>
+		<attributes>
+			<prompt>Minimum score of second feature (-bminscore)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -bminscore=$value" : ""</code>
+			</format>
+			<group>12</group>
+			<comment>
+				<value>If this is greater than or equal to the maximum score, then any score is allowed.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>bmaxscore</name>
+		<attributes>
+			<prompt>Maximum score of second feature (-bmaxscore)</prompt>
+			<vdef>
+				<value>0.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -bmaxscore=$value" : ""</code>
+			</format>
+			<group>13</group>
+			<comment>
+				<value>If this is less than or equal to the maximum score, then any score is permitted.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>btag</name>
+		<attributes>
+			<prompt>Tag of second feature (-btag)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -btag=$value" : ""</code>
+			</format>
+			<group>14</group>
+			<comment>
+				<value>Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Some of these tags also have values, for example '/gene' can have the value of the gene name. &lt;BR&gt; By default any feature tag in the feature table is allowed. You can set this to match any feature tag you wish to allow. &lt;BR&gt; The tag may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one tag, separate their names with the character '|', eg: &lt;BR&gt; gene | label</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>bvalue</name>
+		<attributes>
+			<prompt>Value of second feature's tags (-bvalue)</prompt>
+			<vdef>
+				<value>all</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value =~ s/all/*/)? " -bvalue=$value" : ""</code>
+			</format>
+			<group>15</group>
+			<comment>
+				<value>Tag values are the values associated with a feature tag. Tags are the types of extra values that a feature may have. For example in the EMBL feature table, a 'CDS' type of feature may have the tags '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence', '/exception', '/function', '/gene', '/label', '/map', '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo', '/standard_name', '/translation', '/transl_except', '/transl_table', or '/usedin'. Only some of these tags can have values, for example '/gene' can have the value of the gene name. By default any feature tag value in the feature table is allowed. You can set this to match any feature tag value you wish to allow. &lt;BR&gt; The tag value may be wildcarded by using '*'. &lt;BR&gt; If you wish to allow more than one tag value, separate their names with the character '|', eg: &lt;BR&gt; pax* | 10</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>featurerelationsection</name>
+		<prompt>Feature relation options</prompt>
+
+	<parameters>
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>overlap</name>
+		<attributes>
+			<prompt>Specify overlap -- Type of overlap required (-overlap)</prompt>
+				<vlist>
+					<value>A</value>
+					<label>Any</label>
+					<value>O</value>
+					<label>Overlap required</label>
+					<value>NO</value>
+					<label>No overlaps are allowed</label>
+					<value>NW</value>
+					<label>Overlap required but not within</label>
+					<value>AW</value>
+					<label>A must be all within B</label>
+					<value>BW</value>
+					<label>B must be all within A</label>
+				</vlist>
+			<vdef>
+				<value>A</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -overlap=$value"</code>
+			</format>
+			<group>16</group>
+			<comment>
+				<value>This allows you to specify the allowed overlaps of the features A and B. &lt;BR&gt; You can allow any or no overlaps, specify that they must or must not overlap, that one must or must not be wholly enclosed within another feature.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>minrange</name>
+		<attributes>
+			<prompt>The minimum distance between the features (-minrange)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -minrange=$value" : ""</code>
+			</format>
+			<group>17</group>
+			<comment>
+				<value>If this is greater or equal to 'maxrange', then no min or max range is specified</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>maxrange</name>
+		<attributes>
+			<prompt>The maximum distance between the features (-maxrange)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -maxrange=$value" : ""</code>
+			</format>
+			<group>18</group>
+			<comment>
+				<value>If this is less than or equal to 'minrange', then no min or max range is specified</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>rangetype</name>
+		<attributes>
+			<prompt>Specify position -- Positions from which to measure the distance (-rangetype)</prompt>
+				<vlist>
+					<value>N</value>
+					<label>From nearest ends</label>
+					<value>L</value>
+					<label>From left ends</label>
+					<value>R</value>
+					<label>From right ends</label>
+					<value>F</value>
+					<label>From furthest ends</label>
+				</vlist>
+			<vdef>
+				<value>N</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -rangetype=$value"</code>
+			</format>
+			<group>19</group>
+			<comment>
+				<value>This allows you to specify the positions from which the allowed minimum or maximum distance between the features is measured</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>sense</name>
+		<attributes>
+			<prompt>Specify sense -- Sense of the features (-sense)</prompt>
+				<vlist>
+					<value>A</value>
+					<label>Any sense</label>
+					<value>S</value>
+					<label>Same sense</label>
+					<value>O</value>
+					<label>Opposite sense</label>
+				</vlist>
+			<vdef>
+				<value>A</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -sense=$value"</code>
+			</format>
+			<group>20</group>
+			<comment>
+				<value>This allows you to specify the required sense that the two features must be on. This is ignored (always 'Any') when looking at protein sequence features.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>order</name>
+		<attributes>
+			<prompt>Specify order -- Order of the features (-order)</prompt>
+				<vlist>
+					<value>A</value>
+					<label>Any</label>
+					<value>AB</value>
+					<label>Feature A then feature B</label>
+					<value>BA</value>
+					<label>Feature B then feature A</label>
+				</vlist>
+			<vdef>
+				<value>A</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -order=$value"</code>
+			</format>
+			<group>21</group>
+			<comment>
+				<value>This allows you to specify the required order of the two features. The order is measured from the start positions of the features. This criterion is always applied despite the specified overlap type required.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>twoout</name>
+	<attributes>
+		<prompt>Do you want the two features written out individually (-twoout)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -twoout" : ""</code>
+		</format>
+		<group>22</group>
+		<comment>
+			<value>If you set this to be true, then the two features themselves will be written out. If it is left as false, then a single feature will be written out covering the two features you found.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>typeout</name>
+	<attributes>
+		<prompt>Name of the output new feature (-typeout)</prompt>
+		<vdef>
+			<value>misc_feature</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -typeout=$value" : ""</code>
+		</format>
+		<group>23</group>
+		<comment>
+			<value>If you have specified that the pairs of features that are found should be reported as one feature in the ouput, then you can specify the 'type' name of the new feature here. By default every feature in the feature table is allowed. See http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature types and see Appendix A of the Swissprot user manual in http://www.expasy.ch/txt/userman.txt for a list of the Swissprot feature types. If you specify an invalid feature type name, then the default name 'misc_feature' is used.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>24</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>26</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

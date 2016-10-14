@@ -1,0 +1,12 @@
+toolId=RAXMLHPC2_WORKFLOW	
+runtime_=0.50				
+specify_workflow_=MLTB	                    
+dna_gtrcat_=GTRGAMMA                 
+printbrlength_=1      
+disable_seqcheck_=1       				   
+mulparambootstrap_seed_val_=787
+outgroup_=mycobac_01
+outsuffix_MLTB1_=testS         
+parsimony_seed_val_MLTB2_=333 
+outsuffix_MLTB2_=testZ         
+outsuffix_MLTB3_=testout     

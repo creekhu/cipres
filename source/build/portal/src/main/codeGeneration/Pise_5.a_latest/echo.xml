@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Echo</title>
+    <version>0.01</version>
+    <description>Essais</description>
+  </head>
+
+
+  <command>echo</command>
+
+  <parameters>
+
+    <parameter ismandatory="1" issimple="1" type="String">
+      <name>arg</name>
+      <attributes>
+	
+	<prompt>Entrez une valeur </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+
+      </attributes>
+    </parameter>
+
+
+  </parameters>
+</pise>

@@ -1,0 +1,233 @@
+
+CREATING A PISE XML FILE FOR A TOOL: notes, caveats, hints, etc
+==============================================================================================================
+For what it's worth, I think we should be referring to our "pise" xml files as "workbench xml",
+rather than "pise" xml.
+
+- Don't do it from scratch, modify one of the existing ones.  
+	I did raxmlhpc.xml and garli from scratch for ngbw: these can be good examples.  
+
+	Clustalw.xml can also be very useful because it has so many parameters of so many types.  A 
+	caveat is that many of the files that we got from pise use features that are completely 
+	ignored and meaningless in the workbench.
+
+	paup.xml can serve as an example of how to create an xml parameter file.  It makes use of 
+	CDATA and perl "here" documents.
+
+- Pointers for Excl lists:
+    - Can use instead of a Switch if you want the two values to be something other than true or
+	false.  If you have only two items in the vlist the gui will display it as radio buttons.
+	You must make it ismandatory=1 or the gui will a third button titled "Not Mandatory" that
+	sets the value to "".
+
+	- With more than two items in the vlist, you'll get a drop down list.  The gui will add
+	an additional blank choice that sends "", unless you set ismandatory=1.
+
+- Multiple choice "List" types:
+	* You can't use an "@" character within a list value.
+	* If you don't specify a separator the selected values will be concatenated.
+	* If you do use a separator, it must be a single character within single quotes, like ' ' or ','.
+	The selected values will be concatenated with the separator in between.
+	* You can't add whitespace to a value with something like <value>a </value>.  It will be stripped off.
+
+- Use a "ctrl" element to add validations, such as "must be greater than 0" or "must be
+between 1 and 10".  Ctrl elements are coded in perl.
+
+- Code elements: in the workbench code is used in only three places, precond, format and ctrl elements.
+Format and Precond elements are evaluated by the PiseCommandRenderer.restituteFormat and 
+PiseCommandRenderer.restitutePreCond methods.  Ctrl elements are handled 
+by freemarker templates that translate them to javascript.  In the future they may also be 
+used to create Java validator classes (ask Jeremy about the status of this).  The point being, that 
+the perl that can be used is limited and there are some slight, subtle differences in how the perl is handled
+in each of the three element types.
+
+- Division "/" is broken!  Try to rewrite your test in terms of multiplication.  Freemarker code that maps
+the perl expression to javascript translates "/" to something else entirely.  It ends up being a syntax
+error and all controls will be disabled.
+
+MESSAGES ELEMENTS - BE CAREFULL:
+Also be careful of special characters in <message> elements within controls.  I know quotes are not
+allowed, I'm not sure what else may cause a problem.  <message> elements become literals in 
+geneated javascript code, appearing in an alert() fn.   When I inadvertantly used a quote all 
+javascript functionality was effectively disabled ... the preconditions didn't cause controls 
+to be disabled and the ctrls didn't show a popup error message on form submit.
+
+Don't split a <message> across multiple lines!  Apparently the newline is preserved when we parse
+the xml and a string containing a newline will be passed to the javascript alert(...) fn.  This
+breaks all the javascript!
+
+Also be careful about using single or double quote marks in any text that will end up as a string in
+the gui.  I used the word "Don't" in a <label> in a <vlist> and it prevented the gui from displaying
+because in the generated jsp the literal map of name/value pairs was terminated early by the single quote
+in the word "Don't".
+
+
+
+Within Format, piseCommandRender will 
+
+    - replace $parameter, $value and $vdef with their values.
+
+	- replace "defined $value", "defined $vdef", "defined $parameter" with 1 or 0 
+	defined $value is 1, except in hidden parameters.
+	defined $vdef is 1, if a default is specified in the xml.
+	defined $parameter is 1 if parameter is in the parameter map, 0 otherwise.
+
+	- will replace (a) ? b : c with (a) ? print b : print c, but does not handle more than one
+	question mark op in the expression, you'll get garbage if you use more than one.
+
+	- if the expression doesn't contain a ? op, prefixes the whole expression with "print".
+
+	- passes the resulting expression to "perl -e".
+
+	- You need to make sure whatever is going to be passed to print (i.e. whatever the b and c
+	parts of a ? op, or the whole expression if no ? used) is a valid argument to print.  In most
+	cases these means it should be within quote marks so that print sees it a a string.  
+	Thus <code>$value</code> is wrong, <code>"$value"</code> is right.  It's also possible to use
+	more complex expressions such as
+	<code>"cpu_count=" .  $nchains_specified * $nruns_specified  . "\\n"</code>
+	
+	- Hidden elements can be used to force some code to be generated without depending
+	on the user entering data for the parameter.  Hidden elements do not appear in
+	the parameter map, therefore $value should never be referenced within the code
+	of a hidden element (it will be null and generate an error).
+
+	- Hint: if you want to put a newline in a parmeter file, for instance, use \\n in the
+	format code.  Make sure the string is enclosed in double quotes.   See NEWLINE section
+	below for gory details.
+
+Within, Precond, restitution is a little different
+
+	- variables and "defined" expressions are replaced, as above.
+
+	- the whole expression you write, X, is rewritten as (X) ? print "true" : print "false" and
+	the code in PiseCommandRenederer that evaluates the precond looks for the string "true" 
+	or "false" to decide if the precond is true or false.
+
+	- since your expression X will be evaluated as a boolean, don't put it in quotes.
+
+	- If you want an empty string, for instance if you want the default value for a parameter to
+	be the empty string use <vdef></vdef>, not <vdef>""</vdef>.  The later will give you a string
+	of length 2, containing two double quotes.
+
+	- If a parameter is of type InFile (or String) and you reference $param_name in a code element,
+	$param_name will be replaced with the contents of the file (or whatever the user typed in for
+	the String) in the perl expression.  This can easily create an invalid perl statement which will
+	cause an error.  You should probably instead check "defined $param_name" to see if the user chose
+	a file or entered any data.  
+
+
+The command renderer will not necessarily process the code elements for all parameters
+that appear in the pise xml file.  It will process 3 sets of parameters: 1) those that are
+set via the gui and thus appear in the input parameter gap the gui sends, 2) those that are
+declared ishidden in the pise xml, and 3) those that are declared of type OutFile or Result.
+
+If you don't even open the gui it sends everything with it's default value except
+hidden parameters.  I'm not sure what happens if there is no default specified. Ask
+Jeremy.  Jeremy is working on changing this so that parameters that whose precond aren't met will
+not be included in the map.  Ask Jeremy for status.
+
+If you open the gui but don't edit anything, it does the same as above except that it
+doesn't send parameters whose preconditions aren't met.
+
+So, a parameter will be missing from the map if it's precond isn't met, or if the user
+has cleared the value of a non-mandatory parameter, or it has no default value .
+
+Hidden parameters are always processed, though we don't receive values for them in
+the map.  $value will always be null;  referencing it will throw an exception.  
+$vdef is set if there is a vdef in the pise for the parameter, null otherwise.
+
+Be careful about referencing $<param_name> from a different parameter.  
+	In a format element, if <param_name> isn't in the parameter map, it's default value 
+	if any will be used.  If there's no default value, $<param_name> will be replaced with 
+	an empty string.  You need to make sure that either won't happen or that the expression 
+	will still be syntatically correct perl.  You can use "defined $<param_name>" if you want 
+	to check if param_name is in the map, though "defined $<param_name> && $<param_name> > 0" 
+	will cause an error if param_name isn't defined since we replace variables with their values 
+	before executing the perl interpreter so there isn't any short circuit evaluation possible.  
+	(In other words, what we'll be passing to the perl interpreter is something like "defined 0 && > 0", which 
+	isn't valid).
+
+	This is handled differently in precondition elements.  In a precondition, if an expression 
+	references a parameter that isn't in the parameter map, the precondition evaluation will
+	always return false.  As with format elements, you can use "defined $param".  If you use
+	something like, "defined $param && $param > 0" and param is not defined, you WILL get the
+	result you expect because referencing $param causes us to return false.  
+
+
+Wildcards to specify output files (or type="Results"):  There is a very limited
+wildcard implementation, you can only use it to specify that all files with a certain
+suffix should be treated as results, like "*.gif" or "*.jpg".  You cannot use it to specify
+a prefix (like "outfile.*") or a pattern that doesn't include a "." (like *fish) or anything
+else.  It doesn't work for specifying files in subdirectories.
+
+Using paragraphs for grouping of controls:  If you make a parameter w/i a paragraph
+issimple, that parameter will show up in the "simple parameters" section outside of
+any paragraphs, but according to Rami, if you make the whole parapraph issimple and each of 
+the parameters within it is also issimple, they'll all show up together as a paragraph
+in the issimple section.
+
+
+EXAMPLE OF HOW TO TEST A PERL  STATEMENT
+ 	perl -e 'print "hi there"'
+
+	The single quotes are so that the full print statement is passed to perl as a single argument.
+	The double quotes are because "print" expects a single string argument.
+
+NEWLINE
+There are some pretty confusing things about quoting and newlines going on.  The main issue
+is this: if you want a parameter's format element to put text in a parameter file followed by 
+a newline, you're going to need to do something special because after we pass each parameter's
+format code to the perl interpreter we read it's stdout and strip leading and trailing whitespace.
+So even if your perl output includes a trailing newline, we're going to strip it off.
+
+Format/perl/code elements need to be enclosed in quotes because we take that element and stick
+the work "print" in front of it and pass it to the perl interpreter.  You should use double 
+quotes not single quotes for a couple of reasons.  One is that we're going to do variable
+replacement before we pass it to perl, and if we weren't involved and you were really just
+passing your string to the perl interpreter it would only do replacement on a double quoted
+string.  So for the appearance of consistency ...
+
+The second reason is that things line \n and \t and \\ are translated to the single chars
+newline, tab, and backslash in double quoted strings, but are left as two character sequences 
+in single quoted strings.
+
+So, if you write something line "$value\\n" in your format, the xml marshaller we'll give us a java 
+string that ends with the 3 characters <backslash, backslash, n>.  When we ask perl to print "foo\\n"
+(supposing that 'foo' is the current value), it changes the "\\" to a single backslash, and prints
+	foo\n
+In other words, a string that ends with a backslash followed by an n.  Our command renderer specifically
+looks for this sequence in the output of the perl interpreter and replaces it with a backslash.
+
+If on the other hand you'd written '$value\\n', perl would print 
+	foo\\n
+which our commandrenderer would replace with "foo\" followed by a newline.
+
+Note that you only *need* to use "\\n" at the end of a line.  For embedded newlines, you can either use \\n,
+or you can simply write something like:
+	<code>"line 1
+		line 2
+	"</code>
+
+I just recently implemented support for "here" documents in format elements.  For the reasons just 
+described, you should probably use double quotes around the end tag instead of single quotes.  For our
+purposes, the main difference between a here doc and a quoted string is that if the text 
+contains "?" and you use a quoted string we try to insert the word "print" before the "if" part
+and the "else" part.  If you use a here document, we don't do that, so your text can contain a literal "?".
+BE CAREFUL: the terminating token (often EOT), must be the only thing on the line.  Leading and/or 
+trailing whitespace mess it up.
+
+
+Note that when you print a java string, as the logging messages in the commandrenderer do, if
+the string contains an actual newline, it will print on multiple lines.  If you see
+"\n" in the value displayed, it means the string contains two characters: a backslash
+followed b an n.  This is mostly what we see because if you put "\n" in an xml file
+element, the xml unmarshaller delivers this as a java string containing a backslash
+followed by an n.
+
+
+We've run into a few cases where we'd like to use multiple parameters to build up a single line
+where the parameter's output is separated by whitespace.  This is currently possible since
+we trim whitespace, except for the special case of using \\n for a trailing newline.  I'm thinking
+of adding the same special case handling for \\t.
+
+

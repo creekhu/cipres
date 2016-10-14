@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>LGIC</title>
+    <description>Search LGIC databases</description>
+    <authors>Le Novere, Changeux</authors>
+    <reference>Nicolas LE NOVERE and Jean-Pierre CHANGEUX (1999). The Ligand-Gated Ion Channel database. Nucleic Acid Research, 27 : 340-342</reference>
+    <doclink>http://www.pasteur.fr/recherche/banques/LGIC/LGIC.html</doclink>
+</head>
+
+
+<command>lgicsearch</command>
+
+<parameters>
+
+<parameter ismandatory="1" iscommand="1" type="Excl">
+<name>lgicsearch</name>
+<attributes>
+
+	<prompt>Fasta program</prompt>
+	<format>
+		<language>perl</language>
+		<code>$value</code>
+	</format>
+	<vdef><value>fasta_t</value></vdef>
+	<group>0</group>
+	<vlist>
+		<value>fasta_t</value>
+		<label>fasta: protein or DNA query vs similar db (FASTA release 3.0)</label>
+		<value>tfasta_t</value>
+		<label>tfasta: protein query vs translated DNA db (rel 3.0)</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>query</name>
+<attributes>
+
+	<prompt>Query sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>seqtype</name>
+<attributes>
+
+	<prompt>Is it a DNA or protein sequence</prompt>
+	<format>
+		<language>perl</language>
+		<code>(($lgicsearch =~ /^fasta/ &amp;&amp; $value eq "DNA") || $lgicsearch =~ /^fast(x|y)/)? " -n":""</code>
+	</format>
+	<group>1</group>
+	<vlist>
+		<value>DNA</value>
+		<label>DNA</label>
+		<value>protein</value>
+		<label>protein</label>
+	</vlist>
+	<ctrls>
+		<ctrl>
+		<message>tfasta, tfastx and tfasty take a protein sequence</message>
+			<language>perl</language>
+			<code>$lgicsearch =~ /^tfast/ &amp;&amp; $seqtype eq "DNA"</code>
+		</ctrl>
+	</ctrls>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>protein_db</name>
+<attributes>
+
+	<prompt>Protein Database</prompt>
+	<format>
+		<language>perl</language>
+		<code> " /local/databases/fasta/$value"</code>
+	</format>
+	<vdef><value>allpep</value></vdef>
+	<group>3</group>
+	<vlist>
+		<value>lgicallpep</value>
+		<label>lgicallpep: all super-families</label>
+		<value>lgicachpep</value>
+		<label>lgicachpep: acetylcholine super-family subunits</label>
+		<value>lgicglupep</value>
+		<label>lgicglupep: glutamate excitatory super-family</label>
+		<value>lgicatppep</value>
+		<label>lgicatppep: ATP super-family</label>
+	</vlist>
+<precond>
+	<language>perl</language>
+	<code>($seqtype eq "protein" &amp;&amp; $lgicsearch =~ /^fasta/)</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>nucleotid_db</name>
+<attributes>
+
+	<prompt>Nucleotid Database</prompt>
+	<format>
+		<language>perl</language>
+		<code> " /local/databases/fasta/$value" </code>
+	</format>
+	<vdef><value>allnuc</value></vdef>
+	<group>3</group>
+	<vlist>
+		<value>lgicallnuc</value>
+		<label>lgicallnuc: all super-families</label>
+		<value>lgicachnuc</value>
+		<label>lgicachnuc: acetylcholine super-family subunits</label>
+		<value>lgicglunuc</value>
+		<label>lgicglunuc: glutamate excitatory super-family</label>
+		<value>lgicatpnuc</value>
+		<label>lgicatpnuc: ATP super-family</label>
+	</vlist>
+<precond>
+	<language>perl</language>
+	<code> ($seqtype eq "DNA" &amp;&amp; $lgicsearch =~ /^fasta/ ) || $lgicsearch =~ /^tfast/ </code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="Integer">
+<name>ktup</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>(defined $value)? " 1":""</code>
+	</format>
+	<group>4</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>threeframe</name>
+<attributes>
+
+	<prompt>(tfasta only) only the three forward frames are searched</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -3":""</code>
+	</format>
+	<precond>
+		<language>perl</language>
+		<code> ($lgicsearch =~ /^tfasta/) </code>
+	</precond>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>tmp_outfile</name>
+<attributes>
+
+	<filenames>lgicsearch.txt</filenames>
+	<pipe>
+		<pipetype>mview_input</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>txtoutput</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> " &gt; lgicsearch.txt" </code>
+	</format>
+	<group>7</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="Switch">
+<name>lgicdbf2h</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> " &amp;&amp; lgicdbf2h &lt; lgicsearch.txt &gt; lgicsearch.html " </code>
+	</format>
+	<group>100</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>html_outfile</name>
+<attributes>
+	<filenames>lgicsearch.html</filenames>
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

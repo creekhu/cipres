@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>alistat - show statistics for a multiple alignment file</description>
+    <authors>S. Eddy</authors>
+    <category>information</category>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>alistat</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>alistat</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"alistat"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>description of alistat</prompt>
+	<comment>
+	  <value>alistat reads a multiple sequence alignment from the file alignfile in any supported format (including SELEX, GCG MSF, and CLUSTAL), and shows a number of simple statistics about it. These statistics include the name of the format, the number of sequences, the total number of residues, the average and range of the sequence lengths, the alignment length (e.g. including gap characters).</value>
+	  <value>Also shown are some percent identities. A percent pairwise alignment identity is defined as (idents / MIN(len1, len2)) where idents is the number of exact identities and len1, len2 are the unaligned lengths of the two sequences. The average percent identity, most related pair, and most unrelated pair of the alignment are the average, maximum, and minimum of all (N)(N-1)/2 pairs, respectively. The most distant seq is calculated by finding the maximum pairwise identity (best relative) for all N sequences, then finding the minimum of these N numbers (hence, the most outlying sequence).</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ismandatory="1" type="Sequence">
+      <name>multali_file</name>
+      <attributes>
+	<prompt>multiple alignment file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>hmmer_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>verbose</name>
+      <attributes>
+	<prompt>Show additional verbose information (-a)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -a" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>Additional information: a table with one line per sequence showing name, length, and its highest and lowest pairwise identity. These lines are prefixed with a * character to enable easily grep'ing them out and sorting them. For example, alistat -a foo.slx grep * gives a ranked list of the most distant sequences in the alignment. Incompatible with the -f option.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>fast</name>
+      <attributes>
+	<prompt>Fast (-f)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -f" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+	  <value>use a sampling method to estimate the average %id. When this option is chosen, alistat doesn't show the other three pairwise identity numbers. This option is useful for very large alignments, for which the full (N)(N-1) calculation of all pairs would be prohibitive (e.g. Pfam's GP120 alignment, with over 10,000 sequences). Incompatible with the -a option.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>BLAST2</title>
+    <version>2.2.10</version>
+    <description>phi-blast - Pattern-Hit Initiated BLAST</description>
+    <authors>Altschul, Madden, Schaeffer, Zhang, Miller, Lipman</authors>
+    <reference>R. Baeza-Yates and G. Gonnet, Communications of the ACM 35(1992), pp. 74-82.</reference>
+    <reference> S. Wu and U. Manber, Communications of the ACM 35(1992), pp. 83-91.</reference>
+
+  </head>
+
+  <command>phiblast</command>
+
+  <parameters>
+
+    <parameter type="Excl" ismandatory="1" iscommand="1">
+      <name>phiblast</name>
+      <attributes>
+	<prompt>Program (-p)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"blastpgp -p $value -k pattern.dat"</code>
+	</format>
+	<vlist>
+	  <value>patseedp</value>
+	  <label>patseedp: normal phiblast mode</label>
+	  <value>seedp</value>
+	  <label>seedp: restrict to a subset of pattern occurences</label>
+	</vlist>
+	<comment>
+	  <value>PHI-BLAST (Pattern-Hit Initiated BLAST) is a search program that combines matching of regular expressions with local alignments surrounding the match. The calculation of local alignments is done using a method very similar to (and much of the same code as) gapped BLAST.</value>
+	  <value>Program modes:</value>
+	  <value>. patseedp: normal phiblast mode</value>
+	  <value>. seedp: Restrict the search for local alignments to a subset of the pattern occurrences in the query. This program option requires the user to specify the location(s) of the interesting pattern occurrence(s) in the pattern file (for the syntax see below). When there are multiple pattern occurrences in the query it may be important to decide how many are of interest because the E-value for matches is effectively multiplied by the number of interesting pattern occurrences.</value>
+	</comment>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>pattern_file</name>
+      <attributes>
+	<filenames>pattern.dat</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Integer">
+      <name>nb_proc</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -a 2"</code>
+	</format>
+	<group>6</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>Sequence File (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -i $query" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>start_region</name>
+      <attributes>
+	<prompt>Start of required region in query (-S)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value and $value != $vdef)? " -S $value" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>5</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>end_region</name>
+      <attributes>
+	<prompt>End of required region in query (-1 indicates end of query) (-H)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value and $value != $vdef)? " -H $value" : ""</code>
+	</format>
+	<vdef><value>-1</value></vdef>
+	<group>5</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="String">
+      <name>pattern</name>
+      <attributes>
+	<prompt>Pattern - Prosite syntax (-k)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ID  PATTERN\\nPA  $value\\n//\\n" </code>
+	</format>
+	<group>3</group>
+	<comment>
+	  <value>Given a protein sequence S and a regular expression pattern P occurring in S, PHI-BLAST helps answer the question: What other protein sequences both contain an occurrence of P and are homologous to S in the vicinity of the pattern occurrences?</value>
+	  <value>Rules for pattern syntax:</value>
+	  <value>The syntax for patterns in PHI-BLAST follows the conventions of PROSITE. When using the stand-alone program, it is permissible to have multiple patterns in a file separated by a blank line between patterns. </value>
+	  <value>Valid protein characters for PHI-BLAST patterns:</value>
+	  <value>ABCDEFGHIKLMNPQRSTVWXYZU</value>
+	  <value>Other useful delimiters:</value>
+	  <value>[ ] means any one of the characters enclosed in the brackets e.g., [LFYT] means one occurrence of L or F or Y or T</value>
+	  <value> - means nothing (this is a spacer character used by PROSITE) x with nothing following means any residue</value>
+	  <value>x(5) means 5 positions in which any residue is allowed (and similarly for any other single number in parentheses after x)</value>
+	  <value>x(2,4) means 2 to 4 positions where any residue is allowed, and similarly for any other two numbers separated by a comma; the first number should be &lt; the second number.</value>
+	  <value>Example:</value>
+	  <value>PA [LIVM]-x-D-x(2)-[GA]-[NQS]-K-G-T-G-x-W</value>
+	</comment>
+	<paramfile>pattern.dat</paramfile>
+	<size>80</size>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>protein_db</name>
+      <attributes>
+	<prompt>protein db (-d)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " -d $value" </code>
+	</format>
+	<vdef><value>uniprot</value></vdef>
+	<group>2</group>
+	&protdbs;
+      </attributes>
+    </parameter>
+
+  <parameter type="Paragraph">
+      <paragraph>
+	<name>filter_opt</name>
+	<prompt>Filtering and masking options</prompt>
+	<group>4</group>
+	<comment>
+	  <value>This options also takes a string as an argument.  One may use such a string to change the specific parameters of seg or invoke other filters. Please see the 'Filtering Strings' section (below) for details.</value>
+	</comment>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>filter</name>
+	    <attributes>
+	      <prompt>Filter query sequence with SEG (-F)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -F T" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>selectivity_opt</name>
+	<prompt>Selectivity options</prompt>
+	<group>5</group>
+	<parameters>
+
+	  <parameter issimple="1" type="Integer">
+	    <name>Expect</name>
+	    <attributes>
+	      <prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -e $value":""</code>
+	      </format>
+	<vdef><value>10</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>The statistical significance threshold for reporting matches against database sequences; the default value is 10, such that 10 matches are expected to be found merely by chance, according to the stochastic model of Karlin and Altschul (1990). If the statistical significance ascribed to a match is greater than the EXPECT threshold, the match will not be reported. Lower EXPECT thresholds are more stringent, leading to fewer chance matches being reported. Fractional values are acceptable. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>window</name>
+	    <attributes>
+	      <prompt>Multiple hits window size (zero for single hit algorithm) (-A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -A $value" : ""</code>
+	      </format>
+	      <vdef><value>40</value></vdef>
+	      <comment>
+		<value>When multiple hits method is used, this
+		parameter defines the distance from last hit on the
+		same diagonal to the new one.</value>
+		<value>Zero means single hit algorithm.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	
+	  <parameter type="Integer">
+	    <name>extend_hit</name>
+	    <attributes>
+	      <prompt>Threshold for extending hits (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -f $value" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Blast seeks first short word pairs whose aligned score reaches at least this value (default for blastp is 11) (T in the NAR paper and in Blast 1.4)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>dropoff</name>
+	    <attributes>
+	      <prompt>X dropoff value for gapped alignment (in bits) (-X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -X $value":""</code>
+	      </format>
+	      <comment>
+		<value>This is the value that control the path graph region explored by Blast during a gapped extension (Xg in the NAR paper) (default for blastp is 15).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	
+	  <parameter type="Integer">
+	    <name>dropoff_z</name>
+	    <attributes>
+	      <prompt>X dropoff value for final gapped alignment (in bits) (-Z)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " -Z $value" : ""</code>
+	      </format>
+	      <vdef><value>25</value></vdef>
+	      <comment>
+		<value>This parameter controls the dropoff for the final reported alignment. See also the -X parameter.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scoring</name>
+	<prompt>Scoring option</prompt>
+	<group>4</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>matrix</name>
+	    <attributes>
+	      <prompt>Matrix (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -M $value" : ""</code>
+	      </format>
+	      <vdef><value>BLOSUM62</value></vdef>
+	      <group>5</group>
+	      <vlist>
+		<value>PAM30</value>
+		<label>PAM30</label>
+		<value>PAM70</value>		
+		<label>PAM70</label>
+		<value>BLOSUM80</value>
+		<label>BLOSUM80</label>
+		<value>BLOSUM62</value>
+		<label>BLOSUM62</label>
+		<value>BLOSUM45</value>
+		<label>BLOSUM45</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>open_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to open a gap (-G)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -G $value" : ""</code>
+	      </format>
+	      <vdef><value>11</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>extend_a_gap</name>
+	    <attributes>
+	      <prompt>Cost to extend a gap (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -E $value" : ""</code>
+	      </format>
+	      <group>5</group>
+	      <vdef><value>1</value></vdef>
+	      <comment>
+		<value>Limited values for gap existence and extension are supported for these three programs. Some supported and suggested values are:</value>
+		<value>Existence Extension</value>
+		<value>10 1</value>
+		<value>10 2</value>
+		<value>11 1</value>
+		<value>8 2</value>
+		<value>9 2</value>
+		<value>(source: NCBI Blast page)</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+  
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>affichage</name>
+	<prompt>Report options</prompt>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>Descriptions</name>
+	    <attributes>
+	      <prompt>How many short descriptions? (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -v $value" : ""</code>
+	      </format>
+	      <vdef><value>500</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which one-line descriptions will be reported (-v).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Alignments</name>
+	    <attributes>
+	      <prompt>How many alignments? (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -b $value" : ""</code>
+	      </format>
+	      <vdef><value>250</value></vdef>
+	      <group>5</group>
+	      <comment>
+		<value>Maximum number of database sequences for which high-scoring segment pairs will be reported (-b).</value>
+		</comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>view_alignments</name>
+	    <attributes>
+	      <prompt>Alignment view options  (not with blastx/tblastx) (-m)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -m $value" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <vlist>
+		<value>0</value>
+		<label>0: pairwise</label>
+		<value>1</value>
+		<label>1: master-slave showing identities</label>
+		<value>2</value>
+		<label>2: master-slave no identities</label>
+		<value>3</value>
+		<label>3: flat master-slave, show identities</label>
+		<value>4</value>
+		<label>4: flat master-slave, no identities</label>
+		<value>5</value>
+		<label>5: query-anchored no identities and blunt ends</label>
+		<value>6</value>
+		<label>6: flat query-anchored, no identities and blunt ends</label>
+		<value>7</value>
+		<label>7: XML Blast output</label>
+		<value>8</value>
+		<label>8: Tabular output</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ishidden="1" type="String">
+	    <name>html_output</name>
+	    <attributes>
+	      <prompt>Html output</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>not $view_alignments</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code> " &amp;&amp; html4blast -o phiblast.html -s -g phiblast.txt" </code>
+	      </format>
+	      <group>20</group>
+	      <vdef>
+		<value>1</value>
+	      </vdef>
+	    </attributes>
+	  </parameter>
+
+	  <!-- ** Pasteur databases do not use GI ** -->
+	  <!--
+	  <parameter type="Switch">
+	    <name>show_gi</name>
+	    <attributes>
+	      <prompt>Show GI's in deflines (-I)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -I" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	      <comment>
+		<value>Causes NCBI gi identifiers to be shown in the output, in addition to the accession and/or locus name. </value>
+		<value>Warning: not yet implemented on this server.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  -->
+
+	  <parameter type="OutFile">
+	    <name>seqalign_file</name>
+	    <attributes>
+	      <prompt>SeqAlign file (-J option must be true) (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -O $value" : ""</code>
+	      </format>
+	      <group>4</group>
+	      <comment>
+		<value>SeqAlign is in ASN.1 format, so that it can be read with NCBI tools (such as sequin). This allows one to view the results in different formats.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$believe</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>believe</name>
+	    <attributes>
+	      <prompt>Believe the query defline (-J)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -J":""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Results">
+      <name>html_file</name>
+      <attributes>
+	<filenames>phiblast.html</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>txtoutput</name>
+      <attributes>
+        <format>
+          <language>perl</language>
+          <code>" &gt; phiblast.txt"</code>
+        </format>
+        <group>19</group>
+      </attributes>
+    </parameter>
+
+
+    <parameter type="Results">
+      <name>txt_file</name>
+      <attributes>
+	<filenames>phiblast.txt</filenames>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

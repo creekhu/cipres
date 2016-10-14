@@ -1,0 +1,4 @@
+    <authors>S. Salzberg</authors>
+    <reference>A.L. Delcher, D. Harmon, S. Kasif, O. White, and S.L. Salzberg. Improved microbial gene identification with GLIMMER. Nucleic Acids Research, 27:23, 4636-4641. </reference>
+    <reference>S. Salzberg, A. Delcher, S. Kasif, and O. White. Microbial gene identification using interpolated Markov models. Nucleic Acids Research 26:2 (1998), 544-548.</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#GLIMMER</doclink>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+<title>SEQRETALL</title>
+<description>Reads and writes (returns) a set of sequences one at a time (EMBOSS)</description>
+<category>reformatting</category>
+<category>sequence display</category>
+<category>database entry extraction</category>
+<doclink>http://www.sanger.ac.uk/Software/EMBOSS/Apps/seqretall.shtml</doclink>
+</head>
+
+<command>seqretall</command>
+
+<parameters>
+
+<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+<name>sequence</name>
+<attributes>
+	<prompt>sequence [set of related sequences] (-sequence)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -sequence=$value -sformat=fasta"</code>
+	</format>
+	<group>0</group>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+<name>outseq</name>
+<attributes>
+	<prompt>outseq (-outseq)</prompt>
+	<vdef><value>outseq.out</value></vdef>
+	<format>
+		<language>perl</language>
+		<code>" -outseq=$value"</code>
+	</format>
+	<group>1</group>
+</attributes>
+</parameter>
+
+<parameter type="Excl" issimple="1">
+<name>outseq_sformat</name>
+<attributes>
+	<prompt>Output format for: outseq</prompt>
+	<vlist>
+		<value>fasta</value>
+		<label>fasta</label>
+		<value>gcg</value>
+		<label>gcg</label>
+		<value>phylip</value>
+		<label>phylip</label>
+		<value>embl</value>
+		<label>embl</label>
+		<value>swiss</value>
+		<label>swiss</label>
+		<value>ncbi</value>
+		<label>ncbi</label>
+		<value>nbrf</value>
+		<label>nbrf</label>
+		<value>genbank</value>
+		<label>genbank</label>
+		<value>ig</value>
+		<label>ig</label>
+		<value>codata</value>
+		<label>codata</label>
+		<value>strider</value>
+		<label>strider</label>
+		<value>acedb</value>
+		<label>acedb</label>
+		<value>staden</value>
+		<label>staden</label>
+		<value>text</value>
+		<label>text</label>
+		<value>fitch</value>
+		<label>fitch</label>
+		<value>msf</value>
+		<label>msf</label>
+		<value>clustal</value>
+		<label>clustal</label>
+		<value>phylip</value>
+		<label>phylip</label>
+		<value>phylip3</value>
+		<label>phylip3</label>
+		<value>asn1</value>
+		<label>asn1</label>
+	</vlist>
+	<vdef><value>fasta</value></vdef>
+	<format>
+		<language>perl</language>
+		<code>" -osformat=$value"</code>
+	</format>
+	<group>2</group>
+</attributes>
+</parameter>
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>3</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

@@ -1,0 +1,84 @@
+CLUSTALW
+clustalw -infile=infile.fasta                      -align
+
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+actions_ - Excl - Actions
+phylip_alig_ - Switch - Phylip alignment output format (-output)
+Section: ****************************************************************************
+multalign
+*************************************************************************************
+quicktree_ - Excl - Toggle Slow/Fast pairwise alignments (-quicktree)
+typeseq_ - Excl - Protein or DNA (-type)
+matrix_ - Excl - Protein weight matrix (-matrix)
+dnamatrix_ - Excl - DNA weight matrix (-dnamatrix)
+gapopen_ - Integer - Gap opening penalty (-gapopen)
+gapext_ - Float - Gap extension penalty (-gapext)
+endgaps_ - Switch - End gap separation penalty (-endgaps)
+gapdist_ - Integer - Gap separation pen. range (-gapdist)
+pgap_ - Switch - Residue specific penalties (Pascarella gaps) (-nopgap)
+hgap_ - Switch - Hydrophilic gaps (-nohgap)
+hgapresidues_ - List - Hydrophilic residues list (-hgapresidues)
+maxdiv_ - Integer - Delay divergent sequences : % ident. for delay (-maxdiv)
+negative_ - Switch - Negative values in matrix ? (-negative)
+transweight_ - Float - Transitions weight (between 0 and 1) (-transweight)
+usetree_ - InFile - File for old guide tree (-usetree)
+Section: ****************************************************************************
+fastpw
+*************************************************************************************
+ktuple_ - Integer - Word size (-ktuple)
+topdiags_ - Integer - Number of best diagonals (-topdiags)
+window_ - Integer - Window around best diags (-window)
+pairgap_ - Float - Gap penalty (-pairgap)
+score_ - Excl - Percent or absolute score ? (-score)
+Section: ****************************************************************************
+slowpw
+*************************************************************************************
+pwmatrix_ - Excl - Protein weight matrix (-pwmatrix)
+pwdnamatrix_ - Excl - DNA weight matrix (-pwdnamatrix)
+pwgapopen_ - Float - Gap opening penalty (-pwgapopen)
+pwgapext_ - Float - Gap extension penalty (-pwgapext)
+Section: ****************************************************************************
+trees
+*************************************************************************************
+kimura_ - Switch - Use Kimura's correction (multiple substitutions) ? (-kimura)
+tossgaps_ - Switch - Ignore positions with gaps ? (-tossgaps)
+bootstrap_ - Integer - Bootstrap a NJ tree (give the number of bootstraps, 0 for none) (-bootstrap)
+bootlabels_ - Excl - Phylip bootstrap positions (-bootlabels)
+seed_ - Integer - Seed number for bootstraps (-seed)
+outputtree_ - Excl - Output tree/distance format (-outputtree)
+Section: ****************************************************************************
+outputparam
+*************************************************************************************
+output_ - Excl - Output format (-output)
+gde_lower_ - Switch - Upper case GDE output (-case)
+outorder_ - Excl - Result order (-outorder)
+seqnos_ - Switch - Output sequence numbers in the output file (clustalw format) (-seqnos)
+aligfile_ - Results -
+readseq_ok_aligfile_ - Results -
+newtreefile_ - Results -
+phylipnewtreefile_ - Results -
+Section: ****************************************************************************
+profile
+*************************************************************************************
+profile1_ - InFile - Profile 1 (-profile1)
+profile2_ - InFile - Profile 2 (-profile2)
+usetree1_ - InFile - File for old guide tree for profile1 (-usetree1)
+usetree2_ - InFile - File for old guide tree for profile2 (-usetree2)
+newtree1_ - OutFile - File for new guide tree for profile1 (-newtree1)
+newtree2_ - OutFile - File for new guide tree for profile2 (-newtree2)
+Section: ****************************************************************************
+structure
+*************************************************************************************
+nosecstr1_ - Switch - Use profile 1 secondary structure / penalty mask (-nosecstr1)
+nosecstr2_ - Switch - Use profile 2 secondary structure / penalty mask (-nosecstr2)
+helixgap_ - Integer - Helix gap penalty (-helixgap)
+strandgap_ - Integer - Strand gap penalty (-strandgap)
+loopgap_ - Integer - Loop gap penalty (-loopgap)
+terminalgap_ - Integer - Secondary structure terminal penalty (-terminalgap)
+helixendin_ - Integer - Helix terminal positions: number of residues inside helix to be treated as terminal (-helixendin)
+helixendout_ - Integer - Helix terminal positions: number of residues outside helix to be treated as terminal (-helixendout)
+strandendin_ - Integer - Strand terminal positions: number of residues inside strand to be treated as terminal (-strandendin)
+strandendout_ - Integer - Strand terminal positions: number of residues outside strand to be treated as terminal (-strandendout)
+secstrout_ - Excl - Output in alignment (-secstrout)
+

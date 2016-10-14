@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+	
+  <head>
+    <title>Glimmer</title>
+    <version>2.0.2</version>
+    <description>glimmer_extract - extracts subsequences corresponding to long orfs</description>
+    <authors>S. Salzberg</authors>
+    <reference>A.L. Delcher, D. Harmon, S. Kasif, O. White, and S.L. Salzberg. Improved microbial gene identification with GLIMMER. Nucleic Acids Research, 27:23, 4636-4641. </reference>
+    <reference>S. Salzberg, A. Delcher, S. Kasif, and O. White. Microbial gene identification using interpolated Markov models. Nucleic Acids Research 26:2 (1998), 544-548.</reference>
+    <doclink>http://bioweb.pasteur.fr/docs/gensoft-na.html#GLIMMER</doclink>
+  </head>
+
+  <command>glimmer_extract</command>
+  
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>glimmer_extract</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"glimmer-extract"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>genome_sequence</name>
+      <attributes>
+	<prompt>Genome sequence file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>list_coord</name>
+      <attributes>
+	<prompt>list of start/stop pairs</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<comment>
+	  <value> The second command-line argument is the name of the
+coordinate file. It must contain a list of pairs of positions in the
+first file, one per line. The format of each entry is: </value>
+	  <value> 'IDstring'  'start position'  'stop position'</value>
+	  <value>This file should contain no other information, so if you're using the output of glimmer or long-orfs , you'll have to cut off header lines.</value>
+	</comment>
+	<pipe>
+	  <pipetype>glimmer_orfs_list</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	<withpipe>
+	  <pipetype>glimmer_orfs_list</pipetype>
+	  <parametername>genome_sequence</parametername>
+	</withpipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>skip</name>
+      <attributes>
+	<prompt>skip the start codon (-skip)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -skip" : ""</code>
+	</format>
+	<group>3</group>
+	<comment>
+	  <value>makes the output omit the first 3 characters of each sequence, i.e., it skips over the start codon. This was the default behaviour of the previous version of the program. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>min_length</name>
+      <attributes>
+	<prompt>minimum length of sequences (-l) </prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -l $value" : ""</code>
+	</format>
+	<group>3</group>
+	<comment>
+	  <value>makes the output omit any sequences shorter than n characters. n includes the 3 skipped characters if the -skip switch is on. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<vdef><value>"glimmer_extract.out"</value></vdef>
+	<group>100</group>
+	<pipe>
+	  <pipetype>orfs</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+
+  </parameters>
+</pise>

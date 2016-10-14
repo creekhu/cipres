@@ -1,0 +1,420 @@
+BLIMPS (BLocks IMProved Searcher)   Version 3.5  2001/08
+(C) Copyright 1993-2000, Fred Hutchinson Cancer Research Center
+
+
+Probe Sequence: P27137|TFDF1_RALEJ  Maleylacetate reductase 1 - Ralstonia eutropha (strain JMP134) (Alcaligenes eutrophus). 
+
+Probe Size: 354 Amino Acids
+
+Probe File: sequence_file.data
+
+Target File (s) : /local/gensoft/lib/blimps/db/blocks.dat
+
+Records Searched:   29068
+
+Scores Done:                11035569
+
+Alignments Done:            11035569
+
+AC#         Description                                         Strength  Score RF    AA#
+IPB001670C  Iron-containing alcohol dehydrogenase                   1264   1236  0    145 PKTVIYDPLLTVDLPLAISVTSALNAIAHAAEGL
+IPB003351A  Dishevelled protein                                     1758   1203  0    153 lltVdlpLaisvTsaLnaIahAAEglysADLnpVL
+IPB001670A  Iron-containing alcohol dehydrogenase                   1187   1195  0     86 DSIIAIGGGSTTG
+IPB007477K  SAB                                                     2075   1189  0     53 IgdRvagyfDGAtmHvpVdVIqkaErafndtDadsiiAigggsTt
+IPB012987E  ROK, N-terminal                                         2188   1185  0     93 gGsttGlakiLsmnldvpslvIPttyAGSemttiwgvteggmkrtGrdpKvlpk
+IPB003351A  Dishevelled protein                                     1758   1179  0    190 mcKqgicalfdaiPrLVakPtdAEarTdAlFgAwm
+IPB007477K  SAB                                                     2075   1171  0     73 IqKaerafnDTDaDsiiAigggsttglakilsMnldvpslVipTt
+IPB007477K  SAB                                                     2075   1162  0    202 IprlvakptDAEartDalfgawmcgtaLcHlgMglhhklcHtlgg
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1152  0     53 IGDRvAGyFdGatmhvPVDVIqkAeRafndtdADsIiAigggsTTg
+IPB001670D  Iron-containing alcohol dehydrogenase                   1087   1143  0    238 HKLCHTLGGTLNLPHA
+IPB012987E  ROK, N-terminal                                         2188   1143  0     51 RpiGdrvaGYfDGatmhvpVdviqkaerafndtdadsIiaIgggSttglakils
+IPB012987E  ROK, N-terminal                                         2188   1142  0    172 AhaaeGlYSadlnPVleTmckqgicalfdaIprlvakptdaeartdAlfgawmc
+IPB012987E  ROK, N-terminal                                         2188   1138  0     59 gyfdGatmhvpvdvIqkaerafndtdAdSIIaiGGgsttglakilsmnldvpsl
+IPB012987E  ROK, N-terminal                                         2188   1131  0     97 tGlakilSmnLDvPslviptTyagsemttIwGvteggmKrtgrDpkvlpKtviy
+IPB011628E  Cleaved adhesin                                         2287   1129  0     19 AsalpdeigRLgArRplVlsspeqrelAkdiVrpigdrVa
+IPB012987E  ROK, N-terminal                                         2188   1125  0    135 krtGRdpkvlpktvIydpllTvdlpLAiSvtsalnaiahaaeglysAdlnpvle
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1124  0     16 aGTAsAlPdeigrlGArrplVlSspeqreLAkDivrpiGDrvagYF
+IPB003351A  Dishevelled protein                                     1758   1123  0    322 lrdqypnprplEsdaLetLlVnAfRgRrpDFK
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1118  0     74 qKAeRAFNdtdAdSiiAigGGSTTGLAkILSmnLdVPSLVIPtTYaGSemtTIw
+IPB012987E  ROK, N-terminal                                         2188   1116  0     99 lAkilSmnlDvpslVIpTtyagsemttiwgvteGGmkrtgrdpkvlpktvIydP
+IPB012987E  ROK, N-terminal                                         2188   1114  0     12 vvfGaGtaSaLpdeIgrlgarrPlvLsspeqrelakdIvrpigDrvAgyfdgat
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1110  0    198 lfDaIprlvakptDAearTdalfgawmcGTalchlGmgLhhKLchTLGgtL
+IPB007477K  SAB                                                     2075   1110  0    144 lpKtvIydplltVDlplAisvtsalnaiaHaaeglysAdlnpvlE
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1108  0    243 TLGGTLnlPhaetHaiVLPhalAynLpyAApAerLLqeVagSsdvpSaLydLAr
+IPB004063A  EDG-5 sphingosine 1-phosphate receptor signature        1279   1105  0    175 aeGLYSadLNP
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1104  0     82 dtdadsIiaiggGstTgLakilSmnldVpSlvipttyagseMttiWgvteggmkr
+IPB003298O  Apical membrane antigen 1 signature                     2085   1101  0    217 DalfgaWmcgtalcHlgmgLhhKlc
+IPB012987E  ROK, N-terminal                                         2188   1100  0     88 iiaiGGgSttglakIlsmnldvPslvipttyagsemttiwgvtEgGmkrtgrdP
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1099  0    144 lPktvIydplltvdlPlaisVtSAlnaiaHAaEgLysAdlNPvLet
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1098  0    122 emTtiWgvTeggmKrTgrdpkvlpktviydpLltvdlplaIsvtsalnAiahaaE
+IPB012987E  ROK, N-terminal                                         2188   1098  0     89 iAiGGGSttgLakilsmnldvpslvipttyaGsemttIwgvteggmkrtgrDpk
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1097  0    194 gIcaLFdAIPrlvAkpTdAEarTdALfGAwMcgtALchLgMgLhHklchtLgGt
+IPB003372   Photosystem II reaction center protein PsbL             1842   1097  0    136 rTgRdPkvLpkTviYdpLLTVdlPlaiSvtsaLN
+IPB004975A  Poxvirus trans-activator protein A1                     1284   1095  0    189 tMcKQgiCalfdaiPRlVAKPTdAEART
+IPB007477K  SAB                                                     2075   1095  0     75 kaeRafndtDADsiiaigggsttglAKilsmnldVpslVipttya
+IPB012987E  ROK, N-terminal                                         2188   1093  0     20 sAlpdeigrlgarrplvlsspeqreLAkdIvrpiGdRvagyfdgatmhvpvDvi
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1093  0    148 viYdpLltvdlplAiSvTSAlnAiAhaaeglYSAdLNpvletmcKq
+IPB012987E  ROK, N-terminal                                         2188   1092  0    277 llqevagSSDvpsalydlarnagapLslaeIGmrpedIprvRdlalrdqypnpr
+IPB007477K  SAB                                                     2075   1091  0     31 arrplVlSspEqrelaKDiVrpIgdrvagyfDgatmhVpVdviqk
+IPB012987E  ROK, N-terminal                                         2188   1091  0     39 speqRelakDIvrPIgdrvagyfdgatmhvpVdviQkaerafnDtdAdsiIaig
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1090  0    163 SVTSALnAIahAAeGlySAdLnpVletmckqGIcALFdAIprLvAkPTdaeart
+IPB012987E  ROK, N-terminal                                         2188   1090  0    200 dAipRlvakptDaearTdalfgawmcgtalchlGmglhhklcHtlGgtlnlpha
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1089  0    251 phaEthaivLphalayNLpyaapaerllqevagssdVpsalydlArNagApLsla
+IPB012987E  ROK, N-terminal                                         2188   1089  0     24 deiGRlgarrplvlsspeQrelaKDivrpIgdrvagyfdgatmhvpvdviqkae
+IPB012987E  ROK, N-terminal                                         2188   1089  0    133 gmkrtGRdpkvlpktViydplltvDLplaIsVtsalnaiahaaEglySadlnpv
+IPB001561A  Influenza matrix protein (M1)                           1728   1088  0     26 igrLGarrplVLSspEqrELakDI
+IPB001670B  Iron-containing alcohol dehydrogenase                   1024   1088  0    115 PTTYAGSEMT
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1088  0    288 PsAlYdlarNagaplSlaeigmRpedIprvRdlALrDQypNPrPle
+IPB002232D  5-hydroxytryptamine 6 receptor signature                1529   1087  0    212 aeArtdALfGaWmcgtaLC
+IPB007477K  SAB                                                     2075   1087  0    212 aEaRtdalfgAwmcgtalchLgmglhhklchtlggTlnlpHaETh
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1086  0    123 MtTiwgvteggmkrtgrdpkvlpktviydPlLtvdlplaIsvtsAlNaiAHaaeg
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1085  0    282 AGsSDVpSaLydlArnAgApLSlAeIgmrpedIPrVrdLaLrdqYpNPrPLESd
+IPB007477K  SAB                                                     2075   1085  0    238 hklchtlgGtlnLpHaEthAIvlphAlaynlpyaapaerllQEva
+IPB012987E  ROK, N-terminal                                         2188   1085  0     43 RelakdivrpIGdrVagyfdgatmhvpvdvIqKaerafndtdaDSiiAIgggst
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1084  0    181 adLnpvLeTmckqgicaLfDaipRlvakpTdaeartdalfgawmcgtalcHLgmg
+IPB012987E  ROK, N-terminal                                         2188   1084  0     -3    mkkftlDylsPrVvfgagtasaLpdeIgrlGarRplvlsspeqrelakDiv
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1084  0    235 gLhHkLchtlGgtlnlPhaEthAivLpHaLAYnLpyaApaerlLQe
+IPB003351A  Dishevelled protein                                     1758   1083  0     73 iqKaerafnDtDadsiiaIGGgSTtglaKiLsMnL
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1082  0    106 nLdvpSLvIPtTyAGsemttiwgVTegGMkrTgrdpkvLpktvIYdPlLtVDLP
+IPB002311C  Glycyl-tRNA synthetase beta subunit signature           1196   1082  0    276 RLLQEVAGSSDvPSAL
+IPB004080E  Foot-and-mouth disease virus VP1 coat protein sign      1639   1082  0    269 PYaAPaerLlqEvAGSSdv
+IPB001561E  Influenza matrix protein (M1)                           2062   1081  0     62 dgaTMhvPVDVIqkAERAfNdtdAdsiIaIgggStTGLAKiLsmNLdvpSlvIpt
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1081  0    239 kLcHtLGgtlnLphaEthaiVlphALaynLpYAApAerllqevags
+IPB001280E  Photosystem I psaA and psaB                             1813   1080  0    230 cHlGMglhhklChtLggtLNLphAeThAIVlpHaLaynlPYAapA
+IPB003351A  Dishevelled protein                                     1758   1080  0    232 lgmglhHklchTlggtlnLPhAEThaivLphaLAy
+IPB012562B  GUCT                                                    1419   1080  0     31 aRRPLVLsspeqRELAKdI
+IPB012987E  ROK, N-terminal                                         2188   1080  0     58 AGYfdGatmhvpvdVIqkaerafnDtdadsIiaiGggsttglakilsmnldvps
+IPB012987E  ROK, N-terminal                                         2188   1080  0    211 dAeaRtdalfgawmcgTalchlgmgLhhklchtlGgtlnlphaEthAivlphal
+IPB001843A  Fragilysin metallopeptidase (M10C) enterotoxin sig      1340   1079  0     77 eRaFNdtDaDSIiAIg
+IPB002682   Photosystem II reaction center protein PsbJ             1610   1079  0    212 AEARTdalFgAwMcGTALchLgmgLhHklcHtLGgtL
+IPB002959A  Tumour necrosis factor alpha (cachectin) signature      1628   1079  0    163 SvtSalNaIahAaEgLysa
+IPB003683   Cytochrome b6/f complex, subunit 5                      1716   1079  0    101 kIlSmnLdVpSlvIPtTyAGSeMTtiwgvteGGm
+IPB007477K  SAB                                                     2075   1079  0     40 pEqRelakdivrpigDrVagyfdgatmhvpvDviqkaerafndTD
+IPB007477K  SAB                                                     2075   1079  0     85 adsiIaIgGgsttglaKiLsmnldvpsLviPttyagsemttiwgv
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1078  0     35 lVLSSpeqrelAKdiVrPIGDrvAGYfdGAtmhVpVdvIqkaErAfNdtdADSI
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1078  0    200 dAIpRLvAkPtdAeaRTdAlfGAwmcgTALchLgmglhhkLchTLgGTLnLpha
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1078  0    227 TALchLgmgLhhKlchTLgGtlnlPhAeThaivLphaLAYnLpyAaPaerLLQe
+IPB007477K  SAB                                                     2075   1078  0    156 vdlplaISvtsALnaiahaAeglysAdLnpvletmcKqgicalfD
+IPB007477K  SAB                                                     2075   1078  0    282 agssdVpSalyDLarnagapLslaEigmrpeDiprvRdlalRdqy
+IPB009455D  Mitochondrial protein of unknown function DUF1082       1924   1077  0    144 LpKtviydPLLtvdlplaiSvtsalNaiahaaeglYSadlNPvletmCKqgIcaL
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1076  0     -4     MkKftLdYlSpRVVfGaGTAsAlpdeIGrLGArrplvLsspeQreLAkDI
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1076  0    238 hKLchtLggtLnlphaethaivlphalaynlpyaapaErllqEvAgSsdVpsaly
+IPB003351A  Dishevelled protein                                     1758   1076  0    284 ssdVpsaLyDlarnagapLSLAEigmRpeDiprVr
+IPB005015D  Vibrio thermostable direct hemolysin                    1771   1076  0    141 PkvLpktviYdplltvdLplaISVtSaLnaiaHa
+IPB012987E  ROK, N-terminal                                         2188   1075  0     52 piGdRvagyfdGatmhvpvdvIqKaerafndtdadsiIaigggsttglaKIlsm
+IPB012987E  ROK, N-terminal                                         2188   1075  0    128 gvteGGmkrtgrdPkVlpktvIydpLltvdlplaisvtsalnaiahAAeglysa
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1075  0    225 cGTAlchlGmGLhhklchtlggtlnLpHaEthAivLphalaynLpY
+IPB000647A  CTF/NF-I family                                         2245   1074  0     -1  mkkfTlDylsPrvvfgagtasAlpdeigrLgARrplvlsspEqRelakdi
+IPB000505D  5-hydroxytryptamine 1D receptor signature               1273   1073  0    226 GtaLChLgmgLHHk
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1073  0     21 alpdeigRlgaRrplvlsspeQRelakdivrpigdRVagyfdgatmhvpVdvIQk
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1073  0     53 igDRVagyfdgatmhvpvDviqkaeRafnDTdAdSiiAigggsTTgLakIL
+IPB001561A  Influenza matrix protein (M1)                           1728   1072  0    141 pkvLPkTviYdPlLTvDlPLaisV
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1072  0     40 peqrelakdivRpigDrvagyfdgatmhvPvdvIqKaErafndtdadsiiaIggg
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1072  0    128 gvTEggmkrtgRdpKvlpKtviydplltvdlplaisVtsalnaiAhaaeglysaD
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1072  0    132 ggmkRtgRdpkvlpKTviyDplltvdlplaisvtsalnaIahaaeglySAdLnpv
+IPB003351A  Dishevelled protein                                     1758   1072  0    122 EmttIwgvtEggmkrtgRdPkvlPKtviyDplLtv
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1071  0    119 AGseMTtIwGvTEgGmkrtGrdpkVLpkTVIydPLLtvdlpLaIsvtSaLnaIa
+IPB002161A  SNO glutamine amidotransferase                          1244   1071  0     82 DTDADSIIaiGGGSTTg
+IPB003351A  Dishevelled protein                                     1758   1071  0    250 lphaetHaivlphalAynLPyAAPaeRLLqevAgs
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1071  0     57 vagyfdgatmhvpvdviqkaerafndtdaDSIiaiGggsttgLAKiLsMnL
+IPB008779A  Plasmodium histidine-rich                               1852   1071  0     53 igdrvagyfdgAtmhvpVdviqkaerAFNdtdads
+IPB013725B  DNA replication factor C-terminal                       1313   1071  0     44 ElAKDIVRpiGdRVAGyfdGaTMHVp
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1070  0    128 gVTeGgmKrtGRdPkVlPKtviydPLlTVdlpLaisvtSaLnaIAhAaegLySa
+IPB012987E  ROK, N-terminal                                         2188   1070  0    238 hklchtlgGtLnlPhaeThaivlphalaynlpyaapaerllqevaGsSdvpsal
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1069  0     94 gSTTGLaKILsmNldVpSlvipTTyAgSeMtTIwGVteggMkrTgrdPkVLpkt
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1069  0    242 hTLGGTLNLPhAEthaiVlphalAynlpyAapAerLlqeVagssdvPSaLyDLa
+IPB002484B  Arterivirus nucleocapsid protein                        1862   1069  0    162 IsvtSalnaiahAAEGlysaDLNPvletMCkQgIcaLFdaiprlvAkptda
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1069  0    192 kqgicaLfdaIprlvaKptDaeARtdalfgawMcgtalchlgmglhhklcHtlgg
+IPB012987E  ROK, N-terminal                                         2188   1069  0    173 hAaeGlySaDLnpvleTmckqgicaLfdaIprlvakptdaeartdalfgawmcg
+IPB001746F  Polyhedrin                                              1981   1068  0    104 smNldvPslvIpTTyAgsEmttIwgvteggmKrtgrDpkvlpktvi
+IPB001746F  Polyhedrin                                              1981   1068  0    238 hklcHtlggtlnlphAEThaIvLphALAynlpyaAPaerLlQevAg
+IPB002774   Archaebacterial flagellin                               1459   1068  0     58 AGyfDgaTMhVpVdvIqkAerAfndTDAdSIIAiggGSTTGLAkILS
+IPB003351A  Dishevelled protein                                     1758   1068  0    140 dpKVlpktviyDplltVdLPLAiSvtsaLnaiAha
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1067  0    151 dpLltvdlpLaisvtsaLnaiahaaEglySadlnpvlETmckqgicaLfdaIprl
+IPB009455D  Mitochondrial protein of unknown function DUF1082       1924   1067  0     72 VIqKaeRafndtDadsIiaigGgsttgLakIlsmnldvPSlVIpttyagsemTtI
+IPB012987E  ROK, N-terminal                                         2188   1067  0    119 AGsemttiwgvteggmkrtgrdPKvLpktvIydplltvdlplaiSvtSalnaia
+IPB012987E  ROK, N-terminal                                         2188   1067  0    150 YDplltvdlpLaisVtsalnaIahaaeGlysadlnpvletmckqgicAlfdaiP
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1066  0     36 vlsspeqReLakdivrpigDrvAgYfdgaTmhvpvdViQkaerafndtdAdsIia
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1066  0    223 wmcgtaLchLgmGlhhKLchtlggtlnlphaethaiVlphalaynlpyAApaerl
+IPB007477K  SAB                                                     2075   1066  0     51 rpigdrvaGyfDgatmhVpVdvIQkAerafnDtdadsiiaigggs
+IPB012987E  ROK, N-terminal                                         2188   1066  0    169 NAiahaaeGlysadlnpvleTmcKqgicalfdaiprlvakptdaeartdalfga
+IPB012987E  ROK, N-terminal                                         2188   1066  0    297 NAGaplSlaeIGmrpediprvrdlaLrdqypnprplesdaletllvnAfrgrrP
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1065  0     20 SALpDeiGrLGArrplVLsspEqreLAkdIVrpiGdrvAgyfdgAtmhVPVDvI
+IPB003351A  Dishevelled protein                                     1758   1065  0     84 dadsIiaIgGgsTtgLaKIlsmnlDVpsLviptty
+IPB007477K  SAB                                                     2075   1065  0    130 tEggmkrTGrDpkvlpKtviydplltvdlplaiSVTsAlnaiaha
+IPB007477K  SAB                                                     2075   1065  0    173 haaeglySaDlnpvlEtmckQgIcalfdaiPrlvakptdaearTD
+IPB012987E  ROK, N-terminal                                         2188   1065  0    130 teGGmkRtGrdpkvlpkTviydPlltvdlplaisvtsalnaiahaaeglysadl
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1065  0     56 rvagyfDgAtMhvpvdViqkAErafNDtdAdSiIaiGGGsTtg
+IPB000317A  2C endopeptidase (C24) cysteine protease family si      1468   1064  0    227 talCHLGmGLhhkLcHTL
+IPB007477K  SAB                                                     2075   1064  0    169 naiahaaeGlysaDlnpVLetmcKqgicalfDaiprlVakptdaE
+IPB010559A  Histidine kinase internal region                        1496   1064  0     46 AkdiVRPIGdrVAGYFdGatmhVPVdVIqkAeRAFnDt
+IPB002682   Photosystem II reaction center protein PsbJ             1610   1063  0    136 rTGRdPkvLpkTVIydPLLTVdlpLaisvtSaLnAia
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1062  0     32 RRplVLsSPeqRElaKdivrpigdrVAGyFdGAtmhvpVdvIQkAerafndTDa
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1062  0     40 peqrELaKdivRpIGdrVAGyfdGAtMhVpVdviqkaerafndTdadSIIAiGg
+IPB007477K  SAB                                                     2075   1062  0    304 laeigmrpeDiprvrDlALrdqypnpRplesDaLeTllVnafrgr
+IPB007925A  TraM                                                    1767   1062  0    295 ArnaGaplsLaEiGmRpeDIpRvRdlalrdQypnpRpLesdALeTllvnAfrg
+IPB012987E  ROK, N-terminal                                         2188   1062  0     53 iGdrvagYfDgatmhVpvdViqkaerAfndtdadsiiaigggsttGlAkilsmn
+IPB012987E  ROK, N-terminal                                         2188   1062  0     87 siiaiGggSttGlakIlsmnldvpsLvipttyaGsemttiwgvteGgmkrtgrd
+IPB003492I  CLN3 Batten's disease protein (battenin) signature      1231   1061  0    159 pLAISVTSALNAIAhAAeGLySaDLNPVLe
+IPB000965E  Gamma-glutamyl phosphate reductase GPR                  1637   1060  0     71 dVIQkAerAFNDtdAdsiiAiGGGSTTgLakilsMnLDvP
+IPB002484B  Arterivirus nucleocapsid protein                        1862   1060  0     52 pIgdrvagyFdgATmhvpvDViqkAERAfndtdadsiiaIGGGStTglAki
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1060  0      7 yLSprvvfgagtasALpDEigrlgaRrplvlsSpeqrELaKdIvRpiGdrv
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1059  0    231 hLGmGLhhkLchtlGgTLnlphAeThAiVLphALAynLpYaapaerllQeVaGs
+IPB002682   Photosystem II reaction center protein PsbJ             1610   1059  0    216 TDAlfgaWMcGTAlchLgmGLhhkLcHtlggtLnlPh
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1059  0    186 vLEtmckqgicalfdaiprlvakpTdaearTdAlfGawMcgtalchLGMgL
+IPB005359   Protein of unknown function UPF0154                     1394   1059  0    277 LLqeVAGSSdVpsALydlaRnAgAPLSlAeIGMrPEdiPRVrdlAlrdQyp
+IPB009461C  Coronavirus NSP13                                       1434   1059  0    239 KlchtLgGTLNlphAEThaiVLPhaLAYNLpYAapAeRlLqeVAGSSdvpSal
+IPB003394A  Porin, opacity type                                     1826   1058  0     58 AGyfdGatmhVpvDviqkAERafnDtdadSiiaiGggSTTgL
+IPB003484D  Nodulation protein A, NodA                              1606   1058  0     67 hvPVdVIqkaERAfNDtdAdSIIaigGgsT
+IPB007477K  SAB                                                     2075   1058  0    302 lslaeIgmrpEDIprvrDLALrdQypnprplesdaletllVnafr
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1057  0    196 cALfDAiprLvAKPtdAeArtdAlfgAwMcGTALchlgmgLhhkLchTLggTLn
+IPB002484B  Arterivirus nucleocapsid protein                        1862   1057  0    259 vlPhAlaynLPyAAPaerllqevAGssdvpSalydlArNaGAplsLAeiGm
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1057  0     28 rlgaRrplvLsspEqreLakdivRpigdrvagyfdgatmhvpvdviqkAerafnD
+IPB002774   Archaebacterial flagellin                               1459   1057  0     40 peQreLakdIVrpigdrVAgyFdGATMHVpvdViQKAERAfnDTdAD
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1057  0    174 AaEGLysaDLnpvletmckqgicalfDaiprlvakPtDaeartdaLfGawm
+IPB004930I  Pneumovirus nucleocapsid protein                        1866   1057  0    203 PRlvakptdAEArtdaLfgawmcgtAlchLgmglhhklcHtLGGtlNlPh
+IPB012987E  ROK, N-terminal                                         2188   1057  0     60 YfdGatmhvpvDviqkaerafndtDadsiIaigGGsttglakilSmnldvpslv
+IPB001561A  Influenza matrix protein (M1)                           1728   1056  0    103 lSmnlDVpSlVipTTyAGsemTtI
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1056  0      5 ldylsprvvfgaGtasaLpDeigRlgarrPlvlsspeqrelakdivrpigdrVag
+IPB003298O  Apical membrane antigen 1 signature                     2085   1056  0     23 pdEigrlGarrplvlssPeqrElak
+IPB008410E  Cellulose synthase operon C, C-terminal                 1162   1056  0    127 WGVTeGGMkRTG
+IPB012987E  ROK, N-terminal                                         2188   1056  0     32 RrplvlSSpeqrelakdivrpIgdrvAGyfdGatmhvpvdviqkaerAfndtda
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1055  0    124 TTIwGVtegGmkrtGRdPKvLpKTVIydpLlTvdLplaIsvtsaLNAiahAaEg
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1055  0    264 lAyNLpyAaPaerllqeVAGsSdVPsALydlArnAgapLsLaEIgmrPedIprV
+IPB001090C  Ephrin receptor, ligand binding                         1596   1055  0    142 KVlpKTVIydPLltvdLpLAIsVTsAlnAIaHaaeGlYSadLnpVleTMck
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1055  0    185 pvLEtmckqgIcalfDaiprlvAkptdaeartdalfgawmcgtalchLgmgLhhk
+IPB003298O  Apical membrane antigen 1 signature                     2085   1055  0    211 DaEArtdalfgawmcgTalchlgmg
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1055  0    234 mGLhHklCHtLggtLNLphaethaiVlphAlAynLPyaApAEr
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1055  0    119 aGSemttiwgvtEgGmkrtGrDpkvLpktviYDpLLtvdlplaIsv
+IPB002128D  NADH dehydrogenase (ubiquinone), chloroplast chain      1932   1054  0    142 kVlPkTviydpLLtVdLPlAisvTSAlnAiaHAAeglySAdLnpVLeTmckQGIc
+IPB003449A  Coronavirus protein 7                                   2079   1054  0    216 tdaLFgAwmcgtalchLgmgLhhklchtLggtLNL
+IPB003484D  Nodulation protein A, NodA                              1606   1054  0    107 lDVpsLViPtTyAgSEmtTiwgvtegGmkr
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1054  0    249 nLphaethaivlpHALayNlpYaapaerllqevagsSDVpsALydLarnag
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1054  0    271 AapaeRLlqevagsSdvpSalYdlaRnaGAplSlaeigMrPEdiprvrdLa
+IPB007477K  SAB                                                     2075   1054  0    109 vpslvIpTtyAgsemttiwgvteggmKrtgrDpkVlpktViydpl
+IPB010723C  HemN, C-terminal                                        1353   1054  0     88 iIAIGGGStTgLA
+IPB012987E  ROK, N-terminal                                         2188   1054  0     47 kDivRpigdrvaGyfdgatmhvPvDviqkaerafndtdadsiiaiGggsttgla
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1054  0    158 lpLaISvtsaLNAiAHaaEgLySadLNpvLETmckqGiCaLfd
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1053  0    149 iydpLLtvdLplAIsVTSAlnaIAhAAeGLySAdLnPvLetmckqgicaLfDAI
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1053  0    224 mcGTALchLGmglHhKlchtLGgTlnlphAeThaiVlphaLaynLpyaaPAErL
+IPB004977B  S25 ribosomal protein                                   1332   1053  0     -1  MKKfTldyLSpRvvFGAGtASALpDEiGRLGArRPLVLSSPeQreLA
+IPB006586J  ADAM, cysteine-rich                                     1210   1053  0    221 GAWMCGTALCHl
+IPB007477K  SAB                                                     2075   1053  0    167 alnaIahaaeGlysaDlnpVLetmckqgicalfdaiprlVaKpTD
+IPB007477K  SAB                                                     2075   1053  0    253 aEthaIvlphAlaynlpyaApAeRllqEvagssdVpsAlydlarn
+IPB008779A  Plasmodium histidine-rich                               1852   1053  0    159 plaiSvtsaLnAiahAaegLysadlnpvletmCkq
+IPB012987E  ROK, N-terminal                                         2188   1053  0      5 lDYlspRvvfgaGtasalpdeIgrlgArrplVlsspeqrelakDivrpIgdrva
+IPB012987E  ROK, N-terminal                                         2188   1053  0     81 NDtdadSiiaIGGgstTglakIlsmnldvpslvipttyagsemttiwgvteggm
+IPB012987E  ROK, N-terminal                                         2188   1053  0    181 ADlnpvletmckqgIcalfdaIPrlvAkptdaeartdalfgawmcGtAlchlgm
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1052  0    241 chTlggtlnLphaEthaivlphAlaynlpyaapaERllQevagssdvpSAlydla
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1052  0    285 sdvpsaLydLaRnagapLslaeigmrpediprvrdlalrdqypnprpLesdalet
+IPB002959A  Tumour necrosis factor alpha (cachectin) signature      1628   1052  0    129 vTEggmkrtgrdpkVLPKT
+IPB003351A  Dishevelled protein                                     1758   1052  0    111 slvIpttyaGsEmttiwgVteggmKrTgRDpKvlp
+IPB005015D  Vibrio thermostable direct hemolysin                    1771   1052  0     34 PlvLsspEqrElakdiVrpigdrVagyFDgatmh
+IPB009455D  Mitochondrial protein of unknown function DUF1082       1924   1052  0    231 hLGMGlhhkLchtlGgtlnlphaEthaivLphalaYNlPyaapaeRllqevagss
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1051  0    117 TyAGSemttiwgvtegGmKrtGrdPkvLpktVIydplLTVdLpLAISvtSALNa
+IPB002128D  NADH dehydrogenase (ubiquinone), chloroplast chain      1932   1051  0    136 rTGrDPKvlPkTviydpLltvdlPlAISvtsalnAIAHAAegLySAdLNPVLeTM
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1051  0    109 vpslviptTyagsEmTtiwgvteggmkrtgrdpKvlpkTVIydplltvdlpLais
+IPB002774   Archaebacterial flagellin                               1459   1051  0    190 mckqGIcALfdaIprlVAkptdAeArtDAlFgAwmcGTAlcHlGMGL
+IPB002953G  Filoviridae VP35 signature                              1543   1051  0    314 IPRvrdlaLRdqyPNPr
+IPB003351A  Dishevelled protein                                     1758   1051  0    146 kTvIydpLltvDlPlAisVtsAlNaIahAaegLys
+IPB012987E  ROK, N-terminal                                         2188   1051  0     15 gAGtaSalpDeiGrlgarrplvlsspeqrelaKdivRpigdRvagyfdgatmhv
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1051  0      3 fTldYLsPrvvfgAGtasalpDeigRLgarRplvLsspeqrelaKd
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1051  0     62 dGAtmhvPvdviQKaErafNdtdAdsIiaiGggsttgLaKilsmnl
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1050  0    201 AIprLVaKPtdAEArtdAlfGawmcgtALchLgmGLhhklchtLggtlnLphAe
+IPB002128D  NADH dehydrogenase (ubiquinone), chloroplast chain      1932   1050  0    224 mCGTAlchlgmgLHhkLcHtLgGTlnlphAetHAiVlphALAynLPyaAPaErLL
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1050  0     97 tgLakiLsmnLdvpslvipttyAgsEmttiwgvtEggmkrtgrdpkvLpktvIyD
+IPB003298O  Apical membrane antigen 1 signature                     2085   1050  0    228 alchlgmGlhhklcHTlggtlnlPh
+IPB003484D  Nodulation protein A, NodA                              1606   1050  0     32 rrPLVLsSPeQReLaKdiVrpIgDRvagyf
+IPB003484D  Nodulation protein A, NodA                              1606   1050  0    151 DpLLTVdLPLAiSvTsalnAIAhaaeGLys
+IPB007733C  Agouti                                                  1957   1050  0    245 ggtLnlPhaeTHaivLPHALAynlPyAapaeRllqevagssdv
+IPB009455A  Mitochondrial protein of unknown function DUF1082       2006   1050  0    214 artdalFgawmcgtaLChLgmgLhhkLChtlgGtLn
+IPB012987E  ROK, N-terminal                                         2188   1050  0    190 mckqGicalfdaiPrlvakpTdaeartdalfGawmcgtalchlgmGlhhKlcht
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1050  0    129 vTeggmKRtgrdpKvlPktVIydplLtvDLplAisvtSalNaiaHa
+IPB001404A  Heat shock protein Hsp90                                1529   1049  0    254 eThAIvLpHALayNLpYAaPAeRLLqeVAgSSDvpSALYdLARNA
+IPB002508B  Cell wall hydrolase/autolysin                           1078   1049  0     46 AKDIVRPIGDRVAGYF
+IPB003298O  Apical membrane antigen 1 signature                     2085   1049  0      9 sPrVvFgagtasAlpdeigrlgarr
+IPB003624C  Leukemia inhibitory factor                              1488   1049  0    159 PlAiSvtSaLNAiAhaaeGLySadLnpv
+IPB007477K  SAB                                                     2075   1049  0    236 lhhklchTlgGtLnlphAethAIvlphalaynlpyaapaerllqE
+IPB012987E  ROK, N-terminal                                         2188   1049  0     74 QkaeRafndtdadsIIaigggsttgLAkilsmnldvpslvIpttyagSemttiw
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1049  0    261 PhAlaynlpYaapAerllqEVagssdvpsalYDLarNAGaplsLae
+IPB000997A  Cholinesterase signature                                1283   1048  0     55 DRVaGyFDGATMhVP
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1048  0    114 iPTTyAgSemtTiwGVTegGmkrTGrdpkVlpktvIydplLtvdLplaISVTSa
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1048  0    289 SALyDLaRnaGAplslAeIGmrpedIprVrdLALrdqypnprpLesdaLetLLV
+IPB001561A  Influenza matrix protein (M1)                           1728   1048  0     22 lpdeiGrlgarrpLVLSsPeQrEL
+IPB001746F  Polyhedrin                                              1981   1048  0    257 aivlphaLaYnlpyaApaErLLqEVAgssdVpsalyDlarnaGapl
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1048  0    234 MgLhhkLchtLgGtlnlphaethaivlpHalaynlpyaapaerllqevAgssdvp
+IPB011648C  KaiA                                                    1687   1048  0    309 mRpEDIprvrdLALRDqypnprpLesdAl
+IPB012987E  ROK, N-terminal                                         2188   1048  0     73 iqkaeraFnDtDadsIiaigggsttglakIlsmnldvpslvipttyAgsemtti
+IPB012987E  ROK, N-terminal                                         2188   1048  0    256 hAivlphalaynlPyaapaerllqevAGSsdVpsalydlarnagaplSlaeigm
+IPB001938C  Thaumatin, pathogenesis-related                         1170   1047  0    298 AGAPLSLAEIGM
+IPB003102D  Coactivator CBP, pKID                                   1535   1047  0    303 SLAeiGmRpEDipRvRdLaLrdqypnpRpLesdalETllvnafRg
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1047  0      3 ftldylsprVvfgagtaSalpdeIgRlgarrPlVlsSpeQRELAKdivrpi
+IPB007477K  SAB                                                     2075   1047  0    140 dpKvlpkTviyDplltvDLpLAIsvtsalnaiahaaeGlysadln
+IPB008779A  Plasmodium histidine-rich                               1852   1047  0    155 tVdlplaisvtsAlnAiahaaeglySAdlNpvlet
+IPB009455D  Mitochondrial protein of unknown function DUF1082       1924   1047  0     28 rLGaRRpLVLsSpeqrelakdivrpigdrvagyfdgaTmhvPvdVIqKaerafnd
+IPB009455D  Mitochondrial protein of unknown function DUF1082       1924   1047  0    107 LDVpSlvIPttyagsEmttiwGvteggmkrtgrdpkvlPktVIydplltvDlpLa
+IPB011680E  FEZ-like                                                1706   1047  0    301 pLslaeIgmRpediPrVrDLalrdqypnprpleSDaleTLLvNafrgrrPdf
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1047  0     18 tASAlpdeigrLgArrPlvlSspeqRElaKdivRpIgdrvagYFdg
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1046  0    101 kILSMnLdvPslvIptTyAGsEmTTIwGVTeGgmkrtgrdpkvLpktvIydpLL
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1046  0    269 pyAapAeRLLqevAGssdvpsalydLArnAGApLsLaeIgMrpedIPrVrdLAL
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1046  0    178 lysadlnpvLetmcKqgicalfdaiprlvakptdaearTdalfgAWmcgtaLchl
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1046  0    219 lfgawmcgTaLchlgmgLhhklchtlggtlnLphaethaIvlphAlaynlpyaap
+IPB002774   Archaebacterial flagellin                               1459   1046  0    139 RDpkvLPktVIydpLlTVdlPLAisVtSAlnaiAHaAEGlySAdLnp
+IPB003484A  Nodulation protein A, NodA                              1674   1046  0     66 MHvpVdviqkaERAfndtdADSIiAIgGGStTgLAKilSmNld
+IPB005359   Protein of unknown function UPF0154                     1394   1046  0     16 AGtasALpdeIgRLgarRpLvLssPEQRELaKdIvRpiGdRVagyfdgATM
+IPB007173A  D-arabinono-1,4-lactone oxidase                         1181   1046  0    192 kQgicalFDAIPRLVAkPTDAEArtDALfGAw
+IPB007477K  SAB                                                     2075   1046  0     69 pvdvIqkaerAfnDtDaDsiIAIgggsttglakilsmnldVpslv
+IPB007925A  TraM                                                    1767   1046  0    116 tTYaGsemttIwgvteggMkrtgRdpkvlpkTviydpLLtvdLplaiSVTsaL
+IPB011680E  FEZ-like                                                1706   1046  0    142 KvLpktviYdpllTvDLplaisvTsaLnAIahaaEglySadlNpvLetmCkq
+IPB000370C  Prostacyclin (prostanoid IP) receptor signature         1346   1045  0    214 ARtdaLfGawmcGTAL
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1045  0    287 vPsaLYdlarNAGAplsLAEiGmrPediprVrdLALrdqYpnprpleSdaLETL
+IPB002484B  Arterivirus nucleocapsid protein                        1862   1045  0    270 yaaPAERLlqevAGsSDVpsaLydlaRnaGaplsLaeigmrpediprVrdl
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1045  0    117 tyagsemtTiwgvteggmKrtgRdpkvlpktviydpllTVdlplAiSvtsaLnai
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1045  0    134 MKrtgrdpkvLpktviydplltvdlplaiSvtsalnaiahaaEglySadlnpVlE
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1045  0    272 apaERlLqevagssdvpsalydlarnagaPlslaEigmrpediprvrdlAlrdQy
+IPB002959A  Tumour necrosis factor alpha (cachectin) signature      1628   1045  0    164 vTsalnaiaHaAEGlySad
+IPB003277D  Kir3.4 inward rectifier K+ channel signature            1378   1045  0    134 MKRtGRdpkvLPktv
+IPB003484D  Nodulation protein A, NodA                              1606   1045  0     44 ElAkdIVrPIGdrvagyfDGATmhvpvdvi
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1045  0     85 AdSiIaigggSttglakilSmnldvpSlvipTtyaGSEMttiwgvTeGgmk
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1045  0    129 vtEGgmkrtgrdpkvLpKTviYdplltVdlplAISvtSalnAIAhaaegLy
+IPB007477K  SAB                                                     2075   1045  0     33 rplvlsspeqrELakDiVrpIgdRvAgyfdgatmhvpVdViQkaE
+IPB010723C  HemN, C-terminal                                        1353   1045  0     11 RVvFGaGTaSALP
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1045  0     34 PLvlsspeqrELaKdivrpigDRVAgyfDgAtmhvpvdvIqkaeRa
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1045  0    145 PkTviydPlltvDlplaiSVtsAlnaIahaAegLYsadlnpvleTm
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1044  0     51 RPIGDRvAgyfdGAtmhVPvDvIqkAerAFndtdAdsIIaIgggsttgLakiLs
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1044  0     71 dVIqKAeRaFNdtdadsiIAiGgGsttGLAkiLsmnldVpsLvIpttyagsEmt
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1044  0    136 RTGrDpKvLPkTvIydpLltvdlplAISVTSALnAIahAaegLysadlnPVLEt
+IPB003424C  Egg-laying hormone/atrial gland peptide                 1548   1044  0     46 akdivrPIGdRvAGyfDGAtmHvPvdviqkaeRafndT
+IPB003683   Cytochrome b6/f complex, subunit 5                      1716   1044  0    224 McgTaLChLgmGLhhklchtLggTlnLpHaethA
+IPB004080E  Foot-and-mouth disease virus VP1 coat protein sign      1639   1044  0    106 nldVPSlVipTTYAGSemt
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1044  0    179 ysadLnpvletmckQgicalfdaIpRlVakpTDaeartdalfgAwmCGtaL
+IPB008779A  Plasmodium histidine-rich                               1852   1044  0    141 pkvlpKtvIydplltvdlpLaisvtSAlNaiahaa
+IPB012983A  PHR                                                     1726   1044  0    232 LgmGlhhklchtlGGtlnlphaethaiVlPhAlaynLpYaapaEr
+IPB012987E  ROK, N-terminal                                         2188   1044  0    158 lplaiSvtSaLnaiahaaeglysaDLnpvletmckQgIcalfdaiprlvakptd
+IPB012987E  ROK, N-terminal                                         2188   1044  0    295 ArnaGaplSlaeigmrpediprvrDLAlrdqypnprplesdalEtllvnafrgr
+IPB003424C  Egg-laying hormone/atrial gland peptide                 1548   1043  0    315 PRvRdlaLRdqypnprplesdAletllvnafRgRRpdf
+IPB003844B  Protein of unknown function UPF0060                     1536   1043  0    214 ARTdAlfGawmcGTALChLGMGlHHKLcHTlGGtLNLphAETHaIV
+IPB012606B  Ribosomal S13S15 N-terminal                             1567   1043  0    278 LQEVAgSSDVPSaLYdLaRnAgAplSlaEIgmRpeDipRvRDLAlrdqYpnpRPl
+IPB012915   Reovirus RNA-dependent RNA polymerase lambda 3          1745   1043  0    222 awmcgtaLchlgmglhhkLChTlgGtLnLPHaeThaIvlpha
+IPB012987E  ROK, N-terminal                                         2188   1043  0    131 eGGmkrtgrDpkvlpkTviydplltvdlplaisvtsalnaIaHaaeglysaDln
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1042  0    174 aaeglysadLnpvleTmcKqgicalfdaiPrLvakptdaeartdAlfgAwmcgta
+IPB003351A  Dishevelled protein                                     1758   1042  0    290 alydlarnaGaplslAeiGmrPEDipRvRDLaLrd
+IPB008779A  Plasmodium histidine-rich                               1852   1042  0    147 tViydplltvdlplaiSVtsalNaiahaaegLySa
+IPB012987E  ROK, N-terminal                                         2188   1042  0     62 dGatmhvpvDviqkaerafndtdaDsiiaIgGgsttglakIlsmnldvpslviP
+IPB012987E  ROK, N-terminal                                         2188   1042  0    100 AkilsmnldvpslvIpTTyagsemttiwgvtegGmkRtgrdpkvlpktviyDpl
+IPB012987E  ROK, N-terminal                                         2188   1042  0    272 ApaeRllqevaGssdVpsalydlarnAGaplslaeigmrpediprvrdlalrdq
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1042  0    193 qGicaLfdaiPrlvakPTDAeaRtdaLfgawmcgtAlchlgmgLHh
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1042  0    266 ynlpYAaPaerLlQevagSsdvpsALydlaRnAgaplSlaeigmRp
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1041  0    196 caLfdaIprLvakptDaeartdAlfgawMcgtalchlgmglhhklchtlggtlnl
+IPB003298O  Apical membrane antigen 1 signature                     2085   1041  0    125 tiwgvteGgmKRtgrdpkVLpktvi
+IPB003683   Cytochrome b6/f complex, subunit 5                      1716   1041  0    214 artdaLFGawmcgtalchLGmglhhKLcHtlGGT
+IPB011680E  FEZ-like                                                1706   1041  0    139 rdpkVlPktviydPlltvDLplaIsvtsAlNaiahaaegLysadlnpVLEtm
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1041  0     11 RvvfgAGtasaLpdeigrlGArRplvLsspeqrELAKdivrPigdr
+IPB002128D  NADH dehydrogenase (ubiquinone), chloroplast chain      1932   1040  0    156 VdlPLAISVtsaLnAiahaAeglySAdlnPvLETMckqGIcALfDAiPrLVAkPT
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1040  0     74 qKaERafndtdadsiiaigggsttglakilsmnldvpslVIpttyagsemttIwg
+IPB002682   Photosystem II reaction center protein PsbJ             1610   1040  0     84 DadSIiaiggGsTTGLAkIlSMnLdVpslvipttyAG
+IPB003351A  Dishevelled protein                                     1758   1040  0     31 arrplvlsspEqrelAkdIvrPigDrvaGyFdGAt
+IPB004930I  Pneumovirus nucleocapsid protein                        1866   1040  0    144 lPkTviYDplltvdlpLaiSvtsaLnAiahaAEgLysAdlnpvleTmckQ
+IPB007535D  Catechol dioxygenase, N-terminal                        1432   1040  0    244 LgGTLnLphAeThAIVlpHALAYnLPYAAPAERLLQEVAGSSdvPS
+IPB007925A  TraM                                                    1767   1040  0    222 AwmcGTAlchLgmGLhhklchtlggtlnlphAEthaivLphALaynlpyAapa
+IPB012987E  ROK, N-terminal                                         2188   1040  0    292 YDlaRnagapLslaeIgmrpediprvrdlalrdqypnprplesDaletllvnaf
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1040  0    285 sdvpsAlydlarnAGAPlSlAeigmRpeDiprvRdLaLrDqypnpr
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1039  0     73 iqkaERafndtdAdsiiAIGGGsTTglAkIlSMnLdvpSlvIpTtyAgsemTTI
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1039  0     80 fNdTDAdSIiaiGgGsTtglakIlsmnLdVpSLVipttyagSEmttiwgVtEGg
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1039  0    252 hAeThAivLPhAlAynlPyAapAerLlqeVaGSsdVPSAlydLarNAgaPLsLa
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1039  0     -2   mkkftldyLsprvvfgagtaSalpdeigrLgarRplvlsspEqreLAkdIVrp
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1039  0    116 ttyagsemTtIwGvteggmkrtgRdpkVlPktvIydplltvdlplaisvtsalna
+IPB003351A  Dishevelled protein                                     1758   1039  0    306 EigmrpediprvrdlAlRdqyPnPRplesDaletL
+IPB003449A  Coronavirus protein 7                                   2079   1039  0    232 lgmgLHhkLchtLggtLnlphaethaivLpHaLay
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1039  0    110 PsLvIPttyagSemTtIwgvTEGgmkrtgrdpkVLPktviYdP
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1039  0    143 vLpKtViydplLtvdlPlaiSvtsALnaiahaAEgLySaDlnpvle
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1038  0     97 TGLaKILSmnldvPslViPttyAGseMTTIwGvteggmkrtgrdpkvlpktvIy
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1038  0    207 AKpTDAeArtdAlfGawmcGtalchLgmGLhhkLchtLggtLnLphAethAivL
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1038  0    300 apLslaeigmrpediprvRDlalRdQypnPrplesdaletllvnAfrgrrpdfk
+IPB003298O  Apical membrane antigen 1 signature                     2085   1038  0     56 rvagyFdGatmhvpvdviqkaEraf
+IPB003449A  Coronavirus protein 7                                   2079   1038  0    155 tvdLplAisVTsalnaiahaaegLysadLNpvLet
+IPB006952B  Retinal cGMP phosphodiesterase, gamma subunit           2007   1038  0    127 wGvtegGMkrtGrDpkVlpktviYdpLltvDLplaisv
+IPB012987E  ROK, N-terminal                                         2188   1038  0    148 viYdplltvDLplaIsvTsalnaiahAaeglysadlnpvletmckqgicalfda
+IPB000526E  Auxin binding protein signature                         1440   1037  0     61 FdgATmHVPVDviqka
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1037  0    118 yAGSEmttIwGvteGgmkrtGrdpkVlpkTViydpLltVdLPLaisvTsaLNAI
+IPB002421F  5'-3' exonuclease                                       1162   1037  0    182 DLNPVLETMcKQGI
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1037  0    309 MrpEdipRvrdlalrDqypnprplesdaletLlvNafrgrrpdfk
+IPB003351A  Dishevelled protein                                     1758   1037  0     54 gdrVagyfDGaTmhvpVdViqkAERafndtdadsi
+IPB007075A  RNA polymerase Rpb1, domain 6                           1856   1037  0    209 ptDAeartdalFgAwmcgTalchlgMGlhhkLChTlggT
+IPB012987E  ROK, N-terminal                                         2188   1037  0    127 wGvteGgmkrtGrdpkvlpkTviyDplltvdlplaisvtsalnaiahAaeglys
+IPB013543A  Calcium/calmodulin dependent protein kinase II, as      2127   1037  0     73 IQkaeRafnDtDadsiIaiGggSttglakiLSmNldvPSlvIpTty
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1037  0    185 PvLETmckQgicAlfdaiPrLvAkpTDaeArTdaLfGawmcgT
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1036  0     44 eLAkDIvRPiGdrvagyfdGatmhVpvdVIqkAerAFndTdadsiIAigggsTt
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1036  0    162 iSVTSALNaiahAAeglysADlnpVLeTMckqgicAlfdaIPrLvaKPtdAEAr
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1036  0     43 reLakdIvrpIgdrvagyfDgatmhvpVdviqkaERafndtdadsiiaigggstt
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1036  0    126 iwgvteggmkrtGrdpKvlpktviYdpllTvdlplaisvtsalnAiahAAeglys
+IPB002682   Photosystem II reaction center protein PsbJ             1610   1036  0    147 TViydPLltVdLplaIsVtSALnaiaHaAeglysAdL
+IPB003295H  Interleukin-1 alpha precursor signature                 1637   1036  0    291 LYdlArNaGaPlsLaEIgmrPedI
+IPB003298O  Apical membrane antigen 1 signature                     2085   1036  0    186 vlEtmckqgicalfdaiPrLvaKPt
+IPB007477K  SAB                                                     2075   1036  0     71 dviqkaerafnDtDaDsiiAIgggsttglakilSmnldVpslvip
+IPB007477K  SAB                                                     2075   1036  0    191 ckqgIcalfDAiprlvakptdAeartdalfgawmcgtAlcHlgmg
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1036  0     82 DtDaDSiiAigggsTtgLAkIlSmNLDvpslVipttyaGsEMT
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1036  0    270 yAApaerllqEvagsSdVpsAlydlarnagAplsLAeiGmrPedip
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1035  0      2 kFTlDYLSPrvvfgagTAsALpdeIgrLGArrpLvLsSpeqrELAkdiVrpiGd
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1035  0    155 TVdlpLaIsvtSAlnaiAhAaEglysAdLnpVLeTmckqgIcaLfdAiprLvAK
+IPB001112E  Endothelin-B receptor signature                         1523   1035  0    217 DalFGAwMCgta
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1035  0    120 gsemttIwgvteGgmkrtgrdpKvlpktviYdplltVdlplaisvtSalnaIaha
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1035  0    226 gtalchLgmgLhhKlchtlggtlnlphaeThaivlphalaynlpyaapAerLlQE
+IPB007477K  SAB                                                     2075   1035  0    186 vletmckqGiCALfdaiprlvAkptdaEartDaLfgawmcgtalc
+IPB007973D  TraE                                                    1145   1035  0     38 sSpeQRELAKDivRpIGDrVagYFDgaTMHVpVDviQ
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1034  0    212 AeArTdalfGawmcGtALchLGmGlhhkLchTLgGtlnLphaETHaivLPhaLa
+IPB002089C  Influenza virus matrix protein M2                       1863   1034  0    137 TGRdPKvLpktviyDpllTVDlplaiSVTsALn
+IPB002128D  NADH dehydrogenase (ubiquinone), chloroplast chain      1932   1034  0    220 FGawmcgtAlchLgmgLhHkLchTlggtlnLPHAeThAIVLphALAynLPyAAPa
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1034  0     47 kdivRpIgdrvaGyfDgatMhvpvdviqkaerafNdtdadsiiaigggSttglak
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1034  0    189 tmckqgIcaLfdaiprlvakptdaeartdalfgawmcgTalchlgmgLhhkLcht
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1034  0    209 ptdaeartdaLfGawmcgtalchlgmglHhkLchtlggTlnlphAethAivLpha
+IPB002682   Photosystem II reaction center protein PsbJ             1610   1034  0    106 NldVpsLvIptTyAGSemtTIwGVtegGmkrtgRdPk
+IPB002774   Archaebacterial flagellin                               1459   1034  0    156 VDlPlaiSvtsalnaIahAAeGlYsADLNpvLeTmckQGicalFdAi
+IPB003298O  Apical membrane antigen 1 signature                     2085   1034  0    140 DPkVlpktviydpllTvdlplaisv
+IPB003298O  Apical membrane antigen 1 signature                     2085   1034  0    200 DaiprlvakptdAearTdaLfgawm
+IPB003298O  Apical membrane antigen 1 signature                     2085   1034  0    272 aPaerllqEvagsSdvpsaLydlar
+IPB003351A  Dishevelled protein                                     1758   1034  0     30 garrplvLsspEqreLaKdiVrPigdRvAgyfdga
+IPB003372   Photosystem II reaction center protein PsbL             1842   1034  0    140 DPKvLPktviydpLltvdLplAIsvtSalNaIaH
+IPB003424C  Egg-laying hormone/atrial gland peptide                 1548   1034  0     10 PRvvFgagtasAlpDEiGrlGArrplvlsSpeqRelak
+IPB003449A  Coronavirus protein 7                                   2079   1034  0    251 phaetHAivlphalaynLpyaapaERLLqevagss
+IPB006841C  Coronavirus nonstructural protein NS2                   1604   1034  0    161 aiSvTSalNaIahAaegLysadlnpvLetmckqg
+IPB000684A  Eukaryotic RNA polymerase II heptapeptide repeat        1846   1033  0     19 aSalpdEigRLGaRRPlvlsspEqreLakdIvrpIgdrvaGYfdgaTMhvpvDVI
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1033  0      4 TLdyLSpRvvfgAgtasAlpDEIGrLgArrpLvLssPeqreLakdIvrpIgDrV
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1033  0    139 RDpkVLpKtviYdPllTVdlplAisVtSALnAIahAaeglySadLNPvLetmcK
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1033  0    223 wmcGTALchLGmGlhhkLchtlgGTLnLphaethAIvLphaLaynlPyaapaEr
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1033  0    255 ThAiVLphaLaYNlpyAAPAerllqevAGsSdvPsAlydlarnagaPlsLAEIg
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1033  0     10 prvvfgagTasalpdeigRlgaRRplvlsSpeQrElakdIvrpigdrvAgyfdga
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1033  0    163 svTsalnaiahaaEglysaDlnpvlEtmckqgicalfdaIprlvAkptdAeartD
+IPB003298O  Apical membrane antigen 1 signature                     2085   1033  0    121 semttiWGvteggmkrTgrdpkvlp
+IPB003351A  Dishevelled protein                                     1758   1033  0     39 speqrelakDivrPigDRVaGyfDgaTmhvpvdVi
+IPB003351A  Dishevelled protein                                     1758   1033  0    144 lpKtviydpllTvdlplaISVtSAlnaiAhaaegL
+IPB004930A  Pneumovirus nucleocapsid protein                        1828   1033  0    145 pktvIydplLtvdlpLaiSvtsalnaiahAaeglysaDLnPvLeTmCkqgi
+IPB012987E  ROK, N-terminal                                         2188   1033  0    139 RDpkvlpktvIydPllTvdlplaisvtsalnaiahaaeglysaDlnpvletmck
+IPB012987E  ROK, N-terminal                                         2188   1033  0    166 sAlnaiahaaeGlysadlnpvletmckqgIcalfdaiprlvakptdAeartDal
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1033  0     63 gATmhVpvdviqkAerafNdtDAdsiIaigGgSttglAkIlsmnld
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1033  0     87 siiAigGgsttglAkilsmNlDvpsLvipttYAgsEmttIwgvTeg
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1032  0    146 kTViydplLtvdlPlaiSvtsalnAIAhAAeGLysAdLnpvLETmcKqgIcaLF
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1032  0    167 ALnaiAhAaeGlySadlnPvLETmckqGIcaLfdAIPrLVakpTdaeartdaLF
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1032  0    185 pVLeTmcKqGicAlfdAiPrLvAkPtdAeArTdaLfgawmcgtaLchlgmgLhh
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1032  0    285 SDVpSALydLaRNAGapLslaEIGmrpedIprvrdLaLrdqypnprPleSdaLe
+IPB002608C  Paramyxovirus non-structural protein c                  2062   1032  0     29 lgarRpLvlsspeqrelaKDivRpigdrvagyfdgatmhVpvdviqKaerafndt
+IPB002774   Archaebacterial flagellin                               1459   1032  0     82 DtDADsiiAIgggSttglAkILSmnLDvpSLVipTTyAGSEMTTIwg
+IPB003298O  Apical membrane antigen 1 signature                     2085   1032  0     17 gtasalpdEigRlgarrPlvlssPe
+IPB003449A  Coronavirus protein 7                                   2079   1032  0    164 vtsaLnAiahaAegLysadlnpvLEtmckqgIcaL
+IPB003449A  Coronavirus protein 7                                   2079   1032  0    217 dalFgawmCgTALchLgmGlhhkLchtLggtLnlp
+IPB003687   Photosystem II reaction center protein PsbK             1794   1032  0    142 kvLPkTviydplLtvDLPLaisvtSALnaIahAAeGly
+IPB005015D  Vibrio thermostable direct hemolysin                    1771   1032  0    274 aErLlqevAgsSdvpsaLydlarNagapLslaEi
+IPB006711D  Hox9 activation region                                  1642   1032  0     43 RelAkdIvrpiGdrVagYFdgatMhvpvdviQ
+IPB006711D  Hox9 activation region                                  1642   1032  0    295 arnAGapLSLaEigmrpedipRvrDlalrdQy
+IPB012983A  PHR                                                     1726   1032  0    244 LggtlnlpHAethaivlphALaynLPyaaPAerLlqevagsSDvp
+IPB012987E  ROK, N-terminal                                         2188   1032  0    227 tAlchlgmGlhhklchTlggTlnlphAethaivlphalaynlpyaapAerllqe
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1032  0     27 grLgArRpLvLSSpEQrelakDivRPigdrvAgyFdGatmhvP
+IPB013593A  Pro-opiomelanocortin N-terminal                         1591   1032  0    127 WGvteGgmkrtgrDPKVLPkTviydPlLTVdlPLaisvtsAln
+IPB013607A  Parvovirus coat protein VP1, N-terminal                 1837   1032  0    286 dvpsaLydlarnagaPlslAeigmrpEdipRvrDLAlrdqyPnPRp
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1031  0     36 vLsSpeqReLakdIvRpigdrvAGyFdGATMhvPvdvIqkaerafNdTdadsII
+IPB001056   Photosystem II phosphoprotein PsbH                      1665   1031  0     93 gGsTTgLAkilSmnldVPslvipTTYAGseMTtiwgvteggmkrtgrdpkVLpK
+IPB001746F  Polyhedrin                                              1981   1031  0      6 dYlspRvVfgaGTaSAlpdEIgrlgArrplVlsspeqreLakdivr
+IPB002112D  Jun transcription factor signature                      1165   1031  0     15 gAGTASALpDEIGRL
+IPB002272A  Follicle stimulating hormone receptor precursor si      1267   1031  0    221 gAWmCgtALchLGmGlHHk
+IPB002608A  Paramyxovirus non-structural protein c                  1456   1031  0    251 pHaEThaivlPhalaynLpYaAPaerLlQevAGSSd
+

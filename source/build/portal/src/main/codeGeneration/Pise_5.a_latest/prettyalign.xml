@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SAM</title>
+    <version>3.2.1</version>
+    <description>prettyalign - make align2model output more readable</description>
+    <authors>R. Hughey &amp; A. Krogh</authors>
+    <reference>R. Hughey and A. Krogh., SAM: Sequence alignment and modeling software system. Technical Report UCSC-CRL-96-22, University of California, Santa Cruz, CA, September 1996. </reference>
+    <doclink>http://www.cse.ucsc.edu/research/compbio/ismb99.tutorial.html</doclink>
+  </head>
+
+
+  <command>prettyalign</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>prettyalign</name>
+      <attributes>
+	<format>
+	  <language>seqlab</language>
+	  <code>prettyalign</code>
+	  <language>perl</language>
+	  <code>"prettyalign"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>a2m</name>
+      <attributes>
+	<prompt>Alignment</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>output_format</name>
+      <attributes>
+	<prompt>Output format (-f and -I)</prompt>
+	<vdef><value>""</value></vdef>
+	<group>2</group>
+	<vlist>
+	  <value>f</value>
+	  <label>fasta (-f)</label>
+	  <value>i</value>
+	  <label>IG, turn off column index (-I)</label>
+	</vlist>
+	<flist>
+	  <value></value>
+	  <code>""</code>
+	  <value>i</value>
+	  <code>" -I"</code>
+	  <value>f</value>
+	  <code>" -f"</code>
+	</flist>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>column</name>
+      <attributes>
+	<prompt>Output column indices (-c)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(! $value)? " -c" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>sequence_index</name>
+      <attributes>
+	<prompt>Sequence index (number) on each line (-n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)?  " -n" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>sequence_ID</name>
+      <attributes>
+	<prompt>Toggle sequence ID to each line (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(! $value)? " -i" : ""</code>
+	</format>
+	<vdef><value>1</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>max_inserts</name>
+      <attributes>
+	<prompt>Max number of insertions printed (-m)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> (defined $value &amp;&amp; $value != $vdef)? " -m $value" : "" </code>
+	</format>
+	<vdef><value>2000000</value></vdef>
+	<group>2</group>
+	<comment>
+	  <value>Example: the sequence 'GacguacguG' could be printed out as 'Ga8guG' if 4 was the largest number of insertions that was to be allowed (note that the character 8 is using up one of the positions). By default, insertions of up to length ten thousand are fully printed.</value>
+	  <value>If set to zero, no insertions are printed, and no indication of the lack is given.</value>
+	  <value>If less than zero, insertion characters are not printed, and that number of digits is used to indicate the length of each insertion. </value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>linelength</name>
+      <attributes>
+	<prompt>Characters per line (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> (defined $value &amp;&amp; $value != $vdef)? " -l $value" : "" </code>
+	</format>
+	<vdef><value>70</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="String">
+      <name>space_char</name>
+      <attributes>
+	<prompt>Char to show inserts  (-s)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value &amp;&amp; $value ne $vdef)? " -s $value" : "" </code>
+	</format>
+	<vdef><value>.</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>max_length</name>
+      <attributes>
+	<prompt>Maximum length of input lines (-L)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> (defined $value &amp;&amp; $value != $vdef)? " -L $value" : "" </code>
+	</format>
+	<vdef><value>30000</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+  </parameters>
+</pise>

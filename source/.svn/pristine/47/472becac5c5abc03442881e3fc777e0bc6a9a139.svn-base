@@ -1,0 +1,10 @@
+curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER/validate \
+-F metadata.statusEmail=true \
+-F tool=MRBAYES_XSEDE \
+-F input.infile_=@infile.phy \
+-F vparam.mrbayesblockquery_=1 \
+-F vparam.nchains_specified_=8 \
+-F vparam.nruns_specified_=2 \
+-F vparam.run_version_=3 \
+-F vparam.runtime_=0.5 \
+-F vparam.set_beagle_params_=0 

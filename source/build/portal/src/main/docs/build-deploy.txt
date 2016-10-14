@@ -1,0 +1,92 @@
+Machines:
+-------------------------------------------------------------------------------
+Development: localhost
+Test:		 8ball.sdsc.edu/web
+Production:	 snooker.sdsc.edu/web _OR_ www.ngbw.org
+
+Building and Installing:
+-------------------------------------------------------------------------------
+1. download from svn;
+2. make the following changes:
+   + update pom.xml
+   + update struts.xml
+   + add MessageResources*
+   + update css/*
+   + add decorators/
+   + update iamges/
+   + copy index.jsp
+   + copy sitemesh.xml, decorators.xml to */webapp/WEB-INF/
+   + add pages/common/taglibs.jsp
+   + web.xml: change index.html to index.jsp,
+   			  add "sitemesh"
+   + to package tool pages:
+     + copy all tool(*).html files to src/main/webapp/pages/static/tool/
+	 + modify src/main/webapp/pages/user/tools.jsp:
+	   http://www.ngbw.org/***.php -> pages/tool/***.html
+
+   + in struts.xml, which stack to use:
+   	 use "defaultStack" if authentication is not required;
+     otherwise, do not specify any stack
+
+   ? current svn build has "Toolkit" -> tools.action ->NgbwSupport 
+	   (method changeToolTab which doesn't exit); I made the following 
+	   changes to make it work:
+	   struts.xml: tools -> org.ngbw.web.actions.CreateTask, changeToolTab
+	   change "list" to "input" (since changeToolTab returns input)
+
+	   A: Jeremy will take of this...
+
+   + copy /misc/www/projects/ngbw/includes/content/appfp.html to
+     src/main/webapp/pages/tool/appfp.html
+     - make changes to description of text (Cipres Portal 2.0)
+     - update <c:import> pages/user/login.jsp to include the updated appfp.html
+
+   + replace messages.jsp with my copy
+
+   + add and update css stylesheets
+
+   + in *.jsp: add <head>xxxx<head> to hightlight the selected tab, but enable default
+     to <My Workbench> in /pages/common/menu.jsp if none is specified
+
+   + update login.jsp page to combine reguster.jsp page in one
+
+   + I encounterd ELException in dataList.jsp: <s:select>...</s:select>
+     when running jetty but no in Tomcat:
+     + to fix this, add in web.xml:
+		<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<el-ignored>true</el-ignored>  
+		</jsp-property-group>
+		</jsp-config> 
+	+ but this caused the selected tab no longe highlighted, update memu.jsp:
+	  <%@ page isELIgnored='false'%>
+
+3. mvn clean install -Denv=dev
+4. cp target/web.war to $CATALINA_HOME/webapps/.
+5. http://localhost:8889/web (lcchan/theusual)
+
++  problems:
+   Toolkit tab doesn't work
+   "create an account" doesn't work when used the top 
+   clicking "Select Tool" in "Task Creation" takes too long:
+   	CreateTask.java:
+ 	getToolsOfType(toolType):
+	for (String tool: tools) {this loops takes too long when elevating type}
+
+Build cipres-portal-2.0:
+-------------------------------------------------------------------------------
+* codeGeneration is based on the SDK is installed in the same directory level
+  as the web compomnent since it writes files to the SDK's directory
+
+0. specify tomcat.url in .m2/settings.xml
+
+1. update pom.xml
+
+2. mvn clean install tomcat:undeploy tomcat:deploy -Denv=dev
+   http://localhost:8080/cipresweb
+
+_OR_
+   mvn jetty:run
+   http://localhost:9090/cipresweb
+

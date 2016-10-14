@@ -1,0 +1,156 @@
+package org.ngbw.examples;
+
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import org.ngbw.sdk.UserAuthenticationException;
+import org.ngbw.sdk.Workbench;
+import org.ngbw.sdk.WorkbenchSession;
+import org.ngbw.sdk.common.util.FileUtils;
+import org.ngbw.sdk.core.shared.TaskRunStage;
+import org.ngbw.sdk.core.types.DataFormat;
+import org.ngbw.sdk.core.types.DataType;
+import org.ngbw.sdk.core.types.EntityType;
+import org.ngbw.sdk.database.Folder;
+import org.ngbw.sdk.database.Task;
+import org.ngbw.sdk.database.TaskInputSourceDocument;
+import org.ngbw.sdk.database.TaskLogMessage;
+import org.ngbw.sdk.database.TaskOutputSourceDocument;
+import org.ngbw.sdk.database.User;
+
+
+public class BlastTaskSample {
+	// Register Tool
+	@SuppressWarnings("unchecked")
+	public static void main(String[] args) {
+		try {
+			/*================================================================
+			 * Login
+			 *================================================================*/
+			String username = "t";
+			String password = "t";
+			Workbench workbench = Workbench.getInstance();
+			WorkbenchSession session = null;
+			try {
+				session = workbench.getSession(username, password);
+			} catch (UserAuthenticationException e) {
+				System.err.println(e.toString());
+			}
+
+			User user = session.getUser();
+
+			/*================================================================
+			 * Folder setup
+			 *================================================================*/
+			String folderLabel = "Test Folder";
+			Folder folder = findFolderByLabel(user.findFolders(), folderLabel);
+
+			if (folder == null) {
+				folder = new Folder(user);
+
+				folder.setLabel(folderLabel);
+
+				folder.save();
+			}
+
+			/*================================================================
+			 * Task setup
+			 *================================================================*/
+
+			Task task = new Task(folder);
+
+			task.setToolId("BLASTP");
+			task.setLabel("BlastTask-" + System.currentTimeMillis());
+
+
+			Map<String, String> paramMap = task.toolParameters();
+			paramMap.put("protein_db_", "UNIPROT");
+			paramMap.put("blast2_", "blastp");
+			paramMap.put("filter_", "1");
+			paramMap.put("lower_case_", "0");
+			paramMap.put("Expect_", "10");
+			paramMap.put("gapped_alig_", "1");
+			paramMap.put("mismatch_", "-3");
+			paramMap.put("match_", "1");
+			paramMap.put("matrix_", "BLOSUM62");
+			paramMap.put("gc_query_", "1");
+			paramMap.put("gc_db_", "1");
+			paramMap.put("strand_", "3");
+			paramMap.put("Descriptions_", "500");
+			paramMap.put("Alignments_", "250");
+			paramMap.put("view_alignments_", "0");
+			paramMap.put("show_gi_", "0");
+			paramMap.put("believe_", "0");
+			paramMap.put("htmloutput_", "0");
+			paramMap.put("external_links_", "0");
+			paramMap.put("one_HSP_per_line_", "0");
+			paramMap.put("image_query_", "0");
+
+
+			byte[] data = FileUtils.readFile("../samplefiles/queryp.fasta");
+			TaskInputSourceDocument inputDoc = new TaskInputSourceDocument("infile.fsa", EntityType.PROTEIN, DataType.SEQUENCE, DataFormat.FASTA, data, false);
+			List<TaskInputSourceDocument> inputList = new ArrayList<TaskInputSourceDocument>();
+
+			inputList.add(inputDoc);
+
+			task.input().put("query_", inputList);
+
+			task.setStage(TaskRunStage.READY);
+
+			task.save();
+
+			Future<Task> ah = workbench.saveAndSubmitTask(task, folder, null);
+
+			try {
+				System.out.println("Waiting for TaskAgent to finish");
+				task = ah.get();
+				System.out.println("TaskAgent is done");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			for (TaskLogMessage msg : task.logMessages())
+				System.out.println(msg);
+
+			Map<String, List<TaskOutputSourceDocument>> outputMap = task.output();
+
+			for (String param : outputMap.keySet()) {
+				List<TaskOutputSourceDocument> paramOutput = outputMap.get(param);
+
+				for (TaskOutputSourceDocument file : paramOutput) {
+					System.out.println(file.getName() + ": " + file.getType());
+					System.out.println();
+					System.out.println(new String(file.getData()));
+				}
+			}
+
+			task.delete();
+		}
+		catch (Exception err) {
+			err.printStackTrace(System.err);
+
+			System.exit(-1);
+		}
+	}// end main
+
+	private static Folder findFolderByLabel(List<Folder> folders, String label)
+	{
+		for (Iterator<Folder> elements = folders.iterator() ; elements.hasNext() ; ) {
+			Folder folder = elements.next();
+
+			if (folder.getLabel().equals(label))
+				return folder;
+		}
+
+		return null;
+	}
+}

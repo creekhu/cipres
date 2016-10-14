@@ -1,0 +1,6 @@
+mysqldump --defaults-extra-file=~/.mycipresprod.cnf --set-gtid-purged=OFF cipres 
+
+
+
+
+

@@ -1,0 +1,27 @@
+POY
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+infile2_ - InFile - Input File
+infile3_ - InFile - Input File
+infile4_ - InFile - Input File
+infile5_ - InFile - Input File
+infile6_ - InFile - Input File
+substitutions_ - Integer - Substitution cost
+indels_ - Integer - Individual insertion and deletion cost
+gapopening_ - Integer - Gap opening cost
+terminalsfile_ - InFile - Terminals file
+synonyms_ - InFile - Synonyms file
+outgroup_ - String - Outgroup
+constraint_ - InFile - Constraint tree
+randomseed_ - Integer - Random seed for the program initialization.
+Section: ****************************************************************************
+supportparagraph
+*************************************************************************************
+support_ - Excl - Support calculation (requires a tree in one of the
+input files)
+pseudoreplicates_ - Integer - Number of pseudoreplicates for bootstrap and jakknife
+remove_ - Integer -
+Percentage of characters to be removed per
+pseudoreplicate during jackknife
+outputfile_ - Results -
+

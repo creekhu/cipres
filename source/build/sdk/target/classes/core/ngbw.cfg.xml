@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+	<comment>NGBW Configuration File - Default Settings - Use as Template for your own cfg file and place it in the root of the classpath.</comment>
+	<entry key="CoreRegistryBuilder">org.ngbw.sdk.core.DefaultCoreRegistryBuilder</entry>
+	<entry key="CoreRegistryConfig">core/core-registry.cfg.xml</entry>
+	<entry key="DatasetRegistryBuilder">org.ngbw.sdk.data.DefaultDatasetRegistryBuilder</entry>
+	<entry key="DatasetRegistryConfig">data/dataset-registry.cfg.xml</entry>
+	<entry key="ToolRegistryBuilder">org.ngbw.sdk.tool.DefaultToolRegistryBuilder</entry>
+
+	<entry key="ToolRegistryConfig">tool/tool-registry.cfg.xml</entry>
+	<entry key="ExtraTools">tool/.*-reg\.xml </entry>
+
+	<entry key="ConversionRegistryBuilder">org.ngbw.sdk.conversion.DefaultConversionRegistryBuilder</entry>
+	<entry key="ConversionRegistryConfig">conversion/conversion-registry.cfg.xml</entry>
+</properties>

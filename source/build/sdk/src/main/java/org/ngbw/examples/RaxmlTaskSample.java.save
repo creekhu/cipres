@@ -1,0 +1,159 @@
+package org.ngbw.examples;
+
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import org.ngbw.sdk.UserAuthenticationException;
+import org.ngbw.sdk.Workbench;
+import org.ngbw.sdk.WorkbenchSession;
+import org.ngbw.sdk.common.util.Resource;
+import org.ngbw.sdk.core.shared.TaskRunStage;
+import org.ngbw.sdk.core.types.DataFormat;
+import org.ngbw.sdk.core.types.DataType;
+import org.ngbw.sdk.core.types.EntityType;
+import org.ngbw.sdk.database.Folder;
+import org.ngbw.sdk.database.Task;
+import org.ngbw.sdk.database.TaskInputSourceDocument;
+import org.ngbw.sdk.database.TaskLogMessage;
+import org.ngbw.sdk.database.TaskOutputSourceDocument;
+import org.ngbw.sdk.database.User;
+
+
+public class RaxmlTaskSample 
+{
+	// Register Tool
+	@SuppressWarnings("unchecked")
+	public static void main(String[] args)
+	{
+		try {
+			/*================================================================
+			 * Login
+			 *================================================================*/
+			String username = "terri";
+			String password = "berryterri";
+
+			Workbench workbench = Workbench.getInstance();
+			WorkbenchSession session = null;
+			try 
+			{
+				session = workbench.getSession(username, password);
+			} catch (UserAuthenticationException e) 
+			{
+				System.err.println(e.toString());
+			}
+
+			User user = session.getUser();
+
+			/*================================================================
+			 * Folder setup
+			 *	If we don't have any folders create one, otherwise use the first
+			 *================================================================*/
+			String folderLabel = "Auto Folder";
+			Folder folder = findFolderByLabel(user.findFolders(), folderLabel);
+
+			if (folder == null) {
+				folder = new Folder(user);
+
+				folder.setLabel(folderLabel);
+
+				folder.save();
+			}
+
+			/*================================================================
+			 * Task setup
+			 *================================================================*/
+
+			Task task = new Task(folder);
+
+			task.setToolId("RAXMLHPC");
+			task.setLabel("raxml-" + System.currentTimeMillis());
+
+
+			Map<String, String> paramMap = task.toolParameters();
+			paramMap.put("datatype_", "dna");
+			paramMap.put("mlsearch_", "0");
+			paramMap.put("invariable_", "");
+			paramMap.put("matrix_", "DAYHOFF");
+			paramMap.put("empirical_", "");
+			paramMap.put("bootstop_", "auto");
+			paramMap.put("bootstrap_seed_", "12345");
+			paramMap.put("parsimony_seed_", "12345");
+
+			String infile = "src/main/java/org/ngbw/examples/tooltest/RAXMLHPC/RAXMLHPC_in.txt";
+			byte[] data = Resource.getResource(infile).getBytes();
+			TaskInputSourceDocument inputDoc = new TaskInputSourceDocument("unused_name", EntityType.NUCLEIC_ACID, DataType.SEQUENCE_ALIGNMENT, DataFormat.PHYLIP, data, false);
+			List<TaskInputSourceDocument> inputList = new ArrayList<TaskInputSourceDocument>();
+
+			inputList.add(inputDoc);
+
+			task.input().put("infile_", inputList);
+
+			task.setStage(TaskRunStage.READY);
+
+			task.save();
+
+			Future<Task> ah = workbench.saveAndSubmitTask(task, folder, null);
+
+			try 
+			{
+				//boolean isDone = false;
+				System.out.println("Waiting for TaskAgent to finish");
+				/*
+			while (isDone == false) 
+				isDone = ah.isDone();
+				 */
+				task = ah.get();
+				System.out.println("TaskAgent is done");
+			} catch (InterruptedException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			for (TaskLogMessage msg : task.logMessages())
+				System.out.println(msg);
+
+			Map<String, List<TaskOutputSourceDocument>> outputMap = task.output();
+
+			for (String param : outputMap.keySet()) 
+			{
+				List<TaskOutputSourceDocument> paramOutput = outputMap.get(param);
+
+				for (TaskOutputSourceDocument file : paramOutput)
+				{
+					System.out.println(file.getName() + ": " + file.getType());
+					System.out.println();
+					System.out.println(new String(file.getData()));
+				}
+			}
+
+			task.delete();
+		}
+		catch (Exception err) {
+			err.printStackTrace(System.err);
+
+			System.exit(-1);
+		}
+	}// end main
+
+	private static Folder findFolderByLabel(List<Folder> folders, String label)
+	{
+		for (Iterator<Folder> elements = folders.iterator() ; elements.hasNext() ; ) {
+			Folder folder = elements.next();
+
+			if (folder.getLabel().equals(label))
+				return folder;
+		}
+
+		return null;
+	}
+}

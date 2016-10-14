@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head><title>SAM: hmmer2sam (R. Hughey &amp; A. Krogh)</title></head>
+
+
+<command>hmmer2sam</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>hmmer2sam</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>hmmer2sam</code>
+		<language>perl</language>
+		<code>"hmmer2sam"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>hmmfile</name>
+<attributes>
+
+	<prompt>HMMER model file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+		<pipetype>hmm_textfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="OutFile">
+<name>model_file</name>
+<attributes>
+
+	<prompt>SAM model file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>sam_model</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

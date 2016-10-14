@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>EMOWSE</title>
+<description>Protein identification by mass spectrometry (EMBOSS)</description>
+<category>protein:composition</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/emowse.html</doclink>
+</head>
+
+<command>emowse</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- protein [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>protein</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>infile</name>
+	<attributes>
+		<prompt>Name of molecular weight data file (-infile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -infile=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>weight</name>
+	<attributes>
+		<prompt>Whole sequence molwt (-weight)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -weight=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>enzyme</name>
+	<attributes>
+		<prompt>Enzyme or reagent -- Enzymes and reagents (-enzyme)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>Trypsin</label>
+				<value>2</value>
+				<label>Lys-C</label>
+				<value>3</value>
+				<label>Arg-C</label>
+				<value>4</value>
+				<label>Asp-N</label>
+				<value>5</value>
+				<label>V8-bicarb</label>
+				<value>6</value>
+				<label>V8-phosph</label>
+				<value>7</value>
+				<label>Chymotrypsin</label>
+				<value>8</value>
+				<label>CNBr</label>
+			</vlist>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -enzyme=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>aadata</name>
+	<attributes>
+		<prompt>Amino acid data file (-aadata)</prompt>
+		<vdef>
+			<value>Eamino.dat</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -aadata=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Molecular weight data for amino acids</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>pcrange</name>
+	<attributes>
+		<prompt>Allowed whole sequence weight variability (-pcrange)</prompt>
+		<vdef>
+			<value>25</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -pcrange=$value" : ""</code>
+		</format>
+		<group>6</group>
+		<scalemax><value>75</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>frequencies</name>
+	<attributes>
+		<prompt>Frequencies file (-frequencies)</prompt>
+		<vdef>
+			<value>Efreqs.dat</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -frequencies=$value" : ""</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>tolerance</name>
+	<attributes>
+		<prompt>Tolerance (-tolerance)</prompt>
+		<vdef>
+			<value>0.1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -tolerance=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<scalemin><value>0.1</value></scalemin>
+		<scalemax><value>1.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+	<name>partials</name>
+	<attributes>
+		<prompt>Partials factor (-partials)</prompt>
+		<vdef>
+			<value>0.4</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -partials=$value" : ""</code>
+		</format>
+		<group>9</group>
+		<scalemin><value>0.1</value></scalemin>
+		<scalemax><value>1.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>10</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>11</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

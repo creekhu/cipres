@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>RESTRICT</title>
+<description>Finds restriction enzyme cleavage sites (EMBOSS)</description>
+<category>nucleic:restriction</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/restrict.html</doclink>
+</head>
+
+<command>restrict</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- DNA [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>dna</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>sitelen</name>
+	<attributes>
+		<prompt>Minimum recognition site length (-sitelen)</prompt>
+		<vdef>
+			<value>4</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -sitelen=$value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>This sets the minimum length of the restriction enzyme recognition site. Any enzymes with sites shorter than this will be ignored.</value>
+		</comment>
+		<scalemin><value>2</value></scalemin>
+		<scalemax><value>20</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>enzymes</name>
+	<attributes>
+		<prompt>Comma separated enzyme list (-enzymes)</prompt>
+		<vdef>
+			<value>all</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -enzymes=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>The name 'all' reads in all enzyme names from the REBASE database. You can specify enzymes by giving their names with commas between then, such as: 'HincII,hinfI,ppiI,hindiii'. &lt;BR&gt; The case of the names is not important. You can specify a file of enzyme names to read in by giving the name of the file holding the enzyme names with a '\@' character in front of it, for example, '\@enz.list'. &lt;BR&gt; Blank lines and lines starting with a hash character or '!' are ignored and all other lines are concatenated together with a comma character ',' and then treated as the list of enzymes to search for. &lt;BR&gt; An example of a file of enzyme names is: &lt;BR&gt; ! my enzymes &lt;BR&gt; HincII, ppiII &lt;BR&gt; ! other enzymes &lt;BR&gt; hindiii &lt;BR&gt; HinfI &lt;BR&gt; PpiI</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>min</name>
+	<attributes>
+		<prompt>Minimum cuts per RE (-min)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -min=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>This sets the minimum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut fewer times than this will be ignored.</value>
+		</comment>
+		<scalemin><value>1</value></scalemin>
+		<scalemax><value>1000</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>max</name>
+	<attributes>
+		<prompt>Maximum cuts per RE (-max)</prompt>
+		<vdef>
+			<value>2000000000</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -max=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This sets the maximum number of cuts for any restriction enzyme that will be considered. Any enzymes that cut more times than this will be ignored.</value>
+		</comment>
+		<scalemin>
+			<language>acd</language>
+			<code>$min</code>
+		</scalemin>
+		<scalemax><value>2000000000</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>solofragment</name>
+	<attributes>
+		<prompt>List individual enzymes with their fragments (-solofragment)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -solofragment" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>This gives the fragment lengths of the forward sense strand produced by complete restriction by each restriction enzyme on it own. Results are added to the tail section of the report.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>single</name>
+	<attributes>
+		<prompt>Force single site only cuts (-single)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -single" : ""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>If this is set then this forces the values of the mincuts and maxcuts qualifiers to both be 1. Any other value you may have set them to will be ignored.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>blunt</name>
+	<attributes>
+		<prompt>Allow blunt end cutters (-blunt)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noblunt"</code>
+		</format>
+		<group>8</group>
+		<comment>
+			<value>This allows those enzymes which cut at the same position on the forward and reverse strands to be considered.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>sticky</name>
+	<attributes>
+		<prompt>Allow sticky end cutters (-sticky)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nosticky"</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>This allows those enzymes which cut at different positions on the forward and reverse strands, leaving an overhang, to be considered.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>ambiguity</name>
+	<attributes>
+		<prompt>Allow ambiguous matches (-ambiguity)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -noambiguity"</code>
+		</format>
+		<group>10</group>
+		<comment>
+			<value>This allows those enzymes which have one or more 'N' ambiguity codes in their pattern to be considered</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>plasmid</name>
+	<attributes>
+		<prompt>Allow circular DNA (-plasmid)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -plasmid" : ""</code>
+		</format>
+		<group>11</group>
+		<comment>
+			<value>If this is set then this allows searches for restriction enzyme recognition site and cut postions that span the end of the sequence to be considered.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>commercial</name>
+	<attributes>
+		<prompt>Only enzymes with suppliers (-commercial)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nocommercial"</code>
+		</format>
+		<group>12</group>
+		<comment>
+			<value>If this is set, then only those enzymes with a commercial supplier will be searched for. This qualifier is ignored if you have specified an explicit list of enzymes to search for, rather than searching through 'all' the enzymes in the REBASE database. It is assumed that, if you are asking for an explicit enzyme, then you probably know where to get it from and so all enzymes names that you have asked to be searched for, and which cut, will be reported whether or not they have a commercial supplier.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>datafile</name>
+	<attributes>
+		<prompt>Alternative RE data file (-datafile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -datafile=$value" : ""</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>limit</name>
+	<attributes>
+		<prompt>Limits reports to one isoschizomer (-limit)</prompt>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? "" : " -nolimit"</code>
+		</format>
+		<group>14</group>
+		<comment>
+			<value>This limits the reporting of enzymes to just one enzyme from each group of isoschizomers. The enzyme chosen to represent an isoschizomer group is the prototype indicated in the data file 'embossre.equ', which is created by the program 'rebaseextract'. If you prefer different prototypes to be used, make a copy of embossre.equ in your home directory and edit it. If this value is set to be false then all of the input enzymes will be reported. You might like to set this to false if you are supplying an explicit set of enzymes rather than searching 'all' of them.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>alphabetic</name>
+	<attributes>
+		<prompt>Sort output alphabetically (-alphabetic)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -alphabetic" : ""</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>fragments</name>
+	<attributes>
+		<prompt>Show fragment lengths (-fragments)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -fragments" : ""</code>
+		</format>
+		<group>16</group>
+		<comment>
+			<value>This gives the fragment lengths of the forward sense strand produced by complete restriction using all of the input enzymes together. Results are added to the tail section of the report.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>name</name>
+	<attributes>
+		<prompt>Show sequence name (-name)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -name" : ""</code>
+		</format>
+		<group>17</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>18</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+		<name>rscore</name>
+		<attributes>
+			<prompt>Display score (-rscore)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -rscore" : "" </code>
+			</format>
+			<group>19</group>
+			</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>20</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

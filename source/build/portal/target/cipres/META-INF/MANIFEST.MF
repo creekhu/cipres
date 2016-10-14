@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Created-By: 1.5.0 (Sun Microsystems Inc.)
+
+Name: org/ngbw/sdk/
+Sealed: true
+Implementation-Vendor: Next Generation Biology Workbench
+Implementation-Title: org.ngbw.sdk
+Specification-Title: NGBW Software Development Kit
+Implementation-Version: 1.2
+
+Name: org/ngbw/web/
+Sealed: true
+Implementation-Vendor: Next Generation Biology Workbench
+Implementation-Title: org.ngbw.web
+Specification-Title: NGBW Web Application
+Implementation-Version: 1.2
+

@@ -1,0 +1,48 @@
+PEPSTATS of SQ from 1 to 357
+
+Molecular weight = 40006.51  		Residues = 357   
+Average Residue Weight  = 112.063 	Charge   = 1.0   
+Isoelectric Point = 6.8127
+A280 Molar Extinction Coefficient  = 63580   
+A280 Extinction Coefficient 1mg/ml = 1.59      
+Improbability of expression in inclusion bodies = 0.763
+
+Residue		Number		Mole%		DayhoffStat
+A = Ala		38		10.644 		1.238  	
+B = Asx		0		0.000  		0.000  	
+C = Cys		0		0.000  		0.000  	
+D = Asp		27		7.563  		1.375  	
+E = Glu		17		4.762  		0.794  	
+F = Phe		15		4.202  		1.167  	
+G = Gly		31		8.683  		1.034  	
+H = His		6		1.681  		0.840  	
+I = Ile		12		3.361  		0.747  	
+J = ---		0		0.000  		0.000  	
+K = Lys		26		7.283  		1.103  	
+L = Leu		34		9.524  		1.287  	
+M = Met		4		1.120  		0.659  	
+N = Asn		31		8.683  		2.019  	
+O = ---		0		0.000  		0.000  	
+P = Pro		15		4.202  		0.808  	
+Q = Gln		12		3.361  		0.862  	
+R = Arg		16		4.482  		0.915  	
+S = Ser		14		3.922  		0.560  	
+T = Thr		15		4.202  		0.689  	
+U = ---		0		0.000  		0.000  	
+V = Val		15		4.202  		0.637  	
+W = Trp		6		1.681  		1.293  	
+X = Xaa		0		0.000  		0.000  	
+Y = Tyr		23		6.443  		1.895  	
+Z = Glx		0		0.000  		0.000  	
+
+Property	Residues		Number		Mole%
+Tiny		(A+C+G+S+T)		98		27.451
+Small		(A+B+C+D+G+N+P+S+T+V)	186		52.101
+Aliphatic	(I+L+V)			61		17.087
+Aromatic	(F+H+W+Y)		50		14.006
+Non-polar	(A+C+F+G+I+L+M+P+V+W+Y)	193		54.062
+Polar		(D+E+H+K+N+Q+R+S+T+Z)	164		45.938
+Charged		(B+D+E+H+K+R+Z)		92		25.770
+Basic		(H+K+R)			48		13.445
+Acidic		(B+D+E+Z)		44		12.325
+

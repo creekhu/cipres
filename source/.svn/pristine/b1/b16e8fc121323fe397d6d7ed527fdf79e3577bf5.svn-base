@@ -1,0 +1,20 @@
+PROBCONS
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+sequenceType_ - Excl - Data Type
+outputFormat_ - Excl - Output file format
+outputMFAFile_ - OutFile -
+outputMFAPairwise_ - Results -
+outputClustalWFile_ - OutFile -
+outputClustalWPairwise_ - Results -
+numConsistencyReps_ - Excl - Number of passes of consistency transformation (--consistency)
+numRefinementReps_ - Integer - Number of passes of iterative refinement, up to 1000 (--iterative-refinement)
+numPretrainingReps_ - Integer - Number of rounds of pretraining, up to 20 (--pre-training)
+pairwise_ - Switch - Generate only pairwise alignments? (-pairs)
+viterbi_ - Switch - Use Viterbi decoding (-viterbi)
+writeAnnotation_ - Switch - Write annotation for multiple alignment (-annot)
+annotationResults_ - Results -
+writeTraining_ - Switch - Write EM transition probabilities (--train)
+trainingResults_ - Results -
+paramsFile_ - InFile - Trained ProbCons parameter file (--paramfile)
+

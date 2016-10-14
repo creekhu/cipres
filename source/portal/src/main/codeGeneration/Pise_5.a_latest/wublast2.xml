@@ -1,0 +1,1317 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY nucdbs SYSTEM "XMLDIR/nucdbs.xml">
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+]>
+
+<pise>
+  
+  <head>
+    <title>WUBLAST2</title>
+    <version>2.0i</version>
+    <description>Wash-U. multi-processors BLAST, with gaps</description>
+    <authors>Gish. W</authors>
+    <reference>Gish, Warren (1994-1997).  unpublished.</reference>
+    <reference>Gish, W, and DJ States (1993). Identification of protein coding regions by database similarity search. Nature Genetics 3:266-72. </reference>
+    <reference>Altschul, SF, and W Gish (1996). Local alignment statistics. ed. R. Doolittle. Methods in Enzymology 266:460-80.</reference>
+    <reference>Korf, I, and W Gish (2000). MPBLAST: improved BLAST performance with multiplexed queries. Bioinformatics in press.</reference>
+    <reference>Altschul, Stephen F., Warren Gish, Webb Miller, Eugene W. Myers, and David J. Lipman (1990).  Basic local alignment search tool.  J. Mol. Biol. 215:403-10.</reference>
+  </head>
+  
+  
+  <command>wublast2</command>
+
+  <parameters>
+    
+    <parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+      <name>wublast2</name>
+      <attributes>
+	
+	<prompt>Blast program</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value"</code>
+	</format>
+	<vdef><value>blastwup</value></vdef>
+	<group>1</group>
+	<vlist>
+	  <value>blastwun</value>
+	  <label>blastwun: nucleotide query / nucleotide db</label>
+	  <value>blastwup</value>
+	  <label>blastwup: amino acid query / protein db</label>
+	  <value>blastwux</value>
+	  <label>blastwux: nucleotide query translated / protein db</label>
+	  <value>tblastwun</value>
+	  <label>tblastwun: protein query / translated nucleotide db</label>
+	  <value>tblastwux</value>
+	  <label>tblastwux: nucleotide query transl. / transl. nucleotide db</label>
+	</vlist>
+	<comment>
+	  <value>The five BLAST programs described here perform the following tasks:</value>
+	  <value>. blastwup compares an amino acid query sequence against a protein sequence database;</value>
+	  <value>. blastwun compares a nucleotide query sequence against a nucleotide sequence database;</value>
+	  <value>. blastwux compares the six-frame conceptual translation products of a nucleotide query sequence (both strands) against a protein sequence database;</value>
+	  <value>. tblastwun compares a protein query sequence against a nucleotide sequence database dynamically translated in all six reading frames (both strands).</value>
+	  <value>. tblastwux compares the six-frame translations of a nucleotide query sequence against the six-frame translations of a nucleotide sequence database.</value>
+	</comment>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>Sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $query" </code>
+	</format>
+	<group>4</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>nosegs</name>
+      <attributes>
+	<prompt>Do not segment the query sequence on hyphen (-) characters (-nosegs)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value and $value != $vdef) ? " -nosegs" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>protein_db</name>
+      <attributes>
+	<prompt>protein db</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " $value" </code>
+	</format>
+	<vdef><value>uniprot</value></vdef>
+	<group>3</group>
+	&protdbs;
+	<comment>
+	  <value>Choose a protein db for blastwup or blastwux.</value>
+	</comment>
+	<precond>
+	  <language>perl</language>
+	  <code> ($wublast2 =~ /^blastwup|^blastwux/) </code>
+	</precond>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>nucleotid_db</name>
+      <attributes>
+	<prompt>nucleotid db</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " $value" </code>
+	</format>
+	<vdef><value>embl</value></vdef>
+	<group>3</group>
+	&nucdbs;
+	<comment>
+	  <value>choose a nucleotide db for blastwun, tblastwun or tblastwux</value>
+	</comment>
+	<precond>
+	  <language>perl</language>
+	  <code>($wublast2 =~ /^blastwun|^tblastwu/)  </code>
+	</precond>
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>compat</name>
+      <attributes>
+	<prompt>BLAST version</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value ne $vdef) ? " -$value" : ""</code>
+	</format>
+	<vdef><value>current</value></vdef>
+	<vlist>
+	  <value>current</value>
+	  <label>current version 2.0</label>
+	  <value>compat1.4</value>
+	  <label>compat1.4: revert to BLAST version 1.4 (with bug fixes)</label>
+	  <value>compat1.3</value>
+	  <label>compat1.3: revert to BLAST version 1.3 (with bug fixes)</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+   <parameter type="Paragraph">
+      <paragraph>
+	<name>filter_opt</name>
+	<prompt>Filtering and masking options</prompt>
+	<group>6</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>wordmask</name>
+	    <attributes>
+	      <prompt>Use masking instead of filtering (-wordmask)</prompt>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Mask letters in the query sequence without altering the sequence itself, during neighborhood word generation.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>filter</name>
+	    <attributes>
+	      <prompt>Use filter (-filter/-wordmask)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef) ? ($wordmask) ? " -wordmask $value" : " -filter $value" : ""</code>
+	      </format>
+	      <vdef><value>none</value></vdef>
+	      <vlist>
+		<value>none</value>
+		<label>none: no filter</label>
+		<value>dust</value>
+		<label>dust: DNA filter</label>
+		<value>seg</value>
+		<label>seg: masks low compositional complexity regions</label>
+		<value>xnu</value>
+		<label>xnu: masks regions containing short-periodicity internal repeats</label>
+		<value>seg+xnu</value>
+		<label>seg+xnu</label>
+	      </vlist>
+	      <comment>
+		<value>This option activates filtering or masking of segments of the query sequence based on a potentially wide variety of criteria. The usual intent of filtering is to mask regions that are non-specific for protein identification using sequence similarity. For instance, it may be desired to mask acidic or basic segments that would otherwise yield overwhelming amounts of uninteresting, non-specific matches against a wide array of protein families from a comprehensive database search. The BLAST programs have internally-coded knowledge of the specific command line options needed to invoke the SEG and XNU programs as query sequence filters, but these two filter programs are not included in the BLAST software distribution and must be independently installed.</value>
+		<value>The SEG program (Wootton and Federhen, 1993) masks low compositional complexity regions, while XNU (Claverie and States, 1993) masks regions containing short-periodicity internal repeats. The BLAST programs can pipe the filtered output from one program into another. For instance, XNU+SEG or SEG+XNU can be specified as the filtermethod to have each program filter the query sequence in succession. Note that neither SEG nor XNU is suitable for filtering untranslated nucleotide sequences for use by blastn</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>maskextra</name>
+	    <attributes>
+	      <prompt>Extend masking additional distance into flanking regions (-maskextra)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " -maskextra" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$wordmask</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	
+	  <parameter type="Excl">
+	    <name>lc</name>
+	    <attributes>
+	      <prompt>Filter lower-case letters in query</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " -$value" : ""</code>
+	      </format>
+	      <vdef><value>no</value></vdef>
+	      <vlist>
+		<value>no</value>
+		<label>none</label>
+		<value>lcfilter</value>
+		<label>lcfilter: filter by replacing with the appropriate ambiguity code</label>
+		<value>lcmask</value>
+		<label>lcmask: mask without altering the sequence</label>
+	      </vlist>
+	      <comment>
+		<value></value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>selectivite</name>
+	<prompt>Selectivity Options</prompt>
+	<group>5</group>
+	<parameters>
+
+	  <parameter issimple="1" type="Float">
+	    <name>Expect</name>
+	    <attributes>
+	      <prompt>Expect: upper bound on the expected frequency of chance occurrence of a set of HSPs (E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " E=$value":""</code>
+	      </format>
+	      <vdef><value>10.0</value></vdef>
+	      <comment>
+		<value>The parameter Expect (E) establishes a statistical significance threshold for reporting database sequence matches. E is interpreted as the upper bound on the expected frequency of chance occurrence of an HSP (or set of HSPs) within the context of the entire database search. Any database sequence whose matching satisfies E is subject to being reported in the program output. If the query sequence and database sequences follow the random sequence model of Karlin and Altschul (1990), and if sufficiently sensitive BLAST algorithm parameters are used, then E may be thought of as the number of matches one expects to observe by chance alone during the database search. The default value for E is 10, while the permitted range for this Real valued parameter is 0 &lt; E &lt;= 1000.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>hspmax</name>
+	    <attributes>
+	      <prompt>Maximal number of HSPs saved or reported per subject sequence (-hspmax)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -hspmax $value" : ""</code>
+	      </format>
+	      <vdef><value>1000</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>E2</name>
+	    <attributes>
+	      <prompt>Expected number of HSPs that will be found when comparing two sequences that each have the same length (E2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " E2=$value":""</code>
+	      </format>
+	      <comment>
+		<value>E2 is interpreted as the expected number of HSPs that will be found when comparing two sequences that each have the same length -- either 300 amino acids or 1000 nucleotides, whichever is appropriate for the particular program being used.</value>
+		<value>The default value for E2 is typically about 0.15 but may vary from version to version of each program.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>Cutoff</name>
+	    <attributes>
+	      <prompt>Cutoff score: threshold for report (S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " S=$value":""</code>
+	      </format>
+	      <comment>
+		<value>The parameter Cutoff (S) represents the score at which a single HSP would by itself satisfy the significance threshold E. Higher scores -- higher values for S -- correspond to increasing statistical significance (lower probability of chance occurrence). Unless S is explicitly set on the command line, its default value is calculated from the value of E. If both S and E are set on the command line, the one which is the most restrictive is used. When neither parameter is specified on the command line, the default value for E is used to calculate S.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	 
+
+	  <parameter type="Float">
+	    <name>S2</name>
+	    <attributes>
+	      <prompt>Cutoff score which defines HSPs (S2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " S2=$value":""</code>
+	      </format>
+	      <comment>
+		<value>S2 may be thought of as the score expected for the MSP between two sequences that each have the same length -- either 300 amino acids or 1000 nucleotides, whichever is appropriate for the particular program being used.</value>
+		<value>The default value for S2 will be calculated from E2 and, like the relationship between E and S, is dependent on the residue composition of the query sequence and the scoring system employed, as conveyed by the Karlin-Altschul K and Lambda statistics.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>W</name>
+	    <attributes>
+	      <prompt>Length of words identified in the query sequence (W)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " W=$value":""</code>
+	      </format>
+	      <comment>
+		<value>The task of finding HSPs begins with identifying short words of length W in the query sequence that either match or satisfy some positive-valued threshold score T when aligned with a word of the same length in a database sequence. T is referred to as the neighborhood word score threshold (Altschul et al., 1990). These initial neighborhood word hits act as seeds for initiating searches to find longer HSPs containing them. The word hits are extended in both directions along each sequence for as far as the cumulative alignment score can be increased. Extension of the word hits in each direction are halted when: the cumulative alignment score falls off by the quantity X from its maximum achieved value; the cumulative score goes to zero or below, due to the accumulation of one or more negative-scoring residue alignments; or the end of either sequence is reached.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>T</name>
+	    <attributes>
+	      <prompt>Neighborhood word score threshold (T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " T=$value":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>nwstart</name>
+	    <attributes>
+	      <prompt>Start generating neighborhood words here in query (blastwup/blastwux) (-nwstart)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -nwstart $value" : ""</code>
+	      </format> 
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2 =~ /^blastwu[px]/</code>
+	      </precond>
+	      <comment>
+		<value>Restrict blast neighborhood word generation to a specific segment of the query sequence that begins at 'nwstart' and continues for 'nwlen' residues or until the end of the query sequence is reached. HSP alignments may extend outside the region of neighborhood word generation but hte alignments can only be initiated by word hits occurring within the region. Through the use of these options, a very long query sequence can be searched piecemeal, using short, overlapping segments each time. The amount of overlap from one meighborhood region to the next need only be the blast wordlength W minus 1, in order to be assured of detecting all HSPs.</value>
+		<value>However, to provide greater freedom for stastical interpretation of multiple HSP findings (eg. matches against exons) more extensive overlapping is recommanded, with the extent to be chosen based on the expected gene density and length of introns.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>nwlen</name>
+	    <attributes>
+	      <prompt>Generate neighborhood words over this distance from 'nwstart' in query (blastwup/blastwux) (-nwlen)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -nwlen $value" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2 =~ /^blastwu[px]/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Integer">
+	    <name>X</name>
+	    <attributes>
+	      <prompt>Word hit extension drop-off score (X)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " X=$value":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>hitdist</name>
+	    <attributes>
+	      <prompt>Maximum word separation distance for 2-hit BLAST algorithm (-hitdist)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -hitdist $value" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>Invoke a 2-hit BLAST algorithm similar to that of Altschul et al. (1997), with maximum  wordhit separation distance, as measured from the end of each wordhit. Altschul et al. (1997) use the equivalent of hitdist=40 in their software by default (except NCBI-BLASTN, where 2-hit BLAST is not available). In WU-BLASTN, setting 'hitdist' and 'wink' (see below) is akin to using double-length words generated on W-mer boundaries.</value>
+		<value>For best sensitivity, 2-hit BLAST should generally not be used.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>wink</name>
+	    <attributes>
+	      <prompt>Generate word hits at every wink-th position (-wink)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -wink $value" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <comment>
+		<value>Generate word hits at every wink-th ('W increment') position along the query, where the default wink=1 produces neighborhood words at every position.</value>
+		<value>For good sensitivity, this option should not be used. The benefit of using 'wink' is in finding identical or nearly identical sequences rapidly. When used in conjunction with the 'hitdist' option to obtain the highest speed, care should be taken that desired matches are not precluded by these parameters.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>consistency</name>
+	    <attributes>
+	      <prompt>Turn off HSP consistency rules for statistics (-consistency)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -consistency" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>This option turns off both the determination of the number of HSPs that ar consistent with each other in a gapped alignment and an adjustment that is made to the Sum and poisson statistics to account for the consistency of combined HSPs.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>hspsepqmax</name>
+	    <attributes>
+	      <prompt>Maximal separation allowed between HSPs along query
+(-hspsepqmax)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -hspsepqmax $value" : ""</code>
+	      </format>
+	      <precond>
+		<language>perl</language>
+		<code>! $consistency</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>hspsepsmax</name>
+	    <attributes>
+	      <prompt>Maximal separation allowed between HSPs along subject (-hspsepsmax)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -hspsepsmax $value" : ""</code>
+	      </format> 
+	      <precond>
+		<language>perl</language>
+		<code>! $consistency</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>span</name>
+	    <attributes>
+	      <prompt>Discard HSPs spanned on (-span*)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef) ? " -$value" : ""</code>
+	      </format>
+	      <vdef><value>span2</value></vdef>
+	      <vlist>
+		<value>span2</value>
+		<label>span2: both query and subject by a better HSP</label>
+		<value>span1</value>
+		<label>span1: on query, subject or both by a better HSP</label>
+		<value>span</value>
+		<label>span: by other, better HSPs</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	    <parameter type="Switch">
+	    <name>nogap</name>
+	    <attributes>
+	      <prompt>Do not create gapped alignments (-nogap)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -nogap" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gapall</name>
+	    <attributes>
+	      <prompt>Generate a gapped alignment for every ungapped HSP found (-gapall)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -gapall" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>gap_selectivite</name>
+	      <prompt>Selectivity options for gapped alignments</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>(! $nogap) and (! $gapall)</code>
+	      </precond>
+	      <group>5</group>
+	      <parameters>
+			
+		<parameter type="Float">
+		  <name>gapE</name>
+		  <attributes>
+		    <prompt>Expectation threshold of sets of ungapped HSPs for subsequent use in seeding gapped alignments (-gapE)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value and $value != $vdef)? " -gapE $value" : ""</code>
+		    </format>
+		    <vdef><value>2000</value></vdef>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Float">
+		  <name>gapE2</name>
+		  <attributes>
+		    <prompt>Expectation threshold for saving individual gapped alignments (-gapE2)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value and $value != $vdef)? " -gapE2 $value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<!-- ** bug blastwu **
+		<parameter type="Float">
+		  <name>gapS</name>
+		  <attributes>
+		    <prompt>Score-equivalence threshold of sets of HSPs for subsequent use in seeding gapped alignments (-gapS)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? " -gapS $value" : ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+		-->
+		<!-- - FATAL:  Argument 4 ("gapS") is not recognized or is improperly formed. -->
+
+		<parameter type="Integer">
+		  <name>gapS2</name>
+		  <attributes>
+		    <prompt>Cutoff score for saving individual gapped alignments (-gapS2)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? " -gapS2 $value" : ""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Integer">
+		  <name>gapW</name>
+		  <attributes>
+		    <prompt>Set the window width within which gapped alignments are generated (-gapW)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? " -gapW $value" : ""</code>
+		    </format>
+		    <comment>
+		      <value>Default values are 32 for protein comparisons and 16 for 'balstwun'.</value>
+		    </comment>
+		  </attributes>
+		</parameter>  
+	  
+		<parameter type="Integer">
+		  <name>gapX</name>
+		  <attributes>
+		    <prompt>Set the maximum drop-off score during banded gapped alignment (gapX)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value) ? " gapX=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+		
+		<parameter type="Integer">
+		  <name>gapsepqmax</name>
+		  <attributes>
+		    <prompt>Maximal permitted distance on the QUERY sequence between two consistent gapped alignments (-gapsepqmax)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " -gapsepqmax $value":""</code>
+		    </format>
+		    <precond>
+		      <language>perl</language>
+		      <code>(! $nogap) and (! $consistency)</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+	  
+		<parameter type="Integer">
+		  <name>gapsepsmax</name>
+		  <attributes>
+		    <prompt>Maximal permitted distance on the subject sequence between two consistent gapped alignments (-gapsepsmax)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " -gapsepsmax $value":""</code>
+		    </format> 
+		    <precond>
+		      <language>perl</language>
+		      <code>(! $nogap) and (! $consistency)</code>
+		    </precond>
+		  </attributes>
+		</parameter>
+	
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scoring_opt</name>
+	<prompt>Scoring options</prompt>
+	<group>6</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>M</name>
+	    <attributes>
+	      <prompt>Reward for a nucleotid match (blastwun) (M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " M=$value" : ""</code>
+	      </format>
+	      <vdef><value>5</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2 eq blastwun</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	   <parameter type="Integer">
+	    <name>N</name>
+	    <attributes>
+	      <prompt>Penalty for a nucleotid mismatch (blastwun) (N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " N=$value" : ""</code>
+	      </format>
+	      <vdef><value>-4</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2 eq blastwun</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>matrix</name>
+	    <attributes>
+	      <prompt>Scoring matrix (PAM or BLOSUM, see help)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef) ? " -matrix $value" : ""</code>
+	      </format>
+	      <vdef><value>BLOSUM62</value></vdef>
+	      <comment>
+		<value>Several PAM (point accepted mutations per 100 residues) amino acid scoring matrices are provided in the BLAST software distribution, including the PAM40, PAM120, and PAM250. While the BLOSUM62 matrix is a good general purpose scoring matrix and is the default matrix used by the BLAST programs, if one is restricted to using only PAM scoring matrices, then the PAM120 is recommended for general protein similarity searches (Altschul, 1991). The pam(1 program can be used to produce PAM matrices of any desired iteration from 2 to 511. Each matrix is most sensitive at finding similarities at its particular PAM distance. For more thorough searches, particularly when the mutational distance between potential homologs is unknown and the significance of their similarity may be only marginal, Altschul (1991, 1992) recommends performing at least three searches, one each with the PAM40, PAM120 and PAM250 matrices.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($wublast2 =~ /^blastwup|blastwux$/)</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+		
+	  <parameter type="Integer">
+	    <name>Q</name>
+	    <attributes>
+	      <prompt>Open gap penalty (Q)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " Q=$value":""</code>
+	      </format>
+	      <comment>
+		<value>This option ses the penalty for a gap of length 1. Default values are Q=9 for proteins and Q=10 for 'blastwun'. If a non-default scoring matrix is requested on the command line, the gap penalties do not automatically adjust.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>R</name>
+	    <attributes>
+	      <prompt>Extending a gap penalty (R)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " R=$value":""</code>
+	      </format>
+	      <comment>
+		<value>This option set the per-residue penalty for extending a gap. Default values are R=2 for proteins; R=10 for 'blastwun'. If a non-default scoring matrix is requested on the command line, the gap penalties do not automatically adjust.></value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+	
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>translation_opt</name>
+	<prompt>Translation Option</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>$wublast2 ne blastwun</code>
+	</precond>
+	<group>6</group>
+
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>gcode</name>
+	    <attributes>
+	      <prompt>Genetic code to translate the query (blastx,tblastx) (-gcode)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " -gcode $value" : ""</code>
+	      </format>  
+	      <vdef><value>1</value></vdef>
+	      <vlist>
+		<value>1</value>
+		<label>1: Standard</label>
+		<value>2</value>
+		<label>2: Vertebrate Mitochondrial</label>
+		<value>3</value>
+		<label>3: Yeast Mitochondrial</label>
+		<value>4</value>
+		<label>4: Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+		<value>5</value>
+		<label>5: Invertebrate Mitochondrial</label>
+		<value>6</value>
+		<label>6: Ciliate Macronuclear and Dasycladacean</label>
+		<value>9</value>
+		<label>9: Echinoderm Mitochondrial</label>
+		<value>10</value>
+		<label>10: Alternative Ciliate Marconuclear</label>
+		<value>11</value>
+		<label>11: Bacterial</label>
+		<value>12</value>
+		<label>12: Alternative Yeast Nuclear</label>
+		<value>13</value>
+		<label>13: Ascidian Mitochondrial</label>
+		<value>14</value>
+		<label>14: Flatworm Mitochondrial</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2 =~ /blastwux/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>strand</name>
+	    <attributes>
+	      <prompt>which strands (for nucleotid query)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " $value":""</code>
+	      </format>
+	      <vlist>
+		<value></value>
+		<label>both</label>
+		<value>-top</value>
+		<label>top</label>
+		<value>-bottom</value>
+		<label>bottom</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code> ($wublast2 =~ /^blastwun|blastwux$/) </code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>dbgcode</name>
+	    <attributes>
+	      <prompt>Genetic code for database translation (tblastx,tblastn) (-dbgcode)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? "-dbgcode $value" : ""</code>
+	      </format>  
+	      <vdef><value>1</value></vdef>
+	      <vlist>
+		<value>1</value>
+		<label>1: Standard</label>
+		<value>2</value>
+		<label>2: Vertebrate Mitochondrial</label>
+		<value>3</value>
+		<label>3: Yeast Mitochondrial</label>
+		<value>4</value>
+		<label>4: Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma</label>
+		<value>5</value>
+		<label>5: Invertebrate Mitochondrial</label>
+		<value>6</value>
+		<label>6: Ciliate Macronuclear and Dasycladacean</label>
+		<value>9</value>
+		<label>9: Echinoderm Mitochondrial</label>
+		<value>10</value>
+		<label>10: Alternative Ciliate Marconuclear</label>
+		<value>11</value>
+		<label>11: Bacterial</label>
+		<value>12</value>
+		<label>12: Alternative Yeast Nuclear</label>
+		<value>13</value>
+		<label>13: Ascidian Mitochondrial</label>
+		<value>14</value>
+		<label>14: Flatworm Mitochondrial</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2  =~ /^tblast/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>dbstrand</name>
+	    <attributes>
+	      <prompt>which strands of the database sequences (tblastwun,tblastwux)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " $value":""</code>
+	      </format>
+	      <vlist>
+		<value></value>
+		<label>both</label>
+		<value>-dbtop</value>
+		<label>top</label>
+		<value>-dbbottom</value>
+		<label>bottom</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code> ($wublast2 =~ /^tblast/) </code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>	
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>statistics</name>
+	<prompt>Statistic options</prompt>
+	<group>6</group>
+	<comment>
+	  <value>Parameters to use when evaluating the significance of gapped and ungapped alignment scores. Useful when precomputed values are unavailable for the chosen scoring matrix and gap penalty combination in the programs internal tables.</value>
+	</comment>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>stat</name>
+	    <attributes>
+	      <prompt>Use statistics</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef) ? " -$value" : "" </code>
+	      </format>
+	      <vdef><value>sump</value></vdef>
+	      <vlist>
+		<value>poissonp</value>
+		<label>poissonp: Poisson statistics to evaluate multiple HSPs</label>
+		<value>kap</value>
+		<label>kap: Karlin-Altschul statistics on individual alignment scores</label>
+		<value>sump</value>
+		<label>sump: Karlin-Altschul 'Sum' statistics</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>wordstats</name>
+	    <attributes>
+	      <prompt>Collect word-hit statistics (-stats)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " -stats" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <comment>
+		<value>This option consumes marginally more cpu time.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>ctxfactor</name>
+	    <attributes>
+	      <prompt>Base statistics on this number of independent contexts or reading frames (-ctxfactor)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -ctxfactor $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	
+	 
+	  <parameter type="Float">
+	    <name>olf</name>
+	    <attributes>
+	      <prompt>Maximal fractional length of overlap for HSP consistency of two ungapped alignment (-olf)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -olf $value" : ""</code>
+	      </format>
+	      <vdef><value>0.125</value></vdef>
+	      <comment>
+		<value></value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>golf</name>
+	    <attributes>
+	      <prompt>Maximal fractional length of overlap for HSP consistency of two gapped alignments (-olf)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -golf $value" : ""</code>
+	      </format>
+	      <vdef><value>0.10</value></vdef>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>olmax</name>
+	    <attributes>
+	      <prompt>Maximal absolute length of overlap for HSP consistency  of two ungapped alignment (default unlimited) (-olmax)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -olmax $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+		
+	  <parameter type="Integer">
+		  <name>golmax</name>
+	    <attributes>
+	      <prompt>Maximal absolute length of overlap for HSP consistency  of two gapped alignment (default unlimited) (-golmax)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -golmax $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>gapdecayrate</name>
+	    <attributes>
+	      <prompt>gapdecayrate</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef) ? " -gapdecayrate $value" : ""</code>
+	      </format>
+	      <vdef><value>0.5</value></vdef>
+	      <comment>
+		<value>This option defines the common ratio of the terms in a geometric progression used in normalizing probabilities across all numbers of Poisson events (typically the number of 'consistent' HSPs). A Poisson probability for N segments is eighted by the reciprocal of the Nth term in the progression, where the first term has a value of (1-rate), the second term is (1-rate)*rate, the third term is (1-rate)*rate*rate, and so on.</value>
+		<value>The default rate is 0.5, such that the probability assigned to a single HSP is discounted by a factor of 2, the Poisson probability of 2 HSPs is discounted by a factor of 4, for 3 HSPs the discount factor is 8, and so on. The rate essentially defines a penalty imposed on the gap between each HSP, where the default penalty is equivalent to 1 bit of information.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>kastats</name>
+	      <prompt>Parameters for Karlin-Altschul statistics</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>$stat =~ /^kap|^sump/</code>
+	      </precond>
+	      <group>6</group>
+	      <parameters>
+
+		<parameter type="Integer">
+		  <name>K</name>
+		  <attributes>
+		    <prompt>K parameter for ungapped alignment scores (K)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " K=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+	  
+		<parameter type="Integer">
+		  <name>L</name>
+		  <attributes>
+		    <prompt>lambda parameter for ungapped alignment scores (L)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " L=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>H</name>
+		  <attributes>
+		    <prompt>H parameter for ungapped alignment scores (H)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " H=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+	  
+		<parameter type="Integer">
+		  <name>gapK</name>
+		  <attributes>
+		    <prompt>K parameter for gapped alignment scores (gapK)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " gapK=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>gapL</name>
+		  <attributes>
+		    <prompt>lambda parameter for gapped alignment scores (gapL)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " gapL=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+	  
+		<parameter type="Integer">
+		  <name>gapH</name>
+		  <attributes>
+		    <prompt>H parameter for gapped alignment scores (gapH)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value)? " gapH=$value":""</code>
+		    </format>
+		  </attributes>
+		</parameter>
+		
+	      </parameters>
+	    </paragraph>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>affichage</name>
+	<prompt>Report options</prompt>
+	<group>5</group>
+	<parameters>
+
+	<parameter type="Switch">
+	    <name>Histogram</name>
+	    <attributes>
+	      <prompt>Histogram (H)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " H=1":""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Descriptions</name>
+	    <attributes>
+	      <prompt>How many short descriptions? (V)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " V=$value":""</code>
+	      </format>
+	      <vdef><value>500</value></vdef>
+	      <comment>
+		<value>Maximum number of database sequences for which one-line descriptions will be reported (V).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>Alignments</name>
+	    <attributes>
+	      <prompt>How many alignments? (B)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value != $vdef)? " B=$value":""</code>
+	      </format>
+	      <vdef><value>250</value></vdef>
+	      <comment>
+		<value>Maximum number of database sequences for which high-scoring segment pairs will be reported (B).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>sort</name>
+	    <attributes>
+	      <prompt>Sort order for reporting database sequences</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value != $vdef) ? " $value" : ""</code>
+	      </format>
+	      <vlist>
+		<value>-sort_by_pvalue</value>
+		<label>-sort_by_pvalue: from most significant to least significant</label>
+		<value>-sort_by_count</value>
+		<label>-sort_by_count: from highest to lowest by the number of HSPs found</label>
+		<value>-sort_by_highscore</value>
+		<label>-sort_by_highscore: from highest to lowest by the score of the highest segment</label>
+		<value>-sort_by_totalscore</value>
+		<label>-sort_by_totalscore: from highest to the lowest by the sum total score</label>
+	      </vlist>
+	      <vdef><value>-sort_by_pvalue</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>postsw</name>
+	    <attributes>
+	      <prompt>Perform full Smith-Waterman before output (blastwup only) (-postsw)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -postsw" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <precond>
+		<language>perl</language>
+		<code>$wublast2 =~ /^blastwup/</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ishidden="1" type="String">
+	    <name>output_file</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>" &gt; blastwu.txt"</code>
+	      </format>
+	      <group>499</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>output_format</name>
+	    <attributes>
+	      <prompt>Output format</prompt>
+	      <vlist>
+		<value>text</value>
+		<label>"text only"</label>
+		<value>html</value>
+		<label>"text + html"</label>
+		<value>xml</value>
+		<label>"text + xml"</label>
+	      </vlist>
+	      <flist>
+		<value>text</value>
+		<code>""</code>
+		<value>html</value>
+		<code>" &amp;&amp; html4blast -o blastwu.html -s -g blastwu.txt"</code>
+		<value>xml</value>
+		<code>" &amp;&amp; blast2XML blastwu.txt &gt; blastwu.xml"</code>
+	      </flist>
+	      <vdef><value>html</value></vdef>
+	      <group>500</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>echofilter</name>
+	    <attributes>
+	      <prompt>Display filter sequences in output (-echofilter)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -echofilter" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>prune</name>
+	    <attributes>
+	      <prompt>Do not prune insignificant HSPs from the output lists (-prune)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -prune" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>topcomboN</name>
+	    <attributes>
+	      <prompt>Report this number of consistent (colinear) groups of HSPs (-topcomboN)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -topcomboN $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>topcomboE</name>
+	    <attributes>
+	      <prompt>Only show HSP combos within this factor of the best combo (-topcomboE)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -topcomboE $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gi</name>
+	    <attributes>
+	      <prompt>Display gi identifiers, when available (-gi)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -gi" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>noseqs</name>
+	    <attributes>
+	      <prompt>Do not display sequence alignments (-noseqs)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -noseqs" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+ 
+    <parameter type="Results">
+      <name>tmp_outfile</name>
+      <attributes>
+	<filenames>blastwu.txt</filenames>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>htmlfile</name>
+      <attributes>
+	<filenames>blastwu.html</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>xmloutput</name>
+      <attributes>
+	<filenames>blastwu.xml</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Integer">
+      <name>cpus</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -cpus 2"</code>
+	</format>
+	<group>7</group>
+      </attributes>
+    </parameter>
+
+</parameters>
+</pise>

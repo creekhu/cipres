@@ -1,0 +1,26 @@
+<style>
+ul.navbar 
+{   
+list-style-type:none;
+margin:0;
+padding:0;
+align: left;
+}   
+li.navbar
+{       
+display:inline;
+padding: 20px;
+}   
+
+table.taskmessages {
+	width: 100%;
+	border: 1px solid #000;
+	border-collapse: collapse;
+}
+
+.taskmessages td, .taskmessages th {
+  	border: 1px solid #000;
+	padding: 2px;
+}
+
+</style>

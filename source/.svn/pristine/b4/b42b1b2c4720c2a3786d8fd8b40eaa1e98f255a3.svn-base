@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>LISTOR</title>
+<description>Writes a list file of the logical OR of two sets of sequences (EMBOSS)</description>
+<category>edit</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/listor.html</doclink>
+</head>
+
+<command>listor</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>firstset</name>
+	<attributes>
+		<prompt>firstset -- gapany [set of sequences] (-firstset)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -firstset=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>secondset</name>
+	<attributes>
+		<prompt>secondset -- gapany [set of sequences] (-secondset)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -secondset=$value -sformat=fasta"</code>
+		</format>
+		<group>2</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>operator</name>
+	<attributes>
+		<prompt>Enter the logical operator to combine the sequences -- Logical operator to combine sequence lists (-operator)</prompt>
+			<vlist>
+				<value>O</value>
+				<label>OR - merger of both sets</label>
+				<value>A</value>
+				<label>AND - only those in both sets</label>
+				<value>X</value>
+				<label>XOR - only those not in both sets</label>
+				<value>N</value>
+				<label>NOT - those of the first set that are not in the second</label>
+			</vlist>
+		<vdef>
+			<value>OR</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -operator=$value"</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>The following logical operators combine the sequences in the following ways: &lt;BR&gt; OR - gives all that occur in one set or the other &lt;BR&gt; AND - gives only those which occur in both sets &lt;BR&gt; XOR - gives those which only occur in one set or the other, but not in both &lt;BR&gt; NOT - gives those which occur in the first set except for those that also occur in the second</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>The list of sequence names will be written to this list file</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>5</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

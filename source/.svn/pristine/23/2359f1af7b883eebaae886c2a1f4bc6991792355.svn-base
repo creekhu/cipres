@@ -1,0 +1,190 @@
+#!/bin/bash
+
+
+CONFFILE=$SDK_VERSIONS/testdata/pycipres.conf
+source $CONFFILE
+
+# These are all email accounts I have and use to create the
+# pycipres admin, guidemo admin and a pycipres eu account:
+E1=ciprestester1@gmail.com
+E2=ciprestester2@gmail.com
+E3=ciprestester3@gmail.com
+E4=ciprestester4@gmail.com
+E5=ciprestester5a@gmail.com
+
+
+
+usage()
+{
+	echo
+	echo "You must supply username and password of a cipres admin account with -u username and -p password."
+	echo "Note that the Rest Service must be up and running."
+	echo
+	echo "You can delete the accounts with 'userDelete <username> account'.  That command will delete"
+	echo "the account, any applications that are owned by that account, and any users that are registered"
+	echo "with the umbrella applications owned by that account."
+	echo
+    exit 1
+}
+
+if [[ $# < 2 ]] ; then
+    usage
+fi
+action=create
+
+while [[ $# > 1 ]]
+do
+    key="$1"
+    shift
+
+    case $key in
+        -u)
+            AUSER="$1"
+            shift
+            ;;
+        -p)
+            APASS="$1"
+            shift
+            ;;
+        -c)
+			action=create
+            ;;
+        -d)
+            action=delete   
+			;;
+        *)
+            usage
+            ;;
+    esac
+done
+    
+if [[ -z $AUSER || -z $APASS ]] ; then
+    usage
+fi  
+
+case $action in
+	create)
+		echo "==============================================================================================================="
+		echo "Will create or update:"
+		echo "	$PYCIPRES_ADMIN - a rest admin"
+		echo "	$PYCIPRES_APP - direct auth application belonging to $PYCIPRES_ADMIN"
+		echo "  $PYCIPRES2_APP - another direct auth app belonging to $PYCIPRES_ADMIN"
+		echo "	$PYCIPRES_EU - a direct end user" 
+		echo "	$PYCIPRES_EU2 - another direct end user" 
+		echo " "
+		echo "	$GUIDEMO_ADMIN - a rest admin"
+		echo "	$GUIDEMO_APP - umbrella app belonging to $GUIDEMO_ADMIN"
+		echo " "
+		echo "	$GUIDEMO2_ADMIN - a rest admin"
+		echo "	$GUIDEMO2_APP - umbrella app belonging to $GUIDEMO2_ADMIN"
+		echo ""
+		echo ""	
+		echo "If necessary, you can delete the accounts with 'userDelete <username> account'.  Deleting a user will delete"
+		echo "the account, any applications that are owned by that account, and for umbrella applications, any users that are registered"
+		echo "with the umbrella applications."
+		echo "==============================================================================================================="
+		echo " "
+
+		echo "Contacting service at $URL: as cipres admin user: $AUSER"
+		echo "Running : curl -k -u $AUSER:--- $URL/user/$PYCIPRES_ADMIN "
+
+		echo "Create/update $PYCIPRES_ADMIN User"
+		curl -k -u $AUSER:$APASS $URL/user/$PYCIPRES_ADMIN \
+			-d password=$TESTPASS\
+			-d email="$E2" \
+			-d country=US \
+			-d first_name=$PYCIPRES_ADMIN \
+			-d last_name=$PYCIPRES_ADMIN 
+
+		echo "Create/update $PYCIPRES_APP Application"
+		curl -k -u $AUSER:$APASS $URL/application/$PYCIPRES_ADMIN/$PYCIPRES_APP \
+			-d longname="pycipres scripts" \
+			-d authtype=DIRECT  \
+			-d activate=true
+		NEW_PYCIPRES_APPID=`curl -k -u $AUSER:$APASS $URL/application/$PYCIPRES_ADMIN/$PYCIPRES_APP  | \
+			grep '<app_id' | cut -f2 -d">"|cut -f1 -d"<"`
+		if [[ "$NEW_PYCIPRES_APPID" =~ ${PYCIPES_APP}-.+   ]]; then
+			echo "appid matches re"
+			if [[ -z ${APPID+x} ]]; then
+				echo "$CONFFILE.conf doesn't have a APPID property, adding it"
+				echo "APPID=$NEW_PYCIPRES_APPID" >> $CONFFILE
+			elif [[ "$APPID" != "$NEW_PYCIPRES_APPID" ]]; then
+				echo "appid has changed, modifying APPID in $CONFFILE"
+				sed  "s/\(APPID=\).*\$/\1${NEW_PYCIPRES_APPID}/"  $CONFFILE > $CONFFILE.tmp
+				mv $CONFFILE.tmp $CONFFILE
+				chmod 600 $CONFFILE
+			fi
+		fi
+
+		echo "Create/update $PYCIPRES2_APP Application"
+		curl -k -u $AUSER:$APASS $URL/application/$PYCIPRES_ADMIN/$PYCIPRES2_APP \
+			-d longname="pycipres scripts 2" \
+			-d authtype=DIRECT  \
+			-d activate=true
+
+		echo "Create/update $PYCIPRES_EU End User"
+		curl -k  -u $AUSER:$APASS $URL/user/$PYCIPRES_EU \
+			-d password=$TESTPASS\
+			-d email="$E1" \
+			-d country=US \
+			-d first_name=$PYCIPRES_EU \
+			-d last_name=$PYCIPRES_EU
+
+		echo "Create/update $PYCIPRES_EU2 End User"
+		curl -k  -u $AUSER:$APASS $URL/user/$PYCIPRES_EU2 \
+			-d password=$TESTPASS\
+			-d email="$E5" \
+			-d country=US \
+			-d first_name=$PYCIPRES_EU2 \
+			-d last_name=$PYCIPRES_EU2
+
+		echo "Create/update $GUIDEMO_ADMIN User"
+		curl -k -u $AUSER:$APASS $URL/user/$GUIDEMO_ADMIN \
+			-d password=$TESTPASS\
+			-d email="$E3" \
+			-d country=US \
+			-d first_name=$GUIDEMO_ADMIN \
+			-d last_name=$GUIDEMO_ADMIN 
+
+		echo "Create/update $GUIDEMO_APP Application"
+		curl -k -u $AUSER:$APASS $URL/application/$GUIDEMO_ADMIN/$GUIDEMO_APP \
+			-d longname="web application demo" \
+			-d authtype=UMBRELLA   \
+			-d activate=true
+		NEW_APPID=`curl -k -u $AUSER:$APASS $URL/application/$GUIDEMO_ADMIN/$GUIDEMO_APP  | \
+			grep '<app_id' | cut -f2 -d">"|cut -f1 -d"<"`
+		if [[ "$NEW_APPID" =~ ${GUIDEMO_APP}-.+   ]]; then
+			echo "appid matches re"
+			if [[ -z ${UMBRELLA_APPID+x} ]]; then
+				echo "$CONFFILE.conf doesn't have an UMBRELLA_APPID property, adding it"
+				echo "UMBRELLA_APPID=$NEW_APPID" >> $CONFFILE
+			elif [[ "$UMBRELLA_APPID" != "$NEW_APPID" ]]; then
+				echo "appid has changed, modifying UMBRELLA_APPID in $CONFFILE"
+				sed  "s/\(UMBRELLA_APPID=\).*\$/\1${NEW_APPID}/"  $CONFFILE > $CONFFILE.tmp
+				mv $CONFFILE.tmp $CONFFILE
+				chmod 600 $CONFFILE
+			fi
+		fi
+
+		echo "Create/update $GUIDEMO2_ADMIN User"
+		curl -k -u $AUSER:$APASS $URL/user/$GUIDEMO2_ADMIN \
+			-d password=$TESTPASS\
+			-d email="$E4" \
+			-d country=US \
+			-d first_name=$GUIDEMO2_ADMIN \
+			-d last_name=$GUIDEMO2_ADMIN 
+
+		echo "Create/update $GUIDEMO2_APP Application"
+		curl -k -u $AUSER:$APASS $URL/application/$GUIDEMO2_ADMIN/$GUIDEMO2_APP \
+			-d longname="web application TWO demo" \
+			-d authtype=UMBRELLA   \
+			-d activate=true
+
+		;;
+	delete)
+		echo "not implemented, use userDelete command instead."
+		;;
+esac	
+
+
+

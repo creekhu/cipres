@@ -1,0 +1,117 @@
+
+ Install needed scripts on the remote host to interact with the web application
+and job scheduler and make sure they are in the PATH of the user account that
+is used to run jobs on the remote host.  Put the name of each script in the
+corresponding Parameter of the ToolResource in tool-registry.cfg.xml.  
+
+ The scripts interact with the web application in a specific way, but they must
+be customized for the remote host and it's scheduler. 
+    
+ Sample submit, delete, and check files can be found in the documents/examples
+subdirectory.
+    
+ The properties in tool-registry.cfg.xml specify where working directories
+will be created on the remote cluster, the name of the file transfer host,
+login information, the location of an environment initialization script,
+the names of the "submit", "check" and "delete" scripts, and the FileHandler
+class to use with remote cluster.  
+
+ The submit and check scripts are run by the submitJobD and checkJobsD,
+while the delete script is invoked by a method in the web application when 
+a user cancels a submitted job.
+
+ Job submission requires installation of several scripts to be on the
+execution host. Although the scripts are not part of the distribution,
+examples are included in the distribution, as they are meant to be customized.
+The example scripts include the "submit", "delete" and "check" scripts
+mentioned above, and an optional configuration file (typically a shell script
+to be "sourced"). This script may set the PATH environment variable so that
+the "submit", "cancel" and "check" scripts are on the PATH.
+    
+submit script:
+- caller
+  This script is used by the submitJobD process.  It's called by the ProcessWorker class 
+configured in the tool registry.  The ProcessWorker constructs the arguments to the submit script 
+and runs it on the remote cluster in the job's working directory.
+  This is a snippet of the calling code in ProcessWorker:
+-------------------------------------------------------------------------
+                String finalCommand  = (m_rc == null) ? "" : ("source " + m_rc + "; ");
+                finalCommand +=         "export WB_JOBID=" + m_jobHandle + "; "  + "cd " + m_workingDir + "; " ;
+                finalCommand += m_submit + " ";
+                if (chargeCode != null)
+                {
+                        finalCommand += ( "--account " + chargeCode + " ");
+                }
+                finalCommand += "--url " + m_url + " ";
+                finalCommand += "-- ";
+                finalCommand += " '" + m_commandLine + " '";
+
+                m_log.debug("Running ssh command: " + finalCommand);
+                int exitStatus = runner.run(finalCommand);
+                if (exitStatus == 0)
+                {
+                        m_log.debug("Returned:"+  runner.getStdOut());
+                        // should contain "jobid=<jobid>"
+                        jobID = getFirstMatch("jobid=(\\S+).*$", runner.getStdOut());
+                        if (jobID != null)
+                        {
+                                return jobID;
+                        }
+                        m_log.error("Qsub returned exit status 0, but jobid can't be parsed from stdout.");
+                }
+                if (exitStatus == 2)
+                {
+                        throw new Exception("Too many tasks are waiting to run.  You can clone your task and try running it again later.");
+                }
+                throw new Exception("Error submitting job: " + runner.getStdOut() + ". " + runner.getStdErr());
+        }
+-------------------------------------------------------------------------
+- input
+	scheduler.conf: The contents of scheduler.conf in the job working directory are specified
+  by a stanzas in the tool's xml file.
+   The m_commandLine: is specified by stanzas in the tool xml file.
+  command line arguments are determined by ProcessWorker code
+- side effects
+  submission of job
+- output
+  successful job submission:
+    return code 0
+    jobid on stdout
+  failed job submission:
+    return code 1
+    errors on stdout
+  too many jobs queued:
+    return code 2
+- how to test
+  set up a job working directory on the remote cluster, with a scheduler.conf
+  that has appropriate values, as specified by the tool xml file.
+  run the submit command in that directory with appropriate command line
+  arguments, for example:
+ssh -i <ssh key> <user@remote.cluster> source <user .bash_profile path>; export WB_JOBID=<job handle>; cd <working dir>; <path to submit script> --account <account> --url '-k http://<server name>:<port>/portal2/taskupdate.action?taskId=bogus\&jh=<job handle>' -- 'inputfile <path to tool executable '
+
+check script:
+- caller
+  This is called by the appropriate ProcessWorker.
+- input
+  list of job ids on stdin, one per line
+- side effects
+  none
+- output
+  on stdout, job ids that are no longer running or queued
+- how to test
+  on the remote cluster, send a list of job ids to stdin of the check
+  script.  It should output those that are no longer running or queued.
+    
+delete script:
+- caller
+  This is called by the appropriate ProcessWorker.
+- input
+  -j <job id> -d <job working dir>
+- side effects
+  The specified job is cancelled.
+- output
+  None
+- how to test
+  one the remote cluster, invoke the script with a specified job id
+  and working directory.  On success, the job should be cancelled.
+

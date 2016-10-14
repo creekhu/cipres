@@ -1,0 +1,41 @@
+NCLCONVERTER
+
+NCLconverter    -fdnaphylipinterleaved input.sequence -erelaxedphylip
+
+this test passesS
+
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+infile_ - Primary Input File
+format_type_ - Excl - Choose the Input Format
+					<value>nexus</value>
+					<value>fasta</value> (cant be discrete)
+					<value>phylip</value>
+					<value>phylipt</value> Phylip Tree (.tre, .dnd)
+					<value>clustal</value> (cant be discrete)
+					<value>nexml</value>
+					
+data_type_ - Excl - Specify the Data Type (Mixed data types are not supported)
+					<value>dna</value>
+					<value>rna</value>
+					<value>protein</value>
+					<value>discrete</value>
+
+relaxed_type_ - Switch - 1 or 0 My data is in a relaxed Phylip format (phylip only)
+
+
+interleaved_type_ - Switch - My data is interleaved (phylip only)
+
+ 
+nexus_strictness_ - Integer - Set the NEXUS strictness level (-s) (nexus only)
+
+
+output_type_ - Excl - Choose the Output format (* values could produce multiple output files)
+				<value>-enexus</value> <label>Normalized NEXUS</label>
+				<value>-efasta</value><label>Fasta*</label>
+				<value>-ephylip</value><label>Phylip*</label>
+				<value>-erelaxedphylip</value><label>Relaxed Phylip</label>
+				<value>-enexml</value><label>NEXML</label>
+			
+
+outfile_nexus_ - String - Please enter a prefix for your output file (default is "out")
+

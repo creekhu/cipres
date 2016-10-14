@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>gruppi</title>
+    <description>clusters of binding sites</description>
+    <authors>M. Pontoglio</authors>
+  </head>
+  
+  <command>gruppi</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>gruppi</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "gruppi /local/gensoft/lib/gruppi/matrix.list" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>"  $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+		<value>3</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

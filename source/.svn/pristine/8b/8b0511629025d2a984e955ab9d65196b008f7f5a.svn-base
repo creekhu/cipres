@@ -1,0 +1,125 @@
+#!/bin/bash
+
+# Use this instead of loadResultsD/loadResults when you want to make a single
+# pass thru the running tasks db table to get results for jobs where there was
+# a previous failed attempt.  Only considers tasks who's RunningTask table entry
+# has status = TERMINATED (like loadResults) and retry > 1, meaning that we've
+# already tried once.  This program will increment retry in the RunningTask record if
+# there's an error.  Maximum retries is determined by the loadResults.retries property
+# and code in sdk/tool/TaskMonitor.java.
+#
+# Looks for the working directory in the normal location as well as in the 
+# FAILED and ARCHIVED subdirs.
+#
+# Can add a -Dlocal=path argument to the command line to look in a local filesystem instead
+# of the directory where the task was run on a remote host.  NOT IMPLEMENTED.
+
+HOST=`hostname`
+COMMAND=org.ngbw.utils.LoadResults
+
+SUBMITTER=submitter=${portal.url}
+LOG=log4j.configuration=recoverResults_log4j.xml
+PROPERTIES="-D$SUBMITTER -D$LOG -Drecover=1" 
+
+RUN="python $SDK_VERSIONS/daemonize $PROPERTIES $COMMAND"
+
+PS="ps aux -ww"
+
+# Get processes IDs of interest
+fn_ps()
+{
+
+	# We are looking for running instances of our COMMAND for same SUBMITTER.
+	# If SUBMITTER is different, we don't worry about it.
+	PS_OUTPUT=`$PS | grep $COMMAND | grep $SUBMITTER | grep recover | grep -v grep ` 
+	PID=`echo "$PS_OUTPUT" |  awk '{print $2}'`
+	len $PID ; PID_COUNT=$?
+
+	# If the command is running, is someone else running it?  Set OTHER_USER to 0 or 1 depending
+	# on whether another user is running the command we're trying to control.
+	OTHER_USER=0
+	USERS=`echo "$PS_OUTPUT" |  awk '{print $1}'`
+	len $USERS ; USER_COUNT=$?
+	if [ $USER_COUNT -ne 0 ]; then
+		for u in $USERS
+		do
+			if [ "$u" != `whoami` ]; then
+				OTHER_USER=1
+			fi
+		done
+	fi
+}
+
+
+len()
+{
+	retval=0
+	for i in $* 
+	do
+		retval=`expr $retval + 1`
+	done
+	return $retval 
+}
+
+killall()
+{
+	for pid in $*
+	do
+		echo killing $pid on $HOST
+		kill $pid
+	done
+}
+
+
+
+if [ "$SDK_VERSIONS" == "" ] ; then
+	echo "SDK_VERSIONS environment variable must be set."
+	exit 1
+fi
+
+case "$1" in
+	'start')
+		fn_ps
+		if [ $PID_COUNT -eq 0 ]; then
+			echo "Starting $COMMAND $PROPERTIES on $HOST"
+			$RUN
+			sleep 5
+		elif [ $PID_COUNT -gt 0 ]; then 
+			if [ $OTHER_USER -gt 0 ]; then
+				echo "Another user is running $COMMAND $SUBMITTER on $HOST.  Pids are $PID".
+				echo "$PS_OUTPUT"
+			else
+				echo "already running. pid is $PID  on $HOST"
+			fi
+		fi
+		;;
+	'stop')
+		fn_ps
+		killall $PID
+		$0 status
+		;;
+	'restart')
+		echo "Restarting $COMMAND $SUBMITTER " on $HOST
+		$0 stop
+		sleep 5
+		$0 start
+		;;
+	'status')
+		fn_ps
+		if [ $PID_COUNT -gt 0 ] ; then
+			if [ $OTHER_USER -gt 0 ]; then
+				echo "Another user is running $COMMAND $SUBMITTER on $HOST.  Pids are $PID".
+				echo "$PS_OUTPUT"
+			else
+				echo "$COMMAND $SUBMITTER is Running on $HOST.  pids: $PID"
+			fi
+		else
+				echo "$COMMAND $SUBMITTER is NOT Running on $HOST"
+		fi
+		;;
+		*)
+			echo "Usage: $0 {start|stop|restart|status}"
+			exit 0
+esac
+
+

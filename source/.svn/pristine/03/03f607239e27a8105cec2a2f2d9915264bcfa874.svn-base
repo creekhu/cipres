@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>MoST</title>
+    <description>Motif Search Tool</description>
+    <authors>Tatusov, Altschul, Koonin</authors>
+  </head>
+
+
+<command>most</command>
+
+<parameters>
+
+<parameter iscommand="1" type="Excl">
+<name>most</name>
+<attributes>
+
+	<prompt>MoST program</prompt>
+	<format>
+		<language>perl</language>
+		<code>$value</code>
+	</format>
+	<vdef><value>CAP</value></vdef>
+	<group>0</group>
+	<vlist>
+		<value>CAP</value>
+		<label>CAP: Blast alignment parser - must be run first</label>
+		<value>most</value>
+		<label>most (must be run with a CAP result file)</label>
+	</vlist>
+	<comment>
+		<value>You should run: 1. CAP, 2. MoST</value>
+		<value>Program CAP (Consistent Alignment Parser) may be used to construct blocks acceptable for MoST from BLAST outputs.</value>
+		<value>MoST will scan the indicated database iteratively until convergence, by adding segments selected at each iteration to the original block, constructed by CAP.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>cap</name>
+<prompt>CAP Parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code>($most eq "CAP")  </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>blast_output</name>
+	<attributes>
+
+		<prompt>Blast Output File</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<group>1</group>
+	<precond>
+		<language>perl</language>
+		<code>($most eq "CAP")  </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="OutFile">
+	<name>capoutfile</name>
+	<attributes>
+
+		<prompt>CAP result file</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<group>2</group>
+		<comment>
+			<value>will be used as block file for MoST</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($most eq "CAP")  </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>criterium</name>
+	<attributes>
+
+		<prompt>Criterium</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -t=$value" : "" </code>
+		</format>
+		<vdef><value>diri</value></vdef>
+		<group>3</group>
+		<vlist>
+			<value>diri</value>
+			<label>diri: rank by information content using Dirichlet priors</label>
+			<value>matrix</value>
+			<label>matrix: rank by the average score per residue</label>
+			<value>square</value>
+			<label>square: rank by the product height * width</label>
+			<value>height</value>
+			<label>height: rank by the 'height' of the block</label>
+		</vlist>
+		<comment>
+			<value>Defines the Threshold used to rank blocks of consistent alignment segments</value>
+			<value>. diri - rank by information content using Dirichlet mixture priors to calculate backgrund probabilities (analogous to the default method of weight matrix construction in MoST)</value>
+			<value>. height - rank by the 'height' of the block, i.e. the number of consistent segment longer than 7 aa</value>
+			<value>. square - rank by the product height x width, i.e. number of segments multiplied by the number of amino acids in each of them</value>
+			<value>. matrix - rank by the average score per residue calculated using the BLOSUM62 matrix</value>
+			<value>Default is t=diri</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($most eq "CAP")  </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>noless</name>
+	<attributes>
+
+		<prompt>min height of motif (%)</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value &amp;&amp; $value != $vdef)? " -l$value\\%" : "" </code>
+		</format>
+		<vdef><value>50</value></vdef>
+		<group>3</group>
+		<comment>
+			<value>-l% - construct only blocks that include no less than certain percentage of the sequences form the BLAST output (default is 50%)</value>
+		</comment>
+		<ctrls>
+			<ctrl>
+			<message>it's a percentage</message>
+				<language>perl</language>
+				<code>$value &lt; 0 || $value &gt; 100</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code>($most eq "CAP")  </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>blast_score</name>
+	<attributes>
+
+		<prompt>min Blast score</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value &amp;&amp; $value != $vdef)? " s=$value" : "" </code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>use only alignments that have BLAST scores equal or greater than this</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code>($most eq "CAP")  </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>mostopt</name>
+<prompt>MoST Parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code> ($most eq "most") </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>aadb</name>
+	<attributes>
+
+		<prompt>Protein Database</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<vdef><value>uniprot</value></vdef>
+		<group>2</group>
+		<vlist>
+			<value>uniprot</value>
+			<label>uniprot</label>
+			<value>genpept</value>
+			<label>genpept: Genbank translation</label>
+			<value>genpept_new</value>
+			<label>genpept_new: genpept updates</label>
+			<value>gpbct</value>
+			<label>gpbct: genpept bacteries</label>
+			<value>gppri</value>
+			<label>gppri</label>
+			<value>gpmam</value>
+			<label>gpmam</label>
+			<value>gprod</value>
+			<label>gprod</label>
+			<value>gpvrt</value>
+			<label>gpvrt</label>
+			<value>gpinv</value>
+			<label>gpinv</label>
+			<value>gppln</value>
+			<label>gppln</label>
+			<value>gprna</value>
+			<label>gprna</label>
+			<value>gpvrl</value>
+			<label>gpvrl</label>
+			<value>gpphg</value>
+			<label>gpphg</label>
+			<value>gpest</value>
+			<label>gpest</label>
+			<value>gpsts</value>
+			<label>gpsts</label>
+			<value>gpsyn</value>
+			<label>gpsyn</label>
+			<value>gppat</value>
+			<label>gppat</label>
+			<value>gpuna</value>
+			<label>gpuna</label>
+			<value>nrprot</value>
+			<label>nrprot: Swissprot + Nrl_3d + PIR</label>
+			<value>nrl3d</value>
+			<label>nrl3d: sequences from PDB</label>
+			<value>sbase</value>
+			<label>sbase: annotated domains sequences</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>block</name>
+	<attributes>
+
+		<prompt>Block file (generated by CAP)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" $value"</code>
+		</format>
+		<group>3</group>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Integer">
+	<name>iter</name>
+	<attributes>
+
+		<prompt>how many iterations</prompt>
+		<format>
+			<language>perl</language>
+			<code>" \\\\#$value"</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>method</name>
+	<attributes>
+
+		<prompt>Method of computation of position-dependent weight matrix from alignment block</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " $value" : ""</code>
+		</format>
+		<group>4</group>
+		<vlist>
+			<value>one</value>
+			<label>one: weighted averaging (Gribskov method)</label>
+			<value>two</value>
+			<label>two: Bayesian prediction (pseudocount) method</label>
+			<value>three</value>
+			<label>three: data-dependent pseudocount method</label>
+		</vlist>
+		<comment>
+			<value>This refers to the method of computation of position-dependent weight matrix from alignment block</value>
+			<value>Default is application of Dirichlet mixture priors to calculate the weight for each amino acid.</value>
+			<value>- one is weighted averaging (Gribskov method).</value>
+			<value>- two is Bayesian prediction (pseudocount) method</value>
+			<value>- three is data-dependent pseudocount method</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>seg</name>
+	<attributes>
+
+		<prompt>apply seg filter</prompt>
+		<format>
+			<language>perl</language>
+			<code>(! $value)? " -seg" : " seg$segv" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>4</group>
+		<comment>
+			<value>default is to apply seg filter for each segment found</value>
+			<value>-seg means omit seg</value>
+			<value>seq# - run seg filter with width parameter #(number)</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>segv</name>
+	<attributes>
+
+		<prompt>width parameter (if segfilter)</prompt>
+		<format>
+			<language>perl</language>
+			<code>"" </code>
+		</format>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most")  &amp;&amp; $seg</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>identical</name>
+	<attributes>
+
+		<prompt>use only one representative of each group of sequence segments that are #% or more identical</prompt>
+		<format>
+			<language>perl</language>
+			<code> (defined $value)? " i$value\\%" : "" </code>
+		</format>
+		<group>4</group>
+	<precond>
+		<language>perl</language>
+		<code> ($most eq "most") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Results">
+<name>tmpfile</name>
+<attributes>
+
+	<filenames>*.mes remost.all</filenames>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

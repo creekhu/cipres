@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> List Results Output </title>
+	<style> 
+		h1 {color:black;}
+		pre {color:green;
+		    white-space: pre-wrap;       /* CSS 3 */
+    		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    		white-space: -pre-wrap;      /* Opera 4-6 */
+    		white-space: -o-pre-wrap;    /* Opera 7 */
+    		word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    		}
+	</style>
+</head>
+
+<body>
+	<h1> List Results Output </h1>
+	<p>		
+		<pre><xmp>
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	LJ
+	User typed LJ
+	Listing your jobs
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C 
+	https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<joblist>
+	    <title>Submitted Jobs</title>
+	    <jobs>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</title>
+	            </selfUri>
+	        </jobstatus>
+	    </jobs>
+	</joblist>
+
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	LR
+	User typed LR
+	Please provide the name of the submitted job
+	eg. 'NGBW-JOB-CLUSTALW-3957CC6EBF5E448095A5666B41EDDF90'
+	NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC
+	User typed NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC
+	Listing the job results
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C 
+	https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<results>
+	    <jobfiles>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5273</url>
+	                <rel>fileDownload</rel>
+	                <title>STDOUT</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>STDOUT</filename>
+	            <length>1004</length>
+	            <parameterName>PROCESS_OUTPUT</parameterName>
+	            <outputDocumentId>5273</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5274</url>
+	                <rel>fileDownload</rel>
+	                <title>STDERR</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>STDERR</filename>
+	            <length>0</length>
+	            <parameterName>PROCESS_OUTPUT</parameterName>
+	            <outputDocumentId>5274</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5275</url>
+	                <rel>fileDownload</rel>
+	                <title>infile.aln</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>infile.aln</filename>
+	            <length>5704</length>
+	            <parameterName>aligfile</parameterName>
+	            <outputDocumentId>5275</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5276</url>
+	                <rel>fileDownload</rel>
+	                <title>epilogue.sh</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>epilogue.sh</filename>
+	            <length>481</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5276</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5277</url>
+	                <rel>fileDownload</rel>
+	                <title>scheduler.conf</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>scheduler.conf</filename>
+	            <length>13</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5277</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5278</url>
+	                <rel>fileDownload</rel>
+	                <title>infile.aln</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>infile.aln</filename>
+	            <length>5704</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5278</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5279</url>
+	                <rel>fileDownload</rel>
+	                <title>infile.dnd</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>infile.dnd</filename>
+	            <length>144</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5279</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5280</url>
+	                <rel>fileDownload</rel>
+	                <title>_COMMANDLINE</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>_COMMANDLINE</filename>
+	            <length>57</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5280</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5281</url>
+	                <rel>fileDownload</rel>
+	                <title>batch_command.cmdline</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>batch_command.cmdline</filename>
+	            <length>48</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5281</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5282</url>
+	                <rel>fileDownload</rel>
+	                <title>batch_command.run</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>batch_command.run</filename>
+	            <length>1062</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5282</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5283</url>
+	                <rel>fileDownload</rel>
+	                <title>batch_command.status</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>batch_command.status</filename>
+	            <length>143</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5283</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5284</url>
+	                <rel>fileDownload</rel>
+	                <title>stderr.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>stderr.txt</filename>
+	            <length>0</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5284</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5285</url>
+	                <rel>fileDownload</rel>
+	                <title>done.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>done.txt</filename>
+	            <length>40</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5285</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5286</url>
+	                <rel>fileDownload</rel>
+	                <title>infile.fasta</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>infile.fasta</filename>
+	            <length>3578</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5286</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5287</url>
+	                <rel>fileDownload</rel>
+	                <title>stdout.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>stdout.txt</filename>
+	            <length>1004</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5287</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5288</url>
+	                <rel>fileDownload</rel>
+	                <title>start.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>start.txt</filename>
+	            <length>40</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5288</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5289</url>
+	                <rel>fileDownload</rel>
+	                <title>scheduler_stderr.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>scheduler_stderr.txt</filename>
+	            <length>634</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5289</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5290</url>
+	                <rel>fileDownload</rel>
+	                <title>_JOBINFO.TXT</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>_JOBINFO.TXT</filename>
+	            <length>491</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5290</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5291</url>
+	                <rel>fileDownload</rel>
+	                <title>term.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>term.txt</filename>
+	            <length>338</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5291</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5292</url>
+	                <rel>fileDownload</rel>
+	                <title>scheduler_stdout.txt</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>scheduler_stdout.txt</filename>
+	            <length>622</length>
+	            <parameterName>all_outputfiles</parameterName>
+	            <outputDocumentId>5292</outputDocumentId>
+	        </jobfile>
+	        <jobfile>
+	            <downloadUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC/output/5293</url>
+	                <rel>fileDownload</rel>
+	                <title>infile.dnd</title>
+	            </downloadUri>
+	            <jobHandle>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</jobHandle>
+	            <filename>infile.dnd</filename>
+	            <length>144</length>
+	            <parameterName>phylipnewtreefile</parameterName>
+	            <outputDocumentId>5293</outputDocumentId>
+	        </jobfile>
+	    </jobfiles>
+	</results>
+
+		</xmp></pre>
+	</p>
+</body>
+</html>

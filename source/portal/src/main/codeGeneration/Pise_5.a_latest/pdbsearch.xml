@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PDBSEARCH</title>
+    <version>1.0</version>
+    <description>Fetch a PDB entry</description>
+    <authors>C. Maufrais</authors>
+    <category>protein:3d structure</category>
+  </head>
+
+  <command>pdbsearch</command>
+
+  <parameters>
+
+    <parameter ismandatory="1" issimple="1" type="String">
+      <name>query</name>
+      <attributes>
+	<prompt>query (4 letters)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch" issimple="1" >
+      <name>extract_seq</name>
+      <attributes>
+	<prompt>Extracts sequence? (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> ($value)? " -i":""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<vdef><value>"pdbsearch.out"</value></vdef>
+
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>$extract_seq</code>
+	</pipe>
+	<pipe>
+	  <pipetype>pdbfile</pipetype>
+	  <language>perl</language>
+	  <code>! $extract_seq</code>
+	</pipe>
+
+      </attributes>
+
+    </parameter>
+
+  </parameters>
+
+</pise>

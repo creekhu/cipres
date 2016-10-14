@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>REPUTER</title>
+    <description>Fast Computation of Maximal Repeats in Complete Genomes</description>
+    <authors>Kurtz, Schleiermacher</authors>
+    <reference>S. Kurtz and C. Schleiermacher: REPuter - Fast Computation of Maximal Repeats in Complete Genomes, Bioinformatics, Vol. 15(5), 1999</reference>
+    <category>motifs</category>
+    <category>nucleic:motifs</category>
+    <category>nucleic:repeats</category>
+  </head>
+
+
+<command>reputer</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>reputer</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"reputer"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>fmt</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" tr -d \\"\\\\\\\\n\\" &lt; $seq &gt; $seq.raw ; " </code>
+	</format>
+	<group>-10</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>rawfile</name>
+<attributes>
+
+	<filenames>*.raw</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $seq.raw "</code>
+	</format>
+	<group>10</group>
+	<seqfmt>
+		<value>13</value>
+	</seqfmt>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>search</name>
+<prompt>Search options</prompt>
+<group>1</group>
+<parameters>
+
+	<parameter ismandatory="1" issimple="1" type="Integer">
+	<name>leastlength</name>
+	<attributes>
+
+		<prompt>Length a maximal repeat must have to be reported (-l)</prompt>
+		<format>
+			<language>perl</language>
+			<code>  " -l $value" </code>
+		</format>
+		<group>5</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>forward</name>
+	<attributes>
+
+		<prompt>Report all maximal forward repeats (-f)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -f":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>reverse</name>
+	<attributes>
+
+		<prompt>Report all maximal reverse repeats (-r)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -r":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>complemented</name>
+	<attributes>
+
+		<prompt>Report all maximal complemented repeats (-c)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -c":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>revcomp</name>
+	<attributes>
+
+		<prompt>Report all maximal reversed and complemented repeats (-x)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -x":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>report</name>
+<prompt>Report options</prompt>
+<group>1</group>
+<parameters>
+
+	<parameter type="Switch">
+	<name>substring</name>
+	<attributes>
+
+		<prompt>Report the repeated substrings (-s)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -s":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>max</name>
+	<attributes>
+
+		<prompt>Maximal number of repeats reported (-o)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -o $value":""</code>
+		</format>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>stat</name>
+	<attributes>
+
+		<prompt>Give only statistics about the length of different repeats found (-p)</prompt>
+		<format>
+			<language>perl</language>
+			<code> ($value)? " -p":""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>-s and -p options cannot be combined</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY phylip_header SYSTEM "XMLDIR/phylip_header.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>Phylip</title>
+    <version>3.6a2</version>
+    <description>consense - Consensus tree program</description>
+    &phylip_header;
+  </head>
+    
+  <command>consense</command>
+				
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>consense</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"consense &lt; params"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	<prompt>Trees File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"ln -sf $infile intree; "</code>
+	</format>
+	<group>-10</group>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>type</name>
+      <attributes>
+	<prompt>Consensus type</prompt>
+	<vlist>
+	  <value>MRE</value>
+	  <label>Majority rule (extended)</label>
+	  <value>S</value>
+	  <label>Strict</label>
+	  <value>MR</value>
+	  <label>Majority rule</label>
+	  <value>ML</value>
+	  <label>Ml (M-sub-L)</label>
+	</vlist>
+	<vdef>
+	  <value>MRE</value>
+	</vdef>
+	<flist>
+	  <value>MRE</value>
+	  <code>""</code>
+	  <value>S</value>
+	  <code>"C\\n"</code>
+	  <value>MR</value>
+	  <code>"C\\nC\\n"</code>
+	  <value>ML</value>
+	  <code>"C\\nC\\nC\\n"</code>
+	</flist>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output options</prompt>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>print_tree</name>
+	    <attributes>
+	      <prompt>Print out tree (3)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "3\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to print a semi-graphical picture of the tree in the outfile.</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>print_treefile</name>
+	    <attributes>
+	      <prompt>Write out trees onto tree file (4)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "" : "4\\n"</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Tells the program to save the tree in a treefile (a standard representation of trees where the tree is specified by a nested pairs of parentheses, enclosing names and separated by commas).</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>printdata</name>
+	    <attributes>
+	      <prompt>Print out the data at start of run (1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "1\\n" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Switch">
+      <name>indent_tree</name>
+      <attributes>
+	<prompt>Indent treefile</prompt>
+	<format>
+	  <language>perl</language>
+	  <code> " &amp;&amp; indenttree -o outtree.indent outtree" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1000</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_options</name>
+	<prompt>Other options</prompt>
+	<parameters>
+	  
+	  <parameter type="Integer">
+	    <name>outgroup</name>
+	    <attributes>
+	      <prompt>Outgroup (default, use as outgroup species 1) (O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef)? "O\\n$value\\n" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	      <ctrls>
+		<ctrl>
+		  <message>Please enter a value greater than 0</message>
+		  <language>perl</language>
+		  <code>$value &lt; 1</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>rooted</name>
+	    <attributes>
+	      <prompt>Trees to be treated as rooted</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? "R\\n" : "" </code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	<filenames>outfile</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile</code>
+	</precond>
+	<filenames>outtree</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    
+    <parameter type="Results">
+      <name>indented_treefile</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$print_treefile &amp;&amp; $indent_tree</code>
+	</precond>
+	<filenames>outtree.indent</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>params</name>
+      <attributes>
+	<filenames>params</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>confirm</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"Y\\n"</code>
+	</format>
+	<group>1000</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>terminal_type</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"T\\n"</code>
+	</format>
+	<group>-1</group>
+	<paramfile>params</paramfile>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>tmp_params</name>
+      <attributes>
+	<filenames>*.params</filenames>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+
+</pise>

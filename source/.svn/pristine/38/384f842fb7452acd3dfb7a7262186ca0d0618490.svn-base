@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>CODNOCOD</title>
+    <description>outputs feature from Genbank entries</description>
+  </head>
+
+
+<command>codnocod</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>codnocod</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>codnocod</code>
+		<language>perl</language>
+		<code>"codnocod"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>seq</name>
+<attributes>
+
+	<prompt>Genbank sequence File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<seqfmt>
+		<value>2</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>gb_seq</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>length</name>
+<attributes>
+
+	<prompt>Length (-l)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -l" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>definition</name>
+<attributes>
+
+	<prompt>DEFINITION (-d)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -d" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>accession</name>
+<attributes>
+
+	<prompt>ACCESSION (-a)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -a" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>nid</name>
+<attributes>
+
+	<prompt>NID (-N)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -N" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>organism</name>
+<attributes>
+
+	<prompt>ORGANISM (-o)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -o" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>cds_dna</name>
+<attributes>
+
+	<prompt>Coding sequence - dna (-c)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -c" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>cds_aa</name>
+<attributes>
+
+	<prompt>Coding sequence - aa (-C)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -C" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>cinq</name>
+<attributes>
+
+	<prompt>5' sequence (-f)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -f" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>trois</name>
+<attributes>
+
+	<prompt>3' sequence (-t)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -t" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>exon_list</name>
+<attributes>
+
+	<prompt>Exon list (-e)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -e" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>exon_sequences</name>
+<attributes>
+
+	<prompt>Exon sequences (-E)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -E" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>intron_sequences</name>
+<attributes>
+
+	<prompt>Intron sequences (-I)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -I" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>all_sequences</name>
+<attributes>
+
+	<prompt>All sequences (-A)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -A" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="Switch">
+<name>srs</name>
+<attributes>
+
+	<prompt>Entries retrieved using SRS (-S)</prompt>
+	<format>
+		<language>perl</language>
+		<code> ($value)? " -S" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+	<comment>
+		<value>no ORIGIN line and sequence is numbered on the right</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

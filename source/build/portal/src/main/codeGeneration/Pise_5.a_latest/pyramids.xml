@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PYRAMIDS</title>
+    <description>A pyramidal analysis tool for sequence  clustering</description>
+    <authors>JC AUDE</authors>
+    <category>phylogeny</category>
+  </head>
+
+
+<command>pyramids</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>pyramids</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>pyramids</code>
+		<language>perl</language>
+		<code>"pyramids"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>infile</name>
+<attributes>
+
+	<prompt>Distances matrix File</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+		<pipetype>phylip_dist</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>out_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" results"</code>
+	</format>
+	<vdef><value>results</value></vdef>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="Excl">
+<name>rect</name>
+<attributes>
+
+	<prompt>Matrix format</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -$value"</code>
+	</format>
+	<vdef><value>RE</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>RE</value>
+		<label>Rectangular (Phylip)</label>
+		<value>TS</value>
+		<label>Triangular superior</label>
+		<value>TI</value>
+		<label>Triangular inferior</label>
+	</vlist>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>pyr_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"$out_file.pyr"</value></vdef>
+	<group>10</group>
+	<pipe>
+		<pipetype>pyramid_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<withpipe>
+		<pipetype>pyramid_file</pipetype>
+			<parametername>uti_file</parametername>
+	</withpipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>uti_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"$out_file.uti"</value></vdef>
+	<group>10</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>pyt_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>""</code>
+	</format>
+	<vdef><value>"$out_file.pyt"</value></vdef>
+	<group>10</group>
+	<pipe>
+		<pipetype>pyramid_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+	<withpipe>
+		<pipetype>pyramid_file</pipetype>
+			<parametername>uti_file</parametername>
+	</withpipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

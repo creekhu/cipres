@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Weighbor</title>
+    <version>1.2</version>
+    <description>Weighted neighbor joining</description>
+    <authors>Bruno, Halpern, Socci</authors>
+    <reference>W. J. Bruno, N. D. Socci, and A. L. Halpern. Weighted Neighbor Joining: A Likelihood-Based Approach to Distance-Based Phylogeny Reconstruction, Mol. Biol. Evol. 17 (1): 189-197 (2000).</reference>
+    <category>phylogeny</category>
+  </head>
+
+  <command>weighbor</command>
+
+  <parameters>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	<prompt>Distances matrix File (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -i $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    <parameter type="Integer">
+      <name>length</name>
+      <attributes>
+	<prompt>Length of the sequences (-L)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -L $value" : ""</code>
+	</format>
+	<group>2</group>
+	<comment>
+	  <value>Default is 500. This is the effective sequence length equal to the number of varying sites. Note if the -L option is not used then the program will print a warning message to stderr indicating that it is using this default length.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Integer">
+      <name>size</name>
+      <attributes>
+	<prompt>Size of the alphabet (-b)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value &amp;&amp; $value != $vdef)? " -b $value" : ""</code>
+	</format>
+	<vdef>
+	  <value>4</value>
+	</vdef>
+	<group>2</group>
+	<comment>
+	  <value>Sets the size of the alphabet of characters (number of bases) b. 1/b is equal to the probablity that there will be a match for infinite evolution time. The default value for b is 4.</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>Verbose output</name>
+      <attributes>
+	<prompt>Verbose (-v)</prompt>
+	<vlist>
+	  <value>v</value>
+	  <label>verbose</label>
+	  <value>vv</value>
+	  <label>very verbose</label>
+	  <value>vvv</value>
+	  <label>very very verbose</label>
+	</vlist>
+	<format>
+	  <language>perl</language>
+	  <code>($value)? " -$value" : ""</code>
+	</format>
+	<group>2</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code> " -o treefile" </code>
+	</format>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>treefile</name>
+      <attributes>
+	<filenames>treefile</filenames>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

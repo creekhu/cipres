@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PATSER</title>
+    <description>score the words of a sequence against an alignment matrix</description>
+    <authors>Hertz, Storm</authors>
+  </head>
+
+  <command>patser</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>patser</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"fasta-consensus &lt; $sequence &gt; $sequence.wcons; patser "</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>matrix</name>
+      <attributes>
+	<prompt>Matrix file (-m)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -m $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+	  <pipetype>consensus_matrix</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequence</name>
+      <attributes>
+	<prompt>Sequences file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -f $sequence.wcons"</code>
+	</format>
+	<group>1</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_options</name>
+	<prompt>Control options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>matrix_options</name>
+	      <prompt>Matrix options</prompt>
+	      <group>1</group>
+	      <parameters>
+
+		<parameter type="Switch">
+		  <name>weight</name>
+		  <attributes>
+		    <prompt>Matrix is a weight matrix (-w)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -w" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>1</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>vertical</name>
+		  <attributes>
+		    <prompt>Matrix is a vertical matrix (-v)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -v" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>1</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Integer">
+		  <name>correction</name>
+		  <attributes>
+		    <prompt>Correction added to the elements of the alignment matrix (-b)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>(defined $value &amp;&amp; $value != $vdef)? " -b$value" : ""</code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>1</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="Switch">
+		  <name>print_matrix</name>
+		  <attributes>
+		    <prompt>Print the weight matrix derived from the alignment matrix (-p)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -p" : ""</code>
+		    </format>
+		    <vdef><value>0</value></vdef>
+		    <group>1</group>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Paragraph">
+	    <paragraph>
+	      <name>alphabet_options</name>
+	      <prompt>Alphabet options</prompt>
+	      <group>1</group>
+	      <parameters>
+
+		<parameter issimple="1" type="Switch">
+		  <name>dna</name>
+		  <attributes>
+		    <prompt>Alphabet and normalization information for DNA</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value)? " -A a:t c:g" : ""</code>
+		    </format>
+		    <group>1</group>
+		  </attributes>
+		</parameter>
+		
+		<parameter issimple="1" type="Switch">
+		  <name>protein</name>
+		  <attributes>
+		    <prompt>Alphabet and normalization information for protein</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value) ? " -a /local/gensoft/lib/consensus/prot-alphabet" : ""</code>
+		    </format>
+		    <vdef><value>1</value></vdef>
+		    <group>1</group>
+		  </attributes>
+		</parameter>
+
+		<parameter type="InFile">
+		  <name>ascii_alphabet</name>
+		  <attributes>
+		    <prompt>Alphabet and normalization information (-a)</prompt>
+		    <format>
+		      <language>perl</language>
+		      <code>($value) ? " -a $value" : "" </code>
+		    </format>
+		    <group>1</group>
+		    <comment>
+		      <value>Each line contains a letter (a symbol in the alphabet) followed by an optional normalization number (default: 1.0). The normalization is based on the relative prior probabilities of the letters. For nucleic acids, this might be be the genomic frequency of the bases; however, if the -d option is not used, the frequencies observed in your own sequence data are used. In nucleic acid alphabets, a letter and its complement appear on the same line, separated by a colon (a letter can be its own complement, e.g. when using a dimer alphabet).</value>
+		      <value>Complementary letters may use the same normalization number. Only the standard 26 letters are permissible; however, when the -CS option is used, the alphabet is case sensitive so that a total of 52 different characters are possible.</value>
+		      <value>POSSIBLE LINE FORMATS WITHOUT COMPLEMENTARY LETTERS:</value>
+		      <value>letter</value>
+		      <value>letter normalization</value>
+		      <value>POSSIBLE LINE FORMATS WITH COMPLEMENTARY LETTERS:</value>
+		      <value>letter:complement</value>
+		      <value>letter:complement normalization</value>
+		      <value>letter:complement normalization:complement's_normalization</value>
+		    </comment>
+		  </attributes>
+		</parameter>
+
+	      </parameters>
+	    </paragraph>
+
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>score</name>
+	    <attributes>
+	      <prompt>Score options (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -d$value" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>0</value>
+		<label>-d0: Treat unrecognized characters as errors</label>
+		<value>1</value>
+		<label>-d1: Treat unrecognized characters as discontinuities, but print warning</label>
+		<value>2</value>
+		<label>-d2: Treat unrecognized characters as discontinuities, and print NO warning</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>range</name>
+	    <attributes>
+	      <prompt>Range for approximating a weight matrix with integers (-R)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -R$value" : ""</code>
+	      </format>
+	      <vdef><value>10000</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>This number is the difference between the largest and smallest integers used to estimate the scores. Higher values increase precision, but will take longer to calculate the table of p-values.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>min_score</name>
+	    <attributes>
+	      <prompt>Minimum score for calculating the p-value of scores (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -M$value" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>1</group>
+	      <comment>
+		<value>Higher values will increase precision, but may miss interesting scores</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+    
+  </parameters>
+  
+</pise>

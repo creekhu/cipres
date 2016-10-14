@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY nucdbs SYSTEM "XMLDIR/nucdbs.xml">
+<!ENTITY protdbs SYSTEM "XMLDIR/protdbs.xml">
+]>
+
+<pise>
+
+  <head>
+    <title>PFTOOLS</title>
+    <version>2.2</version>
+    <description>Profile Tools</description>
+    <authors>P. Bucher</authors>
+    <reference>Bucher P, Karplus K, Moeri N and Hofmann, K. (1996).  A flexible motif search technique based on generalized profiles. Comput. Chem. 20:3-24.</reference>
+    <category>nucleic:profiles</category>
+    <category>protein:profiles</category>
+    <category>profiles</category>
+  </head>
+
+
+<command>pftools</command>
+
+<parameters>
+
+<parameter ismandatory="1" iscommand="1" type="Excl">
+<name>pftools</name>
+<attributes>
+
+	<prompt>PFTOOLS program</prompt>
+	<format>
+		<language>perl</language>
+		<code>"| $value "</code>
+	</format>
+	<vdef><value>pfscan</value></vdef>
+	<group>2</group>
+	<vlist>
+		<value>pfscan</value>
+		<label>pfscan: scan a sequence with a profile db</label>
+		<value>pfsearch</value>
+		<label>pfsearch: search a sequence db for segments matching a profile</label>
+	</vlist>
+	<comment>
+		<value>pfscan compares a protein or nucleic acid sequence against a profile library (default: Prosite).</value>
+		<value>pfsearch compares a query profile against a DNA or protein sequence library.</value>
+		<value>The result is an unsorted list of profile-sequence matches written to the standard output.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>clean_output</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" | clean_pfscan_output  "</code>
+	</format>
+	<group>10000</group>
+<precond>
+	<language>perl</language>
+	<code>$pftools eq "pfscan"</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="Switch">
+<name>fastaformat</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" -f"</code>
+	</format>
+	<group>3</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>pfscan</name>
+<prompt>PFSCAN parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code> ($pftools eq "pfscan") </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" issimple="1" type="Sequence">
+	<name>seqfile</name>
+	<attributes>
+
+		<prompt>Sequence File</prompt>
+		<format>
+			<language>perl</language>
+			<code>"cat $value  "</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>pfscan will scan this sequence with a profile db (default db: PROSITE)</value>
+		</comment>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfscan") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>prosite</name>
+	<attributes>
+
+		<prompt>Scan PROSITE db (default)?</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " /local/gensoft/lib/pftools/db/prosite.dat" : ""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>6</group>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfscan") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>profiledb</name>
+	<attributes>
+
+		<prompt>Profile db (PROSITE/NUCSITE format) (if not PROSITE)</prompt>
+		<format>
+			<language>perl</language>
+			<code> $value</code>
+		</format>
+		<group>6</group>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfscan")  &amp;&amp; ( ! $prosite )</code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>pfscan_cutoff</name>
+	<attributes>
+
+		<prompt>Cut-off value</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " L=$value":""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>Cut-off level to be used for match selection. If level L is not specified in the profile, the next higher (if L is negative) or next lower (if L is positive) level specified is used instead.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfscan") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>pfsearch</name>
+<prompt>PFSEARCH parameters</prompt>
+<precond>
+	<language>perl</language>
+	<code> ($pftools eq "pfsearch") </code>
+</precond>
+<parameters>
+
+	<parameter ismandatory="1" type="InFile">
+	<name>profile</name>
+	<attributes>
+
+		<prompt>Profile File  (PROSITE/NUCSITE format, or see next option) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($gcg2psa)? "gtop $value" : "cat $value" </code>
+		</format>
+		<group>1</group>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfsearch") </code>
+	</precond>
+		<pipe>
+			<pipetype>gcg_profile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>gcg2psa</name>
+	<attributes>
+
+		<prompt>Convert the profile from GCG format to PROSITE format ?</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfsearch") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter ismandatory="1" type="Excl">
+	<name>aa_or_nuc_db</name>
+	<attributes>
+
+		<prompt>protein or nucleotid db</prompt>
+		<format>
+			<language>perl</language>
+			<code>""</code>
+		</format>
+		<vdef><value>protein</value></vdef>
+		<vlist>
+			<value>protein</value>
+			<label>protein</label>
+			<value>dna</value>
+			<label>DNA</label>
+		</vlist>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfsearch") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>aadb</name>
+	<attributes>
+
+		<prompt>Protein Database</prompt>
+		<format>
+			<language>perl</language>
+			<code> " /local/gensoft/lib/fasta/db/$value" </code>
+		</format>
+		<vdef><value>uniprot</value></vdef>
+		<group>6</group>
+	      &protdbs;
+		<ctrls>
+			<ctrl>
+			<message>You must either choose a protein or a nucleotid db</message>
+				<language>perl</language>
+				<code>! (defined $aadb || defined $nucdb)</code>
+			</ctrl>
+		</ctrls>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfsearch")  &amp;&amp;  ($aa_or_nuc_db eq "protein") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+	<name>nucdb</name>
+	<attributes>
+
+		<prompt>Nucleotid Database</prompt>
+		<format>
+			<language>perl</language>
+			<code> " /local/gensoft/lib/fasta/db/$value" </code>
+		</format>
+		<vdef><value>genbank</value></vdef>
+		<group>6</group>
+	      &nucdbs;
+	      <precond>
+			<language>perl</language>
+			<code> ($pftools eq "pfsearch")  &amp;&amp;  ($aa_or_nuc_db eq "dna") </code>
+	      </precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>pfsearch_cutoff</name>
+	<attributes>
+
+		<prompt>Cut-off value</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value)? " C=$value":""</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>Over-writes the level zero cut-off value specified in the profile. An integer argument is interpreted as a raw score value, a decimal argument as a normalized score value.</value>
+		</comment>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfsearch") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>psa2msa</name>
+	<attributes>
+
+		<prompt>reformat PSA result file to Fasta multiple sequence alignment file?</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " | psa2msa - " : "" </code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>8</group>
+	<precond>
+		<language>perl</language>
+		<code> ($pftools eq "pfsearch") </code>
+	</precond>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="Switch">
+<name>stdinput</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" - " </code>
+	</format>
+	<group>5</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>control</name>
+<prompt>Control options</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>compl</name>
+	<attributes>
+
+		<prompt> Search the complementary strands of DNA sequences as well (-b) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -b":""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>raw_score</name>
+	<attributes>
+
+		<prompt>Use raw scores rather than normalized scores for match selection. Normalized scores will not be listed in the output. (-r) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -r":""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>unique</name>
+	<attributes>
+
+		<prompt>Forces DISJOINT=UNIQUE (-u) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -u":""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output options</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>optimal</name>
+	<attributes>
+
+		<prompt>Report optimal alignment scores for all sequences regardless of the cut-off value (-a)? </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -a":""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>This option simultaneously forces DISJOINT=UNIQUE.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>listseq</name>
+	<attributes>
+
+		<prompt>List the sequences of the matched regions as well. The output will be a Pearson/Fasta-formatted sequence library. (-s) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -s":""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>psa_format</name>
+	<attributes>
+
+		<prompt>List profile-sequence alignments in pftools PSA format. (-x) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -x":""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>between</name>
+	<attributes>
+
+		<prompt> Display alignments between the profile and the matched sequence regions in a human-friendly format. (-y) </prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -y":""</code>
+		</format>
+		<group>4</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Sputnik</title>
+    <description>DNA microsatellite repeat search utility</description>
+    <authors>Chris Abajian</authors>
+    <doclink>http://rast.abajian.com/sputnik/</doclink>
+  </head>
+
+  <command>sputnik</command>
+
+  <parameters>
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>query</name>
+      <attributes>
+	<prompt>Sequence File (fasta or multifasta format)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $query" </code>
+	</format>
+	<group>1</group>
+        <seqfmt>
+    	  <value>8</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+    <parameter type="Switch">
+      <name>show</name>
+      <attributes>
+	<prompt>Show all (even when there is no repeat) (-a)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -a":"" </code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+    <parameter type="Switch">
+      <name>bother</name>
+      <attributes>
+	<prompt>Do not bother finding the canonical repeat unit (-x)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -x":"" </code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>max_unit</name>
+      <attributes>
+	<prompt>Max unit length (-u)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -u $max_unit":"" </code>
+	</format>
+	<vdef><value>2</value></vdef>
+	<group>2</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>min_unit</name>
+      <attributes>
+	<prompt>Min unit length (-v)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -v $min_unit":"" </code>
+	</format>
+	
+	<group>2</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>match</name>
+      <attributes>
+	<prompt>Points for a match (-m)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -m $match":"" </code>
+	</format>
+	
+	<group>3</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>mismatch</name>
+      <attributes>
+	<prompt>Points for a mis-match (-n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -n $mismatch":"" </code>
+	</format>
+	
+	<group>3</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>score</name>
+      <attributes>
+	<prompt>Minimum score (-s)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -s $score":"" </code>
+	</format>
+	
+	<group>3</group>
+      </attributes>
+    </parameter>
+    <parameter type="Switch">
+      <name>adjust</name>
+      <attributes>
+	<prompt>Adjust scores for the first unit cell (-j)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -j":"" </code>
+	</format>
+	<group>4</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>error</name>
+      <attributes>
+        <prompt>Errors per 100 bases (-e)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? " -e $value":""</code>
+        </format>
+        <group>4</group> 
+      </attributes>
+    </parameter> 
+    <parameter type="Switch">
+      <name>report</name>
+      <attributes>
+	<prompt>Report score as percent perfection (-p)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -p":"" </code>
+	</format>
+	<group>4</group>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>fail_score</name>
+      <attributes>
+        <prompt>fail score (-f)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? " -f $value":""</code>
+        </format>
+        <group>5</group> 
+      </attributes>
+    </parameter>  
+    <parameter type="Integer">
+      <name>degrade</name>
+      <attributes>
+        <prompt>Max degrade and still continue, in bases (-d)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? " -d $value":""</code>
+        </format>
+        <group>5</group> 
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>recursion</name>
+      <attributes>
+        <prompt>Max recursion [0, 100] (0 ==> perfect only) (-r)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? " -r $value":""</code>
+        </format>
+        <group>6</group>
+	<ctrls>
+	  <ctrl> 
+            <message>Enter a value between 0 and 100</message>
+	    <language>perl</language>
+	    <code>$recursion &lt; 0 || $recursion &gt; 100</code>
+          </ctrl>
+	</ctrls>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>flanking</name>
+      <attributes>
+        <prompt>output this many bases flanking the repeat [0, 1000] (-F)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? " -F $value":""</code>
+        </format>
+        <group>6</group>
+	<ctrls>
+	  <ctrl> 
+            <message>Enter a value between 0 and 1000</message>
+	    <language>perl</language>
+	    <code>$flanking &lt; 0 || $flanking &gt; 1000</code>
+	  </ctrl>
+	</ctrls>
+      </attributes>
+    </parameter>
+    <parameter type="Integer">
+      <name>ssr_report</name>
+      <attributes>
+        <prompt>Min length of SSR to report (-L)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)? " -L $value":""</code>
+        </format>
+        <vdef><value>20</value></vdef>
+        <group>7</group> 
+      </attributes>
+    </parameter>
+    <parameter type="Excl">
+      <name>output_line</name>
+      <attributes>
+	<prompt>Max characters on an output line (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -l":"" </code>
+	</format>
+	<vlist>
+	  <value>-1</value>
+	  <label>no limit or one line no matter how long</label>
+	  <value>0</value>
+	  <label>do not output the repeat sequence at all</label>
+	</vlist>
+	<group>7</group>
+      </attributes>
+    </parameter>
+    <parameter type="Switch">
+      <name>collapse</name>
+      <attributes>
+	<prompt>Do not collapse unit cell to canonical strand (-z)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>(defined $value)?" -z":"" </code>
+	</format>
+	<group>7</group>
+      </attributes>
+    </parameter>
+    <parameter ishidden="1" type="String">
+      <name>res</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; report.out"</code>
+	</format>
+        <group>9</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>outfile</name>
+      <attributes>
+	<filenames>report.out</filenames>
+      </attributes>
+    </parameter> 
+  </parameters>
+</pise>

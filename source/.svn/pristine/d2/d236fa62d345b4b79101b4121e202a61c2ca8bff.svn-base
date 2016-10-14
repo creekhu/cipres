@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>Molphy</title>
+    <version>2.3b3</version>
+    <description>ProtML, NucML phylogeny programs</description>
+    <authors>J. Adachi &amp; M. Hasegawa</authors>
+    <category>phylogeny</category>
+  </head>
+  
+  <command>prot_nucml</command>
+  
+  <parameters>
+    
+    <parameter ismandatory="1" iscommand="1" type="Excl">
+      <name>prot_nucml</name>
+      <attributes>
+	<prompt>Program</prompt>
+	<vlist>
+	  <value>protml</value>
+	  <label>protml</label>
+	  <value>nucml</value>
+	  <label>nucml</label>
+	</vlist>
+	<format>
+	  <language>perl</language>
+	  <code>"$value"</code>
+	</format>
+	<vdef>
+	  <value>nucml</value>
+	</vdef>
+	<group>0</group>
+	<comment>
+	  <value>ProtML: Maximum Likelihood Inference of Protein Phylogeny</value>
+	  <value>NucML: Maximum Likelihood Inference of Nucleic Acid Phylogeny</value>
+	</comment>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" type="String">
+      <name>interleaved</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -I"</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>tee</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" | tee molphy.results | sed -n \\"/;/p\\" "</code>
+	</format>
+	<group>1000</group>
+      </attributes>
+    </parameter>
+  
+    <parameter ishidden="1" type="OutFile">
+      <name>results</name>
+      <attributes>
+	<vdef><value>"molphy.results"</value></vdef>
+	<pipe>
+	  <pipetype>phylip_dist</pipetype>
+	  <language>perl</language>
+	  <code>$mode eq "-D"</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outtree</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" &gt; outtree"</code>
+	</format>
+	<vdef><value>"outtree"</value></vdef>
+	<group>1100</group>
+	<pipe>
+	  <pipetype>phylip_tree</pipetype>
+	  <language>perl</language>
+	  <code>! $info</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>sequences</name>
+      <attributes>
+	<prompt>Sequences File (protml or nucml)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>3</group>
+	<comment>
+	  <value>Sequences file default format: interleaved (analog to Phylip format)</value>
+	</comment>
+	<seqfmt>
+	  <value>12</value>
+	</seqfmt>
+	<precond>
+	  <language>perl</language>
+	  <code>( $prot_nucml eq "protml" || $prot_nucml eq "nucml" )</code>
+	</precond>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>model</name>
+	<prompt>Model (ProtML or NucML)</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>( $prot_nucml eq "protml" || $prot_nucml eq "nucml" )</code>
+	</precond>
+	
+	<parameters>
+	  
+	  <parameter type="Excl">
+	    <name>modelprot</name>
+	    <attributes>
+	      <prompt>Model for ProtML</prompt>
+	      <vlist>
+		<value>-j</value>
+		<label>JTT (Jones, Taylor &amp; Thornton) (-j)</label>
+		<value>-jf</value>
+		<label>JTT-F (Jones, Taylor &amp; Thornton) (-jf)</label>
+		<value>-d</value>
+		<label>Dayhoff (Dayhoff &amp; al) (-d)</label>
+		<value>-df</value>
+		<label>Dayhoff-F (Dayhoff &amp; al) (-df)</label>
+		<value>-m</value>
+		<label>mtREV24 (Adachi &amp; Hasegawa) (-m)</label>
+		<value>-mf</value>
+		<label>mtREV24-F (Adachi &amp; Hasegawa) (-mf)</label>
+		<value>-p</value>
+		<label>Poisson (-p)</label>
+		<value>-pf</value>
+		<label>Proportional (-pf)</label>
+		<value>-r</value>
+		<label>users RSR (Relative Substitution Rate) (-r)</label>
+		<value>-rf</value>
+		<label>users RSR-F (-rf)</label>
+		<value>-f</value>
+		<label>with data Frequencies (-f)</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>($prot_nucml eq "protml" )</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef)? " $value" : "" </code>
+	      </format>
+	      <vdef><value>-j</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Excl">
+	    <name>modeldna</name>
+	    <attributes>
+	      <prompt>Model for NucML</prompt>
+	      <vlist>
+		<value>-t</value>
+		<label>Alpha/Beta (Hasegawa, Kishino &amp; Yano) and/or AlphaY/AlphaR (Tamura &amp; Nei) (-t)</label>
+		<value>-p</value>
+		<label>Proportional (-p)</label>
+		<value>-pf</value>
+		<label>Poisson (-pf)</label>
+		<value>-r</value>
+		<label>users RSR-F (Relative Substitution Rate) (-r)</label>
+		<value>-rf</value>
+		<label>users RSR (-rf)</label>
+		<value>-f</value>
+		<label>-f withOUT data Frequencies</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>( $prot_nucml eq "nucml" )</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>($value ne $vdef)? " $value" : "" </code>
+	      </format>
+	      <vdef><value>-t</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>n1</name>
+	    <attributes>
+	      <prompt>n1 : Alpha/Beta ratio (default:4.0) (option : -t n1)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>($prot_nucml eq "nucml" &amp;&amp; $modeldna =~ /^-t/) </code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>(! defined $n2 &amp;&amp; defined $n1)? " -t $n1":""</code>
+	      </format>
+	      <vdef><value>4.0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>n2</name>
+	    <attributes>
+	      <prompt>n2 AlphaY/AlphaR ratio (default:1.0) (option : -t n1,n2)</prompt>
+	      <precond>
+		<language>perl</language>
+		<code>($prot_nucml eq "nucml" &amp;&amp; $modeldna =~ /^-t/) </code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>(defined $n1 &amp;&amp; defined $n2)? " -t $n1,$n2":""</code>
+	      </format>
+	      <vdef><value>1.0</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+	
+      </paragraph>
+      
+    </parameter>
+    
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>search</name>
+	<prompt>Search strategy or Mode (ProtML or NucML)</prompt>
+	<parameters>
+	  
+	  <parameter ismandatory="1" type="Excl">
+	    <name>mode</name>
+	    <attributes>
+	      <prompt>Strategy or Mode</prompt>
+	      <vlist>
+		<value>-u</value>
+		<label>Users trees (need users_trees file) (-u)</label>
+		<value>-R</value>
+		<label>local Rearrangement search (-R)</label>
+		<value>-RX</value>
+		<label>LBP (local bootstrap probability only) (-RX)</label>
+		<value>-e</value>
+		<label>Exhaustive search (with/without constrained_tree file) (-e)</label>
+		<value>-s</value>
+		<label>Star decomposition search (may not be the ML tree) (-s)</label>
+		<value>-q</value>
+		<label>Quick add OTUs search (may not be the ML tree) (-q)</label>
+		<value>-D</value>
+		<label>maximum likelihood Distance matrix (for NJDIST) (-D)</label>
+	      </vlist>
+	      <format>
+		<language>perl</language>
+		<code>" $value"</code>
+	      </format>
+	      <vdef><value>-q</value></vdef>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ismandatory="1" type="InFile">
+	    <name>topology</name>
+	    <attributes>
+	      <prompt>Topology File (if Users Tree mode or Exhaustive
+	      search or local Rearrangement search)</prompt>
+	      <comment>
+		<value>this file must contain the number of tree(s)</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>($mode eq "-u" || $mode eq "-e" || $mode eq "-R" )</code>
+	      </precond>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " $value" : "" </code>
+	      </format>
+	      <group>4</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Output Parameters</prompt>
+
+	<parameters>
+	  
+	  <parameter type="Integer">
+	    <name>num</name>
+	    <attributes>
+	      <prompt>Retained top ranking trees (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -n $value":""</code>
+	      </format>
+	      <group>1</group>
+	      <ctrls>
+		<ctrl>
+		  <message>You should enter an integer value</message>
+		  <language>perl</language>
+		  <code>$value !~ /^\\d*$/</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>verbose</name>
+	    <attributes>
+
+	      <prompt>Verbose to stderr (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -v":""</code>
+	      </format>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>info</name>
+	    <attributes>
+	      <prompt>Output some informations (-i -w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -i -w":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>others</name>
+	<prompt>Others Options</prompt>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>boot</name>
+	    <attributes>
+	      <prompt>no Bootstrap probabilities (Users trees) (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -b":""</code>
+	      </format>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>($mode =~ /^-u/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>minimum_evolution</name>
+	    <attributes>
+	      <prompt>Minimum evolution (with -e) (-M)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -M":""</code>
+	      </format>
+	      <group>1</group>
+	      <precond>
+		<language>perl</language>
+		<code>($mode =~ /^-e/ )</code>
+	      </precond>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>sequential</name>
+	    <attributes>
+	      <prompt>Sequential format (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -S":""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+
+  </parameters>
+</pise>

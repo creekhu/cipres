@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>ASSP</title>
+    <description>Accuracy of Secondary Structure Prediction</description>
+    <authors>Russell, Barton</authors>
+  </head>
+
+
+<command>assp</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>assp</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>assp</code>
+		<language>perl</language>
+		<code>"assp"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="InFile">
+<name>aligfile</name>
+<attributes>
+
+	<prompt>Alignement File (in BLOCK format)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($clus2blc)? " -f $value.blc" : " -f $value"</code>
+	</format>
+	<group>1</group>
+	<comment>
+		<value>You can use a CLUSTAL NBRF-PIR format file and convert it to Blockfile format (see next options).</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>clus2blc</name>
+<attributes>
+
+	<prompt>Convert CLUSTAL NBRF-PIR format to AMPS Blockfile format</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? "clus2blc &lt; clus2blc.params ; " : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>-1</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>nbrf_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"$aligfile\\n$aligfile.blc\\n"</code>
+	</format>
+<precond>
+	<language>perl</language>
+	<code>$clus2blc</code>
+</precond>
+	<paramfile>clus2blc.params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+<prompt>Output parameters</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>showpar</name>
+	<attributes>
+
+		<prompt>show all the parameters for the current run.</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -P":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>quiet</name>
+	<attributes>
+
+		<prompt>avoid all output in the program except for errors and a final lower limit for Q3</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -q":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>others</name>
+<prompt>Others parameters</prompt>
+<parameters>
+
+	<parameter type="InFile">
+	<name>matrix</name>
+	<attributes>
+
+		<prompt>-m property type matrix file name</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -m $value" : ""</code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>This specifies the property matrix to be used for the definition of conservation. The format of this matrix is:</value>
+			<value>! *ILVCAGMFYWHKREQDNSTP BZX**</value>
+			<value>! </value>
+			<value>1 111111111111000000101001 Hydrophobic :</value>
+			<value>2 000000001111111111101111 Polar :</value>
+			<value>3 001111000000000111111001 Small :</value>
+			<value>4 000000000000000000011001 Proline :</value>
+			<value>5 000000000011100000001001 Positive :</value>
+			<value>6 000000000000010100001001 Negative : Comments here!</value>
+			<value>7 000000000011110100001001 Charged :</value>
+			<value>8 000011000000000001001001 Tiny :</value>
+			<value>9 111000000000000000001001 Aliphatic :</value>
+			<value>10 000000011110000000001001 Aromatic :</value>
+			<value>The string between the asterix is the order in which amino acids are to be considered (' ' denotes gap). The matrix of rows 1-10 contains 1s and 0s corresponding to whether each amino acid has a particular property. For example, Cysteine has the properties 'Hydrophobic' and 'Small'. It also has the 'anti-properties' 'not-Polar','not-Proline', 'not-Positive', etc.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>subsize</name>
+	<attributes>
+
+		<prompt>-s length of sequence used to determine poor alignment</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -s $value":""</code>
+		</format>
+		<vdef><value>5</value></vdef>
+		<group>1</group>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>maxalig</name>
+	<attributes>
+
+		<prompt>-l maximum number of sub-alignments to be considered</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -l $value":""</code>
+		</format>
+		<vdef><value>400</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>This specifies the number of sub-alignments to be considered when calculating %C. If the possible number of sub-alignments (of the size specified with -s &lt;N&gt;) is less than or equal to this value, then all possible sub-alignments will be generated and considered for the calculation of %C. If the number of possible sub-alignments is greater than this number, than a random sample of alignments (i.e., this number) will be generated.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>minprop</name>
+	<attributes>
+
+		<prompt>-p minimum number or properties shared to define conservation</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -p $value":""</code>
+		</format>
+		<vdef><value>7</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>This is the minimum number of properties to be shared at all positions within a sub-alignment to define a position as conserved. If you don't understand this, see the above paper, and references therein.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>window</name>
+	<attributes>
+
+		<prompt>-w window length for conservation definition</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -w $value":""</code>
+		</format>
+		<vdef><value>1</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>It is sometimes desirable to consider only *runs* of conserved positions within an alignment (ie. runs of 3 or more). -w specifies the minimum run of conserved positions to be allowed. The default is 1 (ie. all conserved positions are used)</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>ignseq</name>
+	<attributes>
+
+		<prompt>-i fraction of sequences that may be ignored</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -i $value":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>Errors in sequencing, and other problems sometimes make it desirable to ignore a certain fraction of residues. -f allows a user defined fraction of amino acids to be ignore in the calculation of %C. The default is 0. (ie. no amino acids are ignored)</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer">
+	<name>mingap</name>
+	<attributes>
+
+		<prompt>-g minimum number of gaps allowed</prompt>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -g $value":""</code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>1</group>
+		<comment>
+			<value>It is sometimes desirable to allow for gaps at conserved positions because of missing sequences, etc. This specifies the number of gaps tolerated at a position during the definition of conservation. The default is 0. (ie. no gaps are allowed)</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="String">
+	<name>seqomit</name>
+	<attributes>
+
+		<prompt>-o Seq. to be omitted 1 Seq. to be omitted 2 ...</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -o $value" : "" </code>
+		</format>
+		<group>1</group>
+		<comment>
+			<value>Sometimes it is necessary to ignore particular sequences in the alignment. This option allows the user to specify sequences to be ignored by simply typing in their position in the block file (ie. all sequences considered to be numbered starting at 1). By default, no sequences are ignored, except for those sequences having identifiers ending in 'dssp', 'define', 'rk', or 'str', these being standard names for secondary structure strings (often showed beside alignments). Identifiers called 'space' are also ignored.</value>
+		</comment>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+
+</parameters>
+</pise>

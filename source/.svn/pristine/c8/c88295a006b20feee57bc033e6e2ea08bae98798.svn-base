@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>treealign</title>
+    <description>phylogenetic alignment of homologous sequences</description>
+    <category>alignment:multiple</category>
+    <authors>J. Hein</authors>
+    <reference>Hein, J.: Unified approach to alignment and phylogenies. Meth. Enzymol. 183:626-645 (1990).</reference>
+    <reference>Hein, J.: A new method that simultaneously aligns and reconstruct ancestral sequences for any number of homologous sequences, when the phylogeny is given. Mol. Biol. Evol. 6:649-668 (1989). </reference>
+    <reference>Hein, J.: A tree reconstruction method that is economical in the number of pairwise comparisons used. Mol. Biol. Evol. 6:669-684 (1989). </reference>
+</head>
+
+
+<command>treealign</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>treealign</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>treealign</code>
+		<language>perl</language>
+		<code>"treealign"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>param</name>
+<attributes>
+
+	<filenames>par.dat</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>results</name>
+<attributes>
+
+	<filenames>*.ali *.tree</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>fileseq</name>
+<attributes>
+
+	<prompt>Sequences File</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>30</group>
+	<seqfmt>
+		<value>3</value>
+	</seqfmt>
+	<paramfile>par.dat</paramfile>
+	<pipe>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Excl">
+<name>seqtype</name>
+<attributes>
+
+	<prompt>Sequence type</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value"</code>
+	</format>
+	<group>11</group>
+	<vlist>
+		<value>1</value>
+		<label>1: protein</label>
+		<value>0</value>
+		<label>0: DNA</label>
+	</vlist>
+	<paramfile>par.dat</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>nuseq</name>
+<attributes>
+
+	<prompt>Number of sequences</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>12</group>
+	<paramfile>par.dat</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>gap_open</name>
+<attributes>
+
+	<prompt>Gap open penalty</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>13</group>
+	<ctrls>
+		<ctrl>
+		<message>Enter a non-negative value</message>
+			<language>perl</language>
+			<code>$value &lt; 0</code>
+		</ctrl>
+	</ctrls>
+	<paramfile>par.dat</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Integer">
+<name>gap_ext</name>
+<attributes>
+
+	<prompt>Gap extension penalty</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value\\n"</code>
+	</format>
+	<group>14</group>
+	<paramfile>par.dat</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter type="Paragraph">
+<paragraph>
+<name>other_options</name>
+<prompt>Other options</prompt>
+<parameters>
+
+	<parameter type="Switch">
+	<name>ancesterout</name>
+	<attributes>
+
+		<prompt>Present ancestral sequences</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? "1" : "0" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>21</group>
+		<paramfile>par.dat</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch">
+	<name>usertree</name>
+	<attributes>
+
+		<prompt>User tree</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " 1\\n" : " 0\\n" </code>
+		</format>
+		<vdef><value>0</value></vdef>
+		<group>22</group>
+		<paramfile>par.dat</paramfile>
+
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile">
+	<name>usertreefile</name>
+	<attributes>
+
+		<prompt>Your tree file</prompt>
+		<format>
+			<language>perl</language>
+			<code>"$value\\n" </code>
+		</format>
+		<group>60</group>
+	<precond>
+		<language>perl</language>
+		<code>$usertree</code>
+	</precond>
+		<paramfile>par.dat</paramfile>
+
+	</attributes>
+	</parameter>
+
+</parameters>
+</paragraph>
+
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>filetree</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"$fileseq.tree\\n" </code>
+	</format>
+	<group>40</group>
+	<paramfile>par.dat</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>fileali</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"$fileseq.ali\\n" </code>
+	</format>
+	<group>50</group>
+	<paramfile>par.dat</paramfile>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

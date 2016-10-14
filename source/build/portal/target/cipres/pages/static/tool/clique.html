@@ -1,0 +1,73 @@
+<h2>CLIQUE</h2>
+<p>
+	<strong>CLIQUE</strong> finds the largest clique of 
+	mutually compatible characters, and the phylogeny which they recommend, for 
+	discrete character data with two states. The largest clique (or all cliques 
+	within a given size range of the largest one) are found by a very fast branch 
+	and bound search method. The method does not allow for missing data. For such 
+	cases the T (Threshold) option of PARS or MIX may be a useful alternative. 
+	Compatibility methods are particular useful when some characters are of poor 
+	quality and the rest of good quality, but when it is not known in advance which 
+	ones are which. Part of Phylip package.
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/clique.html"> 
+		http://evolution.genetics.washington.edu/phylip/doc/clique.html
+	</a>
+</h3>
+
+<h3>Test Data Set</h3>
+<pre>     5    6
+Alpha     110110
+Beta      110000
+Gamma     100110
+Delta     001001
+Epsilon   001110</pre>
+
+<h3>Test Output (with all numerical options on)</h3>
+<pre>
+Largest clique program, version 3.6
+
+ 5 species,   6  characters
+Species  Character states
+-------  --------- ------
+Alpha       11011 0
+Beta        11000 0
+Gamma       10011 0
+Delta       00100 1
+Epsilon     00111 0
+
+Character Compatibility Matrix (1 if compatible)
+--------- ------------- ------ -- -- -----------
+
+                     111..1
+                     111..1
+                     111..1
+                     ...111
+                     ...111
+                     111111
+
+
+Largest Cliques
+------- -------
+
+
+Characters: (  1  2  3  6)
+
+
+  Tree and characters:
+
+     2  1  3  6
+     0  0  1  1
+
+             +1-Delta
+       +0--1-+
+  +--0-+     +--Epsilon
+  !    !
+  !    +--------Gamma
+  !
+  +-------------Alpha
+  !
+  +-------------Beta
+
+remember: this is an unrooted tree!</pre>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>Structural Alignment of Multiple Proteins</description>
+    <authors>Russell, Barton</authors>
+    <reference>R. B. Russell and G. J. Barton. Multiple protein sequence alignment from tertiary structure comparison: assignment of global and residue confidence levels. Proteins, 14:309-323, 1992.</reference>
+  </head>
+
+  <command>stamp</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>stamp</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"stamp"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>listfile</name>
+      <attributes>
+	<prompt>Starting domains file (-l)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -l $value"</code>
+	</format>
+	<group>1</group>
+	<pipe>
+	  <pipetype>stamp_trans_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>trans_files</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>! $scan</code>
+	</precond>
+	<filenames>*.trans</filenames>
+	<pipe>
+	  <pipetype>stamp_trans_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>scan_files</name>
+      <attributes>
+	<precond>
+	  <language>perl</language>
+	  <code>$scan</code>
+	</precond>
+	<filenames>$prefix.scan</filenames>
+	<pipe>
+	  <pipetype>stamp_trans_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>coord_files</name>
+      <attributes>
+
+	<filenames>$prefix.[1-9]*</filenames>
+	<pipe>
+	  <pipetype>stamp_alig_file</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" type="String">
+      <name>prefix</name>
+      <attributes>
+	<prompt>Output file prefix (-prefix)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" -prefix $value"</code>
+	</format>
+	<vdef><value>STAMP</value></vdef>
+	<group>3</group>
+	<size>20</size>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>control_param</name>
+	<prompt>General options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>npass</name>
+	    <attributes>
+	      <prompt>Whether one or two fits are to be performed (-n or -npass)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -n $value" : "" </code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>2</group>
+	      <vlist>
+		<value>1</value>
+		<label>1</label>
+		<value>2</value>
+		<label>2</label>
+	      </vlist>
+	      <comment>
+		<value>The idea is that the initial fit can be used with a conformation biased set of parameters to improve the initial fit prior to fitting using distance and conformation parameters. Some other parameters are called `first_' and `second_' accordingly. When NPASS =1, then only the `second_' (or unprefixed) parameters are used.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>pen1</name>
+	    <attributes>
+	      <prompt>Smith-Waterman gap penalty to be used during the fitting (-pen1)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -pen1 $value" : "" </code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>2</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>pen2</name>
+	    <attributes>
+	      <prompt>Smith-Waterman gap penalty to be used during the fitting (-pen2)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -pen2 $value" : "" </code>
+	      </format>
+	      <vdef><value>0.0</value></vdef>
+	      <group>2</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>align_param</name>
+	<prompt>Multiple alignment options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>rough</name>
+	    <attributes>
+	      <prompt>Initial rough superimposition (-rough)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -rough" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>If set to TRUE, then an initial rough superimposition will be performed by aligning the N-terminal ends of the sequences and fitting on whatever atoms this process equivalences. Probably this is too crude for structures that differ quite a bit, but if they are very similar, one can use this to avoid having to perform a multiple sequence alignment. </value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>! $scan</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>scan_param</name>
+	<prompt>Scanning options</prompt>
+	<group>2</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>scan</name>
+	    <attributes>
+	      <prompt>Scan mode (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -s" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>If TRUE, then SCAN mode is selected. TREEWISE and PAIRWISE are set to FALSE. The first domain described in LISTFILE (the query) is used to scan all the domains listed in DATABASE. The parameters for scanning are described below. The output of a SCAN run appears in the file called STAMPPREFIX.scan. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="InFile">
+	    <name>dbfile</name>
+	    <attributes>
+
+	      <prompt>Database file for scans (-d)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>" -d $value"</code>
+	      </format>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$scan</code>
+	      </precond>
+	      <pipe>
+		<pipetype>stamp_domains_file</pipetype>
+		<language>perl</language>
+		<code>1</code>
+	      </pipe>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>cut</name>
+	    <attributes>
+
+	      <prompt>Cut down each domain read in from database file according to where the similarity is found (-cut)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -cut" : "" </code>
+	      </format>
+	      <group>2</group>
+	      <comment>
+		<value>If it is not specified, the output will contain domain descriptors identical to those found in `some.domains'. When one is comparing a single-domain query to a database structure having mulitple domains, it is desirable to do this. Try running it both ways (with and without -cut) and look at the output: you will see what I mean. (e.g. CHAIN A is converted to A 1 _ to A 60 _ in one descriptor in the SCAN output and A 120 _ to A 175 _ in another, since there are two repeats of the query domain in the database structure). </value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$scan</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>scanslide</name>
+	    <attributes>
+
+	      <prompt>Number of residues that a query sequence is slid along a database sequence (-slide)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -slide $value" : "" </code>
+	      </format>
+	      <vdef><value>10</value></vdef>
+	      <group>2</group>
+	      <comment>
+		<value>This is the number of residues that a query sequence is `slid` along a database sequence to derive each initial superimposition. Initially, the N-terminus of the query is aligned to the 1st residue of the databse, once this fit has been performed and refined, and tested for good structural similarity, the N-terminus is aligned with the 1+&lt;SCANSLIDE&gt;th position, and the process repeated until the end of the database sequence has been reached.</value>
+	      </comment>
+	      <precond>
+		<language>perl</language>
+		<code>$scan</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>scancut</name>
+	    <attributes>
+
+	      <prompt>scan Sc cutoff value (-scancut)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -scancut $value" : "" </code>
+	      </format>
+	      <vdef><value>2.0</value></vdef>
+	      <group>2</group>
+	      <precond>
+		<language>perl</language>
+		<code>$scan</code>
+	      </precond>
+
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

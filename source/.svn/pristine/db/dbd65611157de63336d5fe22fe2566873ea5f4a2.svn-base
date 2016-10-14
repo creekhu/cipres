@@ -1,0 +1,14 @@
+toolId = JMODELTEST2_XSEDE
+runtime_=0.5
+criteria_1_=-AIC
+criteria_1_=-DT
+criteria_1_=-AICc
+criteria_1_=-BIC
+set_subschemes_=203
+uneq_basefmodels_=0
+invar_models_=0
+numratecat_models_=8
+def_topsearch_=NNI
+parameter_importances_=0
+estimate_modelavg_=0
+print_paup_=0

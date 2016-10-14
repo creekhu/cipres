@@ -1,0 +1,6 @@
+toolId=RAXMLHPC8_REST_XSEDE
+runtime_=0.50
+dna_gtrcat_=GTRGAMMA
+select_analysis_=fA
+outsuffix_=result
+disable_seqcheck_=1

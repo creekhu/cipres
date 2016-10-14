@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SUPERMATCHER</title>
+<description>Finds a match of a large sequence against one or more sequences (EMBOSS)</description>
+<category>alignment:local</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/supermatcher.html</doclink>
+</head>
+
+<command>supermatcher</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>asequence</name>
+	<attributes>
+		<prompt>asequence -- any [sequences] (-asequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -asequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>any</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>bsequence</name>
+	<attributes>
+		<prompt>bsequence [set of sequences] (-bsequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -bsequence=$value -sformat=fasta"</code>
+		</format>
+		<group>2</group>
+		<seqtype>
+			<language>acd</language>
+			<code>@($(acdprotein) ? stopprotein : nucleotide)</code>
+		</seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+	<name>gapopen</name>
+	<attributes>
+		<prompt>Gap opening penalty (-gapopen)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@($(acdprotein)? 10.0 : 10.0)</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -gapopen=$value"</code>
+		</format>
+		<group>3</group>
+		<scalemin><value>1.0</value></scalemin>
+		<scalemax><value>100.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+	<name>gapextend</name>
+	<attributes>
+		<prompt>Gap extension penalty (-gapextend)</prompt>
+		<vdef>
+			<language>acd</language>
+			<code>@($(acdprotein)? 0.5 : 0.5)</code>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -gapextend=$value"</code>
+		</format>
+		<group>4</group>
+		<scalemin><value>0.1</value></scalemin>
+		<scalemax><value>10.0</value></scalemax>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>datafile</name>
+	<attributes>
+		<prompt>Matrix file (-datafile)</prompt>
+			<vlist>
+				<value>EPAM60</value>
+				<label>EPAM60</label>
+				<value>EPAM290</value>
+				<label>EPAM290</label>
+				<value>EPAM470</value>
+				<label>EPAM470</label>
+				<value>EPAM110</value>
+				<label>EPAM110</label>
+				<value>EBLOSUM50</value>
+				<label>EBLOSUM50</label>
+				<value>EPAM220</value>
+				<label>EPAM220</label>
+				<value>EBLOSUM62-12</value>
+				<label>EBLOSUM62-12</label>
+				<value>EPAM400</value>
+				<label>EPAM400</label>
+				<value>EPAM150</value>
+				<label>EPAM150</label>
+				<value>EPAM330</value>
+				<label>EPAM330</label>
+				<value>EBLOSUM55</value>
+				<label>EBLOSUM55</label>
+				<value>EPAM30</value>
+				<label>EPAM30</label>
+				<value>EPAM260</value>
+				<label>EPAM260</label>
+				<value>EBLOSUM90</value>
+				<label>EBLOSUM90</label>
+				<value>EPAM440</value>
+				<label>EPAM440</label>
+				<value>EPAM190</value>
+				<label>EPAM190</label>
+				<value>EPAM370</value>
+				<label>EPAM370</label>
+				<value>EPAM70</value>
+				<label>EPAM70</label>
+				<value>EPAM480</value>
+				<label>EPAM480</label>
+				<value>EPAM120</value>
+				<label>EPAM120</label>
+				<value>EDNAMAT</value>
+				<label>EDNAMAT</label>
+				<value>EPAM300</value>
+				<label>EPAM300</label>
+				<value>EBLOSUM60</value>
+				<label>EBLOSUM60</label>
+				<value>EPAM230</value>
+				<label>EPAM230</label>
+				<value>EBLOSUM62</value>
+				<label>EBLOSUM62</label>
+				<value>EPAM410</value>
+				<label>EPAM410</label>
+				<value>EPAM160</value>
+				<label>EPAM160</label>
+				<value>EPAM340</value>
+				<label>EPAM340</label>
+				<value>EBLOSUM65</value>
+				<label>EBLOSUM65</label>
+				<value>EPAM40</value>
+				<label>EPAM40</label>
+				<value>EPAM270</value>
+				<label>EPAM270</label>
+				<value>EPAM450</value>
+				<label>EPAM450</label>
+				<value>EPAM380</value>
+				<label>EPAM380</label>
+				<value>EPAM80</value>
+				<label>EPAM80</label>
+				<value>EPAM490</value>
+				<label>EPAM490</label>
+				<value>EBLOSUM30</value>
+				<label>EBLOSUM30</label>
+				<value>EBLOSUMN</value>
+				<label>EBLOSUMN</label>
+				<value>EPAM200</value>
+				<label>EPAM200</label>
+				<value>EPAM130</value>
+				<label>EPAM130</label>
+				<value>EBLOSUM35</value>
+				<label>EBLOSUM35</label>
+				<value>EPAM310</value>
+				<label>EPAM310</label>
+				<value>EBLOSUM70</value>
+				<label>EBLOSUM70</label>
+				<value>EPAM10</value>
+				<label>EPAM10</label>
+				<value>EPAM240</value>
+				<label>EPAM240</label>
+				<value>EPAM420</value>
+				<label>EPAM420</label>
+				<value>EPAM170</value>
+				<label>EPAM170</label>
+				<value>EBLOSUM75</value>
+				<label>EBLOSUM75</label>
+				<value>EPAM350</value>
+				<label>EPAM350</label>
+				<value>EPAM280</value>
+				<label>EPAM280</label>
+				<value>EPAM50</value>
+				<label>EPAM50</label>
+				<value>EPAM460</value>
+				<label>EPAM460</label>
+				<value>EPAM390</value>
+				<label>EPAM390</label>
+				<value>EPAM90</value>
+				<label>EPAM90</label>
+				<value>EPAM100</value>
+				<label>EPAM100</label>
+				<value>EBLOSUM40</value>
+				<label>EBLOSUM40</label>
+				<value>EPAM210</value>
+				<label>EPAM210</label>
+				<value>EPAM140</value>
+				<label>EPAM140</label>
+				<value>EBLOSUM45</value>
+				<label>EBLOSUM45</label>
+				<value>EPAM320</value>
+				<label>EPAM320</label>
+				<value>EBLOSUM80</value>
+				<label>EBLOSUM80</label>
+				<value>EPAM500</value>
+				<label>EPAM500</label>
+				<value>EPAM20</value>
+				<label>EPAM20</label>
+				<value>EPAM250</value>
+				<label>EPAM250</label>
+				<value>EPAM430</value>
+				<label>EPAM430</label>
+				<value>EPAM180</value>
+				<label>EPAM180</label>
+				<value>EBLOSUM85</value>
+				<label>EBLOSUM85</label>
+				<value>EPAM360</value>
+				<label>EPAM360</label>
+			</vlist>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -datafile=$value" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>This is the scoring matrix file used when comparing sequences. By default it is the file 'EBLOSUM62' (for proteins) or the file 'EDNAFULL' (for nucleic sequences). These files are found in the 'data' directory of the EMBOSS installation.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>width</name>
+	<attributes>
+		<prompt>Alignment width (-width)</prompt>
+		<vdef>
+			<value>16</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -width=$value" : ""</code>
+		</format>
+		<group>6</group>
+		<scalemin><value>1</value></scalemin>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>wordlen</name>
+	<attributes>
+		<prompt>word length for initial matching (-wordlen)</prompt>
+		<vdef>
+			<value>6</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -wordlen=$value" : ""</code>
+		</format>
+		<group>7</group>
+		<scalemin><value>3</value></scalemin>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -outfile=$value" : ""</code>
+		</format>
+		<group>8</group>
+		<pipe>
+			<pipetype>readseq_ok_alig</pipetype>
+				<language>perl</language>
+				<code>$outfile_aformat ne ""</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl">
+		<name>outfile_aformat</name>
+		<attributes>
+			<prompt>Alignment output format (-aformat)</prompt>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -aformat=$value" : "" </code>
+			</format>
+			<vlist>
+				<value></value>
+				<label>default</label>
+				<value>fasta</value>
+				<label>fasta</label>
+				<value>MSF</value>
+				<label>MSF</label>
+			</vlist>
+			<group>8</group>
+			</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>errorfile</name>
+	<attributes>
+		<prompt>errorfile (-errorfile)</prompt>
+		<vdef>
+			<value>supermatcher.error</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -errorfile=$value" : ""</code>
+		</format>
+		<group>9</group>
+		<comment>
+			<value>Error file to be written to</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>10</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

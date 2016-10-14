@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>ProDom</title>
+    <description>PRODOM Protein Domain Database</description>
+    <authors>Sonnhammer &amp; Kahn</authors>
+    <reference>Sonnhammer ELL and Kahn D. The modular arrangement of proteins as Inferred from Analysis of Homology. Protein Science 3:482-492 (1994).</reference>
+</head>
+
+
+<command>prodom</command>
+
+<parameters>
+
+<parameter ismandatory="1" iscommand="1" type="Excl">
+<name>prodom</name>
+<attributes>
+
+	<prompt>Prodom program</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value"</code>
+	</format>
+	<vdef><value>askdom</value></vdef>
+	<group>1</group>
+	<vlist>
+		<value>askdom</value>
+		<label>askdom: Query ProDom for the domain organization of a known protein</label>
+		<value>fetchmul</value>
+		<label>fetchmul: Fetch a Domain Family</label>
+		<value>fetchcon</value>
+		<label>fetchcon: Fetch a Domain Family Consensus Sequence</label>
+	</vlist>
+	<comment>
+		<value>You can also perform a Blast search on the prodom database (see various Blast forms on this server).</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>entry_name</name>
+<attributes>
+
+	<prompt>Entry name of a known protein</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>Query ProDom for the domain organization of a known protein, given its entry name</value>
+	</comment>
+<precond>
+	<language>perl</language>
+	<code>$prodom eq "askdom"</code>
+</precond>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="String">
+<name>family_number</name>
+<attributes>
+
+	<prompt>(or) Family number</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>Family number which description or consensus sequence you want by fetchmul or fetchcon.</value>
+		<value>Family numbers can be given by a first query to askdom.</value>
+	</comment>
+<precond>
+	<language>perl</language>
+	<code>$prodom ne "askdom"</code>
+</precond>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

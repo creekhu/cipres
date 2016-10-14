@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>STAMP</title>
+    <version>4.2</version>
+    <description>dstamp/alscript</description>
+    <authors>Russel, Barton</authors>
+  </head>
+
+
+<command>dstamp</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>dstamp</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>dstamp</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>alscript</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" ; alscript $prefix.als"</code>
+	</format>
+	<group>100</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>alscript_file</name>
+<attributes>
+
+	<filenames>$prefix.als</filenames>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>postcript_file</name>
+<attributes>
+
+	<filenames>$prefix.ps</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>aligfile</name>
+<attributes>
+
+	<prompt>Alignment file produced by stamp (-f)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -f $value"</code>
+	</format>
+	<group>1</group>
+	<comment>
+		<value>This must be a STAMP alignment file, containing both transformations and a sequence alignment. It will not work on transformation files lacking sequence alignment data or STAMP data. </value>
+	</comment>
+	<pipe>
+		<pipetype>stamp_alig_file</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" type="String">
+<name>prefix</name>
+<attributes>
+
+	<prompt>Output file prefix (-prefix)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -prefix $value"</code>
+	</format>
+	<vdef><value>STAMP</value></vdef>
+	<size>20</size>
+
+</attributes>
+</parameter>
+
+<parameter type="String">
+<name>stamp_char</name>
+<attributes>
+
+	<prompt>The type of STAMP data to be use (-c)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -c $value" : ""</code>
+	</format>
+	<vdef><value>G</value></vdef>
+	<group>2</group>
+	<comment>
+		<value>The type of STAMP data to be used (ie. the first letter that occurs after the `#' characters in STAMP multiple alignment output).</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Float">
+<name>threshold</name>
+<attributes>
+
+	<prompt>Threshold (-t)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -t $value" : ""</code>
+	</format>
+	<vdef><value>6.0</value></vdef>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>window</name>
+<attributes>
+
+	<prompt>The minimum length of a stretch of reliable regions to be allowed (-w)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -w $value" : ""</code>
+	</format>
+	<vdef><value>3</value></vdef>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Integer">
+<name>ignore</name>
+<attributes>
+
+	<prompt>Number of sequences that can be ignored during the calculation of residue or residue-property conservation (-ignore)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value)? " -ignore $value" : ""</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>if ignore = 1 you allow one `error' in one sequence during the calculation of conserved positions</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>colour</name>
+<attributes>
+
+	<prompt>Output will be in colour (-colour)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -colour" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>motif</name>
+<attributes>
+
+	<prompt>Write a motif in the space between the sequence alignment and the aligned secondary structures (-motif)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -motif" : ""</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

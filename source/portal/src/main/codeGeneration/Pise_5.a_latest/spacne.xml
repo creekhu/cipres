@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SPACne</title>
+    <description>Identification of polypeptides using their amino-acid composition</description>
+    <authors>Antonini F., Gaillard S., Grillasca JP.</authors>
+    <reference>S. Gaillard, F. Antonini, N. Joly, J.N. Gouze and J.P. Grillasca. Sequence Protein Alignement with Composition New Evolutions (SPACne): A program for the identification of polypeptides using amino acid composition. 2004. Cell. Mol. Biol. 50(7), 801-803.</reference>
+    <category>protein:composition</category>
+  </head>
+
+  <command>spacne</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>spacne</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"spacne &lt; params &amp;&amp; spacne_html.pl result.txt > result.html"</code>
+	</format>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>params</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"composition.txt\ntrisol.txt\nanalysis.txt\nresult.txt\n"</code>
+	</format>
+	<paramfile>params</paramfile>
+	<group>-1</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>composition</name>
+	<prompt>Composition</prompt>
+	<parameters>
+
+	  <parameter type="String">
+	    <name>name</name>
+	    <attributes>
+	      <prompt>Name of composition</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>50</group>
+	      <paramfile>composition.txt</paramfile>
+	      <comment>
+		<value>it is optional.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ismandatory="1" type="Float">
+	    <name>weight</name>
+	    <attributes>
+	      <prompt>Weight (Daltons)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>51</group>
+	      <paramfile>composition.txt</paramfile>
+	      <comment>
+		<value>in Dalton, it is an obligatory parameter.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>comment</name>
+	    <attributes>
+	      <prompt>Comment</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>52</group>
+	      <paramfile>composition.txt</paramfile>
+	      <comment>
+		<value>it is optional.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>alxglx</name>
+	    <attributes>
+	      <prompt>Use Asx and Glx</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? "$value\n" : "0\n"</code>
+	      </format>
+	      <group>53</group>
+	      <paramfile>composition.txt</paramfile>
+	      <comment>
+		<value>This option allows the user to take into account two \"summed up\" residues, Asx (Asp and Asn) and Glx (Glu and Gln).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>cystrp</name>
+	    <attributes>
+	      <prompt>Do not count Cys and Trp</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? "$value\n" : "0\n"</code>
+	      </format>
+	      <group>54</group>
+	      <paramfile>composition.txt</paramfile>
+	      <comment>
+		<value>In some experimental conditions, these two amino acids are destroyed. Algorithm eliminate the contribution of Cys and Trp residues in matching sequence although this residues are still taken into account in the MW determination.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>ala</name>
+	    <attributes>
+	      <prompt>Ala (A)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? "$value\n" : "0\n"</code>
+	      </format>
+	      <group>75</group>
+	      <paramfile>composition.txt</paramfile>
+	      <ctrls>
+		<ctrl>
+		  <message>Percent must be in [0.0,100.0] interval</message>
+		  <language>perl</language>
+		  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+		</ctrl>
+	      </ctrls>
+	    </attributes>
+	  </parameter>
+
+          <parameter type="Float">
+            <name>asx</name>
+            <attributes>
+              <prompt>Asx (B)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>76</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>cys</name>
+            <attributes>
+              <prompt>Cys (C)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>77</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>asp</name>
+            <attributes>
+              <prompt>Asp (D)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>78</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>glu</name>
+            <attributes>
+              <prompt>Glu (E)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>79</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>phe</name>
+            <attributes>
+              <prompt>Phe (F)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>80</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>gly</name>
+            <attributes>
+              <prompt>Gly (G)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>81</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>his</name>
+            <attributes>
+              <prompt>His (H)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>82</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>ile</name>
+            <attributes>
+              <prompt>Ile (I)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>83</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>lys</name>
+            <attributes>
+              <prompt>Lys (K)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>85</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>leu</name>
+            <attributes>
+              <prompt>Leu (L)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>86</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>met</name>
+            <attributes>
+              <prompt>Met (M)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>87</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>asn</name>
+            <attributes>
+              <prompt>Asn (N)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>88</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>pro</name>
+            <attributes>
+              <prompt>Pro (P)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>90</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>gln</name>
+            <attributes>
+              <prompt>Gln (Q)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>91</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>arg</name>
+            <attributes>
+              <prompt>Arg (R)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>92</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>ser</name>
+            <attributes>
+              <prompt>Ser (S)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>93</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>thr</name>
+            <attributes>
+              <prompt>Thr (T)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>94</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>val</name>
+            <attributes>
+              <prompt>Val (V)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>96</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>trp</name>
+            <attributes>
+              <prompt>Trp (W)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>97</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0]
+                  interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>tyr</name>
+            <attributes>
+              <prompt>Tyr (Y)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>99</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+          <parameter type="Float">
+            <name>glx</name>
+            <attributes>
+              <prompt>Glx (Z)</prompt>
+              <format>
+                <language>perl</language>
+                <code>(defined $value) ? "$value\n" : "0\n"</code>
+              </format>
+              <group>100</group>
+              <paramfile>composition.txt</paramfile>
+              <ctrls>
+                <ctrl>
+                  <message>Percent must be in [0.0,100.0] interval</message>
+                  <language>perl</language>
+                  <code>($value &lt; 0.0 or $value &gt; 100.0)</code>
+                </ctrl>
+              </ctrls>
+            </attributes>
+          </parameter>
+
+	  <parameter ishidden="1" type="String">
+	    <name>end_compo</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>"//\n"</code>
+	      </format>
+	      <group>101</group>
+	      <paramfile>composition.txt</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>analysis</name>
+	<prompt>Analysis options</prompt>
+	<parameters>
+
+	  <parameter type="Excl">
+	    <name>bank_name</name>
+	    <attributes>
+	      <prompt>Sequence databank</prompt>
+	      <vlist>
+		<value>uniprot</value>
+		<label>UniprotKB</label>
+		<value>genbank_rel</value>
+		<label>Genbank (release, except EST, GSS and HTG)</label>
+		<value>genbank_est</value>
+		<label>Genbank (release, EST)</label>
+		<value>genbank_gss</value>
+		<label>Genbank (release, GSS)</label>
+		<value>genbank_htg</value>
+		<label>Genbank (release, HTG)</label>
+	      </vlist>
+	      <vdef>
+		<value>uniprot</value>
+	      </vdef>
+	      <format>
+                <language>perl</language>
+                <code>"/local/gensoft/share/spacne/$value\n"</code>
+              </format>
+	      <comment>
+		<value>The choice is UniProt or Genbank for the DNA.</value>
+		<value>The DNA sequences are translated into the 6 reading frame before the analysis.</value>
+	      </comment>
+	      <paramfile>params</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter ishidden="1" type="String">
+	    <name>bank_type</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>($bank_name =~ /^uniprot/) ? "1\n0\n" : "0\n1\n"</code>
+	      </format>
+	      <group>10</group>
+	      <paramfile>analysis.txt</paramfile>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>superkingdom</name>
+	    <attributes>
+	      <prompt>Super-Kingdom</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <vlist>
+		<value>All</value>
+		<label>All</label>
+		<value>Archaea</value>
+		<label>Archaea</label>
+		<value>Bacteria</value>
+		<label>Bacteria</label>
+		<value>Eubacteria</value>
+		<label>Eubacteria</label>
+		<value>Eukaryota</value>
+		<label>Eukaryota</label>
+		<value>Viroids</value>
+		<label>Viroids</label>
+		<value>Viruses</value>
+		<label>Viruses</label>
+		<value>Others</value>
+		<label>Others</label>
+	      </vlist>
+	      <vdef>
+		<value>All</value>
+	      </vdef>
+	      <group>11</group>
+	      <paramfile>analysis.txt</paramfile>
+	      <comment>
+		<value>This option limits the research at one Super-kingdom: Archaea, Eubacteria, Eukaryota, Viroids, Viruses and the other.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>genus</name>
+	    <attributes>
+	      <prompt>Genus name (example: Homo, Arabidopsis, Escherichia or Rattus)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? "$value\n" : "All\n"</code>
+	      </format>
+	      <vdef>
+		<value>""</value>
+	      </vdef>
+	      <group>12</group>
+	      <paramfile>analysis.txt</paramfile>
+	      <comment>
+		<value>This option limits the research at one Genus.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>minweight</name>
+	    <attributes>
+	      <prompt>Percent mini of weight (%)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>13</group>
+	      <paramfile>analysis.txt</paramfile>
+	      <vdef>
+		<value>10.0</value>
+	      </vdef>
+	      <comment>
+		<value>when the apparent MW is entered, percentage variation in plus or minus can be separately specified.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>maxweight</name>
+	    <attributes>	      
+	      <prompt>Percent maxi of weight (%)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>14</group>
+	      <paramfile>analysis.txt</paramfile>
+	      <vdef>
+		<value>10.0</value>
+	      </vdef>
+	      <comment>
+		<value>when the apparent MW is entered, percentage variation in plus or minus can be separately specified.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>indexdiff</name>
+	    <attributes>
+	      <prompt>Index difference to keep (%)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>15</group>
+	      <paramfile>analysis.txt</paramfile>
+	      <vdef>
+		<value>5.0</value>
+	      </vdef>
+	      <comment>
+		<value>the DI threshold may be specified before the launching, or considered as 5 by default.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>nbsol</name>
+	    <attributes>
+	      <prompt>Number of solutions</prompt>
+	      <format>
+		<language>perl</language>
+		<code>"$value\n"</code>
+	      </format>
+	      <group>16</group>
+	      <paramfile>analysis.txt</paramfile>
+	      <vdef>
+		<value>100</value>
+	      </vdef>
+	      <comment>
+		<value>This number gives the maximum number of solutions that SPAC retrieved.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter ishidden="1" type="String">
+	    <name>end_analysis</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>"//\n"</code>
+	      </format>
+	      <group>17</group>
+	      <paramfile>analysis.txt</paramfile>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+        <name>output</name>
+        <prompt>Output</prompt>
+        <parameters>
+
+	  <parameter type="Excl">
+	    <name>sort</name>
+	    <attributes>
+	      <prompt>Sort output by</prompt>
+	      <vlist>
+		<value>id</value>
+		<label>Id</label>
+		<value>sk</value>
+		<label>Super-Kingdom</label>
+		<value>ge</value>
+		<label>Genus</label>
+	      </vlist>
+	      <flist>
+		<value>id</value>
+		<code>"1\n0\n0\n"</code>
+		<value>sk</value>
+                <code>"0\n1\n0\n"</code>
+                <value>ge</value>
+                <code>"0\n0\n1\n"</code>
+	      </flist>
+	      <vdef><value>id</value></vdef>
+	      <group>200</group>
+	      <paramfile>trisol.txt</paramfile>
+	      <comment>
+		<value>Index difference : The solutions are arranged according to their DI by increasing order.</value>
+		<value>Super-Kingdom : The solutions are sorted out by super-kingdom and according to their ID.</value>
+		<value>Genus name : The solutions are listed by super-kingdom, by kind and according to their ID.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+        </parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Results">
+      <name>result</name>
+      <attributes>
+	<filenames>result.txt result.html</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

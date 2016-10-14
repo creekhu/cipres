@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmconvert - convert between profile HMM file formats</description>
+    <authors>S. Eddy</authors>
+    <category>hmm</category>
+  </head>
+
+  <command>hmmconvert</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmconvert</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmconvert"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>description of hmmconvert</prompt>
+	<comment>
+	  <value>hmmconvert reads an HMM file from oldhmmfile in any HMMER format, and writes it to a new file newhmmfile in a new format. oldhmmfile and newhmmfile must be different files; you can't reliably overwrite the old file. By default, the new HMM file is written in HMMER 2 ASCII format.</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ismandatory="1" type="InFile">
+      <name>oldhmmfile</name>
+      <attributes>
+	<prompt>Old HMM file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $oldhmmfile"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Results">
+      <name>result_file</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>($append_file) ? " $append_file" : " $oldhmmfile.convert"</code>
+	</format>
+	<group>3</group>
+	<filenames>$append_file $oldhmmfile.convert</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Excl">
+      <name>new_format</name>
+      <attributes>
+	<prompt>new format</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1</group>
+	<vlist>
+	  <value></value>
+	  <label>HMMER 2 ASCII (default)</label>
+	  <value>-b</value>
+	  <label>HMMER 2 binary (-b)</label>
+	  <value>-p</value>
+	  <label>GCG profile (-p)</label>
+	  <value>-P</value>
+	  <label>Compugen XSW extended profile (-P)</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter type="InFile">
+      <name>append_file</name>
+      <attributes>
+	<prompt>append the new HMM to an existing file (-A)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -A" : ""</code>
+	</format>
+	<group>1</group>
+      </attributes>
+    </parameter>
+    
+  </parameters>
+</pise>

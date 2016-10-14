@@ -1,0 +1,5 @@
+db=${database.name}
+username=${database.username}
+password=${database.password}
+host=${database.host}
+port=${database.port}

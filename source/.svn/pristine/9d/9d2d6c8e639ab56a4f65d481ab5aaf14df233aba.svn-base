@@ -1,0 +1,10 @@
+<parameter ishidden="1" type="String">
+<name>init</name>
+<attributes>
+	<format>
+		<language>perl</language>
+                <code> "" </code>
+        </format>
+        <group>-10</group>
+</attributes>
+</parameter>

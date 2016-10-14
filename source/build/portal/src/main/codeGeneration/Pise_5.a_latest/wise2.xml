@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>WISE2</title>
+    <version>2.1.22c</version>
+    <description>comparisons of protein/DNA sequences</description>
+    <authors>E. Birney</authors>
+    <category>alignment:multiple</category>
+  </head>
+
+  <command>wise2</command>
+
+  <parameters>
+
+    <parameter ismandatory="1" iscommand="1" issimple="1" type="Excl">
+      <name>wise2</name>
+      <attributes>
+	<prompt>Wise program</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value"</code>
+	</format>
+	<group>1</group>
+	<vlist>
+	  <value>genewise</value>
+	  <label>genewise: protein to genomic DNA.</label>
+	  <value>estwise</value>
+	  <label>estwise: protein to cDNA</label>
+	</vlist>
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Sequence">
+      <name>protein</name>
+      <attributes>
+	<prompt>Protein sequence File (if no HMM, see help)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($hmmer) ? " $hmmer" : " $protein"</code>
+	</format>
+	<group>2</group>
+	<comment>
+	  <value>You can either give a protein sequence file or an HMMER file (See HMM Options).</value>
+	</comment>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+	<ctrls>
+	  <ctrl>
+	    <message>You must either give a protein sequence file or an HMMER file</message>
+	    <language>perl</language>
+	    <code>!($hmmer || $protein)</code>
+	  </ctrl>
+	</ctrls>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>dna</name>
+      <attributes>
+	<prompt>DNA sequence File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value" </code>
+	</format>
+	<group>3</group>
+	<seqfmt>
+	  <value>8</value>
+	</seqfmt>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="String">
+      <name>quiet</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>" -silent -quiet" </code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>dna_options</name>
+	<prompt>DNA sequence Options</prompt>
+	<group>5</group>
+	<parameters>
+	  
+	  <parameter type="Integer">
+	    <name>dna_start</name>
+	    <attributes>
+	      <prompt>Start position in dna (-u)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -u $value" : ""</code>
+	      </format>
+	      <group>5</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>dna_end</name>
+	    <attributes>
+	      <prompt>End position in dna (-v)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -v $value" : ""</code>
+	      </format>
+	      <group>5</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>strand</name>
+	    <attributes>
+	      <prompt>Strand comparison</prompt>
+	      <vlist>
+		<value>-tfor</value>
+		<label>forward (-tfor)</label>
+		<value>-trev</value>
+		<label>reverse (-trev)</label>
+		<value>-both</value>
+		<label>both (-both)</label>
+	      </vlist>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " $value" : ""</code>
+	      </format>
+	      <group>5</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>tabs</name>
+	    <attributes>
+	      <prompt>Report positions as absolute to truncated/reverse sequence (-tabs)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -tabs" : ""</code>
+	      </format>
+	      <group>5</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>protein_options</name>
+	<prompt>Protein comparison Options</prompt>
+	<precond>
+	  <language>perl</language>
+	  <code>! $hmmer</code>
+	</precond>
+	<group>6</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>protein_start</name>
+	    <attributes>
+	      <prompt>Start position in protein (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -s $value" : ""</code>
+	      </format>
+	      <group>6</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $hmmer</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>protein_end</name>
+	    <attributes>
+	      <prompt>End position in protein (-t)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value) ? " -t $value" : ""</code>
+	      </format>
+	      <group>6</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $hmmer</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>gap</name>
+	    <attributes>
+	      <prompt>Gap penalty (-g)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -g $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>12</value>
+	      </vdef>
+	      <group>6</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $hmmer</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>ext</name>
+	    <attributes>
+	      <prompt>Gap extension penalty (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -e $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>2</value>
+	      </vdef>
+	      <group>6</group>
+	      <precond>
+		<language>perl</language>
+		<code>! $hmmer</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>HMM_options</name>
+	<prompt>HMM Options</prompt>
+	<group>7</group>
+	<parameters>
+	  
+	  <parameter type="InFile">
+	    <name>hmmer</name>
+	    <attributes>
+	      <prompt>HMMer file (instead of protein) (-hmmer)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -hmmer" : ""</code>
+	      </format>
+	      <group>7</group>
+	      <pipe>
+		<pipetype>hmmfile</pipetype>
+		<language>perl</language>
+		<code>$hmmer</code>
+	      </pipe>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="String">
+	    <name>hname</name>
+	    <attributes>
+	      <prompt>Name of HMM rather than using the filename (-hname)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -hname \"$value\"" : ""</code>
+	      </format>
+	      <group>7</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>gene_model_options</name>
+	<prompt>Gene Model Options</prompt>
+	<group>8</group>
+	<parameters>
+	  
+	  <parameter type="Excl">
+	    <name>init</name>
+	    <attributes>
+	      <prompt>Type of match (-init)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -init $value" : ""</code>
+	      </format>
+	      <vdef><value>default</value></vdef>
+	      <group>8</group>
+	      <vlist>
+		<value>default</value>
+		<label>default</label>
+		<value>global</value>
+		<label>global</label>
+		<value>local</value>
+		<label>local</label>
+		<value>wing</value>
+		<label>wing</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>subs</name>
+	    <attributes>
+	      <prompt>Substitution error rate (-subs)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -subs $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>1e-5</value>
+	      </vdef>
+	      <group>8</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>indel</name>
+	    <attributes>
+	      <prompt>Insertion/deletion error rate (-indel)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef) ? " -indel $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>1e-5</value>
+	      </vdef>
+	      <group>8</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>cfreq</name>
+	    <attributes>
+	      <prompt>Using codon bias or not (-cfreq)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -cfreq $value" : ""</code>
+	      </format>
+	      <vdef><value>flat</value></vdef>
+	      <group>8</group>
+	      <vlist>
+		<value>model</value>
+		<label>model</label>
+		<value>flat</value>
+		<label>flat</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$wise eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>splice</name>
+	    <attributes>
+	      <prompt>Using splice model or GT/AG (-splice)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -splice $value" : ""</code>
+	      </format>
+	      <vdef><value>model</value></vdef>
+	      <group>8</group>
+	      <vlist>
+		<value>model</value>
+		<label>model</label>
+		<value>flat</value>
+		<label>flat</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>intron</name>
+	    <attributes>
+	      <prompt>Use tied model for introns (-intron)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -intron $value" : ""</code>
+	      </format>
+	      <vdef><value>tied</value></vdef>
+	      <group>8</group>
+	      <vlist>
+		<value>model</value>
+		<label>model</label>
+		<value>tied</value>
+		<label>tied</label>
+	      </vlist>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>null</name>
+	    <attributes>
+	      <prompt>Random Model as synchronous or flat (-null)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -null $value" : ""</code>
+	      </format>
+	      <vdef><value>syn</value></vdef>
+	      <group>8</group>
+	      <vlist>
+		<value>syn</value>
+		<label>synchronous</label>
+		<value>flat</value>
+		<label>flat</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>alln</name>
+	    <attributes>
+	      <prompt>Probability of matching a NNN codon (-alln)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef) ? " -alln $value" : ""</code>
+	      </format>
+	      <vdef>
+		<value>1.0</value>
+	      </vdef>
+	      <group>8</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Excl">
+	    <name>insert</name>
+	    <attributes>
+	      <prompt>Protein insert model (-insert)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef) ? " -insert $value" : ""</code>
+	      </format>
+	      <vlist>
+		<value>model</value>
+		<label>model</label>
+		<value>flat</value>
+		<label>flat</label>
+	      </vlist>
+	      <vdef>
+		<value>flat</value>
+	      </vdef>
+	      <group>8</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output Options</prompt>
+	<group>10</group>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>pretty</name>
+	    <attributes>
+	      <prompt>Show pretty ascii output (-pretty)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -pretty" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>pseudo</name>
+	    <attributes>
+	      <prompt>Mark genes with frameshifts as pseudogenes (-pseudo)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -pseudo" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>genes</name>
+	    <attributes>
+	      <prompt>Show gene structure (-genes)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -genes" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>embl</name>
+	    <attributes>
+	      <prompt>show EMBL feature format with CDS key (-embl)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -embl" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>diana</name>
+	    <attributes>
+	      <prompt>show EMBL feature format with misc_feature key for diana (-diana)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -diana" : ""</code>
+	      </format>
+	      <vdef>
+		<value>0</value>
+	      </vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>para</name>
+	    <attributes>
+	      <prompt>Show parameters (-para)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -para" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>sum</name>
+	    <attributes>
+	      <prompt>Show summary output (-sum)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -sum" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>cdna</name>
+	    <attributes>
+	      <prompt>Show cDNA (-cdna)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -cdna" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>trans</name>
+	    <attributes>
+	      <prompt>Show protein translation (-trans)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -trans" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>ace</name>
+	    <attributes>
+	      <prompt>Ace file gene structure (-ace)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -ace" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gff</name>
+	    <attributes>
+	      <prompt>Gene Feature Format file (-gff)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -gff" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>gener</name>
+	    <attributes>
+	      <prompt>Raw gene structure (-gener)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -gener" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	      <precond>
+		<language>perl</language>
+		<code>$wise2 eq "genewise"</code>
+	      </precond>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>alb</name>
+	    <attributes>
+	      <prompt>Show logical AlnBlock alignment (-alb)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -alb" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>pal</name>
+	    <attributes>
+	      <prompt>Show raw matrix alignment (-pal)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -pal" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>block</name>
+	    <attributes>
+	      <prompt>Length of main block in pretty output (-block)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value != $vdef) ? " -block $value" : ""</code>
+	      </format>
+	      <vdef><value>50</value></vdef>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>divide</name>
+	    <attributes>
+	      <prompt>divide string for multiple outputs (-divide)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -divide \"$value\"" : ""</code>
+	      </format>
+	      <group>10</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>standard_options</name>
+	<prompt>Standard Options</prompt>
+	<group>11</group>
+	<parameters>
+	  
+	  <parameter type="Switch">
+	    <name>erroroffstd</name>
+	    <attributes>
+	      <prompt>No warning messages (-erroroffstd)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -erroroffstd" : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>11</group>
+	    </attributes>
+	  </parameter>
+	  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+  </parameters>
+</pise>

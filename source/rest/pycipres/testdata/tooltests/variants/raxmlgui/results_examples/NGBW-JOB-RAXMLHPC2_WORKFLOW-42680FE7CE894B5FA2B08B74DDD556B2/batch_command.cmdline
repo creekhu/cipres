@@ -1,0 +1,2 @@
+#!/bin/sh
+raxmlHPC-HYBRID -s infile.txt -N 100 -m GTRGAMMA -p 12345 -k -O -b 787 -o mycobac_01 -n testS && raxmlHPC-HYBRID -f d -m GTRGAMMA -s infile.txt -N 10 -n testZ -p 333 -O -o mycobac_01 && raxmlHPC-PTHREADS -f b -t RAxML_bestTree.testZ -z RAxML_bootstrap.testS -m GTRGAMMA -s infile.txt -n testout -O -o mycobac_01 

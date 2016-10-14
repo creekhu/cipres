@@ -1,0 +1,277 @@
+GARLI_CONF_CREATOR
+infile_ - Primary Input File
+is_partitioned_ - Switch - The input is a Nexus file that specifies at least two partitions
+linkmodels_ - Switch - I would like to evaluate all partitions under a single model
+configure_partitions_ - Switch - I would like to specify model parameters for each partition
+numparts_ - Integer - How many partitions does your data set have?
+subsetspecificrates_ - Switch - Infer overall rate multipliers for each data partition
+infile_ - Results - Input
+garli_conf_ - Results - Input parameters
+Section: ****************************************************************************
+model
+*************************************************************************************
+datatype_value_ - Excl - The type of data (datatype)
+geneticcode_value_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide
+*************************************************************************************
+d_ratematrix_ - Excl - Rate Matrix (ratematrix)
+ACsubrates_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein
+*************************************************************************************
+p_ratematrix_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon
+*************************************************************************************
+c_ratematrix_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+model1
+*************************************************************************************
+datatype_value1_ - Excl - The type of data (datatype)
+geneticcode_value1_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide1
+*************************************************************************************
+d_ratematrix1_ - Excl - Rate Matrix (ratematrix)
+ACsubrates1_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates1_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates1_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates1_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates1_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates1_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies1_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites1_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel1_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats1_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein1
+*************************************************************************************
+p_ratematrix1_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies1_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites1_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel1_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats1_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon1
+*************************************************************************************
+c_ratematrix1_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies1_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel1_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats1_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+model2
+*************************************************************************************
+datatype_value2_ - Excl - The type of data (datatype)
+geneticcode_value2_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide2
+*************************************************************************************
+d_ratematrix2_ - Excl - Rate Matrix (ratematrix)
+ACsubrates2_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates2_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates2_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates2_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates2_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates2_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies2_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites2_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel2_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats2_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein2
+*************************************************************************************
+p_ratematrix2_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies2_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites2_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel2_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats2_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon2
+*************************************************************************************
+c_ratematrix2_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies2_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel2_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats2_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+model3
+*************************************************************************************
+datatype_value3_ - Excl - The type of data (datatype)
+geneticcode_value3_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide3
+*************************************************************************************
+d_ratematrix3_ - Excl - Rate Matrix (ratematrix)
+ACsubrates3_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates3_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates3_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates3_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates3_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates3_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies3_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites3_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel3_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats3_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein3
+*************************************************************************************
+p_ratematrix3_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies3_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites3_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel3_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats3_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon3
+*************************************************************************************
+c_ratematrix3_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies3_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel3_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats3_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+model4
+*************************************************************************************
+datatype_value4_ - Excl - The type of data (datatype)
+geneticcode_value4_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide4
+*************************************************************************************
+d_ratematrix4_ - Excl - Rate Matrix (ratematrix)
+ACsubrates4_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates4_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates4_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates4_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates4_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates4_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies4_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites4_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel4_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats4_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein4
+*************************************************************************************
+p_ratematrix4_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies4_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites4_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel4_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats4_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon4
+*************************************************************************************
+c_ratematrix4_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies4_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel4_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats4_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+model5
+*************************************************************************************
+datatype_value5_ - Excl - The type of data (datatype)
+geneticcode_value5_ - Excl - Select the Genetic Code (geneticcode)
+Section: ****************************************************************************
+model_nucleotide5
+*************************************************************************************
+d_ratematrix5_ - Excl - Rate Matrix (ratematrix)
+ACsubrates5_ - String - User specified AC substitution rates (custom ratematrix)
+AGsubrates5_ - String - User specified AG substitution rates (custom ratematrix)
+ATsubrates5_ - String - User specified AT substitution rates (custom ratematrix)
+CGsubrates5_ - String - User specified CG substitution rates (custom ratematrix)
+CTsubrates5_ - String - User specified CT subsitution rates (custom ratematrix)
+GTsubrates5_ - String - User specified GT substitution rates (custom ratematrix)
+d_statefrequencies5_ - Excl - Base Frequencies (statefrequencies)
+d_invariantsites5_ - Excl - Proportion of invariant sites (invariantsites)
+d_ratehetmodel5_ - Excl - The model of rate heterogeneity (ratehetmodel)
+d_numratecats5_ - Integer - Number of rate categories (numratecats)
+Section: ****************************************************************************
+model_protein5
+*************************************************************************************
+p_ratematrix5_ - Excl - Protein Rate Matrix (ratematrix)
+p_statefrequencies5_ - Excl - Amino Acid Frequencies (statefequencies)
+p_invariantsites5_ - Excl - Proportion of invariable sites (invariantsites)
+p_ratehetmodel5_ - Excl - Model of rate heterogeneity (ratehetmodel)
+p_numratecats5_ - Integer - Number of rate categories (numratecats; set at no more than 8)
+Section: ****************************************************************************
+model_codon5
+*************************************************************************************
+c_ratematrix5_ - Excl - Codon Rate Matrix (ratematrix)
+c_statefrequencies5_ - Excl - Codon Frequencies (statefequencies)
+c_ratehetmodel5_ - Excl - dN/dS categories (or Omega) (ratehetmodel)
+c_numratecats5_ - Integer - Number of dN/dS parameter categories (numratecats)
+Section: ****************************************************************************
+model_trees
+*************************************************************************************
+streefname_choose_ - Excl - Specify where the starting tree topology comes from (streefname)
+attachments_val_ - Integer - Specify the number of attachment branches evaluated for each taxon (attachmentspertaxon)
+searchreps_value_ - Integer - Specify the number of independent search replicates to perform during a program execution.(searchreps)
+bootstrapreps_ - Integer - Bootstrap Repetitions (-bootstrapreps)
+outgroup_tax_ - String - Outgroup taxa numbers, separated by spaces (outgroup)
+collapsebranches_g_ - Switch - Collapse minimum length branches (effectively zero length) branch upon output of the final tree
+constraintfile_ - Switch - I want to use a Constraint File (constraintfile; Newick format)
+Section: ****************************************************************************
+model_initialization
+*************************************************************************************
+refinestart_ - Switch - Perform Initial Rough Optimization (refinestart)
+randseed_ - Integer - Random Seed ( -1 means it will be chosen for you)
+Section: ****************************************************************************
+algorithm
+*************************************************************************************
+Section: ****************************************************************************
+algorithm_population
+*************************************************************************************
+selectionintensity_ - Float - Selection Intensity (0.01 to 5.0) (selectionintensity)
+nindivs_ - Integer - Number of Individuals (nindivs 2 to 100)
+Section: ****************************************************************************
+algorithm_brlen
+*************************************************************************************
+startoptprec_ - Float - Starting Precision (startoptprec: 0.005 - 5.0)
+minoptprec_ - Float - Minimum Precision (minoptprec: 0.001 - 0.01)
+numberofprecreductions_ - Integer - Number of Precision Reductions (0 - 100)
+Section: ****************************************************************************
+algorithm_mutation_prior_weighting
+*************************************************************************************
+modweight_ - Float - Model Mutations (modweight)
+brlenweight_ - Float - Branch-length Mutations (brlenweight)
+topoweight_ - Float - All Topology Mutations (topoweight)
+randnniweight_ - Float - NNI Mutations (randnniweight)
+randsprweight_ - Float - SPR Mutations (randsprweight)
+limsprweight_ - Float - Limited SPR Mutations (limsprweight)
+Section: ****************************************************************************
+algorithm_mutation_details
+*************************************************************************************
+limsprrange_ - Integer - Max Limited SPR Branch Movement (limsprrange)
+uniqueswapbias_ - Float - Unique Swap Bias (uniqueswapbias)
+Section: ****************************************************************************
+general_logs
+*************************************************************************************
+saveevery_g_ - Integer - Save best tree with interval (saveevery)
+outputcurrentbesttopology_ - Switch - Output current best tree at "savevery" interval (outputcurrentbesttopology)
+logevery_g_ - Integer - Save best score with interval (logevery)
+outputeachbettertopology_g_ - Switch - Save each improved topology (outputeachbettertopology; can result in a very large file)
+inferinternalstateprobs_g_ - Switch - Output state probabilities of internal nodes (inferinternalstateprobs)
+outputphyliptree_g_ - Switch - Output PHYLIP-format tree (outputphyliptree)
+outputmostlyuselessfiles_g_ - Switch - Output files of questionable utility
+Section: ****************************************************************************
+general_run
+*************************************************************************************
+enforcetermconditions_ - Switch - Automatically terminate run (enforcetermconditions; recommended)
+genthreshfortopoterm_ - Integer - Generations without improving topology (genthreshfortopoterm)
+significanttopochange_ - Float - lnL increase for significantly better topology (significanttopochange)
+scorethreshforterm_ - Float - Score improvement threshold (scorethreshforterm)
+stopgen_ - Integer - Limit generations to maximum of (stopgen)
+stoptime_ - Integer - Limit run time to maximum of (stoptime, in seconds)
+resampleproportion_ - Float - Resampling where the pseudoreplicate datasets have a different number of alignment columns than the real data (resampleproportion)
+

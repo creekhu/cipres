@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>DIGEST</title>
+<description>Protein proteolytic enzyme or reagent cleavage digest (EMBOSS)</description>
+<category>protein:motifs</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/digest.html</doclink>
+</head>
+
+<command>digest</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- Protein [single sequence] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>protein</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>Required section</prompt>
+
+<parameters>
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>menu</name>
+	<attributes>
+		<prompt>Select number -- Enzymes and Reagents (-menu)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>Trypsin</label>
+				<value>2</value>
+				<label>Lys-C</label>
+				<value>3</value>
+				<label>Arg-C</label>
+				<value>4</value>
+				<label>Asp-N</label>
+				<value>5</value>
+				<label>V8-bicarb</label>
+				<value>6</value>
+				<label>V8-phosph</label>
+				<value>7</value>
+				<label>Chymotrypsin</label>
+				<value>8</value>
+				<label>CNBr</label>
+			</vlist>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -menu=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>unfavoured</name>
+	<attributes>
+		<prompt>Allow unfavoured cuts (-unfavoured)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -unfavoured" : ""</code>
+		</format>
+		<group>3</group>
+		<comment>
+			<value>Trypsin will not normally cut after a K if it is followed by (e.g.) another K or a P. Specifying this shows those cuts. as well as the favoured ones.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>aadata</name>
+	<attributes>
+		<prompt>Amino acid data file (-aadata)</prompt>
+		<vdef>
+			<value>Eamino.dat</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -aadata=$value" : ""</code>
+		</format>
+		<group>4</group>
+		<comment>
+			<value>Molecular weight data for amino acids</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>overlap</name>
+	<attributes>
+		<prompt>Show overlapping partials (-overlap)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -overlap" : ""</code>
+		</format>
+		<group>5</group>
+		<comment>
+			<value>Used for partial digestion. Shows all cuts from favoured cut sites plus 1..3, 2..4, 3..5 etc but not (e.g.) 2..5. Overlaps are therefore fragments with exactly one potential cut site within it.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>allpartials</name>
+	<attributes>
+		<prompt>Show all partials (-allpartials)</prompt>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -allpartials" : ""</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>As for overlap but fragments containing more than one potential cut site are included.</value>
+		</comment>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>outfile (-outfile)</prompt>
+		<vdef><value>outfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outfile=$value"</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>9</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

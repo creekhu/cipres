@@ -1,0 +1,90 @@
+MRBAYES_XSEDE
+
+This document is meant to simulate a data set that contains a mrbayes block
+
+this test runs.
+
+BY default, the following parameters are submitted when no mb block is present
+that is:
+
+mrbayesblockquery_=0
+
+these are setting from cipres:
+set_beagle_params_=1 
+run_version_=3  selects MB 3.2.3
+runtime_=0.5  0.5 = default sets max run time
+ 
+these are  default settings of MB, and all can be configured. the vlaues will override the settings in a Mr Bayes block.
+Covarionopts_=0 
+Nbetacatopts_=5 
+Parsmodelopts_=0 
+aamodelpropts_=fixed(poisson) 
+allchainsval_=allchains=No 
+atocrate_=1.0 
+atograte_=1.0 
+atotrate_=1.0 
+betameanx_=1.0 
+betavary_=1.0 
+brlensprexp1_=10.0 
+brlenspropts_=unconstrained:exponential 
+burninfracval_=0.25 
+codingopts_=all 
+covswitchpropts_=uniform 
+covswitchuni1_=0.0 
+covswitchuni2_=100.0 
+ctograte_=1.0 
+ctotrate_=1.0 
+flagdatatype_=dna 
+gtotrate_=1.0 
+mcmcdiagnval_=mcmcdiagn=Yes 
+minpartfreqval_=0.1 
+nchainsval_=4  (set nchains from the interface)
+ngenval_=5000  (set number of generations)
+nocharsets_=0 
+nrunsval_=2 
+nstopts_=1 
+nswapsval_=1 
+nucmodelopts_=4by4 
+ordertaxaval_=Ordertaxa=Yes 
+pinvarpropts_=uniform 
+pinvarpruni1_=0.0 
+pinvarpruni2_=1.0 
+precision_=15 
+ratecorrpropts_=uniform 
+ratecorrpruni1_=-1.0 
+ratecorrpruni2_=1.0 
+rateopts_=equal 
+ratepropts_=fixed 
+relburninval_=relburnin=Yes 
+reportsiterateopts_=0 
+revmatopts_=dirichlet 
+revmatpropts_=dirichlet 
+samplefreqval_=1000 
+sbrlensval_=Savebrlens=Yes 
+scientific_=0 
+seed_=1116355510 
+set_outgroup_=testoutgroup (actually null by default) 
+shapeprdir2_=50.0 
+shapepropts_=uniform 
+shapepruni1_=0.0 
+statewfreqprdir1_=1.0 
+statewfreqpropts_=dirichlet 
+stopruleval_=stoprule=Yes 
+sump_burninfrac_=0.25 
+sump_relburnin_=Yes 
+sumpburnin_=10 
+sumpnruns_=2 
+sumt_burninfrac_=0.25 
+sumt_conformat_=Figtree 
+sumt_relburnin_=Yes 
+sumtburnin_=10 
+sumtcontype_=contype=Halfcompat 
+sumtdisplaygeq_=0.05 
+sumtnruns_=2 
+sumtntrees_=1 
+sumtshowtreeprobs_=showtreeprobs=No 
+swapfreqval_=1 
+swapseed_=1116355510 
+symdirihyperpropts_=fixed(infinity) 
+tempval_=0.200 
+tratioopts_=beta 

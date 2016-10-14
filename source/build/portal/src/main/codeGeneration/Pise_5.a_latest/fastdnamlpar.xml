@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>fastDNAml</title>
+    <version>1.2.2</version>
+    <description>construction of phylogenetic trees of DNA sequences using maximum likelihood</description>
+    <authors>Olsen, Matsuda, Hagstrom, Overbeek</authors>
+    <reference>Olsen, G. J., Matsuda, H., Hagstrom, R., and Overbeek, R.  1994.  fastDNAml: A tool for construction of phylogenetic trees of DNA sequences using maximum likelihood.  Comput. Appl. Biosci. 10: 41-48.</reference>
+    <reference>Felsenstein, J.  1981.  Evolutionary trees from DNA sequences:   A maximum likelihood approach.  J. Mol. Evol. 17: 368-376.</reference>
+  </head>
+
+  <command>fastdnamlpar</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>fastdnamlpar</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"fastdnamlpar"</code>
+	</format>
+	<group>1000</group>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="Sequence">
+      <name>alignment</name>
+      <attributes>
+	<prompt>Sequence Alignment File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>1001</group>
+	<comment>
+	  <value>The input to fastDNAml is similar to that used by
+	  DNAML (and the other PHYLIP programs).</value>
+	</comment>
+	<seqfmt>
+	  <value>12</value>
+	</seqfmt>
+	<pipe>
+	  <pipetype>readseq_ok_alig</pipetype>
+	  <language>perl</language>
+	  <code>fastDNAml</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>results</name>
+      <attributes>
+	<filenames>*.bst *.cpt *.trf</filenames>
+      </attributes>
+    </parameter>
+
+  </parameters>
+
+</pise>

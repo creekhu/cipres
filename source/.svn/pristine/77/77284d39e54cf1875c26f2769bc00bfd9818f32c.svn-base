@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+    <title>environ</title>
+    <description>Calculates Energies Associated with Accessible as well as Buried Surface Areas in Proteins</description>
+    <authors>P. Koehl, M. Delarue</authors>
+    <reference>P. Koehl and M. Delarue, Proteins 20:264-278 (1994)</reference>
+    <category>protein:3d structure</category>
+  </head>
+
+
+<command>environ</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" type="String">
+<name>environ</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code> "environ &lt; params" </code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>param</name>
+<attributes>
+
+	<filenames>params accessibility_per_residue accessibility_per_atom free_energy</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>pdbfile</name>
+<attributes>
+
+	<prompt>PDB file</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+	<pipe>
+		<pipetype>pdbfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>accessibility_per_residue_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"accessibility_per_residue\\n"</code>
+	</format>
+	<group>2</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>accessibility_per_atom_file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"accessibility_per_atom\\n"</code>
+	</format>
+	<group>3</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="OutFile">
+<name>free_energy__file</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>"free_energy\\n"</code>
+	</format>
+	<group>4</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

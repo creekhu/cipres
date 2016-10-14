@@ -1,0 +1,46 @@
+	<vlist>
+		<value>uniprot</value>
+		<label>uniprot: Universal Protein Resource</label>
+		<value>uniprot_sprot</value>
+		<label>uniprot: Universal Protein Resource, Swissprot part</label>
+		<value>nrprot</value>
+		<label>nrprot: NCBI non-redundant Genbank CDS translations+PDB+Swissprot+PIR</label>
+		<value>nrprot_month</value>
+		<label>nrprot_month: NCBI month non-redundant Genbank CDS translations+PDB+Swissprot+PIR</label>
+		<value>genpept</value>
+		<label>genpept: Genbank translations (last rel. + upd.)</label>
+		<value>genpept_new</value>
+		<label>genpept_new: genpept updates</label>
+		<value>gpbct</value>
+		<label>gpbct: genpept bacteries</label>
+		<value>gppri</value>
+		<label>gppri: primates</label>
+		<value>gpmam</value>
+		<label>gpmam: other mammals</label>
+		<value>gprod</value>
+		<label>gprod: rodents</label>
+		<value>gpvrt</value>
+		<label>gpvrt: other vertebrates</label>
+		<value>gpinv</value>
+		<label>gpinv: invertebrates</label>
+		<value>gppln</value>
+		<label>gppln: plants (including yeast)</label>
+		<value>gpvrl</value>
+		<label>gpvrl: virus</label>
+		<value>gpphg</value>
+		<label>gpphg: phages</label>
+		<value>gpsts</value>
+		<label>gpsts: STS</label>
+		<value>gpsyn</value>
+		<label>gpsyn: synthetic</label>
+		<value>gppat</value>
+		<label>gppat: patented</label>
+		<value>gpuna</value>
+		<label>gpuna: unatotated</label>
+		<value>gphtg</value>
+		<label>gphtg: GS (high throughput Genomic Sequencing)</label>
+		<value>nrl3d</value>
+		<label>nrl3d: sequences from PDB</label>
+		<value>sbase</value>
+		<label>sbase: annotated domains sequences</label>
+	</vlist>

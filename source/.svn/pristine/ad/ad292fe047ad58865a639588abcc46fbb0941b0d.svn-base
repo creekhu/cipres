@@ -1,0 +1,30 @@
+The goal is to create a minimal rapid bs submission for raxmlgui
+raxmlGUI does this:
+ 
+raxmlHPC-PTHREADS.exe -T 2 -f a -x 461 -k -m GTRGAMMA -p 892 -N 100 -o Hetinte -s  infile.reduced  -n infile.tre  -O -w  "C:/Users/mmiller/Desktop/cipres/raxmlgui/DNA_2/"    
+
+
+RAXMLHPC8_XSEDE
+infile_ - Primary Input File
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+datatype_ - Excl - Sequence Type
+outgroup_ - String - Outgroup (one or more comma-separated outgroups, see comment for syntax)
+constraint_ - InFile - Constraint (-g)
+binary_backbone_ - InFile - Binary Backbone (-r)
+partition_ - InFile - Use a mixed/partitioned model? (-q)
+exclude_file_ - InFile - Create an input file that excludes the range of positions specifed in this file (-E)
+invariable_ - Excl - Estimate proportion of invariable sites (GTRGAMMA + I)
+prot_matrix_spec_ - Excl - Protein Substitution Matrix
+empirical_ - Excl - Use empirical base frequencies?
+mlsearch_ - Switch - Find best tree using maximum likelihood search
+use_bootstopping_ - Switch - Let RAxML halt bootstrapping automatically (HIGHLY recommended)
+printbrlength_ - Switch - Print branch lengths (-k)
+all_outputfiles_ - Results -
+
+Job is OK, command line is '
+
+'raxmlHPC-HYBRID  -f a -n result     -s infile.txt       -N 100  -p 12345 -m GTRGAMMA -x 12345 -O -k  -o Hetinte 
+                  -f a -n infile.tre -s infile.reduced   -N 100  -p 892   -m GTRGAMMA -x 461   -O -k  -o Hetinte  
+
+-w  "C:/Users/mmiller/Desktop/cipres/raxmlgui/DNA_2/"  is not allowed
+test passed

@@ -1,0 +1,741 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>EMMA</title>
+<description>Multiple alignment program - interface to ClustalW program (EMBOSS)</description>
+<category>alignment:multiple</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/emma.html</doclink>
+</head>
+
+<command>emma</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>Input section</prompt>
+
+<parameters>
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>sequence</name>
+	<attributes>
+		<prompt>sequence -- gapany [sequences] (-sequence)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sequence=$value -sformat=fasta"</code>
+		</format>
+		<group>1</group>
+		<seqtype><value>gapany</value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>Advanced section</prompt>
+
+<parameters>
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>dendsection</name>
+		<prompt>Dendrogram options</prompt>
+
+	<parameters>
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>onlydend</name>
+		<attributes>
+			<prompt>Only produce dendrogram file (-onlydend)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -onlydend" : ""</code>
+			</format>
+			<group>2</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>dend</name>
+		<attributes>
+			<prompt>Do alignment using an old dendrogram (-dend)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -dend" : ""</code>
+			</format>
+			<group>3</group>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>dendfile</name>
+		<attributes>
+			<prompt>Name of old dendrogram file (-dendfile)</prompt>
+			<vdef>
+				<value>NULL</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -dendfile=$value" : ""</code>
+			</format>
+			<group>4</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>insist</name>
+	<attributes>
+		<prompt>Insist that the sequence type is changed to protein (-insist)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -insist" : ""</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>slowalignsection</name>
+		<prompt>Slow align options</prompt>
+
+	<parameters>
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>slowfast</name>
+		<attributes>
+			<prompt>Please select one -- Do you want to carry out slow or fast pairwise alignment (-slowfast)</prompt>
+				<vlist>
+					<value>s</value>
+					<label>slow</label>
+					<value>f</value>
+					<label>fast</label>
+				</vlist>
+			<vdef>
+				<value>s</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -slowfast=$value"</code>
+			</format>
+			<group>6</group>
+			<comment>
+				<value>A distance is calculated between every pair of sequences and these are used to construct the dendrogram which guides the final multiple alignment. The scores are calculated from separate pairwise alignments. These can be calculated using 2 methods: dynamic programming (slow but accurate) or by the method of Wilbur and Lipman (extremely fast but approximate). &lt;BR&gt; The slow-accurate method is fine for short sequences but will be VERY SLOW for many (e.g. &gt;100) long (e.g. &gt;1000 residue) sequences.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>pwgapc</name>
+		<attributes>
+			<prompt>Slow pairwise alignment: gap opening penalty (-pwgapc)</prompt>
+			<vdef>
+				<value>10.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -pwgapc=$value" : ""</code>
+			</format>
+			<group>7</group>
+			<comment>
+				<value>The penalty for opening a gap in the pairwise alignments.</value>
+			</comment>
+			<scalemin><value>0.0</value></scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>pwgapv</name>
+		<attributes>
+			<prompt>Slow pairwise alignment: gap extension penalty (-pwgapv)</prompt>
+			<vdef>
+				<value>0.1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -pwgapv=$value" : ""</code>
+			</format>
+			<group>8</group>
+			<comment>
+				<value>The penalty for extending a gap by 1 residue in the pairwise alignments.</value>
+			</comment>
+			<scalemin><value>0.0</value></scalemin>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>protalignsection</name>
+		<prompt>Protein align options</prompt>
+
+	<parameters>
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>pwmatrix</name>
+		<attributes>
+			<prompt>Select matrix -- Protein pairwise alignment matrix options (-pwmatrix)</prompt>
+				<vlist>
+					<value>b</value>
+					<label>blosum</label>
+					<value>p</value>
+					<label>pam</label>
+					<value>g</value>
+					<label>gonnet</label>
+					<value>i</value>
+					<label>id</label>
+					<value>o</value>
+					<label>own</label>
+				</vlist>
+			<vdef>
+				<value>b</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -pwmatrix=$value"</code>
+			</format>
+			<group>9</group>
+			<comment>
+				<value>The scoring table which describes the similarity of each amino acid to each other. &lt;BR&gt; There are three 'in-built' series of weight matrices offered. Each consists of several matrices which work differently at different evolutionary distances. To see the exact details, read the documentation. Crudely, we store several matrices in memory, spanning the full range of amino acid distance (from almost identical sequences to highly divergent ones). For very similar sequences, it is best to use a strict weight matrix which only gives a high score to identities and the most favoured conservative substitutions. For more divergent sequences, it is appropriate to use 'softer' matrices which give a high score to many other frequent substitutions. &lt;BR&gt; 1) BLOSUM (Henikoff). These matrices appear to be the best available for carrying out data base similarity (homology searches). The matrices used are: Blosum80, 62, 45 and 30. &lt;BR&gt; 2) PAM (Dayhoff). These have been extremely widely used since the late '70s. We use the PAM 120, 160, 250 and 350 matrices. &lt;BR&gt; 3) GONNET . These matrices were derived using almost the same procedure as the Dayhoff one (above) but are much more up to date and are based on a far larger data set. They appear to be more sensitive than the Dayhoff series. We use the GONNET 40, 80, 120, 160, 250 and 350 matrices. &lt;BR&gt; We also supply an identity matrix which gives a score of 1.0 to two identical amino acids and a score of zero otherwise. This matrix is not very useful.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>pwdnamatrix</name>
+		<attributes>
+			<prompt>Select matrix -- DNA pairwise alignment matrix options (-pwdnamatrix)</prompt>
+				<vlist>
+					<value>i</value>
+					<label>iub</label>
+					<value>c</value>
+					<label>clustalw</label>
+					<value>o</value>
+					<label>own</label>
+				</vlist>
+			<vdef>
+				<value>i</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -pwdnamatrix=$value"</code>
+			</format>
+			<group>10</group>
+			<comment>
+				<value>The scoring table which describes the scores assigned to matches and mismatches (including IUB ambiguity codes).</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>pairwisedata</name>
+		<attributes>
+			<prompt>Filename of user pairwise matrix (-pairwisedata)</prompt>
+			<vdef>
+				<value>NULL</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -pairwisedata=$value" : ""</code>
+			</format>
+			<group>11</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>fastalignsection</name>
+		<prompt>Fast align options</prompt>
+
+	<parameters>
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>ktup</name>
+		<attributes>
+			<prompt>Fast pairwise alignment: similarity scores: K-Tuple size (-ktup)</prompt>
+			<vdef>
+				<language>acd</language>
+				<code>@($(prot)?1:2)</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -ktup=$value" : ""</code>
+			</format>
+			<group>12</group>
+			<comment>
+				<value>This is the size of exactly matching fragment that is used. INCREASE for speed (max= 2 for proteins; 4 for DNA), DECREASE for sensitivity. For longer sequences (e.g. &gt;1000 residues) you may need to increase the default. Allowed values: integer from 0 to 4</value>
+			</comment>
+			<scalemax><value>4</value></scalemax>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>gapw</name>
+		<attributes>
+			<prompt>Fast pairwise alignment: similarity scores: gap penalty (-gapw)</prompt>
+			<vdef>
+				<language>acd</language>
+				<code>@($(prot)?3:5)</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -gapw=$value" : ""</code>
+			</format>
+			<group>13</group>
+			<comment>
+				<value>This is a penalty for each gap in the fast alignments. It has little affect on the speed or sensitivity except for extreme values. Allowed values: Positive integer</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>topdiags</name>
+		<attributes>
+			<prompt>Fast pairwise alignment: similarity scores: number of diagonals to be considered (-topdiags)</prompt>
+			<vdef>
+				<language>acd</language>
+				<code>@($(prot)?5:4)</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -topdiags=$value" : ""</code>
+			</format>
+			<group>14</group>
+			<comment>
+				<value>The number of k-tuple matches on each diagonal (in an imaginary dot-matrix plot) is calculated. Only the best ones (with most matches) are used in the alignment. This parameter specifies how many. Decrease for speed; increase for sensitivity. Allowed values: Positive integer</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>window</name>
+		<attributes>
+			<prompt>Fast pairwise alignment: similarity scores: diagonal window size (-window)</prompt>
+			<vdef>
+				<language>acd</language>
+				<code>@($(prot)?5:4)</code>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -window=$value" : ""</code>
+			</format>
+			<group>15</group>
+			<comment>
+				<value>This is the number of diagonals around each of the 'best' diagonals that will be used. Decrease for speed; increase for sensitivity. Allowed values: Positive integer</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>nopercent</name>
+		<attributes>
+			<prompt>Fast pairwise alignment: similarity scores: suppresses percentage score (-nopercent)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -nopercent" : ""</code>
+			</format>
+			<group>16</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>matrixsection</name>
+		<prompt>Matrix options</prompt>
+
+	<parameters>
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>matrix</name>
+		<attributes>
+			<prompt>Select matrix -- Protein multiple alignment matrix options (-matrix)</prompt>
+				<vlist>
+					<value>b</value>
+					<label>blosum</label>
+					<value>p</value>
+					<label>pam</label>
+					<value>g</value>
+					<label>gonnet</label>
+					<value>i</value>
+					<label>id</label>
+					<value>o</value>
+					<label>own</label>
+				</vlist>
+			<vdef>
+				<value>b</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -matrix=$value"</code>
+			</format>
+			<group>17</group>
+			<comment>
+				<value>This gives a menu where you are offered a choice of weight matrices. The default for proteins is the PAM series derived by Gonnet and colleagues. Note, a series is used! The actual matrix that is used depends on how similar the sequences to be aligned at this alignment step are. Different matrices work differently at each evolutionary distance. &lt;BR&gt; There are three 'in-built' series of weight matrices offered. Each consists of several matrices which work differently at different evolutionary distances. To see the exact details, read the documentation. Crudely, we store several matrices in memory, spanning the full range of amino acid distance (from almost identical sequences to highly divergent ones). For very similar sequences, it is best to use a strict weight matrix which only gives a high score to identities and the most favoured conservative substitutions. For more divergent sequences, it is appropriate to use 'softer' matrices which give a high score to many other frequent substitutions. &lt;BR&gt; 1) BLOSUM (Henikoff). These matrices appear to be the best available for carrying out data base similarity (homology searches). The matrices used are: Blosum80, 62, 45 and 30. &lt;BR&gt; 2) PAM (Dayhoff). These have been extremely widely used since the late '70s. We use the PAM 120, 160, 250 and 350 matrices. &lt;BR&gt; 3) GONNET . These matrices were derived using almost the same procedure as the Dayhoff one (above) but are much more up to date and are based on a far larger data set. They appear to be more sensitive than the Dayhoff series. We use the GONNET 40, 80, 120, 160, 250 and 350 matrices. &lt;BR&gt; We also supply an identity matrix which gives a score of 1.0 to two identical amino acids and a score of zero otherwise. This matrix is not very useful. Alternatively, you can read in your own (just one matrix, not a series).</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+		<name>dnamatrix</name>
+		<attributes>
+			<prompt>Select matrix -- Nucleotide multiple alignment matrix options (-dnamatrix)</prompt>
+				<vlist>
+					<value>i</value>
+					<label>iub</label>
+					<value>c</value>
+					<label>clustalw</label>
+					<value>o</value>
+					<label>own</label>
+				</vlist>
+			<vdef>
+				<value>i</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>" -dnamatrix=$value"</code>
+			</format>
+			<group>18</group>
+			<comment>
+				<value>This gives a menu where you are offered amenu where a single matrix (not a series) can be selected.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>mamatrix</name>
+		<attributes>
+			<prompt>Filename of user multiple alignment matrix (-mamatrix)</prompt>
+			<vdef>
+				<value>NULL</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -mamatrix=$value" : ""</code>
+			</format>
+			<group>19</group>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+
+	<parameter type="Paragraph">
+	<paragraph>
+	<name>gapsection</name>
+		<prompt>Gap options</prompt>
+
+	<parameters>
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>gapc</name>
+		<attributes>
+			<prompt>Multiple alignment: Gap opening penalty (-gapc)</prompt>
+			<vdef>
+				<value>10.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -gapc=$value" : ""</code>
+			</format>
+			<group>20</group>
+			<comment>
+				<value>The penalty for opening a gap in the alignment. Increasing the gap opening penalty will make gaps less frequent. Allowed values: Positive foating point number</value>
+			</comment>
+			<scalemin><value>0.0</value></scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+		<name>gapv</name>
+		<attributes>
+			<prompt>Multiple alignment: Gap extension penalty (-gapv)</prompt>
+			<vdef>
+				<value>5.0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -gapv=$value" : ""</code>
+			</format>
+			<group>21</group>
+			<comment>
+				<value>The penalty for extending a gap by 1 residue. Increasing the gap extension penalty will make gaps shorter. Terminal gaps are not penalised. Allowed values: Positive foating point number</value>
+			</comment>
+			<scalemin><value>0.00</value></scalemin>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>endgaps</name>
+		<attributes>
+			<prompt>Use end gap separation penalty (-endgaps)</prompt>
+			<vdef>
+				<value>1</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? "" : " -noendgaps"</code>
+			</format>
+			<group>22</group>
+			<comment>
+				<value>'End gap separation' treats end gaps just like internal gaps for the purposes of avoiding gaps that are too close (set by 'gap separation distance'). If you turn this off, end gaps will be ignored for this purpose. This is useful when you wish to align fragments where the end gaps are not biologically meaningful.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+		<name>gapdist</name>
+		<attributes>
+			<prompt>Gap separation distance (-gapdist)</prompt>
+			<vdef>
+				<value>8</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>(defined $value &amp;&amp; $value != $vdef)? " -gapdist=$value" : ""</code>
+			</format>
+			<group>23</group>
+			<comment>
+				<value>'Gap separation distance' tries to decrease the chances of gaps being too close to each other. Gaps that are less than this distance apart are penalised more than other gaps. This does not prevent close gaps; it makes them less frequent, promoting a block-like appearance of the alignment. Allowed values: Positive integer</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>norgap</name>
+		<attributes>
+			<prompt>No residue specific gaps (-norgap)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -norgap" : ""</code>
+			</format>
+			<group>24</group>
+			<comment>
+				<value>'Residue specific penalties' are amino acid specific gap penalties that reduce or increase the gap opening penalties at each position in the alignment or sequence. As an example, positions that are rich in glycine are more likely to have an adjacent gap than positions that are rich in valine.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+		<name>hgapres</name>
+		<attributes>
+			<prompt>List of hydrophilic residues (-hgapres)</prompt>
+			<vdef>
+				<value>GPSNDQEKR</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value &amp;&amp; $value ne $vdef)? " -hgapres=$value" : ""</code>
+			</format>
+			<group>25</group>
+			<comment>
+				<value>This is a set of the residues 'considered' to be hydrophilic. It is used when introducing Hydrophilic gap penalties.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+		<name>nohgap</name>
+		<attributes>
+			<prompt>No hydrophilic gaps (-nohgap)</prompt>
+			<vdef>
+				<value>0</value>
+			</vdef>
+			<format>
+				<language>perl</language>
+				<code>($value)? " -nohgap" : ""</code>
+			</format>
+			<group>26</group>
+			<comment>
+				<value>'Hydrophilic gap penalties' are used to increase the chances of a gap within a run (5 or more residues) of hydrophilic amino acids; these are likely to be loop or random coil regions where gaps are more common. The residues that are 'considered' to be hydrophilic are set by '-hgapres'.</value>
+			</comment>
+		</attributes>
+		</parameter>
+
+		</parameters>
+	</paragraph>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>maxdiv</name>
+	<attributes>
+		<prompt>Cut-off to delay the alignment of the most divergent sequences (-maxdiv)</prompt>
+		<vdef>
+			<value>30</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -maxdiv=$value" : ""</code>
+		</format>
+		<group>27</group>
+		<comment>
+			<value>This switch, delays the alignment of the most distantly related sequences until after the most closely related sequences have been aligned. The setting shows the percent identity level required to delay the addition of a sequence; sequences that are less identical than this level to any other sequences will be aligned later. Allowed values: Integer from 0 to 100</value>
+		</comment>
+		<scalemax><value>100</value></scalemax>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>Output section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>outseq</name>
+	<attributes>
+		<prompt>outseq (-outseq)</prompt>
+		<vdef><value>outseq.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -outseq=$value"</code>
+		</format>
+		<group>28</group>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" issimple="1">
+	<name>outseq_sformat</name>
+	<attributes>
+		<prompt>Output format for: outseq</prompt>
+		<vlist>
+			<value>fasta</value>
+			<label>fasta</label>
+			<value>gcg</value>
+			<label>gcg</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>embl</value>
+			<label>embl</label>
+			<value>swiss</value>
+			<label>swiss</label>
+			<value>ncbi</value>
+			<label>ncbi</label>
+			<value>nbrf</value>
+			<label>nbrf</label>
+			<value>genbank</value>
+			<label>genbank</label>
+			<value>ig</value>
+			<label>ig</label>
+			<value>codata</value>
+			<label>codata</label>
+			<value>strider</value>
+			<label>strider</label>
+			<value>acedb</value>
+			<label>acedb</label>
+			<value>staden</value>
+			<label>staden</label>
+			<value>text</value>
+			<label>text</label>
+			<value>fitch</value>
+			<label>fitch</label>
+			<value>msf</value>
+			<label>msf</label>
+			<value>clustal</value>
+			<label>clustal</label>
+			<value>phylip</value>
+			<label>phylip</label>
+			<value>phylip3</value>
+			<label>phylip3</label>
+			<value>asn1</value>
+			<label>asn1</label>
+		</vlist>
+		<vdef><value>fasta</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -osformat=$value"</code>
+		</format>
+		<group>29</group>
+	</attributes>
+	</parameter>
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>dendoutfile</name>
+	<attributes>
+		<prompt>Dendogram output filename (-dendoutfile)</prompt>
+		<vdef><value>dendoutfile.out</value></vdef>
+		<format>
+			<language>perl</language>
+			<code>" -dendoutfile=$value"</code>
+		</format>
+		<group>30</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>31</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

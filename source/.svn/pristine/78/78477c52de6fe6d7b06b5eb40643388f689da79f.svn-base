@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>PHYLOQUART</title>
+    <version>1.3</version>
+    <description>parciquart - quartet inference by maximum parsimony method</description>
+    <authors>Berry</authors>
+    <category>phylogeny</category>
+  </head>
+
+  <command>parciquart</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>parciquart</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>parciquart</code>
+		<language>perl</language>
+		<code>"parciquart"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="Sequence">
+<name>infile</name>
+<attributes>
+
+	<prompt>Nucleotide Sequences Alignement File</prompt>
+	<format>
+		<language>perl</language>
+		<code>"ln -s $infile infile.nuc; "</code>
+	</format>
+	<group>-10</group>
+	<seqfmt>
+		<value>11</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>readseq_ok_alig</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+<parameter type="Float">
+<name>weight</name>
+<attributes>
+
+	<prompt>Weight of the transversion events compared to the transition events (-w)</prompt>
+	<format>
+		<language>perl</language>
+		<code>(defined $value)? " -w$value" : "" </code>
+	</format>
+	<group>1</group>
+	<comment>
+		<value>Indicate the weight of the transversion events compared to the transition events when computing the parcimony value of a topology. Eg, -k2.5 gives 2.5 times more weight to transversions than to transitions.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Switch">
+<name>gap</name>
+<attributes>
+
+	<prompt>Use gap position whenever is possible for computing the distance between two taxa (-g)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -g1" : "" </code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+	<comment>
+		<value>If out, drop any position that contains a gap from the whole analysis.</value>
+	</comment>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>quartfile</name>
+<attributes>
+
+	<filenames>quartfile</filenames>
+	<pipe>
+		<pipetype>quartfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

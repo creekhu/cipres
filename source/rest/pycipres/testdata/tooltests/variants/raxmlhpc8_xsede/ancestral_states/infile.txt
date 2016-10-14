@@ -1,0 +1,5 @@
+4   4
+t1 ACGT
+t2 AATT
+t3 ATAT
+t4 CCGT

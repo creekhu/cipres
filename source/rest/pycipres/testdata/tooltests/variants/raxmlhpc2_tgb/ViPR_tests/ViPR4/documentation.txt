@@ -1,0 +1,14 @@
+This is a test that covers the ViPR use case for protein with a defaultprotein matrix settingsetting:
+
+tool=RAXMLHPC2_TGB
+vparam.runtime_=168 (we use cipres run wall time as suggested by you)
+vparam.bootstrap_seed_=0 
+vparam.bootstop_=<boot strap number that user specified from web interface if it's not 100>
+vparam.dna_gtrcat_=GTRGAMMA for dna sequences; for protein sequences, we use the following two:
+vparam.prot_sub_model_=PROTGAMMA
+vparam.prot_matrix_spec_=<protein matrix that user specified from web interface>
+
+At present we must set vparam.bootstrap_seed_=0
+
+Generates this command line:
+raxmlHPC-PTHREADS      -n result -s infile.txt  -m PROTGAMMADAYHOFF   -p 12345      '

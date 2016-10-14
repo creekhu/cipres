@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>GOLDEN</title>
+    <version>1.0</version>
+    <description>fetch a database entry</description>
+    <authors>N. Joly</authors>
+  </head>
+
+  <command>golden</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>golden</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"golden"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ismandatory="1" issimple="1" type="Excl">
+      <name>db</name>
+      <attributes>
+	<prompt>Database</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $db:"</code>
+	</format>
+	<vdef><value>genbank</value></vdef>
+	<group>2</group>
+	<vlist>
+          <value>embl</value>
+          <label>embl</label>
+          <value>genbank</value>
+          <label>genbank</label>
+          <value>genpept</value>
+          <label>genpept</label>
+	  <value>imgt</value>
+	  <label>imgt</label>
+	  <value>nrl3d</value>
+	  <label>nrl3d</label>
+	  <value>prosite</value>
+	  <label>prosite</label>
+	  <value>refseq</value>
+	  <label>refseq</label>
+	  <value>uniprot</value>
+	  <label>uniprot</label>
+	</vlist>
+	<vdef><value>embl</value></vdef>
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="String">
+      <name>query</name>
+      <attributes>
+	<prompt>query (Entry name or Accesion number)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>"$value"</code>
+	</format>
+	<group>3</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>ac</name>
+      <attributes>
+	<prompt>Search with Accession number only (except nrl3d) (-a)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -a" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+	<ctrls>
+	  <ctrl>
+	    <message>No Accesion number for Nrl3d</message>
+	    <language>perl</language>
+	    <code>$ac and $db eq "nrl3d"</code>
+	  </ctrl>
+	</ctrls>
+      </attributes>
+    </parameter>
+
+    <parameter type="Switch">
+      <name>id</name>
+      <attributes>
+	<prompt>Search with entry name only (-i)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -i" : ""</code>
+	</format>
+	<vdef><value>0</value></vdef>
+	<group>1</group>
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<vdef><value>"golden.out"</value></vdef>
+	<pipe>
+	  <pipetype>seqfile</pipetype>
+	  <language>perl</language>
+	  <code>! $entrynameonly</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output</name>
+	<prompt>Ouput</prompt>
+	<parameters>
+
+	  <parameter type="Switch" issimple="1" >
+	    <name>convert</name>
+	    <attributes>
+	      <prompt>Change output format</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " | fmtseq -p " : ""</code>
+	      </format>
+	      <vdef><value>0</value></vdef>
+	      <group>100</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter issimple="1" ismandatory="1" type="Excl">
+	    <name>seqformat</name>
+	    <attributes>
+	      <precond>
+		<language>perl</language>
+		<code>$convert</code>
+	      </precond>
+	      <prompt>Output Format</prompt>
+	      <format>
+		<language>perl</language>
+		<code>" -f$value"</code>
+	      </format>
+	      <vdef><value>9</value></vdef>
+	      <group>110</group>
+	      <vlist>
+		<value>1</value>
+		<label>1. Raw</label>
+		<value>2</value>
+		<label>2. Plain</label>
+		<value>3</value>
+		<label>3. EMBL</label>
+		<value>4</value>
+		<label>4. Swiss-Prot</label>
+		<value>5</value>
+		<label>5. GenBank</label>
+		<value>6</value>
+		<label>6. PIR (codata)</label>
+		<value>7</value>
+		<label>7. ASN.1</label>
+		<value>8</value>
+		<label>8. FASTA (Pearson)</label>
+		<value>9</value>
+		<label>9. FASTA</label>
+		<value>12</value>
+		<label>12. NBRF</label>
+		<value>13</value>
+		<label>13. NBRF-old</label>
+		<value>14</value>
+		<label>14. IG/Stanford</label>
+		<value>15</value>
+		<label>15. IG-old</label>
+		<value>16</value>
+		<label>16. GCG</label>
+		<value>17</value>
+		<label>17. MSF</label>
+		<value>18</value>
+		<label>18. PHYLIP</label>
+		<value>19</value>
+		<label>19. PHYLIP-Interleaved</label>
+		<value>20</value>
+		<label>20. PHYLIP-Sequential</label>
+		<value>21</value>
+		<label>21. Clustalw</label>
+		<value>22</value>
+		<label>22. Pretty</label>
+	      </vlist>
+	    </attributes>
+	  </parameter>
+  
+	</parameters>
+      </paragraph>
+    </parameter>
+    
+  </parameters>
+</pise>

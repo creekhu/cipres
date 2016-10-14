@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DatasetRegistry>
+	<DataResources>
+		<DataResource id="LUCENE_INDEX"
+			class="org.ngbw.sdk.dataresources.lucene.LuceneDataResource"
+			configFile="dataresources/lucene.cfg.xml"/>
+	</DataResources>
+	<SourceDocumentTypes>
+		<SourceDocumentType id="FASTA_PROTEIN" entityType="PROTEIN"
+			dataType="SEQUENCE" dataFormat="FASTA"/>
+		<SourceDocumentType id="FASTA_NUCLEIC_ACID" entityType="NUCLEIC_ACID"
+			dataType="SEQUENCE" dataFormat="FASTA"/>
+		<SourceDocumentType id="GENBANK" entityType="NUCLEIC_ACID"
+			dataType="SEQUENCE" dataFormat="GENBANK"/>
+		<SourceDocumentType id="GENBANK_PROT" entityType="PROTEIN"
+			dataType="SEQUENCE" dataFormat="GENBANK"/>
+		<SourceDocumentType id="UNIPROT" entityType="PROTEIN" dataType="SEQUENCE"
+			dataFormat="UNIPROT"/>
+		<SourceDocumentType id="PDB" entityType="PROTEIN" dataType="STRUCTURE"
+			dataFormat="PDB"/>
+		<SourceDocumentType id="PDBSEQ" entityType="PROTEIN" dataType="SEQUENCE"
+			dataFormat="PDB_FINDER"/>
+		<SourceDocumentType id="NDB" entityType="NUCLEIC_ACID" dataType="STRUCTURE"
+			dataFormat="PDB"/>
+	</SourceDocumentTypes>
+	<Datasets>
+		<Dataset id="PDB" name="The Protein Data Bank" 
+			sourceDocumentType="PDB" dataResource="LUCENE_INDEX"/>
+		<Dataset id="PDBSEQ" name="The Protein Data Bank - Sequences" 
+			sourceDocumentType="PDBSEQ" dataResource="LUCENE_INDEX"/>
+		<Dataset id="NDB" name="The Nucleotide Data Bank" 
+			sourceDocumentType="NDB" dataResource="LUCENE_INDEX"/>
+		<Dataset id="SWISSPROT" name="The Universal Protein Resource - Swissprot"
+			sourceDocumentType="UNIPROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="TREMBL" name="The Universal Protein Resource - Trembl"
+			sourceDocumentType="UNIPROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBBCT" name="GenBank Bacterial Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBENV" name="GenBank Environmental Sampling Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBEST" name="GenBank EST Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBGSS" name="GenBank Genome Survey Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBHTC" name="GenBank High Throughput cDNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBHTG" name="GenBank High Throughput Genomic Sequencing"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBINV" name="GenBank Invertebrate Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBMAM" name="GenBank Other Mammalian Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBPAT" name="GenBank Patent Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBPHG" name="GenBank Phage Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBPLN" name="GenBank Plant Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBPRI" name="GenBank Primate Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBROD" name="GenBank Rodent Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBSTS" name="GenBank Sequence Tagged Site Entries"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBSYN" name="GenBank Synthetic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBUNA" name="GenBank Unannotated Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBVRL" name="GenBank Viral Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="GBVRT" name="GenBank Other Vertebrate Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_FUNGI_GENOMIC" name="RefSeq Fungi Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_FUNGI_RNA" name="RefSeq Fungi RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_FUNGI_PROTEIN" name="RefSeq Fungi Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_INV_GENOMIC" name="RefSeq Invertebrate Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_INV_RNA" name="RefSeq Invertebrate RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_INV_PROTEIN" name="RefSeq Invertebrate Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_MICRO_GENOMIC" name="RefSeq Microbial Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_MICRO_PROTEIN" name="RefSeq Microbial Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_MITO_GENOMIC" name="RefSeq Mitochondrion Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_MITO_PROTEIN" name="RefSeq Mitochondrion Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLANT_GENOMIC" name="RefSeq Plant Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLANT_RNA" name="RefSeq Plant RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLANT_PROTEIN" name="RefSeq Plant Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLASM_GENOMIC" name="RefSeq Plasmid Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLASM_RNA" name="RefSeq Plasmid RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLASM_PROTEIN" name="RefSeq Plasmid Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLAST_GENOMIC" name="RefSeq Plastid Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLAST_RNA" name="RefSeq Plastid RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PLAST_PROTEIN" name="RefSeq Plastid Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PROT_GENOMIC" name="RefSeq Protozoa Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PROT_RNA" name="RefSeq Protozoa RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_PROT_PROTEIN" name="RefSeq Protozoa Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VERTM_GENOMIC" name="RefSeq Mammalian Vertebrate Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VERTM_RNA" name="RefSeq Mammalian Vertebrate RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VERTM_PROTEIN" name="RefSeq Mammalian Vertebrate Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VERTO_GENOMIC" name="RefSeq Other Vertebrate Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VERTO_RNA" name="RefSeq Other Vertebrate RNA Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VERTO_PROTEIN" name="RefSeq Other Vertebrate Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VIRAL_GENOMIC" name="RefSeq Viral Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="REFSEQ_VIRAL_PROTEIN" name="RefSeq Viral Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="TPA_NUCLEIC" name="Third-Party Annotation Nucleotide Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="TPA_PROTEIN" name="Third-Party Annotation Protein Sequences"
+			sourceDocumentType="GENBANK_PROT" dataResource="LUCENE_INDEX"/>
+		<Dataset id="UNIMES" name="Unimes Protein Sequences"
+			sourceDocumentType="FASTA_PROTEIN" dataResource="LUCENE_INDEX"/>
+		<Dataset id="UNIREF100" name="Uniref100 Protein Sequences"
+			sourceDocumentType="FASTA_PROTEIN" dataResource="LUCENE_INDEX"/>
+		<Dataset id="ENSEMBL" name="Ensembl Genomic Sequences"
+			sourceDocumentType="GENBANK" dataResource="LUCENE_INDEX"/>
+		<Dataset id="NCBI_NR" name="NCBI Non-Redundant Protein Sequences"
+			sourceDocumentType="FASTA_PROTEIN" dataResource="LUCENE_INDEX"/>
+		<Dataset id="NCBI_NT" name="NCBI Nucleotide Sequences"
+			sourceDocumentType="FASTA_NUCLEIC_ACID" dataResource="LUCENE_INDEX"/>
+	</Datasets>
+</DatasetRegistry>

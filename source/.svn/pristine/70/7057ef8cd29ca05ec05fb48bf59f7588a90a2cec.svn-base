@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>HMMER</title>
+    <version>2.2g</version>
+    <description>hmmcalibrate - calibrate HMM search statistics</description>
+    <authors>S. Eddy</authors>
+    <category>hmm</category>
+  </head>
+
+  <command>hmmcalibrate</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>hmmcalibrate</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"hmmcalibrate"</code>
+	</format>
+	<group>0</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>description</name>
+	<prompt>description of hmmcalibrate</prompt>
+	<group>-100</group>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<comment>
+	  <value>hmmcalibrate reads an HMM file from hmmfile, scores a large number of synthesized random sequences with it, fits an extreme value distribution (EVD) to the histogram of those scores, and re-saves hmmfile now including the EVD parameters. hmmcalibrate may take several minutes (or longer) to run.</value>
+	</comment>
+	<parameters>
+
+	  <parameter ishidden="1" type="String">
+	    <name>toto</name>
+	    <attributes>
+	      <format>
+		<language>perl</language>
+		<code>""</code>
+	      </format>
+	      <group>1000</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter ismandatory="1" type="InFile">
+      <name>hmmfile</name>
+      <attributes>
+	<prompt>HMM file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>2</group>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter ishidden="1" type="Results">
+      <name>new_hmmfile</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>""</code>
+	</format>
+	<group>10</group>
+	<filenames>"$hmmfile"</filenames>
+	<pipe>
+	  <pipetype>hmmer_HMM</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>expert_options</name>
+	<prompt>Expert Options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Integer">
+	    <name>fixed</name>
+	    <attributes>
+	      <prompt>Fix the length of the random sequences to n (--fixed n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --fixed $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Fix the length of the random sequences to n, where n is a positive (and reasonably sized) integer. The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="OutFile">
+	    <name>histfile</name>
+	    <attributes>
+	      <prompt>histogram of the scores(--histfile f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --histfile $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Save a histogram of the scores and the fitted theoretical curve to file f</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>mean</name>
+	    <attributes>
+	      <prompt>mean length (--mean x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --mean $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the mean length of the synthetic sequences to x, where x is a positive real number. The default is 350. </value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>num</name>
+	    <attributes>
+	      <prompt>number of synthetic sequences(--num n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --num $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the number of synthetic sequences to n, where n is a positive integer. If n is less than about 1000, Higher numbers of n will give better determined EVD parameters. The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Float">
+	    <name>sd</name>
+	    <attributes>
+	      <prompt>standard deviation (--sd x)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " -sd $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the standard deviation of the synthetic sequence length distribution to x, where x is a positive real number. The default is 350. Note that the Gaussian is left-truncated so that no sequences have lengths &lt;= 0.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>seed</name>
+	    <attributes>
+	      <prompt>random seed (--seed n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value) ? " --seed $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      <comment>
+		<value>Set the random seed to n, where n is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+  </parameters>
+</pise>

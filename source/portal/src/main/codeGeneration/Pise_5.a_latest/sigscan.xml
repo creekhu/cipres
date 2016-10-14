@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SIGSCAN</title>
+<description>Scans a sparse protein signature against swissprot (EMBOSS)</description>
+<category>protein:3d structure</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/sigscan.html</doclink>
+</head>
+
+<command>sigscan</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>input Section</prompt>
+
+<parameters>
+	<parameter type="InFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>sigin</name>
+	<attributes>
+		<prompt>Name of signature file for input (-sigin)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -sigin=$value"</code>
+		</format>
+		<group>1</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+	<name>database</name>
+	<attributes>
+		<prompt>Name of sequence database to search (-database)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -database=$value -sformat=fasta"</code>
+		</format>
+		<group>2</group>
+		<seqtype><value></value></seqtype>
+		<seqfmt>
+			<value>8</value>
+		</seqfmt>
+		<pipe>
+			<pipetype>seqsfile</pipetype>
+				<language>perl</language>
+				<code>1</code>
+		</pipe>
+	</attributes>
+	</parameter>
+
+	<parameter type="InFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>targetf</name>
+	<attributes>
+		<prompt>Name of (optionally grouped) scop families file for input (-targetf)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -targetf=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>required Section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>thresh</name>
+	<attributes>
+		<prompt>Minimum length (residues) of overlap required for two hits with the same code to be counted as the same hit. (-thresh)</prompt>
+		<vdef>
+			<value>20</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -thresh=$value"</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>sub</name>
+	<attributes>
+		<prompt>Residue substitution matrix (-sub)</prompt>
+			<vlist>
+				<value>EPAM60</value>
+				<label>EPAM60</label>
+				<value>EPAM290</value>
+				<label>EPAM290</label>
+				<value>EPAM470</value>
+				<label>EPAM470</label>
+				<value>EPAM110</value>
+				<label>EPAM110</label>
+				<value>EBLOSUM50</value>
+				<label>EBLOSUM50</label>
+				<value>EPAM220</value>
+				<label>EPAM220</label>
+				<value>EBLOSUM62-12</value>
+				<label>EBLOSUM62-12</label>
+				<value>EPAM400</value>
+				<label>EPAM400</label>
+				<value>EPAM150</value>
+				<label>EPAM150</label>
+				<value>EPAM330</value>
+				<label>EPAM330</label>
+				<value>EBLOSUM55</value>
+				<label>EBLOSUM55</label>
+				<value>EPAM30</value>
+				<label>EPAM30</label>
+				<value>EPAM260</value>
+				<label>EPAM260</label>
+				<value>EBLOSUM90</value>
+				<label>EBLOSUM90</label>
+				<value>EPAM440</value>
+				<label>EPAM440</label>
+				<value>EPAM190</value>
+				<label>EPAM190</label>
+				<value>EPAM370</value>
+				<label>EPAM370</label>
+				<value>EPAM70</value>
+				<label>EPAM70</label>
+				<value>EPAM480</value>
+				<label>EPAM480</label>
+				<value>EPAM120</value>
+				<label>EPAM120</label>
+				<value>EDNAMAT</value>
+				<label>EDNAMAT</label>
+				<value>EPAM300</value>
+				<label>EPAM300</label>
+				<value>EBLOSUM60</value>
+				<label>EBLOSUM60</label>
+				<value>EPAM230</value>
+				<label>EPAM230</label>
+				<value>EBLOSUM62</value>
+				<label>EBLOSUM62</label>
+				<value>EPAM410</value>
+				<label>EPAM410</label>
+				<value>EPAM160</value>
+				<label>EPAM160</label>
+				<value>EPAM340</value>
+				<label>EPAM340</label>
+				<value>EBLOSUM65</value>
+				<label>EBLOSUM65</label>
+				<value>EPAM40</value>
+				<label>EPAM40</label>
+				<value>EPAM270</value>
+				<label>EPAM270</label>
+				<value>EPAM450</value>
+				<label>EPAM450</label>
+				<value>EPAM380</value>
+				<label>EPAM380</label>
+				<value>EPAM80</value>
+				<label>EPAM80</label>
+				<value>EPAM490</value>
+				<label>EPAM490</label>
+				<value>EBLOSUM30</value>
+				<label>EBLOSUM30</label>
+				<value>EBLOSUMN</value>
+				<label>EBLOSUMN</label>
+				<value>EPAM200</value>
+				<label>EPAM200</label>
+				<value>EPAM130</value>
+				<label>EPAM130</label>
+				<value>EBLOSUM35</value>
+				<label>EBLOSUM35</label>
+				<value>EPAM310</value>
+				<label>EPAM310</label>
+				<value>EBLOSUM70</value>
+				<label>EBLOSUM70</label>
+				<value>EPAM10</value>
+				<label>EPAM10</label>
+				<value>EPAM240</value>
+				<label>EPAM240</label>
+				<value>EPAM420</value>
+				<label>EPAM420</label>
+				<value>EPAM170</value>
+				<label>EPAM170</label>
+				<value>EBLOSUM75</value>
+				<label>EBLOSUM75</label>
+				<value>EPAM350</value>
+				<label>EPAM350</label>
+				<value>EPAM280</value>
+				<label>EPAM280</label>
+				<value>EPAM50</value>
+				<label>EPAM50</label>
+				<value>EPAM460</value>
+				<label>EPAM460</label>
+				<value>EPAM390</value>
+				<label>EPAM390</label>
+				<value>EPAM90</value>
+				<label>EPAM90</label>
+				<value>EPAM100</value>
+				<label>EPAM100</label>
+				<value>EBLOSUM40</value>
+				<label>EBLOSUM40</label>
+				<value>EPAM210</value>
+				<label>EPAM210</label>
+				<value>EPAM140</value>
+				<label>EPAM140</label>
+				<value>EBLOSUM45</value>
+				<label>EBLOSUM45</label>
+				<value>EPAM320</value>
+				<label>EPAM320</label>
+				<value>EBLOSUM80</value>
+				<label>EBLOSUM80</label>
+				<value>EPAM500</value>
+				<label>EPAM500</label>
+				<value>EPAM20</value>
+				<label>EPAM20</label>
+				<value>EPAM250</value>
+				<label>EPAM250</label>
+				<value>EPAM430</value>
+				<label>EPAM430</label>
+				<value>EPAM180</value>
+				<label>EPAM180</label>
+				<value>EBLOSUM85</value>
+				<label>EBLOSUM85</label>
+				<value>EPAM360</value>
+				<label>EPAM360</label>
+			</vlist>
+		<vdef>
+			<value>./EBLOSUM62</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -sub=$value"</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+	<name>gapo</name>
+	<attributes>
+		<prompt>Gap insertion penalty (-gapo)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -gapo=$value"</code>
+		</format>
+		<group>6</group>
+		<comment>
+			<value>The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAMAT matrix for nucleotide sequences. Allowed values: Floating point number from 1.0 to 100.0</value>
+		</comment>
+		<scalemin><value>1.</value></scalemin>
+		<scalemax><value>100.</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+	<name>gape</name>
+	<attributes>
+		<prompt>Gap extension penalty (-gape)</prompt>
+		<vdef>
+			<value>0.5</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -gape=$value"</code>
+		</format>
+		<group>7</group>
+		<comment>
+			<value>The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring. Allowed values: Floating point number from 0.0 to 10.0</value>
+		</comment>
+		<scalemin><value>0.0</value></scalemin>
+		<scalemax><value>10.</value></scalemax>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="1" issimple="1" ishidden="0">
+	<name>nterm</name>
+	<attributes>
+		<prompt>Select number -- N-terminal matching options (-nterm)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>Align anywhere and allow only complete signature-sequence fit</label>
+				<value>2</value>
+				<label>Align anywhere and allow partial signature-sequence fit</label>
+				<value>3</value>
+				<label>Use empirical gaps only</label>
+			</vlist>
+		<vdef>
+			<value>1</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -nterm=$value"</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>output Section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>nhits</name>
+	<attributes>
+		<prompt>Number of hits to output (-nhits)</prompt>
+		<vdef>
+			<value>100</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -nhits=$value"</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>hitsf</name>
+	<attributes>
+		<prompt>Name of signature hits file for output (-hitsf)</prompt>
+		<vdef>
+			<value>test.hits</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -hitsf=$value"</code>
+		</format>
+		<group>10</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>alignf</name>
+	<attributes>
+		<prompt>Name of signature alignments file for output (-alignf)</prompt>
+		<vdef>
+			<value>test.align</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -alignf=$value"</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>12</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

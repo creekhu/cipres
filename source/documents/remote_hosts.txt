@@ -1,0 +1,62 @@
+*********************************************************************************************************************
+Configuring New Execution Hosts. 
+*********************************************************************************************************************
+
+Out of the box, the scigap/example app is configured to run a tool on the local server. 
+But to do real work, you will want to add remote execution hosts.
+ 
+There are several steps to adding a new execution host:
+    On the remote host or cluster, 
+
+        - log into the account (let's say it's "clusteruser") that will be used to run jobs on the remote host and do 
+        the following: 
+
+        - decide where jobs should have their working dirs.  Create a top level directory for the working dirs.  
+        Create subdirectories of the working dir named "ARCHIVE", "FAILED" and "MANUAL".  Suppose you 
+        create /projects/myproject/workspace, with subdirs ARCHIVE, FAILED and MANUAL:
+
+        Then, the web application will create a working dir for each job under /projects/myproject/workspace.
+        This is where input and results of ongoing jobs will be written; Job dirs are moved to
+        ARCHIVE after they have completed.  Or they are moved to FAILED if the user cancels, or if there's
+        a system error that prevents the job from being run.  Jobs are instead moved to MANUAL, open completion,
+        if they produce output that is too large to be processed through the normal procedure.  A cron job
+        can be used to remove old working directories from ARCHIVE and FAILED.
+
+        - install the tools that you want to run on the remote host or, if they're already installed,
+        make sure they are in clusteruser's PATH and can be run from the command line. 
+
+        - create and install several scripts that will interact with the web app.  The scripts can
+        have any name you choose (more on that later), but we refer to them generically as "submit.py",
+        "checkjobs.py" and "cancel.py". Modify clusterusr's PATH or install the scripts in directory
+        that is already in the PATH.  See remote_scripts.txt.
+
+    Configure the web application:
+
+        - Edit yourapp/sdk/src/main/resources/tool/tool-registry.cfg.xml to add a <ToolResource>
+        and <Tool> elements.  See toolregistry.txt.
+
+        - By convention, we add properties to yourapp/build.properties to supply many of the values
+        used in the tool registry.  Examples are shown in toolregistry.txt.
+
+        - If you use ssh and/or sftp with the resource, you'll need to add username/password
+        or username/keyfile connection info to yourapp/sdk/src/main/resources/ssl.properties.
+        Examples in toolregistry.txt.
+        
+   Create tool wrappers as required.
+   
+   		- PISE XML files can call a wrapper in lieu of delivering the complete command line. The wrapper is used if there's something you need 
+   		to do before (or maybe after) running the tool or if you need to change the command line that pise generated. It has been used to detect 
+   		un-allowed expressions in inputfiles. We typically use the wrappers to call "load module" to set up the right env vars and path for 
+   		running the tool. Sometimes we use the wrapper to redirect stdout/stderr to a specific file. Sometimes we use it to add a command line
+   		argument that for whatever reason we didn't send from pise. On some machines, to run an mpi program, we would preface the command with
+   		"ibrun". If you can take the command line you get from the pise and run it directly on the remote host, then you may not need a wrapper.
+   		You can see examples of all our wrappers, old and new, and what they do, in 
+   		https://svn.sdsc.edu/repo/NGBW/cipres-config/trunk/sdk/scripts/remote_resource/trestles. 
+   
+   		- In general we prefer to create and use tool wrappers on each remote host, although submitting the bare command line is fine, and we
+   		do use that method at times. Even if it does nothing (in that case the wrapper would look like "program_name $*" ), changes such as
+   		a new found need for preprocessing or redirection can be made by modifying the wrapper. That way you don't have to recompile the app.
+   		
+   		   
+   		
+   	

@@ -1,0 +1,11 @@
+This test covers the ViPR use case where a default protein matrix is used with bootstrapping:
+
+tool=RAXMLHPC2_TGB
+vparam.runtime_=168 (we use cipres run wall time as suggested by you)
+vparam.bootstrap_seed_=1 (we use bootstrap_seed to indicates bootstrapping, this will be 0 for non-bootstrapping)
+vparam.bootstop_=<boot strap number that user specified from web interface if it's not 100>
+vparam.dna_gtrcat_=GTRGAMMA for dna sequences; for protein sequences, we use the following two:
+vparam.prot_sub_model_=PROTGAMMA
+vparam.prot_matrix_spec_=<protein matrix that user specified from web interface>
+
+

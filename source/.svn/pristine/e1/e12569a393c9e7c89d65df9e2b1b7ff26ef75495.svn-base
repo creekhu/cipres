@@ -1,0 +1,9 @@
+infile_=infile_.txt
+upload_sumtfile1_=upload_sumtfile1_.txt
+upload_sumtfile2_=upload_sumtfile2_.txt
+upload_sumpfile1_=upload_sumpfile1_.txt
+upload_sumpfile2_=upload_sumpfile2_.txt
+upload_ckpfile_=upload_ckpfile_.txt
+upload_mcmcfile_=upload_mcmcfile_.txt
+
+

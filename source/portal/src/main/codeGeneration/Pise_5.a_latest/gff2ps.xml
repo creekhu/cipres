@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>gff2ps</title>
+    <description>Produces PostScript graphical output from GFF-files</description>
+    <authors>Josep Francesc ABRIL FERRANDO, Roderic GUIGO SERRA</authors>
+    <doclink>http://genome.imim.es/software/gfftools/GFF2PS.html</doclink>
+  </head>
+
+
+  <command>gff2ps</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" type="String">
+      <name>gff2ps</name>
+      <attributes>
+	<format>
+	  <language>perl</language>
+	  <code>"gff2ps"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+    
+    <parameter ishidden="1" isstandout="1" type="OutFile">
+      <name>outfile</name>
+      <attributes>
+        <format>
+          <language>perl</language>
+          <code>"; ln -s gff2ps.out gff2ps.ps"</code>
+        </format>
+	<vdef>
+	  <value>"gff2ps.ps"</value>
+	</vdef>
+        <group>1000</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>rcfile</name>
+      <attributes>
+        <filenames>gff2ps.ps</filenames>
+      </attributes>
+    </parameter>
+
+    <parameter type="Results">
+      <name>psfile</name>
+      <attributes>
+        <precond>
+          <language>perl</language>
+          <code>$default_custom_file</code>
+        </precond>
+        <filenames>.gff2psrc</filenames>
+      </attributes>
+    </parameter>
+
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>gff_file</name>
+      <attributes>
+
+	<prompt>GFF file</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>100</group>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>output_options</name>
+	<prompt>Output Options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="String">
+	    <name>page_size</name>
+	    <attributes>
+
+	      <prompt>Modify page size (-D)</prompt>
+	      <vdef>
+		<value>a4</value>
+	      </vdef>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value and $value ne $vdef)? " -s $value" : ""</code>
+	      </format>
+	      <group>1</group>
+
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>orientation</name>
+	    <attributes>
+	      <prompt>Switches page orientation to Portrait (default is Landscape) (-p)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -p" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Integer">
+	    <name>split</name>
+	    <attributes>
+	      <prompt>Sets how many pages are needed to split your output (-P)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef)? " -P $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>zoom_first</name>
+	    <attributes>
+	      <prompt>Zoom first nucleotide (default is sequence origin) (-S)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -S $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>zoom_last</name>
+	    <attributes>
+	      <prompt>Zoom last nucleotide (default is sequence length) (-E)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -E $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>blocks</name>
+	    <attributes>
+	      <prompt>Sets blocks per page (-B)</prompt>
+	      <vdef><value>1</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef)? " -B $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>nuc_per_line</name>
+	    <attributes>
+	      <prompt>Sets nucleotides per line (default is the largest sequence position from input gff-files) (-N)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -N $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>blocks_from_left_to_right</name>
+	    <attributes>
+	      <prompt>Blocks from left to right and from top to bottom (default is top to bottom first) (-b)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -b" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_headers</name>
+	    <attributes>
+	      <prompt>Switch off Header (Title area) (-L)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -L" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>set_title</name>
+	    <attributes>
+	      <prompt>Defining title (default is input gff filename) (-T)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -T $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_page_nb</name>
+	    <attributes>
+	      <prompt>Does not show page numbering (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -l" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_date</name>
+	    <attributes>
+	      <prompt>Does not show date (-O)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -O" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_time</name>
+	    <attributes>
+	      <prompt>Does not show time (-o)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -o" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_copyright</name>
+	    <attributes>
+	      <prompt>Switch off CopyRight line on plot (-a)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -a" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>color_options</name>
+	<prompt>Color Options</prompt>
+	<group>3</group>
+	<parameters>
+
+	  <parameter type="String">
+	    <name>fg_color_name</name>
+	    <attributes>
+	      <prompt>Sets color for FOREGROUND (-G)</prompt>
+	      <vdef><value>black</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -G $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>bg_color_name</name>
+	    <attributes>
+	      <prompt>Sets color for BACKGROUND (-G)</prompt>
+	      <vdef><value>white</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -g $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>f0_color_name</name>
+	    <attributes>
+	      <prompt>Sets color for frame 0 (-0)</prompt>
+	      <vdef><value>blue</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -0 $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>f1_color_name</name>
+	    <attributes>
+	      <prompt>Sets color for frame 1 (-1)</prompt>
+	      <vdef><value>red</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -1 $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>f2_color_name</name>
+	    <attributes>
+	      <prompt>Sets color for frame 2 (-2)</prompt>
+	      <vdef><value>green</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -2 $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="String">
+	    <name>f_color_name</name>
+	    <attributes>
+	      <prompt>Sets color for frame . (-3)</prompt>
+	      <vdef><value>orange</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value ne $vdef)? " -3 $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>tickmark_options</name>
+	<prompt>Tickmark Options</prompt>
+	<group>2</group>
+	<parameters>
+	  <parameter type="Integer">
+	    <name>major_tickmarks</name>
+	    <attributes>
+	      <prompt>Number of major tickmarks per line (-M)</prompt>
+	      <vdef><value>10</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef)? " -M $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>major_tickmarks_scale</name>
+	    <attributes>
+	      <prompt>Major tickmarks scale in nucleotides (-K)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -K $value" : ""</code>
+	      </format>
+	      <comment>
+		<value>Default is nucleotide length for lines divided by major tickmarks number (see option -T).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>minor_tickmarks</name>
+	    <attributes>
+	      <prompt>Number of minor tickmarks between major tickmarks (-m)</prompt>
+	      <vdef><value>10</value></vdef>
+	      <format>
+		<language>perl</language>
+		<code>($value and $value != $vdef)? " -m $value" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>minor_tickmarks_scale</name>
+	    <attributes>
+	      <prompt>Minor tickmarks scale in nucleotides (-k)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -k $value" : ""</code>
+	      </format>
+	      <comment>
+		<value>Default is major tickmarks size divided by minor tickmarks number (see option -t).</value>
+	      </comment>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>element_options</name>
+	<prompt>Display elements Options</prompt>
+	<group>4</group>
+	<parameters>
+	  <parameter type="Switch">
+	    <name>no_forward_strand</name>
+	    <attributes>
+	      <prompt>Switch off displaying forward-strand(Watson) elements (-w)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -w" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_reverse_strand</name>
+	    <attributes>
+	      <prompt>Switch off displaying reverse-strand(Crick) elements (-c)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -c" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Switch">
+	    <name>no_strand_independent</name>
+	    <attributes>
+	      <prompt>Switch off displaying strand-independent elements (-i)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -i" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+
+
+	  <parameter type="Switch">
+	    <name>no_label</name>
+	    <attributes>
+	      <prompt>Switch off labels for element positions (-n)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -n" : ""</code>
+	      </format>
+	    </attributes>
+	  </parameter>
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_options</name>
+	<prompt>Other Options</prompt>
+	<group>1</group>
+	<parameters>
+
+	  <parameter type="Switch">
+	    <name>default_custom_file</name>
+	    <attributes>
+	      
+	      <prompt>Create a new default customfile (.gff2psrc) (-D)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -D .gff2psrc" : ""</code>
+	      </format>
+	      <group>5</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="InFile">
+	    <name>user_custom_file</name>
+	    <attributes>
+
+	      <prompt>Your custom rc file (.gff2psrc)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -C $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+
+	</parameters>
+      </paragraph>
+    </parameter>
+
+
+  </parameters>
+</pise>

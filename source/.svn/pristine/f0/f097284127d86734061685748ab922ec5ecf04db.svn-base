@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>COMPLEX</title>
+<description>Find the linguistic complexity in nucleotide sequences (EMBOSS)</description>
+<category>nucleic:composition</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/complex.html</doclink>
+</head>
+
+<command>complex</command>
+
+<parameters>
+
+&emboss_init;
+
+<parameter type="Sequence" ismandatory="1" issimple="1" ishidden="0">
+<name>sequence</name>
+<attributes>
+	<prompt>sequence -- dna [sequences] (-sequence)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -sequence=$value -sformat=fasta"</code>
+	</format>
+	<group>1</group>
+	<seqtype><value>dna</value></seqtype>
+	<seqfmt>
+		<value>8</value>
+	</seqfmt>
+	<pipe>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>omnia</name>
+<attributes>
+	<prompt>All sequences (-omnia)</prompt>
+	<vdef>
+		<value>0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -omnia" : ""</code>
+	</format>
+	<group>2</group>
+	<comment>
+		<value>calculate over a set of sequences</value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+<name>lwin</name>
+<attributes>
+	<prompt>Window length (-lwin)</prompt>
+	<vdef>
+		<value>100</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -lwin=$value" : ""</code>
+	</format>
+	<group>3</group>
+	<scalemax>
+		<language>acd</language>
+		<code>$sequence.length</code>
+	</scalemax>
+</attributes>
+</parameter>
+
+<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+<name>step</name>
+<attributes>
+	<prompt>Step size (-step)</prompt>
+	<vdef>
+		<value>5</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -step=$value" : ""</code>
+	</format>
+	<group>4</group>
+	<comment>
+		<value>the displacement of the window over the sequence</value>
+	</comment>
+	<scalemax>
+		<language>acd</language>
+		<code>$lwin</code>
+	</scalemax>
+</attributes>
+</parameter>
+
+<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+<name>sim</name>
+<attributes>
+	<prompt>Simulations (-sim)</prompt>
+	<vdef>
+		<value>0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -sim=$value" : ""</code>
+	</format>
+	<group>5</group>
+	<comment>
+		<value>calculate the linguistic complexity by comparison with a number of simulations having a uniform distribution of bases</value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+<name>jmin</name>
+<attributes>
+	<prompt>Minimum word length (-jmin)</prompt>
+	<vdef>
+		<value>4</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -jmin=$value" : ""</code>
+	</format>
+	<group>6</group>
+	<comment>
+		<value></value>
+	</comment>
+	<scalemin><value>2</value></scalemin>
+	<scalemax><value>20</value></scalemax>
+</attributes>
+</parameter>
+
+<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+<name>jmax</name>
+<attributes>
+	<prompt>Maximum word length (-jmax)</prompt>
+	<vdef>
+		<value>6</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -jmax=$value" : ""</code>
+	</format>
+	<group>7</group>
+	<comment>
+		<value></value>
+	</comment>
+	<scalemin><value>2</value></scalemin>
+	<scalemax><value>50</value></scalemax>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>freq</name>
+<attributes>
+	<prompt>Calculate frequency (-freq)</prompt>
+	<vdef>
+		<value>0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -freq" : ""</code>
+	</format>
+	<group>8</group>
+	<comment>
+		<value>execute the simulation of a sequence based on the base frequency of the original sequence</value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>print</name>
+<attributes>
+	<prompt>Print to file (-print)</prompt>
+	<vdef>
+		<value>0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -print" : ""</code>
+	</format>
+	<group>9</group>
+	<comment>
+		<value>generate a file named UjTable containing the values of Uj for each word j in the real sequence(s) and in any simulated sequences</value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+<name>outfile</name>
+<attributes>
+	<prompt>outfile (-outfile)</prompt>
+	<vdef><value>outfile.out</value></vdef>
+	<format>
+		<language>perl</language>
+		<code>" -outfile=$value"</code>
+	</format>
+	<group>10</group>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+<name>ujtablefile</name>
+<attributes>
+	<prompt>UjTable temporary file name (-ujtablefile)</prompt>
+		<precond>
+			<language>perl</language>
+			<code>$sim</code>
+			<language>acd</language>
+			<code>$sim</code>
+		</precond>
+	<vdef>
+		<value>complex.ujtable</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -ujtablefile=$value" : ""</code>
+	</format>
+	<group>11</group>
+	<comment>
+		<value></value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+<name>outseq</name>
+<attributes>
+	<prompt>outseq (-outseq)</prompt>
+		<precond>
+			<language>perl</language>
+			<code>$omnia</code>
+			<language>acd</language>
+			<code>$omnia</code>
+		</precond>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -outseq=$value" : ""</code>
+	</format>
+	<group>12</group>
+	<pipe>
+		<pipetype>seqsfile</pipetype>
+			<language>perl</language>
+			<code>1</code>
+	</pipe>
+</attributes>
+</parameter>
+
+<parameter type="Excl" issimple="0">
+<name>outseq_sformat</name>
+<attributes>
+	<prompt>Output format for: outseq</prompt>
+	<vlist>
+		<value>fasta</value>
+		<label>fasta</label>
+		<value>gcg</value>
+		<label>gcg</label>
+		<value>phylip</value>
+		<label>phylip</label>
+		<value>embl</value>
+		<label>embl</label>
+		<value>swiss</value>
+		<label>swiss</label>
+		<value>ncbi</value>
+		<label>ncbi</label>
+		<value>nbrf</value>
+		<label>nbrf</label>
+		<value>genbank</value>
+		<label>genbank</label>
+		<value>ig</value>
+		<label>ig</label>
+		<value>codata</value>
+		<label>codata</label>
+		<value>strider</value>
+		<label>strider</label>
+		<value>acedb</value>
+		<label>acedb</label>
+		<value>staden</value>
+		<label>staden</label>
+		<value>text</value>
+		<label>text</label>
+		<value>fitch</value>
+		<label>fitch</label>
+		<value>msf</value>
+		<label>msf</label>
+		<value>clustal</value>
+		<label>clustal</label>
+		<value>phylip</value>
+		<label>phylip</label>
+		<value>phylip3</value>
+		<label>phylip3</label>
+		<value>asn1</value>
+		<label>asn1</label>
+	</vlist>
+	<vdef><value>fasta</value></vdef>
+	<format>
+		<language>perl</language>
+		<code>" -osformat=$value"</code>
+	</format>
+	<group>13</group>
+</attributes>
+</parameter>
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>14</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

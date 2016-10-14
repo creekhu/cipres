@@ -1,0 +1,101 @@
+<h2>DNAPARS</h2>
+<p>
+	<strong>DNAPARS</strong> uses nucleotide sequences to compute a distance matrix, under
+	three different models of nucleotide substitution. The distance for each
+	pair  of species estimates the total branch length between the two species, and
+	can be used in the distance  matrix programs FITCH, KITSCH or NEIGHBOR.
+	This is an alternative to use of the  sequence data itself in the
+	maximum likelihood program DNAML or the parsimony program DNAPARS,
+	when it is not known in advance which ones are which. Part of Phylip.<br />
+	INPUT = aligned dna sequence files</strong>
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/dnapars.html">
+		http://evolution.genetics.washington.edu/phylip/doc/dnapars.html
+	</a>
+</h3>
+	   <h3>TEST DATA SET</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>&nbsp;&nbsp; 5&nbsp;&nbsp; 13</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp; AACGUGGCCAAAU</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AAGGUCGCCAAAC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; CAUUUCGUCACAA</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; GGUAUUUCGGCCU</pre>
+             <pre>Epsilon&nbsp;&nbsp; GGGAUCUCGGCCC</pre></td>
+         </tr>
+       </table>
+	   <div align="center">
+         <hr size="2" width="100%" align="center" />
+       </div>
+	   <h3>CONTENTS OF OUTPUT FILE (if all numerical options are on)</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>DNA parsimony algorithm, version 3.6</pre>
+             <pre>&nbsp;</pre>
+             <pre> 5 species,&nbsp; 13&nbsp; sites</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequences</pre>
+             <pre>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---------</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACGUGGCCA AAU</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..G..C.... ..C</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C.UU.C.U.. C.A</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GGUA.UU.GG CC.</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GGGA.CU.GG CCC</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>One most parsimonious tree found:</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-----Epsilon&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+----------------------------3&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+------------2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +-------Delta&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +----------------Gamma&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp; </pre>
+             <pre>&nbsp;&nbsp;1----Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;&nbsp;|&nbsp; </pre>
+             <pre>&nbsp;&nbsp;+---------Alpha&nbsp;&nbsp;&nbsp;&nbsp; </pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>requires a total of&nbsp; &nbsp;&nbsp;&nbsp;19.000</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; between&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; length</pre>
+             <pre>&nbsp; -------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.217949</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.487179</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.096154</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.134615</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.275641</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.076923</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.173077</pre>
+             <pre>&nbsp;</pre>
+             <pre>steps in each site:</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3&nbsp;&nbsp; 4&nbsp;&nbsp; 5&nbsp;&nbsp; 6&nbsp;&nbsp; 7&nbsp;&nbsp; 8&nbsp;&nbsp; 9</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp; *-----------------------------------------</pre>
+             <pre>&nbsp;&nbsp;&nbsp; 0|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp; 1&nbsp;&nbsp; 3&nbsp;&nbsp; 2&nbsp;&nbsp; 0&nbsp;&nbsp; 2&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 1</pre>
+             <pre>&nbsp;&nbsp; 10|&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 1&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>From&nbsp;&nbsp;&nbsp; To&nbsp;&nbsp;&nbsp;&nbsp; Any Steps?&nbsp;&nbsp;&nbsp; State at upper node</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( . means same as in the node below it on tree)</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AABGTCGCCA AAY</pre>
+             <pre>&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; V.KD...... C..</pre>
+             <pre>&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; GG.A..T.GG .C.</pre>
+             <pre>&nbsp;&nbsp; 3&nbsp;&nbsp; Epsilon&nbsp;&nbsp;&nbsp;&nbsp; maybe&nbsp;&nbsp; ..G....... ..C</pre>
+             <pre>&nbsp;&nbsp; 3&nbsp;&nbsp; Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ..T..T.... ..T</pre>
+             <pre>&nbsp;&nbsp; 2&nbsp;&nbsp; Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; C.TT...T.. ..A</pre>
+             <pre>&nbsp;&nbsp; 1&nbsp;&nbsp; Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maybe&nbsp;&nbsp; ..G....... ..C</pre>
+             <pre>&nbsp;&nbsp; 1&nbsp;&nbsp; Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes&nbsp;&nbsp;&nbsp; ..C..G.... ..T</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre></td>
+         </tr>
+       </table>
+	   <h3>&nbsp;</h3>
+	   <p><br />
+        </p>

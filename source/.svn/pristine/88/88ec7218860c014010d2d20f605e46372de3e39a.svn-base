@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>EMBOSSVERSION</title>
+<description>Writes the current EMBOSS version number (EMBOSS)</description>
+<category>utils:misc</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/embossversion.html</doclink>
+</head>
+
+<command>embossversion</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>output Section</prompt>
+
+<parameters>
+	<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+	<name>outfile</name>
+	<attributes>
+		<prompt>Output file (-outfile)</prompt>
+		<vdef>
+			<value>stdout</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -outfile=$value" : ""</code>
+		</format>
+		<group>1</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>2</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

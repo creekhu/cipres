@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>INTERFACE</title>
+<description>Reads coordinate files and writes inter-chain contact files (EMBOSS)</description>
+<category>protein:3d structure</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/interface.html</doclink>
+</head>
+
+<command>interface</command>
+
+<parameters>
+
+&emboss_init;
+
+<parameter type="InFile" ismandatory="1" issimple="1" ishidden="0">
+<name>in</name>
+<attributes>
+	<prompt>Coordinate file for input (embl-like format) (-in)</prompt>
+	<format>
+		<language>perl</language>
+		<code>" -in=$value"</code>
+	</format>
+	<group>1</group>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="1" issimple="1" ishidden="0">
+<name>out</name>
+<attributes>
+	<prompt>Contact file for output (-out)</prompt>
+	<vdef>
+		<value>test.con</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>" -out=$value"</code>
+	</format>
+	<group>2</group>
+</attributes>
+</parameter>
+
+<parameter type="Float" ismandatory="1" issimple="1" ishidden="0">
+<name>thresh</name>
+<attributes>
+	<prompt>Threshold contact distance (-thresh)</prompt>
+	<vdef>
+		<value>6.0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>" -thresh=$value"</code>
+	</format>
+	<group>3</group>
+</attributes>
+</parameter>
+
+<parameter type="Float" ismandatory="0" issimple="0" ishidden="0">
+<name>ignore</name>
+<attributes>
+	<prompt>Threshold ignore distance (-ignore)</prompt>
+	<vdef>
+		<value>20.0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>(defined $value &amp;&amp; $value != $vdef)? " -ignore=$value" : ""</code>
+	</format>
+	<group>4</group>
+	<comment>
+		<value>If any two atoms from two different residues are at least this distance apart then no futher inter-atomic contacts will be checked for for that residue pair . This speeds the calculation up considerably.</value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+<name>vdwf</name>
+<attributes>
+	<prompt>Name of data file with van der Waals radii (-vdwf)</prompt>
+	<vdef>
+		<value>Evdw.dat</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -vdwf=$value" : ""</code>
+	</format>
+	<group>5</group>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+<name>conerrf</name>
+<attributes>
+	<prompt>Name of log file for the build (-conerrf)</prompt>
+	<vdef>
+		<value>interface.log</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -conerrf=$value" : ""</code>
+	</format>
+	<group>6</group>
+</attributes>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>7</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

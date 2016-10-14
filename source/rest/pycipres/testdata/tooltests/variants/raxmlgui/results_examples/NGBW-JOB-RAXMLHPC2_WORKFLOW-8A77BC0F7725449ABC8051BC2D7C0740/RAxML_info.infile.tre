@@ -1,0 +1,61 @@
+
+
+WARNING: RAxML is not checking sequences for duplicate seqs and sites with missing data!
+
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+
+This is RAxML version 8.1.11 released by Alexandros Stamatakis on December 10 2014.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+
+Alignment has 627 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 28.43%
+
+RAxML experimental very fast tree search
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 627
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS -T 8 -s infile.txt -m GTRGAMMA -p 12345 -f E -O -n infile.tre 
+
+
+Time after init : 0.038272
+Time after init and starting tree: 0.268770
+Time after init, starting tree, mod opt: 0.966222
+Partion 0 number of Cats: 1
+LH after SPRs -10582.618266, after NNI -10581.871146
+LH after SPRs -10581.865810, after NNI -10581.848453
+RAxML fast tree written to file: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-8A77BC0F7725449ABC8051BC2D7C0740/RAxML_fastTree.infile.tre
+
+Model parameters (binary file format) written to: /projects/ps-ngbt/backend/trestles_test_workspace/NGBW-JOB-RAXMLHPC2_WORKFLOW-8A77BC0F7725449ABC8051BC2D7C0740/RAxML_binaryModelParameters.infile.tre
+Total execution time: 3.059115
+Good bye ... 

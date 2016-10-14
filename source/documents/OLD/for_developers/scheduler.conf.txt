@@ -1,0 +1,85 @@
+Hi,
+
+This is a summary of the meeting Wayne, Bryan and I had last week about 
+	1) general issues regarding how we create the pbs scheduler files in cipres and 
+	2) how to correctly set ppn in light of the recent OS upgrade on gordon.  
+Regarding the first point, we agreed submit.py should implement a few straightforward rules 
+to create the pbs run script based on the info in scheduler.conf and properties of the 
+compute resource that the job will run on.  I will slightly rewrite submit.py to remove 
+special cases for individual tools, according to the psuedo code below.  The outcome of our 
+discussion of the second point (regarding ppn) is captured in the psuedo code at the end.
+
+Here's what we decided we need in the scheduler.conf files:
+
+    jobtype  
+		(i.e. does the job use mpi or not, default is "not mpi".  
+		"direct" is another option meaning that submit.py doesn't 
+		create the pbs script, eg. raxmlLight.)
+    mpi_processes 
+		(the total number of mpi processes aka "np", default is 1)
+    threads_per_process  
+		(default is 1)
+    node_exclusive 
+		(indicates that a shared type queue should not be used, default is false)
+    runhours 
+		(user specified maximum walltime)
+
+This is the same as what we have at the moment except that "nodes" has been removed and 
+"node_exclusive" has been added to handle cases where mpi_processes times threads_per_process 
+may be less than a full node's worth of cpus, but we want a full node to ourselves, in a 
+non shared queue (e.g we may need all the memory). 
+
+One of the problems we have been having when we talk about how a tool is to be run is that 
+Mark has been the one creating the pise xml files that generate the scheduler.conf and I've 
+been the one maintaining submit.py, so unfortunately when Wayne and Bryan describe the way a 
+tool is to be run in terms of things like "ppn", "np", and "queue", Mark needs to ask me what 
+he has to put in scheduler.conf to make that happen and neither Mark nor I can easily verify, 
+on our own, that we have in fact implemented what Wayne or Bryan recommended.   I think we can 
+make this work more smoothly and reliably going forward if we specify all of the following 
+whenever we talk about how a tool is to be run:
+
+    tool (e.g. mrbayes 3.2.1)
+    machine (e.g. gordon)
+    user input condition (eg. nruns x nchains <= 8)
+    environment (any "run specific" env vars that need to be set, eg. OMP_NUM_THREADS)
+    *jobtype
+    *mpi_processes
+    *threads_per_process
+    *node_exclusive
+    queue
+    nodes
+    ppn
+
+The columns in bold (*) correspond to what will the pise xml file will put in scheduler.conf, 
+and the last three columns indicate what submit.py should put in the pbs run script.  Mark -- 
+is there anything you'd like to add to this? 
+
+Finally, here's the logic submit.py will use to determine "queue", "nodes" and "ppn":
+
+number_of_cpus = mpi_processes * threads_per_process
+
+# shared_queue_max_cpus is 8 on gordon, 31 on trestles, increment is 8 on gordon, 1 on trestles,
+# cpus_per_node = 16 on gordon, 32 on trestles
+
+shared_queue_cpu_increment = get_cpu_increment(shared_queue, host)
+shared_queue_max_cpus = cpus_per_node - shared_queue_cpu_increment
+
+# Note that if cpus requested (i.e number_of_cpus) is between the max for the shared Q and 
+# a full node's worth, we're opting to use a full node in the regular queue.
+if (not node_exclusive) and (number_of_cpus <= shared_queue_max_cpus)
+{
+    queue = shared_queue
+    number_of_nodes = 1
+    ppn = shared_queue_cpu_increment * round_up(number_of_cpus / shared_queue_cpu_increment)
+} else
+{
+    queue = regular_queue
+    number_of_nodes = round_up(number_of_cpus / cpus_per_node)
+    ppn = cpus_per_node
+}
+
+# things like QOS that need to be set via "pbs -v"
+pbs_env_vars = get_pbs_env_vars(queue, host)
+
+Terri
+

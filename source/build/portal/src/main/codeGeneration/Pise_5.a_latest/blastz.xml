@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" >
+<pise>
+	<head>
+		<title>blastz</title>
+		<version>2003-05-14</version>
+		<description>Whole genome alignment program</description>
+		<authors>Schwartz, S. et al.</authors>
+		<reference>Schwartz, S., Zhang, Z., Frazer K.A., Smit, A., Riemer, C., Bouck, J., Gibbs, R., Hardison, R., Miller, W. (2000),  PipMaker - A webserver for aligning two genomic DNA sequences. Genome Res. 10: 577-586.</reference>
+		<reference>Schwartz, S., Kent, J.W., Smit, A., Zhang, Z., Baertsch, R., Hardison, R. C., Haussler, D., Miller, W. (2003), Human-mouse alignments with BlastZ. Genome Res 13:103-107.</reference>
+	</head>
+	<command>blastz</command>
+	<parameters>
+		<parameter ismandatory="1" ishidden="1" iscommand="1" type="String"><name>blastz</name>
+			<attributes>
+				<format>
+					<language>perl</language>
+					<code>"blastz"</code>
+				</format>
+				<vdef><value>blastz</value></vdef>
+				<group>0</group>
+				<comment>
+					<value>blastz -whole genome alignments</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter ismandatory="1" issimple="1" type="Sequence">
+			<name>query1</name>
+			<attributes>
+				<prompt>Alignment file 1</prompt>
+				<format>
+					<language>perl</language>
+					<code>" $value"</code>
+				</format>
+				<group>1</group>
+				<seqfmt>
+					<value>8</value>
+				</seqfmt>
+				<pipe>
+					<pipetype>seqfile</pipetype>
+					<language>perl</language>
+					<code>1</code>
+				</pipe>
+			</attributes>
+		</parameter>
+		<parameter ismandatory="1" issimple="1" type="Sequence">
+			<name>query2</name>
+			<attributes>
+				<prompt>Alignment file 2</prompt>
+				<format>
+					<language>perl</language>
+					<code>" $value"</code>
+				</format>
+				<group>2</group>
+				<seqfmt>
+					<value>8</value>
+				</seqfmt>
+				<pipe>
+					<pipetype>seqfile</pipetype>
+					<language>perl</language>
+					<code>1</code>
+				</pipe>
+			</attributes>
+		</parameter>
+		<parameter type="OutFile"><name>output</name>
+			<attributes>
+				<prompt>(alternative) blastz output file. Can be used for pipe.</prompt>
+				<format>
+					<language>perl</language>
+					<code>(defined $value)? " &gt; $value":" &gt; blastz.out" </code>
+				</format>
+				<vdef><value>blastz.out</value></vdef>
+				<pipe>
+				      <pipetype>blastz_out</pipetype>
+				      <language>perl</language>
+				      <code>1</code>
+				</pipe>      
+				<group>4</group>
+				<comment>
+					<value>how the output file is named and where it is stored</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="String"><name>space</name>
+			<attributes>
+				<prompt>bytes of space for trace-back information</prompt>
+				<format>
+					<language>perl</language>
+					<code>((defined $value) &amp;&amp; ($value ne $vdef))? " m=$value":""</code>
+				</format>
+				<vdef><value>80M</value></vdef>
+				<group>3</group>
+				<comment>
+					<value>If blastz complains that it runs out of trace-back memory, you can adjust the m parameter. If it runs out of trace-back memory, then blastz splits a long alignment into several shorter ones.</value>
+				</comment>
+			</attributes>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>penalty_opt</name>
+				<prompt>Penalty options</prompt>
+				<group>3</group>
+				<parameters>
+					<parameter type="Integer">
+						<name>gap_open</name>
+						<attributes>
+							<prompt>Gap open penalty (O)</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value) &#38;&#38; ($value ne $vdef))? " O=$value":"" </code>
+							</format>
+							<vdef><value>400</value></vdef>
+							<comment>
+								<value>defaults 400</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>gap_ext</name>
+						<attributes>
+							<prompt>Penalty for gap extention (E)</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value) &#38;&#38; ($value ne $vdef))? " E=$value":""</code>
+							</format>
+							<vdef><value>30</value></vdef>
+							<comment>
+								<value>gap extension penalty defaults 30</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>t_msp</name>
+						<attributes>
+							<prompt>Threshold for MSPs (K)</prompt>
+							<format>
+								<language>perl</language>
+								<code>(($value ne $vdef) &#38;&#38; (defined $value))? " K=$value":""</code>
+							</format>
+							<vdef><value>3000</value></vdef>
+							<comment>
+								<value>threshold for MSPs (score threshold) defaults 3000. For high sensitivity alignment of genomes where the second is in individual reads tr K=2400. Values of K below 2000 rarely make sense.</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer"><name>t_gap</name>
+						<attributes>
+							<prompt>Threshold for gapped alignments (L)</prompt>
+							<format>
+								<language>perl</language>
+								<code>if (defined $value){" L=$value";}
+								      elsif ($t_msp != ""){" L=$t_msp";} 
+								      else {"";}
+								</code>
+							</format>
+							<comment>
+								<value>threshold for scores with gapped alignments. Defaults to K (default = 3000)</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer"><name>mask</name>
+						<attributes>
+							<prompt>Mask threshold for alignment file 1 (M)</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value ne $vdef)) ? " M=$value":""</code>
+							</format>
+							<vdef><value>50</value></vdef>
+							<comment><value>If a bp is hit this many times, sequence is masked. default 50.</value></comment>
+						</attributes>
+					</parameter>		
+					<parameter type="Integer"><name>x_drop</name>
+						<attributes>
+							<prompt>X-drop parameter for gapped extensions (Y)</prompt>
+							<format>
+								<language>perl</language>
+								<code>if ((defined $value) &amp;&amp; ($value ne $vdef)) {" Y=$value";}
+								      elsif (($gap_ext != "") &amp;&amp; ($gap_ext != 30) &amp;&amp; ($gap_ext != 0 &amp;&amp; ($value ne $vdef))){$x = $gap_ext*300; " Y=$x";}
+								      else { "";}</code>
+							</format>
+							<vdef><value>9000</value></vdef>
+							<comment>
+								<value>For comparing sequences closer than Human-Mouse, e.g. primates, restrict the gaps in the alignments to at most 100 bp by using Y=3400, so that the new interspersed repeats elements break the local alignment, rather than smearing it.</value>
+							</comment>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>chaining_opt</name>
+				<prompt>Chaining options</prompt>
+				<group>3</group>
+				<parameters>
+					<parameter type="Excl"><name>chain</name>
+						<attributes>
+							<prompt>Use of Chaining (C)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value == 0)? "":" C=$value"</code>
+							</format>	
+							<vdef><value>0</value></vdef>
+							<vlist><value>0</value><label>No chaining</label><value>1</value><label>Just output chain</label><value>2</value><label>Chain and extend</label><value>3</value><label>Just output HSPs</label>
+							</vlist>
+						</attributes>
+					</parameter>
+					<parameter type="Switch">
+						<name>pre_chain</name>
+						<attributes>
+							<prompt>Pre-chain: use HSP, chain and retry strategy (H)</prompt>
+							<format>
+								<language>perl</language>
+								<code>(defined $value)? " H=1":""  </code>
+							</format>
+							<precond>
+								<language>perl</language>
+								<code>($chain != 0)</code>
+							</precond>
+							<comment>
+								<value> Interpolate between alignments at threshold K=argument.</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>dia_chain</name>
+						<attributes>
+							<prompt>Diagonal chaining penalty (G)</prompt>
+							<format>
+								<language>perl</language>
+								<code> ($value ne $vdef) ? " G=$value" : ""</code>
+							</format>
+							<precond>
+								<language>perl</language>
+								<code>($chain !=0)</code>
+							</precond>
+							<vdef><value>0</value></vdef>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>antid_chain</name>
+						<attributes>
+						        <prompt>Anti-diagonal chaining penalty (R)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " R=$value": ""</code>
+							</format>
+							<precond>
+								<language>perl</language>
+								<code>($chain !=0)</code>
+							</precond>
+							<vdef><value>0</value></vdef>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>selectivity_opt</name>
+				<prompt>Selectivity options</prompt>
+				<group>3</group>
+				<parameters>
+					<parameter type="Integer">
+						<name>entropy</name>
+						<attributes>
+							<prompt>Entropy (P)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " P=$value":""</code>
+							</format>
+							<vdef><value>1</value></vdef>
+							<comment>
+								<value>0 = entropy not used. 1 = entropy used
+&gt;1 = entropy with feedback</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="InFile">
+						<name>matrix</name>
+						<attributes>
+							<prompt>Load the scoring matrix from a separate file (Q)</prompt>
+						</attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>strand</name>
+						<attributes>
+							<prompt>Strand (B)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef)? " B=$value":""</code>
+							</format>
+							<vdef><value>2</value></vdef>
+							<comment>
+								<value>0 = single strand
+&gt;0 = both strands</value>
+							</comment>
+						</attributes>
+					</parameter>
+					<parameter type="Excl">
+						<name>wordset</name>
+						<attributes>
+							<prompt>Wordsize set (T)</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp; ($value ne $vdef)) ? " T=$value":""</code>
+							</format>
+							<vdef><value>1</value></vdef>
+							<vlist><value>0</value><label>Use Wordsize (W)</label><value>1</value><label>use 12 of 19</label><value>2</value><label>Use 11 of 18</label></vlist></attributes>
+					</parameter>
+					<parameter type="Integer">
+						<name>word</name>
+						<attributes>
+							<prompt>Wordsize (W)</prompt>
+							<format>
+								<language>perl</language>
+								<code>((defined $value) &amp;&amp;($value ne $vdef))? " W=$value":""</code>
+							</format>
+							<vdef><value>8</value></vdef>
+						</attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+		<parameter type="Paragraph">
+			<paragraph>
+				<name>report_opt</name>
+				<prompt>Report options</prompt>
+				<group>3</group>
+				<parameters>
+					<parameter type="Excl"><name>census</name>
+						<attributes>
+							<prompt>Census (c)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " c=$value" : ""</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<vlist><value>0</value><label>quiet</label><value>1</value><label>print census</label></vlist></attributes>
+					</parameter>
+					<parameter type="Excl"><name>verbose</name>
+						<attributes>
+							<prompt>Verbose (v)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " v=$value" : ""</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<vlist><value>0</value><label>quiet</label><value>1</value><label>print verbose</label></vlist></attributes>
+					</parameter><parameter type="Excl"><name>report</name>
+						<attributes>
+							<prompt>Report style (r)</prompt>
+							<format>
+								<language>perl</language>
+								<code>($value ne $vdef) ? " r=$value" : ""</code>
+							</format>
+							<vdef><value>0</value></vdef>
+							<vlist><value>0</value><label>old style report</label><value>1</value><label>new style report</label></vlist></attributes>
+					</parameter>
+				</parameters>
+			</paragraph>
+		</parameter>
+	</parameters>
+</pise>

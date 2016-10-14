@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>SEQSBLAST</title>
+    <description>extracting sequences from a Blast output</description>
+  </head>
+
+
+  <command>seqsblast</command>
+
+  <parameters>
+
+    <parameter iscommand="1" ishidden="1" issimple="1" type="String">
+      <name>seqsblast</name>
+      <attributes>
+
+	<format>
+	  <language>seqlab</language>
+	  <code>seqsblast</code>
+	  <language>perl</language>
+	  <code>"seqsblast"</code>
+	</format>
+	<group>0</group>
+
+      </attributes>
+    </parameter>
+
+    <parameter ismandatory="1" issimple="1" type="InFile">
+      <name>infile</name>
+      <attributes>
+	
+	<prompt>Blast output File</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>" $value"</code>
+	</format>
+	<group>10</group>
+	<pipe>
+	  <pipetype>blast_output</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+
+    <parameter issimple="1" type="Integer">
+      <name>howmany</name>
+      <attributes>
+	
+	<prompt>How many sequences? (-n)</prompt>
+	<format>
+	  <language>perl</language>
+	  <code>($value) ? " -n $value" : ""</code>
+	</format>
+	<group>1</group>
+	<ctrls>
+	  <ctrl>
+	    <message>You must either enter a number of sequences or a significance threshold.</message>
+	    <language>perl</language>
+	    <code>! ($signif || $howmany)</code>
+	  </ctrl>
+	</ctrls>
+	<comment>
+	  <value>You must either enter a number of sequences or a significance threshold (see: Other options).</value>
+	</comment>
+      </attributes>
+    </parameter>
+
+    <parameter type="Paragraph">
+      <paragraph>
+	<name>other_options</name>
+	<prompt>Other options</prompt>
+	<group>1</group>
+	<parameters>
+	  
+	  <parameter ismandatory="1" type="Excl">
+	    <name>outformat</name>
+	    <attributes>
+	      
+	      <prompt>Output Sequence Format (readseq formats) (-f)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>" -f $value"</code>
+	      </format>
+	      <vdef><value>8</value></vdef>
+	      <group>1</group>
+	      <vlist>
+		<value>1</value>
+		<label>1. IG/Stanford</label>
+		<value>2</value>
+		<label>2. GenBank/GB</label>
+		<value>3</value>
+		<label>3. NBRF</label>
+		<value>4</value>
+		<label>4. EMBL</label>
+		<value>6</value>
+		<label>6. DNAStrider</label>
+		<value>7</value>
+		<label>7. Fitch</label>
+		<value>8</value>
+		<label>8. Pearson/Fasta</label>
+		<value>9</value>
+		<label>9. Zuker</label>
+		<value>10</value>
+		<label>10. Olsen (in-only)</label>
+		<value>14</value>
+		<label>14. PIR/CODATA</label>
+		<value>16</value>
+		<label>16. ASN.1</label>
+	      </vlist>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Float">
+	    <name>signif</name>
+	    <attributes>
+	      
+	      <prompt>Signifiance threshold (-s)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>(defined $value)? " -s $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter issimple="1" type="Switch">
+	    <name>print_hsp</name>
+	    <attributes>
+	      
+	      <prompt>Get HSP (instead of entry) (-H)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -H" : ""</code>
+	      </format>
+	      <vdef><value>1</value></vdef>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Switch">
+	    <name>extend_hsp</name>
+	    <attributes>
+	      
+	      <prompt>Extend HSP to query (-e)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -e" : ""</code>
+	      </format>
+	      <group>1</group>
+	      
+	    </attributes>
+	  </parameter>
+
+	  <parameter type="Integer">
+	    <name>extend_left</name>
+	    <attributes>
+	      <prompt>Extend to # additional position on the left (-l)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -l $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+	  
+	  <parameter type="Integer">
+	    <name>extend_right</name>
+	    <attributes>
+	      <prompt>Extend to # additional position on the right (-r)</prompt>
+	      <format>
+		<language>perl</language>
+		<code>($value)? " -r $value" : ""</code>
+	      </format>
+	      <group>1</group>
+	    </attributes>
+	  </parameter>
+  
+	</parameters>
+      </paragraph>
+      
+    </parameter>
+    
+    <parameter type="Results">
+      <name>seqsfile</name>
+      <attributes>
+	
+	<filenames>*.seqs</filenames>
+	<pipe>
+	  <pipetype>seqsfile</pipetype>
+	  <language>perl</language>
+	  <code>1</code>
+	</pipe>
+	
+      </attributes>
+    </parameter>
+    
+    
+  </parameters>
+</pise>

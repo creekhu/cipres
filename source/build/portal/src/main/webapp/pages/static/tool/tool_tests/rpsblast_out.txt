@@ -1,0 +1,147 @@
+RPS-BLAST 2.2.17 [Aug-26-2007]
+
+Database: Pfam.v.22.0 
+           9318 sequences; 1,769,994 total letters
+
+Searching..................................................done
+
+Query= 2CYP:A|PDBID|CHAIN|SEQUENCE
+         (294 letters)
+
+
+
+                                                                 Score    E
+Sequences producing significant alignments:                      (bits) Value
+
+gnl|CDD|84554 pfam00141, peroxidase, Peroxidase..                     144   5e-36
+gnl|CDD|69183 pfam05645, RNA_pol_Rpc82, RNA polymerase III subun...    25   5.4  
+gnl|CDD|86459 pfam03853, YjeF_N, YjeF-related protein N-terminus..     25   6.5  
+gnl|CDD|70603 pfam07146, DUF1389, Protein of unknown function (D...    25   6.9  
+gnl|CDD|87277 pfam07470, Glyco_hydro_88, Glycosyl Hydrolase Fami...    25   9.1  
+
+>gnl|CDD|84554 pfam00141, peroxidase, Peroxidase..
+          Length = 203
+
+ Score =  144 bits (366), Expect = 5e-36
+ Identities = 57/227 (25%), Positives = 87/227 (38%), Gaps = 44/227 (19%)
+
+Query: 38  NYIGYGPVLVRLAWHTSGTWDKH----DNTGGSYGGTYRFKKEFNDPSNAGLQNGFKFLE 93
+              G    L+RL +H             + GG+         E + P N  L  GF+ L+
+Sbjct: 11  RDPGPAASLLRLHFHDCFVQGCDASVLLDRGGA------LAPEKDAPPNLNLLRGFEVLD 64
+
+Query: 94  PIHKEF-----PWISSGDLFSLGGVTAVQEMQGPKIPWRCGRVD-TPEDTTPDNGRLPDA 147
+           PI           +S  D+ +L    AV+   GP  P   GR D T        G LP  
+Sbjct: 65  PIKAALEAACPGVVSCADILALAARDAVELAGGPSWPVPLGRRDGTTSSADGAFGNLPPP 124
+
+Query: 148 DKDADYVRTFFQRLNMNDREVVALMGAHALGKTHLKNSGYEGPWGAANNVFTNEFYLNLL 207
+              A+ + + F R  +N  ++VAL GAH +G+ H  ++            F N +++NLL
+Sbjct: 125 FASAEQLLSDFARKGLNAPDLVALSGAHTIGRAHCSST---------PGTFDNSYFVNLL 175
+
+Query: 208 NEDWKLEKNDANNEQWDSKSGYMMLPTDYSLIQDPKYLSIVKEYAND 254
+                               G  +L +D +L  DP+   IV  +A +
+Sbjct: 176 R-------------------GRGLLGSDQALRADPRTRDIVDRFALN 203
+
+
+>gnl|CDD|69183 pfam05645, RNA_pol_Rpc82, RNA polymerase III subunit RPC82. This
+           family consists of several DNA-directed RNA polymerase
+           III polypeptides which are related to the Saccharomyces
+           cerevisiae RPC82 protein. RNA polymerase C (III)
+           promotes the transcription of tRNA and 5S RNA genes. In
+           Saccharomyces cerevisiae, the enzyme is composed of 15
+           subunits, ranging from 160 to about 10 kDa..
+          Length = 273
+
+ Score = 25.3 bits (55), Expect = 5.4
+ Identities = 25/124 (20%), Positives = 48/124 (38%), Gaps = 24/124 (19%)
+
+Query: 182 LKNSGYEGPWGAANNVFTNEFYLNLLNEDWKLEKNDANNEQWDSKSGYMMLPTDYSLIQD 241
+           L  +G        N   T     N      ++ +N  + ++ D + G  +  +   + Q 
+Sbjct: 130 LSMTGLTQSI---NESTTPPVTFN------EITRNLTDLDEGDREGGTNISLSL--INQH 178
+
+Query: 242 PKYLS-----IVKEYANDQDKFFKDFSKAFEKL----LENGI--TFPKDAPSPFIFKTLE 290
+            K L+      +++  +   ++  D+S+  E L     E+ I   F   A    IF+ L 
+Sbjct: 179 LKLLASSPLGFLRKVGDSGGEYIVDYSRLIEVLRSAEYESIIAERFGPRAAR--IFRLLR 236
+
+Query: 291 EQGL 294
+           E+GL
+Sbjct: 237 EKGL 240
+
+
+>gnl|CDD|86459 pfam03853, YjeF_N, YjeF-related protein N-terminus..
+          Length = 169
+
+ Score = 24.9 bits (54), Expect = 6.5
+ Identities = 9/27 (33%), Positives = 11/27 (40%)
+
+Query: 131 VDTPEDTTPDNGRLPDADKDADYVRTF 157
+           VD P     D G + +    AD   TF
+Sbjct: 137 VDVPSGLDVDTGAVLEGAVKADLTVTF 163
+
+
+>gnl|CDD|70603 pfam07146, DUF1389, Protein of unknown function (DUF1389). This
+           family consists of several hypothetical bacterial
+           proteins which seem to be specific to Chlamydia
+           pneumoniae. Members of this family are typically around
+           400 residues in length. The function of this family is
+           unknown..
+          Length = 357
+
+ Score = 25.0 bits (54), Expect = 6.9
+ Identities = 6/22 (27%), Positives = 10/22 (45%)
+
+Query: 206 LLNEDWKLEKNDANNEQWDSKS 227
+           L  + ++  K  A N +WD   
+Sbjct: 229 LTRDVFQHLKYKALNGEWDHSD 250
+
+
+>gnl|CDD|87277 pfam07470, Glyco_hydro_88, Glycosyl Hydrolase Family 88.
+           Unsaturated glucuronyl hydrolase catalyses the
+           hydrolytic release of unsaturated glucuronic acids from
+           oligosaccharides (EC:3.2.1.-) produced by the reactions
+           of polysaccharide lyases..
+          Length = 349
+
+ Score = 24.5 bits (53), Expect = 9.1
+ Identities = 8/56 (14%), Positives = 18/56 (32%)
+
+Query: 200 NEFYLNLLNEDWKLEKNDANNEQWDSKSGYMMLPTDYSLIQDPKYLSIVKEYANDQ 255
+           N +++    +   ++    N   W +      +   Y    D  YL   K + +  
+Sbjct: 6   NGYFMKDNTDGKVIDLPPDNRWDWTNGVFLYGMLLAYEYTGDDAYLDYAKAWVDSF 61
+
+
+  Database: Pfam.v.22.0
+    Posted date:  Nov 8, 2007  6:06 PM
+  Number of letters in database: 1,769,994
+  Number of sequences in database:  9318
+  
+Lambda     K      H
+   0.316    0.136    0.423 
+
+Gapped
+Lambda     K      H
+   0.267   0.0593    0.140 
+
+
+Matrix: BLOSUM62
+Gap Penalties: Existence: 11, Extension: 1
+Number of Sequences: 9318
+Number of Hits to DB: 1,905,449
+Number of extensions: 144178
+Number of successful extensions: 183
+Number of sequences better than 10.0: 1
+Number of HSP's gapped: 178
+Number of HSP's successfully gapped: 13
+Length of query: 294
+Length of database: 1,769,994
+Length adjustment: 83
+Effective length of query: 211
+Effective length of database: 996,600
+Effective search space: 210282600
+Effective search space used: 210282600
+Neighboring words threshold: 11
+Window for multiple hits: 40
+X1: 16 ( 7.3 bits)
+X2: 38 (14.6 bits)
+X3: 64 (24.7 bits)
+S1: 41 (21.5 bits)
+S2: 52 (24.1 bits)

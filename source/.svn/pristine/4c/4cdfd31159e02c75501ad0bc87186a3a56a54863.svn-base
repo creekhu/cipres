@@ -1,0 +1,24 @@
+#this tries bipartitoins with uploaded files
+curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER/validate \
+-F metadata.statusEmail=true \
+-F tool=RAXMLHPC2_TGB \
+-F input.bunchotops_=@comet \
+-F input.constraint_=@comet \
+-F input.infile_=@infile.phy \
+-F input.partition_=@comet \
+-F input.treetop_=@comet \
+-F vparam.MLsearch_CAT_=0 \
+-F vparam.bin_model_=BINCAT \
+-F vparam.bipartitions_=1 \
+-F vparam.datatype_=binary \
+-F vparam.disable_ratehet_=0 \
+-F vparam.disable_seqcheck_=1 \
+-F vparam.estimate_perpartbrlen_=0 \
+-F vparam.mesquite_output_=1 \
+-F vparam.no_bfgs_=1 \
+-F vparam.number_cats_=25 \
+-F vparam.outsuffix_=billy \
+-F vparam.printbrlength_=0 \
+-F vparam.rearrangement_yes_=0 \
+-F vparam.runtime_=0.25 \
+-F vparam.use_apobootstopping_=0 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Download Results Output </title>
+	<style> 
+		h1 {color:black;}
+		pre {color:green;
+		    white-space: pre-wrap;       /* CSS 3 */
+    		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    		white-space: -pre-wrap;      /* Opera 4-6 */
+    		white-space: -o-pre-wrap;    /* Opera 7 */
+    		word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    		}
+	</style>
+</head>
+
+<body>
+	<h1> Download Results Output </h1>
+	<p>		
+		<pre><xmp>
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	LJ
+	User typed LJ
+	Listing your jobs
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C 
+	https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<joblist>
+	    <title>Submitted Jobs</title>
+	    <jobs>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</title>
+	            </selfUri>
+	        </jobstatus>
+	    </jobs>
+	</joblist>
+
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	DR
+	User typed DR
+	Please provide the output file name
+	job_results.txt
+	User typed job_results.txt
+	Please provide the job download URI
+	Eg NGBW-JOB-CLUSTALW-E999C970C4754A4CB3E44CF87EF30DF0/output/4990
+	NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC
+	User typed NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC
+	Please see the file 'job_results.txt' in the current directory.
+
+		</xmp></pre>
+	</p>
+</body>
+</html>

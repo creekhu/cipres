@@ -1,0 +1,32 @@
+########################################
+# Program: helixturnhelix
+# Rundate: Sat Jan 19 2008 22:22:54
+# Commandline: helixturnhelix
+#    -sequence
+#    -sformat1
+#    -auto
+#    -stdout
+# Report_format: motif
+# Report_file: stdout
+########################################
+
+#=======================================
+#
+# Sequence: LACTOSE     from: 1   to: 360
+# HitCount: 1
+#
+# Hits above +2.50 SD (972.73)
+#
+#=======================================
+
+Maximum_score_at at "*"
+
+(1) Score 2160.000 length 22 at residues 4->25
+           *
+ Sequence: VTLYDVAEYAGVSYQTVSRVVN
+           |                    |
+           4                    25
+ Standard_deviations: 6.54
+
+
+#---------------------------------------

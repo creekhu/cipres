@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Delete Job Output </title>
+	<style> 
+		h1 {color:black;}
+		pre {color:green;
+		    white-space: pre-wrap;       /* CSS 3 */
+    		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    		white-space: -pre-wrap;      /* Opera 4-6 */
+    		white-space: -o-pre-wrap;    /* Opera 7 */
+    		word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    		}
+	</style>
+</head>
+
+<body>
+	<h1> Delete Job Output </h1>
+	<p>		
+		<pre><xmp>
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	LJ
+	User typed LJ
+	Listing your jobs
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<joblist>
+	    <title>Submitted Jobs</title>
+	    <jobs>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-E4066BE9B6384B9B888E28E93CCA4C52</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-E4066BE9B6384B9B888E28E93CCA4C52</title>
+	            </selfUri>
+	        </jobstatus>
+	    </jobs>
+	</joblist>
+
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	D
+	User typed D
+	Please provide the name of the job to be deleted
+	eg. 'NGBW-JOB-CLUSTALW-3957CC6EBF5E448095A5666B41EDDF90'
+	NGBW-JOB-CLUSTALW-E4066BE9B6384B9B888E28E93CCA4C52
+	User typed NGBW-JOB-CLUSTALW-E4066BE9B6384B9B888E28E93CCA4C52
+	We will delete the job: NGBW-JOB-CLUSTALW-E4066BE9B6384B9B888E28E93CCA4C52
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C -X DELETE 
+	https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-E4066BE9B6384B9B888E28E93CCA4C52
+
+	The job has been deleted successfully
+
+	What would you like to do? Valid commands are:
+	List Jobs (LJ); Submit Job (S); Delete Job (D); List Results (LR);
+	Download Results (DR); Get Tools (GT); Exit (E)
+	LJ
+	User typed LJ
+	Listing your jobs
+	-u abl012:mypass -H cipres-appkey:PerlDemo-FD0F3FD7A5D04A8FA4C75F7A5F3D8B2C https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012
+	<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<joblist>
+	    <title>Submitted Jobs</title>
+	    <jobs>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-91D8EE92CB5B43738FBCF87168213A3E</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-C0E3810EC9454839A4B0B36869EE604D</title>
+	            </selfUri>
+	        </jobstatus>
+	        <jobstatus>
+	            <selfUri>
+	                <url>https://cipresrest.sdsc.edu/cipresrest/v1/job/abl012/NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</url>
+	                <rel>jobstatus</rel>
+	                <title>NGBW-JOB-CLUSTALW-3E21CC2541354B1689B8CC923710DCFC</title>
+	            </selfUri>
+	        </jobstatus>
+	    </jobs>
+	</joblist>
+
+		</xmp></pre>
+	</p>
+</body>
+</html>

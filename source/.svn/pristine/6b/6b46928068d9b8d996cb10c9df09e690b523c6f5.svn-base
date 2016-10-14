@@ -1,0 +1,9 @@
+# This is an example of the properties file you must put in
+# your home directory.  Fill in the values with your username, password
+# application name and application ID.
+
+URL=https://www.phylo.org/cipresrest/v1
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
+UMBRELLA_APPNAME=
+UMBRELLA_APPID=

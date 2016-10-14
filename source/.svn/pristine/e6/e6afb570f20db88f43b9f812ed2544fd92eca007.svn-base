@@ -1,0 +1,35 @@
+PHYLOBAYES_XSEDE
+infile_ - Primary Input File
+ALL_FILES_ - Results -
+runtime_ - Float - Maximum Hours to Run (click here for help setting this correctly)
+Section: ****************************************************************************
+bryan_script
+*************************************************************************************
+set_seed_ - Integer - Enter seed value
+checkinterval_ - Integer - Number of seconds to wait between checks for convergence.
+burninval_ - Integer - Number of cycles to exclude from convergence checks.
+acceptdiffval_ - Float - Maximum \maxdiff" value to accept.
+acceptsizeval_ - Integer - Minimum Effective Size
+giveupval_ - Integer - Minimum number of cycles before giving up if "maxdiff" is still 1 (Analysis is stuck)
+Section: ****************************************************************************
+bryan_script
+*************************************************************************************
+constant_sitesr_ - Switch - Remove Constant Sites (-dc)
+starting_tree_ - InFile - Specify a Newick Starting Tree (-tree)
+constraint_tree_ - InFile - Specify a fixed topology (in the selected file)(-T)
+saving_freq_ - Integer - Save every (-x)
+stop_at_ - Integer - Number of points after which the chain should stop (-1 = forever)
+save_detmodelconf_ - Switch - Save detailed model configuration for each point(-s)
+Section: ****************************************************************************
+evolutionary_models
+*************************************************************************************
+num_gammacats_ - Integer - Number of Categories for the discrete gamma distribution (-dgam)
+exchange_rates_ - Excl - Exchange Rates
+custom_exch_ - Switch - Provide a custom exchange rate file
+custom_exch_file_ - InFile - Select the Custom Exchangabilities File
+profile_mixture_ - Excl - Profile Mixture
+predefined_profiles_ - Excl - Choose a Predefined Profile
+custom_profile_ - InFile - Select the Custom Exchangabilities File
+mutsel_model_ - Switch - Use Codon Alignments Only
+mtvert_codons_ - Switch - Use Vertebrate Mitochondrial Genetic Code
+

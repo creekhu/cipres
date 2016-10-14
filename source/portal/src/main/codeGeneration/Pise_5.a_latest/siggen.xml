@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd" [
+<!ENTITY emboss_init SYSTEM "XMLDIR/emboss.xml">
+]>
+
+<pise>
+
+<head>
+<title>SIGGEN</title>
+<description>Generates a sparse protein signature (EMBOSS)</description>
+<category>protein:3d structure</category>
+<doclink>http://bioweb.pasteur.fr/docs/EMBOSS/siggen.html</doclink>
+</head>
+
+<command>siggen</command>
+
+<parameters>
+
+&emboss_init;
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>input</name>
+	<prompt>input Section</prompt>
+
+<parameters>
+	<parameter type="InFile" ismandatory="1" issimple="1" ishidden="0">
+	<name>algpath</name>
+	<attributes>
+		<prompt>Location of alignment files for input (-algpath)</prompt>
+		<format>
+			<language>perl</language>
+			<code>" -algpath=$value"</code>
+		</format>
+		<group>1</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>algextn</name>
+	<attributes>
+		<prompt>Extension of alignment files for input (-algextn)</prompt>
+		<vdef>
+			<value>.align</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -algextn=$value"</code>
+		</format>
+		<group>2</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>required</name>
+	<prompt>required Section</prompt>
+
+<parameters>
+	<parameter type="Integer" ismandatory="1" issimple="1" ishidden="0">
+	<name>sparsity</name>
+	<attributes>
+		<prompt>% sparsity of signature (-sparsity)</prompt>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -sparsity=$value"</code>
+		</format>
+		<group>3</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>randomise</name>
+	<attributes>
+		<prompt>Generate a randomised signature (-randomise)</prompt>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -randomise" : ""</code>
+		</format>
+		<group>4</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>advanced</name>
+	<prompt>advanced Section</prompt>
+
+<parameters>
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>seqoption</name>
+	<attributes>
+		<prompt>Select number -- Sequence variability scoring method [select  values] (-seqoption)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>Substitution matrix</label>
+				<value>2</value>
+				<label>Residue class</label>
+				<value>3</value>
+				<label>None</label>
+			</vlist>
+			<separator>,</separator>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>3</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -seqoption=$value"</code>
+		</format>
+		<group>5</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Excl" ismandatory="0" issimple="0" ishidden="0">
+	<name>datafile</name>
+	<attributes>
+		<prompt>Substitution matrix to be used (-datafile)</prompt>
+			<vlist>
+				<value>1</value>
+				<label></label>
+				<value>2</value>
+				<label></label>
+				<value>3</value>
+				<label></label>
+			</vlist>
+			<precond>
+				<language>acd</language>
+				<code>@($(seqoption)==1)</code>
+			</precond>
+		<vdef>
+			<value>./EBLOSUM62</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -datafile=$value" : ""</code>
+		</format>
+		<group>6</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="List" ismandatory="1" issimple="1" ishidden="0">
+	<name>conoption</name>
+	<attributes>
+		<prompt>Select number -- Residue contacts scoring method [select  values] (-conoption)</prompt>
+			<vlist>
+				<value>1</value>
+				<label>Number</label>
+				<value>2</value>
+				<label>Conservation</label>
+				<value>3</value>
+				<label>Number and conservation</label>
+				<value>4</value>
+				<label>None</label>
+			</vlist>
+			<separator>,</separator>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>4</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -conoption=$value"</code>
+		</format>
+		<group>7</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>filtercon</name>
+	<attributes>
+		<prompt>Ignore alignment positions making less than a threshold number of contacts (-filtercon)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -filtercon" : ""</code>
+		</format>
+		<group>8</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Integer" ismandatory="0" issimple="0" ishidden="0">
+	<name>conthresh</name>
+	<attributes>
+		<prompt>Threshold contact number (-conthresh)</prompt>
+			<precond>
+				<language>perl</language>
+				<code>$filtercon</code>
+				<language>acd</language>
+				<code>$filtercon</code>
+			</precond>
+		<vdef>
+			<value>10</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>(defined $value &amp;&amp; $value != $vdef)? " -conthresh=$value" : ""</code>
+		</format>
+		<group>9</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>conpath</name>
+	<attributes>
+		<prompt>Location of contact files for input (-conpath)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>/data/contacts/</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -conpath=$value" : ""</code>
+		</format>
+		<group>10</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>conextn</name>
+	<attributes>
+		<prompt>Extension of contact files (-conextn)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>.con</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -conextn=$value" : ""</code>
+		</format>
+		<group>11</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>cpdbpath</name>
+	<attributes>
+		<prompt>Location of coordinate files for input (embl-like format) (-cpdbpath)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>/data/cpdbscop/</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -cpdbpath=$value" : ""</code>
+		</format>
+		<group>12</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+	<name>cpdbextn</name>
+	<attributes>
+		<prompt>Extension of coordinate files (embl-like format) (-cpdbextn)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>.pxyz</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value &amp;&amp; $value ne $vdef)? " -cpdbextn=$value" : ""</code>
+		</format>
+		<group>13</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+	<name>filterpsim</name>
+	<attributes>
+		<prompt>Ignore alignment postitions with post_similar value of 0 (-filterpsim)</prompt>
+			<precond>
+				<language>acd</language>
+				<code>@(!$(randomise))</code>
+			</precond>
+		<vdef>
+			<value>0</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>($value)? " -filterpsim" : ""</code>
+		</format>
+		<group>14</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+
+<parameter type="Paragraph">
+<paragraph>
+<name>output</name>
+	<prompt>output Section</prompt>
+
+<parameters>
+	<parameter type="Results" ismandatory="1" issimple="1" ishidden="0">
+	<name>sigpath</name>
+	<attributes>
+		<prompt>Location of signature files for output (-sigpath)</prompt>
+		<vdef>
+			<value>./</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -sigpath=$value"</code>
+		</format>
+		<group>15</group>
+	</attributes>
+	</parameter>
+
+	<parameter type="String" ismandatory="1" issimple="1" ishidden="0">
+	<name>sigextn</name>
+	<attributes>
+		<prompt>Extension of signature files for output (-sigextn)</prompt>
+		<vdef>
+			<value>.sig</value>
+		</vdef>
+		<format>
+			<language>perl</language>
+			<code>" -sigextn=$value"</code>
+		</format>
+		<group>16</group>
+	</attributes>
+	</parameter>
+
+	</parameters>
+</paragraph>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>17</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

@@ -1,0 +1,21 @@
+grid.myproxy.server =		myproxy.xsede.org
+grid.myproxy.port =			7512
+grid.myproxy.username = 	${teragrid.username}
+grid.myproxy.password = 	${teragrid.password}
+grid.myproxyfile = 			${grid.myproxyfile}	
+grid.myproxy.lifetime = 	${grid.myproxy.lifetime}
+grid.myproxy.min.lifetime =  ${grid.myproxy.min.lifetime}
+
+# Maximum number of minutes a process worker will wait for a teragrid job to complete.
+grid.job.lifetime.max = 	${grid.job.lifetime.max}
+
+# Number of minutes between times a process worker polls for job status.
+grid.job.poll.interval = 	${grid.job.poll.interval}
+
+# For first 10 times, process worker polls more frequently.  This is the number of min. 
+grid.job.quick.poll.interval = 	${grid.job.quick.poll.interval}
+grid.job.medium.poll.interval = 	${grid.job.medium.poll.interval}
+
+grid.globus.dir = ${grid.globus.dir}
+
+

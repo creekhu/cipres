@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<struts>
+	
+	<constant name="struts.custom.i18n.resources" value="tools"/>
+	
+	<!-- ============================================================= Packages -->
+	<!-- Default NGBW web application package -->
+    <package name="tools" extends="default">
+	</package>
+	
+</struts>

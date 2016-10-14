@@ -1,0 +1,3 @@
+toolId = BLASTN
+nucleotid_db_ = unaligned_rpb2
+runtime_ = 24.0

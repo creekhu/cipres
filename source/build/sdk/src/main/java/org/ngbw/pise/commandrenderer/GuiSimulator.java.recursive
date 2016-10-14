@@ -1,0 +1,706 @@
+package org.ngbw.pise.commandrenderer;
+
+import java.io.IOException;
+import java.io.StringBufferInputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ngbw.sdk.ValidationException;
+import org.ngbw.sdk.api.tool.CommandRenderer;
+import org.ngbw.sdk.common.util.StringUtils;
+import org.ngbw.sdk.common.util.SuperString;
+import org.ngbw.sdk.tool.RenderedCommand;
+import org.ngbw.pise.commandrenderer.PiseMarshaller;
+import org.ngbw.sdk.api.tool.FieldError;
+
+
+/*
+	This is for the rest api to simulate what happens in javascript when you open a tool gui
+	and modify parameters and then submit the form.   
+
+	populate() simulates the way the form is populated with all the visible and infile (and sequence)
+	parameters that are in the pise document.  The value is the vdef, if there is one. Otherwise,
+	if it's a switch w/o a vdef, then 0. Everything else w/o a vdef is set to "".
+
+	merge() simulates what happens when a user modifies a field in the gui.  First of all modification
+	is only allowed if the field is enabled.  Then once, the field is changed, the preconds of all
+	fields are revevaluated to see what needs to be enabled/disabled.  So we do this for each parameter
+	the user sent.  Then, we simulate submission: for each field that is enabled, we eval it's controls.
+	Finally, we look at all the fields and eliminate those that are disabled or the empty string.  We
+	also separate out InFile and Sequence parameters since they must be passed on separately.
+*/
+public class GuiSimulator 
+{
+	private static Log log = LogFactory.getLog(GuiSimulator.class.getName());
+
+	private final Map<URL , PiseMarshaller> cfgMap = new HashMap<URL , PiseMarshaller>();
+	private PiseMarshaller piseMarshaller;
+
+	private PerlEval perlEval = null;
+	List<FieldError> parameterErrors = new ArrayList<FieldError>();
+
+	public static class Element
+	{
+		public String value;
+		public boolean enabled;
+		public String type;
+		public Element(String value, boolean enabled, String type)
+		{
+			this.value = value;
+			this.enabled = enabled;
+			this.type = type;
+		}
+		public Element(Element e)
+		{
+			this.value = e.value;
+			this.enabled = e.enabled;
+			this.type = e.type;
+		}
+	}
+	private Map<String, Element> parameters;
+
+	// For doing deep copy of parameters.
+	private Map<String, Element> copy(Map<String, Element> old)
+	{
+		Map<String, Element> newOne = new HashMap<String, Element>(old.size());
+		for (String s : old.keySet())
+		{
+			newOne.put(s, new Element(old.get(s)));
+		}
+		return newOne;
+	}
+	
+	public GuiSimulator() 
+	{
+		parameters = null;
+		piseMarshaller = null;
+	}
+
+	public Map<String, String> merge(Map<String, String> userInput, Set<String> userInputInfile, URL url) throws Exception
+	{
+		Map<String, String> retval = null;
+		try 
+		{
+			piseMarshaller = initPiseMarshaller(url);
+			perlEval = new PerlEval();
+			perlEval.initialize();
+		
+			String piseToolName = url.getPath().substring( url.getPath().lastIndexOf('/')+1, url.getPath().length() );
+			log.debug("START GuiSimulator " + piseToolName); 
+			retval = mergeWithUserInput(userInput, userInputInfile, url);
+
+			perlEval.terminate();
+			return retval;
+		}
+		finally
+		{
+			if (perlEval != null)
+			{
+				perlEval.cleanup();
+			}
+			log.debug("END GuiSimulator");
+		}
+	}
+
+	private PiseMarshaller initPiseMarshaller(URL url) 
+	{
+		if (url == null)
+			throw new NullPointerException("Tool config file URL is null!");
+		if (cfgMap.containsKey(url) == false)
+		try 
+		{
+			PiseMarshaller pm = new PiseMarshaller(url.openStream());
+			cfgMap.put(url, pm);
+		} catch (IOException e) 
+		{
+			throw new RuntimeException("Cannot initialize PiseMarshaller.", e);
+		}
+		return cfgMap.get(url);
+	}
+	
+	
+	private String evaluatePerlStatement(String perlStatement) throws Exception 
+	{
+		return perlEval.evaluateStatement(perlStatement);
+	}
+
+
+	private boolean processPrecond(String paramName) throws Exception
+	{
+		// paramName argument doesn't have trailing underscore
+		String precond = piseMarshaller.getPrecond(paramName);
+		String vdef = piseMarshaller.getVdef(paramName);
+		if (precond != null) 
+		{
+			//log.debug("EVALUATE Precondition for " + paramName);
+			precond = preparePerlExpression(precond, paramName, vdef);
+			String perlPrecond = evaluatePerlStatement(precond);
+			if (!Boolean.valueOf(perlPrecond))
+			{
+				//log.debug("\tPrecond = false");
+				return false;
+			}
+		}
+		//log.debug("\tPrecond = true");
+		return true;
+	}
+
+
+	private void processControls(String paramName) throws Exception
+	{
+		List<PiseMarshaller.Control> controls = piseMarshaller.getCtrl(paramName);
+		String vdef = piseMarshaller.getVdef(paramName);
+
+		log.debug("EVALUATE Controls for parameter: " + paramName);
+		evaluateControls(controls, paramName, vdef); 
+	}
+
+	/*
+		Replace instances of "defined $value" and "defined $var" within str with 0 or 1. 
+		It's 0 if the parameter = "", 1 otherwise.   We use this mostly to check whether
+		a parameter of type InFile has a value.
+
+		Str is the str to search and replace.  ParamaterValue is the value to use for $value.
+	*/
+	private String replaceDefined(String str, String parameterValue)
+	{
+		StringBuffer buf = new StringBuffer();
+
+		// Find the text "defined", followed by whitespace, followed by "$", followed by one or more
+		// "word" characters (i.e letter, number or underscore).  Capture the "word" into group 1.
+		Pattern p = Pattern.compile("defined\\s\\$(\\w+)");
+
+		Matcher matcher = p.matcher(str);
+		while(matcher.find())
+		{
+			/* 
+				We should either have matched $value or $parameter.
+			*/
+			String var = matcher.group(1);
+			if (var.equals("value"))
+			{
+				matcher.appendReplacement(buf, (parameterValue == "") ? "0" : "1");
+			} else
+			{
+				boolean defined = (getValue(var) != "");
+				matcher.appendReplacement(buf, defined ? "1": "0");
+			}
+		}
+		matcher.appendTail(buf);
+		return buf.toString();
+	}
+
+
+	/*
+		Prepare a perl precond, control or warn expression, to be executed by our perlEval class.
+
+		Replaces $var, $value, defined $var, etc with values from the parameter map, then 
+		builds a perl expression of the form: (expr) ? print "true" : print "false
+		and returns the expression.
+
+		Calling code will pass this expression to "perl -e".  The stdout from running perl -e on the 
+		expression will  produce the text "true" or "false" and we pass the stdout to java's Boolean.valueOf() to get 
+		a boolean evaluation of the precond.
+
+	*/
+	private String preparePerlExpression(String precond, String paramName, String vdef) 
+	{
+		//log.debug("\tOriginal Expression:      " + precond);
+		String paramValue = getValue(paramName);
+		precond = replaceDefined(precond, paramValue);
+
+		//log.debug("Expression after replaceDefined:      " + precond);
+
+		// look for $value, $vdef, $<var>
+		Pattern p = Pattern.compile("\\$\\w*");
+		Matcher m = p.matcher("" + precond);
+		StringBuffer sb = new StringBuffer();
+
+		while (m.find()) 
+		{
+			if (m.group().contains("$value"))
+			{
+				if (paramValue != null)
+				{
+					m.appendReplacement(sb, "\"" + paramValue + "\"");
+				}
+				// If paramValue is null, just leaves "$value" in the perl expression.
+			}
+			else if (m.group().contains("$vdef"))
+			{
+				m.appendReplacement(sb, "\"" + vdef + "\"");
+			}
+			else if (m.group().equalsIgnoreCase("$") == false) 
+			{
+				String myKey = m.group().substring(1);
+				String theValue = getValue(myKey);
+				if (theValue == null)
+				{
+					// leave the undefined variable reference in the expression and let perl handle it.
+					//log.debug("\tINVALID PRECONDITION - uses value of undefined parameter " + myKey + ". CORRECT THE PISE XML!" );
+				} else
+				{
+					m.appendReplacement(sb,  "\"" + theValue  + "\"");
+				}
+			}
+		}
+		m.appendTail(sb);
+		precond = sb.toString();
+
+		precond = precond.replaceAll("false", "0");
+		precond = precond.replaceAll("true", "1");
+
+		// precond returns a True or False depends on the condition being verified
+		precond = "(" + precond + ")? print \"true\" : print \"false\";";
+
+		//log.debug("\tFinal Perl Expression: " + precond);
+		return precond;
+	}
+
+	/*
+		Controls are written to express an error condition when true.  For example to require runtime to be <= 168, you write
+			"$runtime > 168.0"
+		Returns true (ie. all's well) if there are no controls or all controls evaluate to false.
+		For each control that is true, sets an error message in this.parameterErrors.
+	*/
+	private boolean evaluateControls(List<PiseMarshaller.Control> controls, String paramName, String vdef)
+		throws Exception
+	{
+		int errorCount = 0;
+		String perl;
+		String evaluatedPerl; 
+		if (controls == null)
+		{
+			return true;
+		}
+		for (PiseMarshaller.Control c : controls)
+		{
+			perl = preparePerlExpression(c.perl, paramName, vdef);
+			evaluatedPerl= evaluatePerlStatement(perl);
+			log.debug("\tctrl: '" + perl + "' EVAL TO '" + evaluatedPerl + "'");
+			if (Boolean.valueOf(evaluatedPerl) == true)
+			{
+				log.warn("\tERR " + paramName + ":" + c.message);
+				parameterErrors.add(new FieldError(paramName, c.message));
+				errorCount += 1;
+			} 
+		}
+		return errorCount == 0;
+	}
+	
+
+	/*
+		Build a map that has every visible parameter and every InFile or Sequence parameter from the pise document,
+		in the order they appear in the pise document.
+	*/
+	private Map<String, Element> populate(URL url) 
+	{
+		// LinkedHashMap maintains insertion order when iterating over the keys or elements.
+		Map<String, Element> fields  = new LinkedHashMap<String, Element>();
+
+		piseMarshaller = initPiseMarshaller(url);
+		for (String param : piseMarshaller.getExtendedVisibleSet())
+		{
+			String value = null;
+			String type = piseMarshaller.getType(param);
+
+			// Add the parameters of type InFile and Sequence with value = empty string to indicate that the user hasn't set a value (yet).
+			if (type.equals("InFile") || type.equals("Sequence"))
+			{
+				fields.put(param, new Element("", true, piseMarshaller.getType(param)));
+				//log.debug("populate: " + param + "=''");
+				continue;
+			}
+
+			// If there is a default value for the param ...
+			String vdef = piseMarshaller.getVdef(param);
+			if (vdef != null)
+			{
+				// Get rid of leading and trailing quotes if any.
+				vdef = vdef.trim();
+				if (vdef.startsWith("\""))
+				{
+					vdef = vdef.replaceFirst("\"", "");
+				}
+				if (vdef.endsWith("\""))
+				{
+					vdef = vdef.substring(0, vdef.length() - 1);
+				}
+				value = vdef;
+			} else if (type != null && type.equals("Switch"))
+			{
+				value = "0";
+			} else
+			{
+				value = "";
+			}
+			fields.put(param, new Element(value, true, type));
+			//log.debug("populate: " + param + "=" + "'" + value + "'");
+		}
+		return fields;
+	}
+
+
+	/*
+		Loop over all visible and InFile/Sequence parameter in the pise document and
+		eval their preconds mark each one enabled or disabled.
+	*/
+	private Collection enableDisable(Map<String, Element> parameters) throws Exception
+	{
+		ArrayList enabled = new ArrayList<String>();
+
+		for (String param : parameters.keySet())
+		{
+			if (piseMarshaller.getPrecond(param) != null)
+			{
+				Element element = parameters.get(param); 
+				if (processPrecond(param) == true)
+				{
+					element.enabled = true;
+					enabled.add(param);
+				} else
+				{
+					element.enabled = false;
+				}
+			} else
+			{
+				enabled.add(param);
+			}
+		}
+		return enabled;
+	}
+
+
+
+	/*
+	*/
+	private Map<String, String> mergeWithUserInput(Map<String, String> userInput, Set<String> userInputInfile, URL url) throws Exception
+	{
+		// Set this.parameters to all the visible fields (plus Infile and Sequence types) in the pise document
+		this.parameters = populate(url);
+
+		// Check preconds of all elements in this.parameters and enable/disable them accordingly.
+		enableDisable(this.parameters);
+
+		//###
+		// for debugging
+		String tmp = "";
+		for (String param : this.parameters.keySet())
+		{
+			Element element = this.parameters.get(param);
+			if (!element.enabled)
+			{
+				tmp += param + ", ";
+			}
+		}
+		log.debug("Disabled: " + tmp);
+
+		// Merge userInput and userInputFile into a new map -> userSupplied, getting rid of trailing underscores in the names.
+		Map<String, String> userSupplied = new HashMap<String, String>();
+		for (String param: userInput.keySet())
+		{
+			String paramName = param.replaceFirst("_$", "");
+			userSupplied.put(paramName, userInput.get(param));
+		}
+		for (String param : userInputInfile)
+		{
+			String paramName = param.replaceFirst("_$", "");
+			userSupplied.put(paramName, "placeholder");
+		}
+
+		log.debug("***********************************************************************************");
+		log.debug("ADDING USER PARAMETERS");
+		log.debug("***********************************************************************************");
+		/*
+			Change this.parameters with user supplied values, so long as the parameter is enabled.
+
+			Sort usersupplied parameters in the order they appear in the pise xml file, since in general
+			if a parameter a's precond references parameter b, then parameter b will appear earlier in the pise.
+			We also discard any parameters the user sent that aren't in the pise xml.
+		*/
+		Map<String, String> sortedUserSupplied = new HashMap<String, String>();
+		for (String param : this.parameters.keySet())
+		{
+			if (userSupplied.keySet().contains(param) && this.parameters.get(param) != null)
+			{
+				sortedUserSupplied.put(param, userSupplied.get(param));
+			}
+		}
+		// Report error if user sent any parameters that aren't in the pise xml
+		for (String param : userSupplied.keySet())
+		{
+			if (sortedUserSupplied.get(param) == null)
+			{
+				log.warn("\tERR " + param + " not permitted for this tool");
+				parameterErrors.add(new FieldError(param, "not a permitted parameter for this tool."));
+			}
+		}
+		userSupplied = sortedUserSupplied;
+
+		// Set any user supplied params that don't have preconds and remove them from userSupplied so
+		// that setParameters doesn't have to deal with them.
+		String us = "";
+		String withPreconds = "";
+		for(Iterator<Map.Entry<String, String>> it = userSupplied.entrySet().iterator(); it.hasNext(); ) 
+		{
+			Map.Entry<String, String> entry = it.next();
+			String paramName = entry.getKey();
+			us += paramName + ", ";
+
+			if (piseMarshaller.getPrecond(paramName) == null)
+			{
+				this.parameters.get(paramName).value = userSupplied.get(paramName);
+				// remove the param from userSupplied.
+				it.remove();
+			} else
+			{
+				withPreconds += paramName + ", ";
+			}
+		}
+		log.debug("User supplied: " + us);
+		log.debug("With Preconds: " + withPreconds);
+
+		/*
+			For debugging, see how many params with preconds the tool has.  If it has N params
+			with preconds and user supplies all N, but the values violate a precond, then we'll
+			try N factorial different orderings.  If we see big numbers here for a tool we 
+			should try to rewrite the pise with fewer preconds?  
+			
+			Or is there a way to figure it out without a full search?
+			For example if we have user supplied values like this:
+				section1_enable = 0 or not supplied (no precond for section1_enable)
+					a = 1 (precond = section1_enable)
+					b = 2 (precond = section1_enable)
+			in other words if we have params in userSupplied that depend on another param (section1_enable) that
+			doesn't have any preconds, then we can quit right there because nothing will change the value of 
+			section1_enable.  Maybe we can tag the parameters whose preconds only depend on params that have
+			no preconds.
+
+		*/
+		int count = 0;
+		for (String p : this.parameters.keySet())
+		{
+			if (piseMarshaller.getPrecond(p) != null)
+			{
+				count++;
+			}
+		}
+		log.debug(":TL: this tool has " + count + " parameters with preconds");
+		log.debug(":TL: SET PARAMETERS OPERATING ON " + userSupplied.size() + " parameters");
+
+		/*
+			New recursive method that tries various orders of setting userSupplied params until one works 
+			(i.e. all meet preconds) or all have been tried.  TODO: need to set a maximum number of parameters 
+			that user can send.  When userSupplied has precond that can't be met we'll try all n factorial 
+			orderings(where n is the number of user supplied params).
+
+			One problem: we may set a user supplied parameter and then later disable it and we won't
+			detect that and backtrack;  however, with a valid grouping of parameters I don't think
+			one will ever disable another.  It's just that we may not report errors for submissions
+			where one does disable another.
+
+		*/
+		this.parameters = setParameters(new HashMap<String, String>(userSupplied), copy(this.parameters), 0);
+		log.debug(":TL: FINAL RESULT");
+		logit(0, userSupplied, this.parameters);
+
+		// TODO: we can't go on if we have this.parameters = null.
+		if (this.parameters == null)
+		{
+			log.warn("\tERR " + "Preconditions can't be met");
+			if (parameterErrors.size() > 0)
+			{
+				throw new ValidationException(parameterErrors);
+			}
+			throw new ValidationException("preconditions could not be met");
+		}
+
+
+		log.debug("***********************************************************************************");
+		log.debug("EVAL CONTROLS of all enabled params");
+		log.debug("***********************************************************************************");
+
+		// Now evaluate controls of all parameters that are enabled.
+		for (String param : this.parameters.keySet())
+		{
+			Element element = this.parameters.get(param);
+			if (element.enabled)
+			{
+				// Puts errors, if any, in parameterErrors.
+				processControls(param);
+			}
+		}
+		validateRequiredParameters();
+
+		if (parameterErrors.size() > 0)
+		{
+			throw new ValidationException(parameterErrors);
+		}
+
+		/*
+			We don't have any errors, so build the parameter map to return by removing those that are disabled and those 
+			that are empty as well as those of type InFile. Since we aren't raising any errors caller knows that all the 
+			InFile params he passed in to use are valid.  (Sequence is equivalent to InFile).
+		*/
+		Map<String, String> visibleParams = new HashMap<String, String>();
+		for (String param : this.parameters.keySet())
+		{
+			Element element = this.parameters.get(param);
+			if (element.enabled)
+			{
+				if (element.value != null && !element.value.trim().equals("") && !element.type.equals("InFile") && !element.type.equals("Sequence"))
+				{
+					visibleParams.put(param + "_", element.value);
+				}
+			}
+		}
+		return visibleParams;
+	}
+
+
+	// Todo: store errors for params with preconds that aren't met.
+	//###
+	Map<String, Element> setParameters(Map<String, String> userSupplied, Map<String, Element> result, int depth) throws Exception
+	{
+		depth++;
+		logit(depth, userSupplied, result);
+		if (userSupplied.size() == 0)
+		{
+			// success
+			log.debug(depth + ":TL: userSupplied have all been set");
+			return result;
+		}
+
+		// Let enabled be the subset of userSupplied params that are currently enabled.
+		Collection <String> enabled = enableDisable(result);
+		enabled.retainAll(userSupplied.keySet());
+
+		if (enabled.size() == 0)
+		{
+			// reached a dead-end, we have user-supplied params that cannot be set because they aren't enabled.
+			// just report error on one of them.
+			log.debug(depth + ":TL: userSupplied remaining but nothing is enabled in result set.  DEAD END");
+			String p = (String)(userSupplied.keySet().toArray()[0]);
+			parameterErrors.add(new FieldError(p, p + " precondition isn't met."));
+			log.debug("Precond ERROR: " + p);
+			return null;
+		}
+
+		log.debug(depth + ":TL: Looping over enabled user parameters, depth first search");
+		for (String e : enabled)
+		{
+			Map<String, Element> r = copy(result);
+			log.debug(depth + ":TL: Setting " + e);
+			r.get(e).value = userSupplied.get(e);
+
+			Map<String, String> u = new HashMap<String, String>(userSupplied);
+			u.remove(e);
+
+			/*
+				recursive call, will keep going deeper, setting the next enabled userParam until
+				we've set them all and returned the map (r) or we hit a dead end.  If we hit
+				a dead end, we back up a level, do the next iteration and thereby try setting the params in 
+				a different order.
+			*/
+			Map<String, Element> newR= setParameters(u, r, depth);
+			if (newR != null)
+			{
+				return newR;
+			}
+			log.debug(depth + ":TL: hit a DEAD END, try setting different userParam.");
+		}
+		log.debug(depth + ":TL: tried all orders at this depth and all failed, returning null"); 
+		return null;
+	}
+
+
+	// debugging method
+	private void logit(int depth, Map<String, String> u, Map<String, Element> r)
+	{
+
+		String tmp = "";
+		if (u != null)
+		{
+			for (String s : u.keySet())
+			{
+				tmp += (s + "=" + u.get(s) + ", ");
+				
+			}
+			log.debug(depth + " :TL(u): " + tmp);
+		} else
+		{
+			log.debug(depth + " :TL(u): " + null);
+		}
+		tmp = "";
+
+		if (r != null)
+		{
+			for (String s : r.keySet())
+			{
+				tmp += (s + "=" + r.get(s).value + "(" + r.get(s).enabled + "), ");
+			}
+			log.debug(depth + " :TL(r): " + tmp);
+		} else
+		{
+			log.debug(depth + " :TL(r): " + null);
+		}
+	}
+
+
+
+	private String getValue(String param)
+	{
+		Element element = this.parameters.get(param);
+		if (element == null)
+		{
+			log.debug(param + " is null");
+			return null;
+		} 
+		// When one parameter has an expression that references the value of a disabled parameter
+		// return "0" if it's a switch or "" for anything else.  Similar to what the gui does in
+		// code generator pise2JSP.ftl getValue() function.
+		if (!element.enabled) 
+		{
+			if (element.type.equals("Switch"))
+			{
+				//log.debug("\tGETVALUE of disabled parameter: " + param + " returns '0'");
+				return "0";
+			} else
+			{
+				//log.debug("\tGETVALUE of disabled parameter: " + param + " returns ''");
+				return "";
+			}
+		}
+		return element.value;
+	}
+
+	/*
+		If no precond or precond is true, and ismandatory=true, then make sure we've got a value for it.
+		If not, add an error to parameterErrors.
+	*/
+	private void validateRequiredParameters() throws Exception
+	{
+		for (String param : piseMarshaller.getRequiredSet())
+		{
+			if (processPrecond(param) && (getValue(param) == null))
+			{
+				parameterErrors.add(new FieldError(param, param + " is required."));
+				log.debug(param + " is required.");
+			}
+		}
+	}
+}

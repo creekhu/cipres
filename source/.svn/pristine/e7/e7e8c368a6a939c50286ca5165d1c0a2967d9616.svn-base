@@ -1,0 +1,445 @@
+/*
+ * SSHLongProcessWorker.java
+ */
+package org.ngbw.sdk.tool;
+
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.Date;
+import java.io.FileNotFoundException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ngbw.sdk.api.tool.FileHandler;
+import org.ngbw.sdk.common.util.SSHProcessRunner;
+import org.ngbw.sdk.database.RunningTask;
+
+public class SSHLongProcessWorker extends BaseProcessWorker 
+{
+	private static final String STDOUT = "stdout.txt";
+	private static final String STDERR = "stderr.txt";
+	private static final String HOST = "host";
+	private static final String SUBMIT = "submit";
+	private static final String POLL = "poll";
+	private static final String CHECK = "check";
+	private static final String PROJECT = "project";
+
+	private static final Log m_log = LogFactory.getLog(SSHLongProcessWorker.class.getName());
+
+	private String m_hostName;
+	private String m_submit;
+	private String m_poll;
+	private String m_check;
+	private String m_jobID;
+
+	// process worker kills itself after 7 days (specified in milliseconds)
+	private long startTime, endTime;
+	private static final long LIFETIME_MIN = 7 * 24 * 60;
+	private static final long LIFETIME = LIFETIME_MIN * 60 * 1000;
+
+	// Our poll interval, 30 seconds,  specified in milliseconds.
+	private static final int POLL_INTERVAL = 30 + 1000;
+
+	/**
+		These are the properties we expect to find in tool registry entry for this resource.
+		Tool.processTask() calls our addProperties method to take the properties from
+		the registry and add them to our commandline as system properties.
+	*/
+	public static void addProperties(Map<String, String> params, List<String> props)
+	{
+		String value = params.get("host");
+		if (value != null)
+			props.add("-D" + HOST + "=" + value);
+		value = params.get(SUBMIT);
+		if (value != null)
+			props.add("-D" + SUBMIT + "=" + value);
+		value = params.get(CHECK);
+		if (value != null)
+			props.add("-D" + CHECK + "=" + value);
+		value = params.get(POLL);
+		if (value != null)
+			props.add("-D" + POLL + "=" + value);
+		value = params.get(PROJECT);
+		if (value != null)
+			props.add("-D" + PROJECT + "=" + value);
+	}
+
+	public boolean useRunningTaskTable() { return true; }
+
+	public static void main(String args[])
+	{
+		try 
+		{
+			(new SSHLongProcessWorker()).execute();
+		}
+		catch (Throwable thrown) 
+		{
+			m_log.error("", thrown);
+
+			System.exit(-1);
+		}
+	}
+
+	private void setMyMembers(Properties p) throws PropertyException
+	{
+		// host name
+		m_hostName = p.getProperty(HOST);
+		if (m_hostName == null)
+			throw new PropertyException("required property " + HOST + " is null");
+
+		m_submit = p.getProperty(SUBMIT);
+		if (m_submit == null)
+			throw new PropertyException("required property " + SUBMIT + " is null");
+		m_check = p.getProperty(CHECK);
+		if (m_check == null)
+			throw new PropertyException("required property " + CHECK + " is null");
+		m_poll = p.getProperty(POLL);
+		if (m_poll == null)
+			throw new PropertyException("required property " + POLL + " is null");
+
+		String tmp;
+		tmp = p.getProperty(PROJECT);
+		if (tmp == null)
+		{
+			throw new PropertyException("Required property " + PROJECT + " is null.");
+		}
+		//m_project = tmp;
+
+		startTime = (new Date()).getTime();
+		endTime = startTime + (LIFETIME);
+				        
+	}
+
+	// Constructors
+
+	public SSHLongProcessWorker(long running_task_id) throws PropertyException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, Exception
+	{
+		
+		super(running_task_id);
+		Properties p = new Properties();
+		p.setProperty(HOST, m_rt.parameters().get(HOST));
+		p.setProperty(SUBMIT, m_rt.parameters().get(SUBMIT));
+		p.setProperty(CHECK, m_rt.parameters().get(CHECK));
+		p.setProperty(POLL, m_rt.parameters().get(POLL));
+		p.setProperty(PROJECT, m_rt.parameters().get(PROJECT));
+		setMyMembers(p);
+	}
+
+
+	public SSHLongProcessWorker() throws PropertyException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, Exception
+	{
+		super();
+		setMyMembers(System.getProperties());
+	}
+
+	private String getFirstMatch(String p, String input)
+	{
+		Pattern pattern = Pattern.compile(p, Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(input);
+		while (matcher.find())
+		{
+			return matcher.group(1);
+		}
+		return null;
+	}
+
+	public String submitImpl() throws Exception
+	{
+		try
+		{
+			String jobId = submitJob();
+			m_rt = new RunningTask(m_running_task_id);
+			m_rt.setRemoteJobId(jobId);
+			m_rt.save();
+
+			if (RunningTask.changeStatus(m_running_task_id, RunningTask.STATUS_SUBMITTED) == false)
+			{
+				m_log.debug("RunningTask changeStatus denied for " + m_running_task_id + ".");
+			}
+			return jobId;
+		}
+		catch (Exception e)
+		{
+			m_log.debug("", e);
+			FileHandler handler = getFileHandler();
+			storeTaskFailure("Error submitting job", e, handler);
+			throw e;
+		}
+	}
+
+	public void getResultsImpl() throws Exception
+	{
+		FileHandler handler = null;
+		try
+		{
+			handler = getFileHandler();
+			String stderr = readStdErr(handler);
+			String stdout = readStdOut(handler);
+			m_log.debug("Calling storeTaskResults");
+			storeTaskResults(stdout, stderr, 0, "", handler);
+		}
+		catch(Exception e)
+		{
+			storeTaskFailure("Error getting results", e, handler);
+			throw e;
+		}
+	}
+
+	/**
+		Receives a list of jobs that were submitted on this host, finds out which ones
+		are done, and returns that list.
+	*/
+	public List<RunningTask> checkJobsOnResource(List<RunningTask> running_tasks) throws Exception
+	{
+		SSHProcessRunner runner = null;
+		PrintStream stdin = null;
+		int exitStatus;
+		try
+		{
+			runner = new SSHProcessRunner(m_hostName);
+			String finalCommand  = (m_rc == null) ? "" : ("source " + m_rc + "; ");
+			finalCommand += m_check;
+
+			m_log.debug("Running remote command:" + finalCommand);
+			runner.start(finalCommand);
+			stdin = new PrintStream(runner.getStdin());
+
+			m_log.debug("Writing to remote command's stdin:");
+			for (RunningTask rt : running_tasks)
+			{
+				// send list of running task id's to remote script
+				if (rt.getRemoteJobId() != null)
+				{
+					stdin.printf("%s\n", rt.getRemoteJobId());
+					m_log.debug(rt.getRemoteJobId());
+				} 
+			}
+			stdin.flush();
+			stdin.close();
+			stdin = null;
+			m_log.debug("Waiting for remote to finish.");
+			exitStatus = runner.waitForExit();
+			if (exitStatus == 0)
+			{
+				m_log.debug("Remote returned exit status 0");
+				return filterRunningTaskList(running_tasks, runner.getStdOut());
+			} else
+			{
+				m_log.debug("Returned:" + exitStatus + ". Stdout=" + runner.getStdOut() + " Stderr=" +
+					runner.getStdErr());
+			}
+		} 
+		finally 
+		{
+			if (stdin != null)
+			{
+				try { stdin.close(); } catch (Exception e) {;}
+			}
+			if (runner != null)
+			{
+				runner.close();
+			}
+		}
+		m_log.debug("Returning empty list of running tasks.");
+		return new ArrayList<RunningTask>();
+	}
+
+	// Return the subset of running_tasks whose ids are in remote_job_ids, where remote_job_ids
+	// is a newline separated sequence of ids of finished jobs.
+	private List<RunningTask> filterRunningTaskList(List<RunningTask> running_tasks, String remote_job_ids)
+	{
+		m_log.debug("Got this list of finished jobs (remote job ids): " + remote_job_ids);
+		String[] array = remote_job_ids.split("\n");
+		List<String> job_ids = java.util.Arrays.asList(array);
+		for (Iterator<RunningTask> it = running_tasks.iterator(); it.hasNext(); )
+		{
+			RunningTask rt = it.next();
+			if (!job_ids.contains(rt.getRemoteJobId()))
+			{
+				it.remove();
+			}
+		}
+		m_log.debug("Returning finished task list of size: " + running_tasks.size());
+		return running_tasks;
+	}
+
+	
+	/**
+		Returns jobID.
+		Can throw an exception if ssh error, submit command times out, or submit returns
+		non-zero exit status or stdout of submit command doesn't contain job id.
+	*/
+	private String submitJob() throws Exception
+	{
+		String jobID;
+		SSHProcessRunner runner = new SSHProcessRunner(m_hostName);
+
+		String finalCommand  = (m_rc == null) ? "" : ("source " + m_rc + "; ");
+		finalCommand += 	"export WB_JOBID=" + m_jobHandle + "; "  + "cd " + m_workingDir + "; " ;
+		finalCommand += m_submit + " ";
+		finalCommand += m_url + " ";
+		finalCommand += " '" + m_commandLine + " '";
+
+		m_log.debug("Running ssh command: " + finalCommand);
+		int exitStatus = runner.run(finalCommand);
+		if (exitStatus == 0)
+		{
+			m_log.debug("Returned:"+  runner.getStdOut());
+			// should contain "jobid=<jobid>"
+			jobID = getFirstMatch("jobid=(\\S+).*$", runner.getStdOut());
+			if (jobID != null)
+			{
+				return jobID;
+			} 
+			m_log.debug("Qsub returned exit status 0, but jobid can't be parsed from stdout.");
+		} 
+		m_log.debug("Returned:" + exitStatus + ". Stdout=" + runner.getStdOut() + " Stderr=" +
+			runner.getStdErr());
+		if (exitStatus == 2)
+		{
+			throw new Exception("Too many tasks are waiting to run.  You can clone your task and try running it again later."); 
+		}
+		throw new Exception("Error submitting job.  Qsub said:" + runner.getStdOut() + ". " + runner.getStdErr());
+	}
+
+	/**
+		Returns true when job is finished, false otherwise.
+	*/
+	private boolean  probe() throws Exception
+	{
+		SSHProcessRunner runner = new SSHProcessRunner(m_hostName);
+
+		String finalCommand  = (m_rc == null) ? "" : ("source " + m_rc + "; ");
+		finalCommand += 	"export WB_JOBID=" + m_jobHandle + "; "  + "cd " + m_workingDir + "; " ;
+		finalCommand += m_poll + " " + m_jobID; 
+
+		m_log.debug("Running ssh command: " + finalCommand);
+		int exitStatus = runner.run(finalCommand);
+		if (exitStatus == 0)
+		{
+			return true;
+		}
+		m_log.debug("Returned status:" + runner.getStdOut());
+		return false;
+	}
+
+	/* This is called by BaseProcessWorker's execute() method */
+	protected void executeImpl()  throws Exception
+	{
+		FileHandler handler = getFileHandler();
+		try
+		{
+			m_jobID = submitJob();
+			m_log.info("Submitted job with remote Job ID=" + m_jobID);
+		}
+		catch(Throwable t)
+		{
+			// Get here if there's an ssh error, timeout waiting for submit to complete
+			// or submit script returns non-zero value.
+			m_log.error("Job submission failed", t);
+			storeTaskFailure(null, t, handler);
+			return;
+		}
+		while (true)        
+		{            
+			try            
+			{                
+				boolean status = probe();                
+				if (status == true)
+				{                    
+					m_log.info("Job finished.");
+					break;
+				}
+				// Process Worker kills itself after waiting longer than any job should take.
+				Date timeNow = new Date();
+				if (timeNow.after(new Date(endTime)))
+				{
+					throw new Exception("Internal Error. Process worker waited " + LIFETIME_MIN + " minutes.");
+				}
+			}
+			catch (Exception e)
+			{
+				m_log.error("Caught unexpected exception polling job status.", e);
+				storeTaskFailure("Error polling job status", e, handler);
+				return;
+			}
+			// Todo: make interval longer when we have curl working.  For now sleep 30 seconds.
+			Thread.sleep(POLL_INTERVAL);
+		}
+
+		try
+		{
+			String stderr = readStdErr(handler);
+			String stdout = readStdOut(handler);
+			m_log.debug("Calling storeTaskResults");
+			storeTaskResults(stdout, stderr, 0, "If present, the file done.txt shows the exit status.",
+				handler);
+		}
+		catch(Exception e)
+		{
+			m_log.error("Caught exception reading stdout/stderr, or storing task resutls.", e);
+			storeTaskFailure("Error reading stdout, stderr or storing task results", e, handler);
+		}
+	}
+
+	protected FileHandler getFileHandler() throws Exception
+	{
+		if (m_local)
+		{
+			return new LocalFileHandler();
+		}
+		return new SFTPFileHandler(m_hostName);
+	}
+
+	private String readStdErr(FileHandler handler)
+	{
+		return readFile(m_workingDir + "/" + STDERR, handler);
+	}
+
+	private String readStdOut(FileHandler handler)
+	{
+		return readFile(m_workingDir + "/" + STDOUT, handler);
+	}
+
+
+	private String readFile(String filename, FileHandler handler)  
+	{
+		String result;
+		int tries = 0;
+		try
+		{
+			while (true)
+			{
+				try
+				{
+					tries++;
+					byte[] b = handler.readFile(filename);
+					result = new String(b);
+					return result;
+				}
+				catch (FileNotFoundException e)
+				{
+					if (tries > 1)
+					{
+						throw e;
+					}
+					Thread.sleep(1000 * 10);
+					m_log.debug("Retrying read of " + filename + ".");
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			m_log.debug("Caught Exception", e);
+			return "";
+		}
+	}
+}

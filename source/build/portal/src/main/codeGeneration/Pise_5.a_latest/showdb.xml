@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+<head>
+<title>SHOWDB</title>
+<description>Displays information on the currently available databases (EMBOSS)</description>
+<category>database information</category>
+<doclink>http://www.sanger.ac.uk/Software/EMBOSS/Apps/showdb.shtml</doclink>
+</head>
+
+<command>showdb</command>
+
+<parameters>
+
+<parameter type="String" ismandatory="0" issimple="0" ishidden="0">
+<name>database</name>
+<attributes>
+	<prompt>Name of a single database to give information on (-database)</prompt>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -database=$value" : ""</code>
+	</format>
+	<group>0</group>
+</attributes>
+</parameter>
+
+<parameter type="OutFile" ismandatory="0" issimple="0" ishidden="0">
+<name>outfile</name>
+<attributes>
+	<prompt>Output database details to a file (-outfile)</prompt>
+	<vdef>
+		<value>stdout</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value &amp;&amp; $value ne $vdef)? " -outfile=$value" : ""</code>
+	</format>
+	<group>1</group>
+	<comment>
+		<value>If you enter the name of a file here then this programwill write the database details into that file.</value>
+	</comment>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>html</name>
+<attributes>
+	<prompt>Format output as an HTML table (-html)</prompt>
+	<vdef>
+		<value>0</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? " -html" : ""</code>
+	</format>
+	<group>2</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>protein</name>
+<attributes>
+	<prompt>Display protein databases (-protein)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -noprotein"</code>
+	</format>
+	<group>3</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>nucleic</name>
+<attributes>
+	<prompt>Display nucleic acid databases (-nucleic)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -nonucleic"</code>
+	</format>
+	<group>4</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>heading</name>
+<attributes>
+	<prompt>Display column headings (-heading)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -noheading"</code>
+	</format>
+	<group>5</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>type</name>
+<attributes>
+	<prompt>Display 'type' column (-type)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -notype"</code>
+	</format>
+	<group>6</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>id</name>
+<attributes>
+	<prompt>Display 'id' column (-id)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -noid"</code>
+	</format>
+	<group>7</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>query</name>
+<attributes>
+	<prompt>Display 'qry' column (-query)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -noquery"</code>
+	</format>
+	<group>8</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>all</name>
+<attributes>
+	<prompt>Display 'all' column (-all)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -noall"</code>
+	</format>
+	<group>9</group>
+</attributes>
+</parameter>
+
+<parameter type="Switch" ismandatory="0" issimple="0" ishidden="0">
+<name>comment</name>
+<attributes>
+	<prompt>Display 'comment' column (-comment)</prompt>
+	<vdef>
+		<value>1</value>
+	</vdef>
+	<format>
+		<language>perl</language>
+		<code>($value)? "" : " -nocomment"</code>
+	</format>
+	<group>10</group>
+</attributes>
+</parameter>
+
+<parameter type="String" ishidden="1">
+<name>auto</name>
+<attributes>
+	<format>
+		<language>perl</language>
+		<code>" -auto -stdout"</code>
+	</format>
+	<group>11</group>
+</attributes>
+</parameter>
+
+</parameters>
+</pise>

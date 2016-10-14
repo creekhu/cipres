@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE pise SYSTEM "PARSER/pise.dtd">
+
+<pise>
+
+  <head>
+    <title>screen2h</title>
+    <description>cribles double-hybride</description>
+    <authors>F. Ricard</authors>
+  </head>
+
+  <command>screen2h</command>
+
+<parameters>
+
+<parameter iscommand="1" ishidden="1" issimple="1" type="String">
+<name>screen2h</name>
+<attributes>
+
+	<format>
+		<language>seqlab</language>
+		<code>screen2h</code>
+		<language>perl</language>
+		<code>"screen2h"</code>
+	</format>
+	<group>0</group>
+
+</attributes>
+</parameter>
+
+<parameter ishidden="1" type="String">
+<name>params</name>
+<attributes>
+
+	<format>
+		<language>perl</language>
+		<code>" &lt; params"</code>
+	</format>
+	<group>100</group>
+
+</attributes>
+</parameter>
+
+<parameter type="Results">
+<name>resultfiles</name>
+<attributes>
+
+	<filenames>*.txt params</filenames>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>dogel_ouput</name>
+<attributes>
+
+	<prompt>Dogel output file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>1</group>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="InFile">
+<name>size_file</name>
+<attributes>
+
+	<prompt>Clone sizes file</prompt>
+	<format>
+		<language>perl</language>
+		<code>" $value"</code>
+	</format>
+	<group>2</group>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>pathway</name>
+<attributes>
+
+	<prompt>Pathway</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>1</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>organism</name>
+<attributes>
+
+	<prompt>Organism</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>S.c</value></vdef>
+	<group>2</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>lab</name>
+<attributes>
+
+	<prompt>Labo</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>GIM</value></vdef>
+	<group>3</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>screen</name>
+<attributes>
+
+	<prompt>screen</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>4</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>bait_gene_name</name>
+<attributes>
+
+	<prompt>bait_gene_name</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>5</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>gal4_lexA</name>
+<attributes>
+
+	<prompt>gal4_lexA</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>gal4</value></vdef>
+	<group>6</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>round_of</name>
+<attributes>
+
+	<prompt>round_of</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>7</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>year</name>
+<attributes>
+
+	<prompt>Year</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>1999</value></vdef>
+	<group>8</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>feature</name>
+<attributes>
+
+	<prompt>Feature</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>9</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>bait</name>
+<attributes>
+
+	<prompt>Bait</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>10</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>strain</name>
+<attributes>
+
+	<prompt>Strain</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>CG1945</value></vdef>
+	<group>11</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>library</name>
+<attributes>
+
+	<prompt>Library</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>FRYL1</value></vdef>
+	<group>12</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>plasmid</name>
+<attributes>
+
+	<prompt>Plasmid</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<vdef><value>pAS2DD</value></vdef>
+	<group>13</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>toxicity</name>
+<attributes>
+
+	<prompt>Toxicity</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>14</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>diploid</name>
+<attributes>
+
+	<prompt>Diploids(million) </prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>15</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>his</name>
+<attributes>
+
+	<prompt>His</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>16</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter ismandatory="1" issimple="1" type="String">
+<name>lacz</name>
+<attributes>
+
+	<prompt>LacZ</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>17</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+<parameter issimple="1" type="String">
+<name>comments</name>
+<attributes>
+
+	<prompt>Comments</prompt>
+	<format>
+		<language>perl</language>
+		<code>"$value\\n"</code>
+	</format>
+	<group>18</group>
+	<paramfile>params</paramfile>
+
+</attributes>
+</parameter>
+
+
+</parameters>
+</pise>

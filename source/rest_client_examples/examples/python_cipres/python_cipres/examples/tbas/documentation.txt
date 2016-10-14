@@ -1,0 +1,4 @@
+This test was created to test a specific use case for node_exlcusive v not node_exclusive
+The thing is, we have seen great variability in run times among different runs, and this
+test is meant to show or not show that the exclusivity of the node is a factor
+
