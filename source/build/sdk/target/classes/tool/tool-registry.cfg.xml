@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ToolRegistry>
 	<ToolResources>
+        <!--
+        <ToolResource id="Comet" type="REMOTE_SHELL"
+            class="org.ngbw.sdk.tool.DefaultToolResource"
+            filehandler="org.ngbw.sdk.tool.LocalFileHandler"
+            processworker="org.ngbw.sdk.tool.SSHProcessWorker">
+            <Parameters>
+                <Parameter key="host" value="localhost" />
+                <Parameter key="workspace" value="/Users/creekthu/Desktop/workspace"/>
+            </Parameters>
+        </ToolResource>
+        -->
 		<!--
 		<ToolResource id="xsede_host" type="GLOBUS" 
 			class="org.ngbw.sdk.tool.DefaultToolResource"
@@ -40,18 +51,7 @@
 			</Parameters>
 		</ToolResource>
 		-->
-		<!--
-		<ToolResource id="localhost" type="REMOTE_SHELL" 
-			class="org.ngbw.sdk.tool.DefaultToolResource"
-			filehandler="org.ngbw.sdk.tool.SFTPFileHandler" 
-			processworker="org.ngbw.sdk.tool.SSHProcessWorker">
-			<Parameters>
-				<Parameter key="host" value="localhost" />
-				<Parameter key="workspace" value="/Users/creekthu/Desktop/workspace"/>
-				<Parameter key="fileHost" value="localhost"	/>
-			</Parameters>
-		</ToolResource>
-		-->
+        <!--
 		<ToolResource id="LOCALHOST" type="LOCAL_SHELL"
 			class="org.ngbw.sdk.tool.DefaultToolResource"
 			filehandler="org.ngbw.sdk.tool.LocalFileHandler"
@@ -61,6 +61,53 @@
 				<Parameter key="workspace" value="/Users/creekthu/Desktop/workspace"/>
 			</Parameters>
 		</ToolResource>
+        -->
+        <!--
+        <ToolResource id="comet" type="GLOBUS" 
+            class="org.ngbw.sdk.tool.DefaultToolResource"
+            filehandler="${comet.filehandler}"
+            processworker="org.ngbw.sdk.tool.SSHExecProcessWorker">
+            <Parameters>
+                <Parameter key="runner" value="org.ngbw.sdk.common.util.GsiSSHProcessRunner" />
+                <Parameter key="login" value="${teragrid.comet.login}" />
+                <Parameter key="fileHost" value="${teragrid.comet.host}"/>
+                <Parameter key="filePort" value="2811"/>
+                <Parameter key="workspace" value="${teragrid.comet.workspace}"/>
+                <Parameter key="rc" value="${teragrid.comet.rc}"  />
+                <Parameter key="submit" value="${teragrid.comet.submit}"  />
+                <Parameter key="check" value="${teragrid.comet.check}"  />
+                <Parameter key="cancel" value="${teragrid.comet.cancel}"  />
+                <Parameter key="accountGroup" value="teragrid"  />
+                <Parameter key="chargeNumber" value="${cipres.charge.number}"  />
+                <Parameter key="coresPerNode" value="24"  />
+            </Parameters>
+        </ToolResource>
+        -->
+		<ToolResource id="comet" type="REMOTE_SHELL" 
+			class="org.ngbw.sdk.tool.DefaultToolResource"
+			filehandler="org.ngbw.sdk.tool.SFTPFileHandler" 
+			processworker="org.ngbw.sdk.tool.SSHExecProcessWorker">
+			<Parameters>
+				<Parameter key="host" value="${comet.host}" />
+				<Parameter key="workspace" value="${comet.workspace}"/>
+				<Parameter key="fileHost" value="${comet.fileHost}"/>
+                <Parameter key="submit" value="${comet.submit}"  />
+                <Parameter key="check" value="${comet.check}"  />
+                <Parameter key="cancel" value="${comet.cancel}"  />
+			</Parameters>
+		</ToolResource>
+		<!--
+		<ToolResource id="relion" type="REMOTE_SHELL" 
+			class="org.ngbw.sdk.tool.DefaultToolResource"
+			filehandler="org.ngbw.sdk.tool.LocalFileHandler" 
+			processworker="org.ngbw.sdk.tool.SSHExecProcessWorker">
+			<Parameters>
+				<Parameter key="host" value="${relion.host}" />
+				<Parameter key="workspace" value="${relion.workspace}"/>
+				<Parameter key="fileHost" value="${relion.fileHost}"/>
+			</Parameters>
+		</ToolResource>
+		-->
 	</ToolResources>
 	<ToolGroups>
 		<ToolGroup id="XSEDE" disable="true">
@@ -90,18 +137,65 @@
 				</OutputParameters>
 			</Tool>
 			-->
-			<!--
-			<Tool id="SLEEP"
-				name="An example of a tool running remotely via SSH"
-				configfile="pisexml/sleep.xml" toolresource="localhost"
+            <!--
+			<Tool id="RELION_COMET" name="Relion on Comet"
+				toolresource="comet"
+				configfile="pisexml/relion_comet.xml"
 				commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
 				<InputParameters>
-					<InputParameter id="infile_" entityType="UNKNOWN" dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE"/>
+					<InputParameter id="infile_" entityType="UNKNOWN"
+						dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE"/>
 				</InputParameters>
 				<OutputParameters>
 				</OutputParameters>
 			</Tool>
-			-->
+            -->
+			<Tool id="RELION_2D_CLASS_COMET" name="Relion on Comet"
+				toolresource="comet"
+				configfile="pisexml/relion_2d_class_comet.xml"
+				commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
+				<InputParameters>
+					<InputParameter id="infile_" entityType="UNKNOWN"
+						dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE"/>
+				</InputParameters>
+				<OutputParameters>
+				</OutputParameters>
+			</Tool>
+			<Tool id="RELION_3D_CLASS_COMET" name="Relion on Comet"
+				toolresource="comet"
+				configfile="pisexml/relion_3d_class_comet.xml"
+				commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
+				<InputParameters>
+					<InputParameter id="infile_" entityType="UNKNOWN"
+						dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE"/>
+				</InputParameters>
+				<OutputParameters>
+				</OutputParameters>
+			</Tool>
+			<Tool id="RELION_3D_REFINE_COMET" name="Relion on Comet"
+				toolresource="comet"
+				configfile="pisexml/relion_3d_refine.xml"
+				commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
+				<InputParameters>
+					<InputParameter id="infile_" entityType="UNKNOWN"
+						dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE"/>
+				</InputParameters>
+				<OutputParameters>
+				</OutputParameters>
+			</Tool>
+			<!-- The following 2 default tests worked during initial setup
+			     testing (:
+			<Tool id="SLEEP"
+				name="sleep on Comet"
+				configfile="pisexml/sleep.xml" toolresource="comet"
+				commandrenderer="org.ngbw.pise.commandrenderer.PiseCommandRenderer">
+				<InputParameters>
+					<InputParameter id="infile_" entityType="UNKNOWN"
+						dataType="UNKNOWN" dataFormat="UNKNOWN" iomode="FILE"/>
+				</InputParameters>
+				<OutputParameters>
+				</OutputParameters>
+			</Tool>
 			<Tool id="SLEEP"
 				name="An example of a tool running locally"
 				configfile="pisexml/sleep.xml" toolresource="LOCALHOST"
@@ -112,6 +206,7 @@
 				<OutputParameters>
 				</OutputParameters>
 			</Tool>
+			-->
 		</ToolGroup>
 	</ToolGroups>
 </ToolRegistry>

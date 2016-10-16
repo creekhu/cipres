@@ -1,0 +1,25 @@
+RELION_3D_CLASS_COMET
+infile_ - Primary Input File
+all_outputfiles_ - Results -
+particle_diameter_ - Integer - Diameter of particle (Angstroms)
+pixel_size_ - Float - Pixel size of data (Angstroms/pix)
+reference_map_ - InFile - Reference map
+symmetry_ - Excl - Symmetry of sample
+greyscale_ - Excl - Reference map is on absolute greyscale
+low_pass_ - Integer - Initial low-pass filter (Angstrom)
+classes_ - Integer - Number of classes
+angular_sampling_ - Excl - Angular sampling interval (degrees)
+search_range_ - Integer - Pixel search range (pixels)
+step_size_ - Integer - Pixel search range step size (pixels)
+runtime_ - Float - Maximum Relion runtime (hours)
+basename_ - String - Base name to use for the output file
+ctf_correction_ - Excl - Do CTF correction?
+ctf_corrected_ - Excl - Has reference been CTF-corrected
+phase_flipped_ - Excl - Have data been phase-flipped
+ignore_ctfs_ - Excl - Ignore CTFs until first peak
+regularization_ - Integer - Regularization parameter
+e_step_limit_ - Integer - Limit resolution E-step to (Angstroms)
+image_alignment_ - Excl - Perform image alignment
+angular_search_ - Excl - Perform local angular searches
+angular_range_ - Integer - Local angular search range (degrees)
+

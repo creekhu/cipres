@@ -1,0 +1,24 @@
+PPSearch Output
+---------------------------------------------------------
+|          ppsearch (c) 1994 EMBL Data Library          |
+|       based on MacPattern (c) 1990-1994 R. Fuchs      |
+---------------------------------------------------------
+
+PROSITE pattern search started: Tue Dec  4 05:14:15 2007
+
+Sequence file: /ebi/extserv/old-work/ppsearch-20071204-05141403173458.input
+
+----------------------------------------
+Sequence ADH1B_HUMAN (374 residues):
+
+Matching pattern PS00059 ADH_ZINC:
+   66: GHEAAGIVESVGEGV
+Total matches: 1
+
+Total no of hits in this sequence: 1
+
+========================================
+
+1311 pattern(s) searched in 1 sequence(s), 374 residues.
+Total no of hits in all sequences: 1.
+Search time: 00:00 min

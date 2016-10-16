@@ -1,0 +1,77 @@
+# prss -q -O prss.out sequence2.fasta sequence1.fasta
+PRSS evaluates statistical signficance using Smith-Waterman version 34.26.5 April 26, 2007
+Please cite:
+ W.R. Pearson (1996) Meth. Enzymol. 266:227-258
+
+ sequence2.fasta, 502 nt
+ vs 126742336 Ochotona curzoniae hemoglobin alpha chain mRNA, complete cds. GBMAM:126742336, 429 bp shuffled sequence
+
+       opt      E()
+< 20     0     0:
+  22     0     0:           one = represents 1 library sequences
+  24     0     0:
+  26     0     0:
+  28     0     0:
+  30     0     0:
+  32     2     1:*=
+  34     6     3:==*===
+  36     4     6:==== *
+  38     8    10:======== *
+  40    16    14:=============*==
+  42    22    17:================*=====
+  44    18    18:=================*
+  46    13    19:=============     *
+  48    12    18:============     *
+  50    24    16:===============*========
+  52    17    14:=============*===
+  54    14    12:===========*==
+  56     5    10:=====    *
+  58    11     8:=======*===
+  60     6     7:======*
+  62     3     5:=== *
+  64     3     4:===*
+  66     5     3:==*==
+  68     3     3:==*
+  70     1     2:=*
+  72     1     2:=*
+  74     4     1:*===
+  76     0     1:*
+  78     0     1:*
+  80     1     1:*
+  82     0     0:
+  84     0     0:
+  86     0     0:
+  88     1     0:=
+  90     0     0:
+  92     0     0:
+  94     0     0:
+  96     0     0:
+  98     0     0:
+ 100     0     0:
+ 102     0     0:
+ 104     0     0:
+ 106     0     0:
+ 108     0     0:
+ 110     0     0:
+ 112     0     0:
+ 114     0     0:
+ 116     0     0:
+ 118     0     0:
+>120     0     0:
+  85800 residues in   200 sequences
+ (shuffled) MLE statistics: Lambda= 0.1363;  K=0.0335
+ Kolmogorov-Smirnov  statistic: 0.0379 (N=24) at  42
+
+ Smith-Waterman (3.5 Sept 2006) function [+5/-4 matrix (5:-4)], open/ext: -12/-4
+The best scores are:                                      s-w bits E(200)
+126742336 Ochotona curzoniae hemoglobin alpha  ( 429) [f] 1614 322.4 3.9e-90
+
+
+
+502 residues in 1 query   sequences
+85800 residues in 200 library sequences
+ Scomplib [34.26]
+ start: Mon Jan 21 19:16:15 2008 done: Mon Jan 21 19:16:16 2008
+ Scan time:  0.930 Display time:  0.000
+
+Function used was PRSS [version 34.26.5 April 26, 2007]

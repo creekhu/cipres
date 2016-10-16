@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://cosmic-cryoem.org/struts-2.0.dtd">
+<struts>
+	
+	<constant name="struts.custom.i18n.resources" value="tools"/>
+	
+	<!-- ============================================================= Packages -->
+	<!-- Default NGBW web application package -->
+    <package extends="default" name="tools">
+	
+		<action class="org.ngbw.web.actions.tool.relion_2d_class_comet" name="relion_2d_class_comet">
+	    	<result name="success">/pages/user/task/taskForm.jsp</result> 
+	    	<result name="input">/pages/user/task/taskForm.jsp</result>
+		</action>
+
+		<action class="org.ngbw.web.actions.tool.relion_3d_class_comet" name="relion_3d_class_comet">
+	    	<result name="success">/pages/user/task/taskForm.jsp</result> 
+	    	<result name="input">/pages/user/task/taskForm.jsp</result>
+		</action>
+
+		<action class="org.ngbw.web.actions.tool.relion_3d_refine_comet" name="relion_3d_refine_comet">
+	    	<result name="success">/pages/user/task/taskForm.jsp</result> 
+	    	<result name="input">/pages/user/task/taskForm.jsp</result>
+		</action>
+
+		<action class="org.ngbw.web.actions.tool.sleep" name="sleep">
+	    	<result name="success">/pages/user/task/taskForm.jsp</result> 
+	    	<result name="input">/pages/user/task/taskForm.jsp</result>
+		</action>
+</package>
+	
+</struts>

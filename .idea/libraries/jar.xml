@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/freemarker-2.3.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/xml-apis.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/xmltask-v1.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/xercesImpl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/xalan.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/resolver.jar!/" />
+      <root url="jar://$PROJECT_DIR$/source/sdk/src/main/codeGeneration/lib/jar/serializer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

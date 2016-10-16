@@ -1,0 +1,19 @@
+RELION_2D_CLASS_COMET
+infile_ - Primary Input File
+all_outputfiles_ - Results -
+particle_diameter_ - Integer - Particle diameter (Angstroms)
+pixel_size_ - Float - Pixel size of data (Angstroms/pix)
+classes_ - Integer - Number of classes
+iterations_ - Integer - Number of iterations
+angular_sampling_ - Integer - In-plane angular sampling
+pixel_range_ - Integer - Pixel search range (pixels)
+step_size_ - Integer - Pixel search range step size (pixels)
+runtime_ - Float - Maximum Relion runtime (hours)
+basename_ - String - Basename to use for the output file
+ctf_correction_ - Excl - Do CTF correction?
+phase_flipped_ - Excl - Have data been phase-flipped
+ignore_ctfs_ - Excl - Ignore CTFs until first peak
+regularization_ - Integer - Regularization parameter
+e_step_limit_ - Integer - Limit resolution E-step to (Angstroms)
+image_alignment_ - Excl - Perform image alignment
+

@@ -8,7 +8,7 @@
 	<!-- meta name="heading" content="Login"/ -->
   <content tag="menu">Toolkit</content>
 </head>
-<h2>Phylogeny / Alignment Tools</h2>
+<h2>Cryo-EM Image Processing Tools</h2>
 <s:if test="%{trackerUrl != null && trackerUrl != ''}">
   <div class="callout">
     If there is a  tool or a feature you need, please <s:a href="javascript:popupWithSizes('%{trackerUrl}',800,600,'1')">let us know</s:a>.

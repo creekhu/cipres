@@ -2,7 +2,6 @@ package org.ngbw.web.controllers;
 
 import java.util.Calendar;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.ngbw.sdk.UserAuthenticationException;
 import org.ngbw.sdk.Workbench;

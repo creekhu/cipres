@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="<c:url value='/bootstrap-form-helpers/dist/css/bootstrap-formhelpers.css'/>" />
 
   <%-- Custom CSS --%>
-  <link rel="stylesheet" href="<c:url value='/css/cipres.css'/>" type="text/css" media="screen, projection"/>
+  <link rel="stylesheet" href="<c:url value='/css/gateway.css'/>" type="text/css" media="screen, projection"/>
   <!--[if IE 8]>
   <link rel="stylesheet" href="<c:url value='/css/cipres-ie8.css'/>" type="text/css" media="screen, projection"/>
   <![endif]-->

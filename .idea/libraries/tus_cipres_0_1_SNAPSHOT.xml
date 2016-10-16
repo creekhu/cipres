@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tus_cipres-0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/source/tus_cipres/target/tus_cipres-0.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

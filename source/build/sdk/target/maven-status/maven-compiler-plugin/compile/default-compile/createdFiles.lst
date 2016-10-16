@@ -246,6 +246,7 @@ org/ngbw/sdk/bioutils/blast/blastxml/HitLen.class
 org/ngbw/sdk/core/shared/TaskRunStage.class
 org/ngbw/pise/commandrenderer/pise/Authors.class
 org/ngbw/sdk/bioutils/blast/blastxml/BlastOutputQueryLen.class
+org/ngbw/sdk/tool/validation/relion_3d_class_cometValidator.class
 org/ngbw/pise/commandrenderer/pise/Ctrl.class
 org/ngbw/sdk/tool/JobCharge.class
 org/ngbw/sdk/core/shared/DataRecordCollectionImpl.class
@@ -481,6 +482,7 @@ org/ngbw/sdk/api/tool/ProcessResult.class
 org/ngbw/sdk/api/core/CoreRegistryBuilder.class
 org/ngbw/sdk/api/core/DataRecordCollection.class
 org/ngbw/sdk/api/data/SearchHitCollection.class
+org/ngbw/sdk/tool/validation/relion_3d_refine_cometValidator.class
 org/ngbw/sdk/common/util/FileUtils.class
 org/ngbw/sdk/common/util/StringUtils.class
 org/ngbw/sdk/common/util/GsiSSHProcessRunner.class
@@ -507,6 +509,7 @@ org/ngbw/sdk/bioutils/blast/blastxml/ParametersExpect.class
 org/ngbw/examples/SimpleMetaQueryClient.class
 org/ngbw/sdk/core/types/RecordFieldType.class
 org/ngbw/sdk/database/Task$RemoveAllInputOp.class
+org/ngbw/sdk/tool/validation/relion_2d_class_cometValidator.class
 org/ngbw/sdk/database/LongColumn.class
 org/ngbw/sdk/jobs/JobMetadata.class
 org/ngbw/sdk/tool/SSHProcessWorker.class

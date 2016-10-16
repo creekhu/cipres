@@ -1,0 +1,184 @@
+.dataTable {
+	background-color: white;
+	border: 1px solid #000066;
+	font-size :	7pt;
+	margin:	5px;
+	width:100%;
+}
+
+.dataTable th {
+	border-right: 1px solid #c8c8ff;
+	padding-left: 2px;
+	padding-right:12px;
+	font-family: arial, helvetica, sans-serif;
+	font-weight: bold;
+	color: white;
+	background-color: #000066;
+	margin-right: 5px;
+}
+
+.dataTable  td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	padding-left: 2px;
+}
+
+.dataTable  td.nowrapclass {
+	font-family: verdana, arial, helvetica, sans-serif;
+	padding-left: 2px;
+	vertical-align: top;
+	white-space:nowrap;
+}
+
+.dataTable tr.total td {
+	white-space: nowrap;
+	vertical-align: top;
+	font-weight: bold;
+	border-top: 1px solid black;
+	padding-bottom: 10px;
+}
+
+.dataTable tr.total td.customer {
+	visibility: hidden;
+}
+
+.dataTable td.hidden {
+	display: none;
+}
+
+.dataTable th.hidden {
+	display: none;
+}
+
+.dataTable th.r {
+	text-align: right;
+	padding-right: 10px;
+}
+
+.dataTable th.c {
+	text-align: center;
+}
+
+.dataTable td.r {
+	text-align: right;
+	padding-right: 10px;
+}
+
+.dataTable td.c {
+	text-align: center;
+}
+
+.dataTable  tr.odd {
+	background-color: white;
+}
+
+.dataTable tr.even {
+	background-color: #d6cfe6;
+}
+
+.dataTable th a   ,.dataTable th a:visited {
+	text-align: left;
+	color: white;
+}
+
+.dataTable th a:hover {
+	color: #ffcc00;
+	background-color: transparent;
+}
+
+.dataTable .order1 {
+	background-position: right;
+	background-image: url(../images/arrow_up.gif);
+	background-repeat: no-repeat;
+}
+
+.dataTable .order2 {
+	background-position: right;
+	background-image: url(../images/arrow_down.gif);
+	background-repeat: no-repeat;
+}
+
+.pagelinks {
+	color: #999999;
+	margin: 5px;
+}
+.pagelinks img {
+	vertical-align: middle;
+}
+span.export {
+	font-size: 9pt;
+	text-align: center;
+}
+
+.dataTable tr.rowMouseOver {
+	background-image: url(../images/selected.gif);
+	background-repeat: repeat-x;
+	background-color: #ffff99;
+}
+
+.leftMenu {
+	white-space: nowrap;
+	height: 100%;
+	background-color: #d6cfe6;
+	font-family: verdana, arial, helvetica, sans-serif;
+}
+
+.displaycontent {
+	width: 100%;
+	padding: 10px;
+}
+
+.rightColumn {
+	width: 3px;
+}
+
+.customer {
+	width: 20%;
+	text-align: left;
+}
+
+.orderNumber {
+	width: 10%;
+	text-align: left;
+}
+
+.orderDate {
+	text-align: center;
+	width: 10%;
+}
+
+.productName {
+	width: 25%;
+}
+
+.quantity {
+	text-align: center;
+	width: 10%;
+}
+
+.lineItemTotal {
+	text-align: right;
+	width: 15%;
+	padding-right:10px;
+}
+
+.logo {
+	border-top: 1px solid #000066;
+	border-left: 1px solid #000066;
+	border-bottom: 1px solid #000066;
+	display:inline;
+	text-align: right;
+}
+
+.code {
+	font-family: verdana, arial, helvetica, "courier new", monospace;
+	font-size: 9pt;
+}
+
+.borderedInline {
+	display: inline;
+	border: 1px solid black;
+}
+
+img {
+	border: 0px;
+}

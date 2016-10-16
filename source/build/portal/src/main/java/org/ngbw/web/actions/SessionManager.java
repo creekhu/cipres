@@ -367,7 +367,7 @@ public class SessionManager extends NgbwSupport
 				addActionMessage("User account \"" + getUsername() + "\" successfully created.");
 				if (finalizeLogin() == true)
 				{
-					return SUCCESS;
+
 				}
 			}
 		}
@@ -375,18 +375,18 @@ public class SessionManager extends NgbwSupport
     }
 
 	public String guestLogin()
-	{
+	{	
 		// register guest user
 		SessionController controller = getController();
 		ValidationResult result = controller.registerGuestUser();
 		if (result == null)
 		{
-			addActionError("Sorry, there was an error logging in as a guest.");
+			addActionError("Sorry, there was an error logging in as a guest. Enter 0");
 			return INPUT;
 		}
 		if (result.isValid() == false)
 		{
-			reportUserError("Sorry, there was an error logging in as a guest:");
+			reportUserError("Sorry, there was an error logging in as a guest: Enter 2");
 			for (String error : result.getErrors())
 				reportUserError(error);
 			return INPUT;

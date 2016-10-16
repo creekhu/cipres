@@ -1,0 +1,71 @@
+<h2>DNADIST</h2>
+<p>
+	<strong>DNADIST</strong> uses nucleotide sequences to compute a distance matrix,
+	under three different models of nucleotide substitution. The distance
+	for each pair  of species estimates the total branch length between the two species,
+	and can be used in the distance  matrix programs FITCH, KITSCH or
+	NEIGHBOR. This is an alternative to use of the sequence data
+	itself in the maximum likelihood program DNAML or the parsimony
+	program DNAPARS, when it is not  known in advance which ones are which. Part of Phylip.<br />
+	INPUT = aligned dna sequence files
+</p>
+<h3>Manual:
+	<a href="http://evolution.genetics.washington.edu/phylip/doc/dnadist.html">
+		http://evolution.genetics.washington.edu/phylip/doc/dnadist.html
+	</a>
+</h3>
+	   <h3>TEST DATA SET</h3>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;&nbsp; 5&nbsp;&nbsp; 13</pre>
+               <pre>Alpha&nbsp; &nbsp;&nbsp;&nbsp;AACGTGGCCACAT</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AAGGTCGCCACAC</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp; CAGTTCGCCACAA</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp; GAGATTTCCGCCT</pre>
+             <pre>Epsilon&nbsp;&nbsp; GAGATCTCCGCCC</pre></td>
+         </tr>
+       </table>
+	   <div align="center">
+         <hr size="2" width="100%" align="center" />
+       </div>
+	   <h3>CONTENTS OF OUTPUT FILE (with all numerical options on)</h3>
+	   <p>(Note that when the options for displaying the input data are turned off,  the output is in a form suitable for use as an input file in the distance  matrix programs). </p>
+	   <table border="0" cellpadding="0">
+         <tr>
+           <td><pre>&nbsp;</pre>
+               <pre>Nucleic acid sequence Distance Matrix program, version 3.6</pre>
+             <pre>&nbsp;</pre>
+             <pre> 5 species,&nbsp; 13&nbsp; sites</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp; F84 Distance</pre>
+             <pre>&nbsp;</pre>
+             <pre>Transition/transversion ratio =&nbsp;&nbsp; 2.000000</pre>
+             <pre>&nbsp;</pre>
+             <pre>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequences</pre>
+             <pre>----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---------</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AACGTGGCCA CAT</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ..G..C.... ..C</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C.GT.C.... ..A</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G.GA.TT..G .C.</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G.GA.CT..G .CC</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;</pre>
+             <pre>Empirical Base Frequencies:</pre>
+             <pre>&nbsp;</pre>
+             <pre>&nbsp;&nbsp; A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.24615</pre>
+             <pre>&nbsp;&nbsp; C&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.36923</pre>
+             <pre>&nbsp;&nbsp; G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.21538</pre>
+             <pre>&nbsp; T(U)&nbsp;&nbsp;&nbsp;&nbsp; 0.16923</pre>
+             <pre>&nbsp;</pre>
+             <pre>Alpha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.000000&nbsp; 0.303893&nbsp; 0.857546&nbsp; 1.158921&nbsp; 1.542897</pre>
+             <pre>Beta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.303893&nbsp; 0.000000&nbsp; 0.339731&nbsp; 0.913519&nbsp; 0.619666</pre>
+             <pre>Gamma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.857546&nbsp; 0.339731&nbsp; 0.000000&nbsp; 1.631729&nbsp; 1.293707</pre>
+             <pre>Delta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.158921&nbsp; 0.913519&nbsp; 1.631729&nbsp; 0.000000&nbsp; 0.165882</pre>
+             <pre>Epsilon&nbsp;&nbsp;&nbsp;&nbsp; 1.542897&nbsp; 0.619666&nbsp; 1.293707&nbsp; 0.165882&nbsp; 0.000000</pre></td>
+         </tr>
+       </table>
+	   <h3>&nbsp;</h3>
+	   <p><br />
+        </p>

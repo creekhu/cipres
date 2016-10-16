@@ -1,0 +1,357 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<title>Relion 2D classification</title>
+<h2>Relion 2D classification: Calculate 2D class averages using Relion (<a href="#REFERENCE">S. H. W. Scheres</a>)</h2>
+<s:form action="relion_2d_class_comet" theme="simple">
+<!-- Begin Simple Parameters -->
+<a href="javascript:simple.slideit()" class="panel">Simple Parameters</a>
+<div id="simple" style="width: 100%; background-color: #FFF;">
+<div style="padding: 0.75em 0 0 0">
+Particle diameter (Angstroms)
+<font color="red" size="3">*</font>
+<s:textfield name="particle_diameter_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Pixel size of data (Angstroms/pix)
+<font color="red" size="3">*</font>
+<s:textfield name="pixel_size_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Number of classes
+<font color="red" size="3">*</font>
+<s:textfield name="classes_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Number of iterations
+<font color="red" size="3">*</font>
+<s:textfield name="iterations_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+In-plane angular sampling
+<font color="red" size="3">*</font>
+<s:textfield name="angular_sampling_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Pixel search range (pixels)
+<font color="red" size="3">*</font>
+<s:textfield name="pixel_range_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Pixel search range step size (pixels)
+<font color="red" size="3">*</font>
+<s:textfield name="step_size_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+<A HREF="javascript:help.slidedownandjump('#runtime')">Maximum Relion runtime (hours)</A>
+<font color="red" size="3">*</font>
+<s:textfield name="runtime_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+<A HREF="javascript:help.slidedownandjump('#basename')">Basename to use for the output file</A>
+<font color="red" size="3">*</font>
+<s:textfield name="basename_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+</div>
+</div>
+<script type="text/javascript">
+var simple=new animatedcollapse("simple", 800, false, "block")
+</script>
+<!--End Simple Parameters -->
+<br/><hr/><br/>
+<!--Begin Advanced Parameters -->
+<a href="javascript:advanced.slideit()" class="panel">Advanced Parameters</a>
+<div id="advanced" style="width: 100%; background-color: #FFF;">
+<div style="padding: 0.75em 0 0 0">
+Do CTF correction?
+<font color="red" size="3">*</font>
+<s:radio name="ctf_correction_"
+list="#{ 'yes':'Yes' , 'no':'No' }" onclick="resolveParameters()"/>
+<br/>
+Have data been phase-flipped
+<font color="red" size="3">*</font>
+<s:radio name="phase_flipped_"
+list="#{ 'yes':'Yes' , 'no':'No' }" onclick="resolveParameters()"/>
+<br/>
+Ignore CTFs until first peak
+<font color="red" size="3">*</font>
+<s:radio name="ignore_ctfs_"
+list="#{ 'yes':'Yes' , 'no':'No' }" onclick="resolveParameters()"/>
+<br/>
+Regularization parameter
+<font color="red" size="3">*</font>
+<s:textfield name="regularization_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Limit resolution E-step to (Angstroms)
+<font color="red" size="3">*</font>
+<s:textfield name="e_step_limit_" size="10" maxlength="600" onchange="resolveParameters()"/>
+<br/>
+Perform image alignment
+<font color="red" size="3">*</font>
+<s:radio name="image_alignment_"
+list="#{ 'yes':'Yes' , 'no':'No' }" onclick="resolveParameters()"/>
+<br/>
+</div>
+</div>
+<script type="text/javascript">
+var advanced=new animatedcollapse("advanced", 800, true)
+</script>
+<!--End Advanced Parameters -->
+<br/><hr/><br/>
+<s:submit value="Save Parameters" onclick="return validateControl()"/>
+<s:submit value="Reset" method="resetPage"/>
+<s:submit value="Cancel" method="cancel"/>
+<hr></hr>
+<!--Begin Advanced Help -->
+<a href="javascript:help.slideit()" class="panel">Advanced Help</a>
+<div id="help" style="width: 100%; background-color: #FFF;">
+<div style="padding: 0.75em 0 0 0">
+<dt><a name=runtime><i>Maximum Relion runtime (hours)</i></a></dt>
+<dd>
+Estimate the maximum time your job will need to run (up to 48 hrs). Your job will be killed if it doesn't finish within the time you specify, however jobs with shorter maximum run times are often scheduled sooner than longer jobs.
+</dd>
+<dt><a name=basename><i>Basename to use for the output file</i></a></dt>
+<dd>This value determines the name of output files.</dd>
+</div>
+</div>
+<script type="text/javascript">
+var help=new animatedcollapse("help", 800, true)
+</script>
+<!--End Advanced Help -->
+</s:form>
+<script type="text/javascript">
+function resolveParameters() {
+// particle_diameter
+// pixel_size
+// classes
+// iterations
+// angular_sampling
+// pixel_range
+// step_size
+// runtime
+// basename
+// ctf_correction
+// phase_flipped
+// ignore_ctfs
+// regularization
+// e_step_limit
+// image_alignment
+}
+function validateControl() {
+// particle_diameter
+if (getValue('particle_diameter_') < 1) {
+alert('Please enter an integer > 0 for the particle diameter (in Angstroms)');
+return false;
+}
+// pixel_size
+if (getValue('pixel_size_') < 0.01) {
+alert('Please enter a float > 0.00 for the pixel size (in Angstroms/pix)');
+return false;
+}
+// classes
+if (getValue('classes_') < 1) {
+alert('Please enter an integer > 0 for the number of classes');
+return false;
+}
+// iterations
+if (getValue('iterations_') < 1) {
+alert('Please enter an integer > 0 for the number of iterations');
+return false;
+}
+// angular_sampling
+if (getValue('angular_sampling_') < 1) {
+alert('Please enter an integer > 0 for the in-plane angular sampling');
+return false;
+}
+// pixel_range
+if (getValue('pixel_range_') < 1) {
+alert('Please enter an integer > 0 for the pixel search range (in pixels)');
+return false;
+}
+// step_size
+if (getValue('step_size_') < 1) {
+alert('Please enter an integer > 0 for the pixel search range step size (in pixels)');
+return false;
+}
+// runtime
+if (getValue('runtime_') < 0.1 || getValue('runtime_') > 48.0) {
+alert('Please enter a float between 0.1 and 48.0, inclusively, for the maximum run time (in hours)');
+return false;
+}
+// basename
+if (!getValue('basename_')) {
+alert('Please enter a string for the base name of the output file');
+return false;
+}
+// ctf_correction
+// phase_flipped
+// ignore_ctfs
+// regularization
+if (getValue('regularization_') < 1 || getValue('regularization_') > 4) {
+alert('Please enter an integer between 1 and 4, inclusively, for the regularization parameter');
+return false;
+}
+// e_step_limit
+if (getValue('e_step_limit_') < -1 || getValue('e_step_limit_') == 0) {
+alert('Please enter a non-zero integer > -1 for E-step resolution limit (in Angstroms)');
+return false;
+}
+// image_alignment
+return issueWarning();
+}
+function issueWarning() {
+// particle_diameter
+// pixel_size
+// classes
+// iterations
+// angular_sampling
+// pixel_range
+// step_size
+// runtime
+// basename
+// ctf_correction
+// phase_flipped
+// ignore_ctfs
+// regularization
+// e_step_limit
+// image_alignment
+addSpecialField();
+return true;
+}
+function messageSplit(str)
+{
+var tokens = str.split(" ");
+var newStr = ""
+var tmp;
+for (i = 0; i < tokens.length; i++)
+{
+if ((tokens[i].indexOf("getValue(") == 0))
+{
+tmp = tokens[i];
+var tmp1, tmp2;
+var closeParen = tmp.indexOf(")");
+tmp1 = tmp.substring(0, closeParen + 1);
+if ((closeParen + 1) == tmp.length)
+{
+tmp = tmp1 + " + ' '";
+} else
+{
+tmp2=tmp.substring(closeParen + 1);
+tmp = tmp1 + " + '" + tmp2 + "'";
+tmp = tmp + " + ' '";
+}
+} else
+{
+tmp = "'" + tokens[i] + " '";
+}
+if (newStr.length > 0)
+{
+newStr = newStr + " + " + tmp;
+} else
+{
+newStr = tmp;
+}
+}
+return eval(newStr);
+}
+// For multiple selection list, pise "List" type, this only returns the 1st value selected.
+// To get all values you need to get all element[i].value where element[i].selected = true.
+function getValue(parameter)
+{
+var element = document.forms['relion_2d_class_comet'].elements[parameter];
+if (element == null)
+{
+return null;
+}
+if (isDisabled(parameter))
+{
+if (element.type == 'checkbox')
+{
+return false;
+}
+return "";
+}
+else if (element.length != null)
+{
+// if the element has a value, it's a drop-down list
+if (element.value != null)
+{
+return element.value;
+} else
+{
+for (i=0; element.length>i; i++)
+{
+if (element[i].checked)
+{
+return element[i].value;
+}
+}
+return null;
+}
+} else if (element.type == 'checkbox')
+{
+return element.checked;
+} else
+{
+return element.value;
+}
+}
+function enable(parameter)
+{
+var element = document.forms['relion_2d_class_comet'].elements[parameter];
+if (element == null)
+{
+return;
+}
+if (element.length != null)
+{
+for (i=0; element.length>i; i++)
+{
+element[i].disabled = false;
+}
+}
+element.disabled = false;
+}
+function disable(parameter)
+{
+var element = document.forms['relion_2d_class_comet'].elements[parameter];
+if (element == null)
+{
+return;
+}
+if (element.length != null)
+{
+for (i=0; element.length>i; i++)
+{
+element[i].disabled = true;
+}
+}
+element.disabled = true;
+}
+function isDisabled(parameter)
+{
+var element = document.forms['relion_2d_class_comet'].elements[parameter];
+if (element == null)
+{
+return true;
+}
+// radio button is special case
+if (element.length != null )
+{
+return element[0].disabled;
+}
+return element.disabled;
+}
+function allDisabledFields()
+{
+var str = '';
+var element = document.forms['relion_2d_class_comet'].elements;
+for(var i = 0; i < element.length; i++)
+{
+if (isDisabled(element[i].name))
+{
+str += element[i].name + ",";
+}
+}
+return str;
+}
+function addSpecialField()
+{
+var str = allDisabledFields();
+var input = document.createElement('input');
+input.type = 'hidden';
+input.name = 'disabledFields__';
+input.value = str;
+document.forms['relion_2d_class_comet'].appendChild(input);
+}
+</script>
